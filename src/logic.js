@@ -294,8 +294,9 @@ L.promote = (S, pr) => { let c = S.leaders.filter(l => l.alive && l.rank === 'co
   if (!c.length) return; const n = pick(c); n.rank = 'warlord'; const old = n.boss; n.boss = null;
   for (const l of S.leaders) if (l.boss === pr.boss || l.boss === old && false) l.boss = n.id;
   L.log(S, 'Commander ' + n.name + ' has been promoted to Warlord in ' + TERR[n.at].name + '.', 'bad'); };
-L.daily = S => { S.orders = Math.min(L.ordersMax(S) + 3, (S.orders || 0) + L.ordersMax(S)); const own = L.owned(S); const inc = { metal: 0, fuel: 0, research: 0 };
-  for (const id of own) { const T = S.terr[id]; inc[TERR[id].res] += (L.isStrong(id) ? 12 : 6) + L.worksYield(S) * (T.works || 0); if (T.barracks && L.day(S) % 3 === 0) T.n += T.barracks; const pk = PERKS[id]; if (pk) { for (const k in pk.inc || {}) inc[k] += pk.inc[k]; if (pk.intel) S.res.intel = Math.min(30, S.res.intel + pk.intel); if (pk.pool && L.day(S) % 2 === 0) S.pool = Math.min(30, S.pool + 1); } }
+L.daily = S => { const o0 = S.orders || 0, i0 = S.res.intel, u0 = S.res.uranium, p0 = S.pool, h0 = S.harvest, bar = [];
+  S.orders = Math.min(L.ordersMax(S) + 3, o0 + L.ordersMax(S)); const own = L.owned(S); const inc = { metal: 0, fuel: 0, research: 0 };
+  for (const id of own) { const T = S.terr[id]; inc[TERR[id].res] += (L.isStrong(id) ? 12 : 6) + L.worksYield(S) * (T.works || 0); if (T.barracks && L.day(S) % 3 === 0) { T.n += T.barracks; bar.push({ id, n: T.barracks }); } const pk = PERKS[id]; if (pk) { for (const k in pk.inc || {}) inc[k] += pk.inc[k]; if (pk.intel) S.res.intel = Math.min(30, S.res.intel + pk.intel); if (pk.pool && L.day(S) % 2 === 0) S.pool = Math.min(30, S.pool + 1); } }
   for (const k in inc) S.res[k] += inc[k];
   if (S.doc === 'shadow') S.res.intel = Math.min(30, S.res.intel + 2);
   S.res.uranium += own.filter(id => URANIUM.includes(id)).length; S.res.intel = Math.min(30, S.res.intel + 1 + own.filter(id => S.terr[id].radar).length);
@@ -303,6 +304,10 @@ L.daily = S => { S.orders = Math.min(L.ordersMax(S) + 3, (S.orders || 0) + L.ord
   for (const k in REGIONS) if (TIDS.filter(i => TERR[i].region === k).every(i => S.terr[i].owner === 'you')) r += REGIONS[k].bonus;
   S.pool = Math.min(30, S.pool + r);
   S.harvest = Math.min(100, S.harvest + L.enemyT(S).length * L.P.harv);
+  { const prev = S.prevOwn || own, eN = L.enemyT(S).reduce((a, id) => a + S.terr[id].n, 0);
+    S.ev.push({ k: 'day', day: L.day(S), inc, intel: S.res.intel - i0, uranium: S.res.uranium - u0, pool: S.pool - p0, poolNow: S.pool, orders: S.orders, kept: o0, bar, built: S.dayBuilt || [],
+      won: own.filter(id => !prev.includes(id)), lost: prev.filter(id => !own.includes(id)), harvest: S.harvest - h0, harvestNow: S.harvest, enemy: eN, enemyWas: S.prevEnemy == null ? eN : S.prevEnemy });
+    S.ev.push({ k: 'pause' }); S.prevOwn = own.slice(); S.prevEnemy = eN; S.dayBuilt = []; }
   if (S.harvest >= 100) return L.end(S, 'harvest');
   const e = Math.floor((L.day(S) - 1) / L.P.escDays) + S.nukes; if (e > S.esc) { S.esc = e; L.log(S, 'The invasion is escalating. Threat level ' + S.esc + '.', 'bad'); }
   if (own.length < 8) L.end(S, 'collapse'); };
@@ -316,7 +321,7 @@ L.step = S => { // advance one hour
   for (const c of (S.cols || []).slice()) { const fell = S.terr[c.to].owner !== 'you'; if (!fell && S.t < c.eta) continue; S.cols.splice(S.cols.indexOf(c), 1);
     if (!fell) { S.terr[c.to].n += c.n; S.terr[c.to].arm = (S.terr[c.to].arm || 0) + (c.arm || 0); L.log(S, c.n + (c.arm || 0) + ' troops arrived in ' + TERR[c.to].name + '.', 'info'); S.ev.push({ k: 'toast', msg: c.n + ' troops arrived in ' + TERR[c.to].name, kind: 'info' }); continue; }
     L.log(S, TERR[c.to].name + ' fell while ' + c.n + ' troops were on their way there.', 'bad'); if (S.cmd) { S.pendingCol = c; S.ev.push({ k: 'colStop' }); S.ev.push({ k: 'pause' }); return; } L.colResolve(S, null, c); }
-  for (const id of TIDS) { const T = S.terr[id]; if (T.job && T.owner === 'you' && S.t >= T.job.doneAt) { const k = T.job.key; T.job = null; T[k] = (T[k] || 0) + 1; if (k === 'battery') T.reload = 0;
+  for (const id of TIDS) { const T = S.terr[id]; if (T.job && T.owner === 'you' && S.t >= T.job.doneAt) { const k = T.job.key; T.job = null; T[k] = (T[k] || 0) + 1; (S.dayBuilt = S.dayBuilt || []).push({ id, k }); if (k === 'battery') T.reload = 0;
       L.log(S, BUILD[k].name + (T[k] > 1 ? ' level ' + T[k] : '') + ' completed in ' + TERR[id].name + '.', 'good'); S.ev.push({ k: 'toast', msg: BUILD[k].name + ' completed in ' + TERR[id].name, kind: 'good' }); L.refreshIntel(S); } }
   if (tm.dest && S.t >= tm.eta) { tm.at = tm.dest; tm.dest = null; tm.arrT = S.t;
     S.ev.push({ k: 'arrive', id: tm.at }); S.ev.push({ k: 'pause' }); }
@@ -426,6 +431,13 @@ L.covertOdds = (S, l) => { const T = S.terr[l.at]; let p = 0.52;
   p -= 0.045 * T.n; p -= l.rank === 'warlord' ? 0.12 : l.rank === 'overlord' ? 0.22 + 0.11 * L.warlordsAlive(S) : 0;
   if (T.alert > S.t) p -= 0.2; if (T.disarray > S.t) p += 0.1; if (T.soft > S.t) p += 0.06; p -= 0.07 * (4 - S.team.pips);
   return clamp(p, 0.02, 0.92); };
+// The same sums as covertOdds and sabOdds, itemized so the player can see why the number is what it is.
+L.covertWhy = (S, l) => { const T = S.terr[l.at], f = [['Base chance', 52]]; const A = (t, v) => { if (v) f.push([t, v]); };
+  A('Shadow specialists', S.spec === 'shadow' ? 15 : 0); A('Ghost Suits', S.up.ghost ? 15 : 0); A('Territory under observation', S.obs[l.at] ? 8 : 0); A('Leader exposed by intel', l.exposed > S.t ? 20 : 0); A('Shadow War doctrine', S.doc === 'shadow' ? 10 : 0); A('Target has the Ghost trait', l.trait === 'ghost' ? -12 : 0);
+  A(T.n + ' enemy troops here (−4.5 each)', -Math.round(4.5 * T.n)); A(l.rank === 'warlord' ? 'Target is a Warlord' : 'Target is the Overlord (worse while Warlords live)', l.rank === 'warlord' ? -12 : l.rank === 'overlord' ? -Math.round(22 + 11 * L.warlordsAlive(S)) : 0);
+  A('Territory is on alert', T.alert > S.t ? -20 : 0); A('Defenders in disarray', T.disarray > S.t ? 10 : 0); A('Softened by bombardment', T.soft > S.t ? 6 : 0); A('Team below full readiness', -7 * (4 - S.team.pips)); return f; };
+L.sabWhy = (S, id) => { const T = S.terr[id], f = [['Base chance', 72]]; const A = (t, v) => { if (v) f.push([t, v]); };
+  A('Shadow War doctrine', S.doc === 'shadow' ? 10 : 0); A('Shadow specialists', S.spec === 'shadow' ? 15 : 0); A('Ghost Suits', S.up.ghost ? 15 : 0); A(T.n + ' enemy troops here (−4 each)', -4 * T.n); A('Territory is on alert', T.alert > S.t ? -20 : 0); A('Team below full readiness', -7 * (4 - S.team.pips)); return f; };
 L.teamFail = S => { const loss = (rnd() < 0.3 && !S.up.elite) ? 2 : 1; S.team.pips = Math.max(0, S.team.pips - loss); return loss; };
 L.covert = (S, lid) => { const l = S.leaders.find(x => x.id === lid); if (!l || !l.alive) return fail('No such target.');
   if (L.teamAt(S) !== l.at) return fail('The strike team must be in the same territory.'); if (S.team.pips < 1) return fail('The team is out of action.');

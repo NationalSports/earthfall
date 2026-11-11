@@ -67,8 +67,8 @@ function panelTerritory() { if (!selId) return '<div class="empty"><h3>Select a 
     h += '</div>';
   } else h += '<p class="note">Nothing lives here. It produces nothing and belongs to no one.</p>';
   if (T.owner !== 'waste') { h += '<div class="acts">';
-    if (teamHere) h += '<p class="note teamhere">◆ Your strike team is here' + (T.owner === 'you' ? ', strengthening the defense.' : ', undetected.') + '</p>';
-    else if (tm.dest) h += '<p class="note">◆ Strike team in transit to ' + TERR[tm.dest].name + ', ' + Math.max(0, tm.eta - S.t) + 'h out.</p>';
+    if (teamHere) h += '<p class="note teamhere">◆ Your strike team is here' + (T.owner === 'you' ? ', strengthening the defense.' : ', undetected.') + ' ' + btn('teamHelp', 'How the strike team works', { cls: 'sm' }) + '</p>';
+    else if (tm.dest) h += '<p class="note">◆ Strike team in transit to ' + TERR[tm.dest].name + ', ' + Math.max(0, tm.eta - S.t) + 'h out. ' + btn('teamHelp', 'How it works', { cls: 'sm' }) + '</p>';
     else h += btn('deploy', 'Send strike team here', { id: selId, cls: 'cyan', sub: L.travelHours(S, tm.at, selId) + 'h travel from ' + TERR[tm.at].name + ' · ' + cost({ fuel: 8 }), dis: tm.pips < 1 });
     if (S.nuke.ready > 0 && selId !== HQ) h += btn('nuke', '☢ Launch warhead', { id: selId, art: 'warhead', cls: 'danger', sub: 'Erases this territory for good. ' + S.nuke.ready + ' ready.' });
     h += '</div>'; }
@@ -126,6 +126,8 @@ function overModal() { const o = S.over, own = o.own; let t, p;
 let asl = null;
 const die = (v, cls, bonus) => '<i class="die ' + cls + '">' + v + (bonus ? '<sup>+' + bonus + '</sup>' : '') + '</i>';
 function assaultModal() { const a = asl, D = TERR[a.id]; let h = '<div class="mhead"><small>Launch assault</small><h1>' + D.name + '</h1></div>';
+  if (!a.b) { const tm = S.team; if (tm.dest === a.id) h += '<p class="note teamhere">◆ Your strike team is still flying here and lands in ' + Math.max(1, Math.ceil(tm.eta - S.t)) + 'h. It will <b>not</b> be in this attack. Wait for it to land and it fights alongside your troops.</p>'; else if (L.teamAt(S) === a.id && tm.pips > 0) h += '<p class="note teamhere">◆ Your strike team is inside ' + D.name + ' and joins this attack.</p>';
+  }
   if (!a.b) { const payM = L.canPay(S, SALVO_COST), payA = L.canPay(S, BOMB_COST); if (!payM) a.o.missile = false; if (!payA) a.o.air = false; // support you cannot afford is switched off, never left blocking the attack
     const pl = L.assaultPlan(S, a.id, a.troops, a.o); h += wallet() + '</div>'; a.troops = pl.troops; if (pl.from) a.o.from = Object.assign({}, pl.from);
     h += '<div class="vs"><div class="side you"><label>Coalition force</label><b>' + pl.A + '</b><small>' + (pl.arm ? pl.inf + ' infantry + ' + pl.arm + ' armor (counts double)' : pl.inf + ' troops') + (pl.teamN ? ' + strike team (' + pl.teamN + ')' : '') + '</small></div><span>VS</span><div class="side enemy"><label>Defense</label><b>' + pl.D + '</b><small>' + S.terr[a.id].n + ' strength + ' + pl.guards + ' guards' + (a.o.missile && pl.can.missile ? ' − 2 missiles' : '') + (a.o.air && pl.can.air ? ' − 3 air' : '') + '</small></div></div>' +
@@ -301,6 +303,28 @@ function reportModal() { if (!reports.length || modal || !S || S.over) { if (rep
     list.map(r => '<div class="ritem ' + (r.held ? 'good' : 'bad') + '"><b>' + TERR[r.to].name + (r.held ? ' held' : ' fell') + '</b><span><b>' + r.n + '</b> attackers came from ' + TERR[r.from].name + ' against your <b>' + r.d + '</b>. ' + (r.held ? (r.lost ? 'You lost ' + r.lost + '; ' + r.left + ' remain.' : 'No losses; ' + r.left + ' remain.') : 'All ' + r.d + ' of your troops there were lost, with everything built in the city. ' + r.left + ' enemy now hold it.') + '</span>' +
       (r.held ? '' : '<small>Why: ' + (r.d <= 2 ? 'the city had almost no garrison. A freshly captured city holds only the survivors of the attack, so march troops in or expect it to be retaken.' : r.n >= r.d * 1.5 ? 'you were badly outnumbered. Radar nearby would have warned you hours earlier.' : 'the dice went against you. A Fortress would have tilted them.') + '</small>') + '</div>').join('') +
     '</div><div class="row">' + btn('closeModal', 'Continue', { cls: 'gold big' }) + '</div>', 'intel'); } const seenP = {};
+function teamHelp() { const tm = S.team, at = L.teamAt(S), T = at && S.terr[at], enemy = T && T.owner === 'enemy', ldr = enemy && S.leaders.find(l => l.alive && l.at === at);
+  const why = (f, p) => '<div class="why">' + f.map(x => '<div><span>' + x[0] + '</span><b class="' + (x[1] < 0 ? 'neg' : 'pos') + '">' + (x[1] > 0 && x[0] !== 'Base chance' ? '+' : '') + x[1] + '%</b></div>').join('') + '<div class="tot"><span>Your chance</span><b>' + pct(p) + '</b></div></div>';
+  let h = '<div class="mhead"><small>One unit, ' + L.teamN(S) + ' soldiers, readiness ' + tm.pips + ' of 4</small><h1>Your strike team</h1></div><p class="lead">A small special-forces squad, separate from your armies. Flying it somewhere costs 8 fuel. It does <b>not</b> fight on arrival: it lands hidden and waits for your order.</p><div class="rlist">' +
+    '<div class="ritem"><b>1 · Stealth: weaken a city before you attack</b><span><b>Sabotage</b> cuts enemy strength by 2 and sets the Harvest back 2%. <b>Covert strike</b> kills the leader, removing his guards and his bonus. Each try costs 1 Order, fuel and intel. Succeed and the team stays hidden. Fail and it is detected, flies home, loses readiness, and the city goes on alert for 3 days (all stealth there is 20% harder).</span></div>' +
+    '<div class="ritem"><b>2 · Assault: fight beside your troops</b><span>If the team is inside a city when you attack it, it joins as ' + L.teamN(S) + ' extra troops' + (S.spec === 'assault' ? ' and your best die gets +1' : '') + '. Win and it recovers 2 salvage. It must already have landed: a team still in the air is not in the battle.</span></div>' +
+    '<div class="ritem"><b>3 · Defense: hold your own ground</b><span>In one of your territories it adds ' + L.teamN(S) + ' defenders and can Ambush an incoming war party, destroying 1 or 2 before it arrives.</span></div>' +
+    '<div class="ritem"><b>Readiness</b><span>Four pips. Failures cost 1 or 2. At zero the team cannot act. It recovers by resting in your own territory.</span></div></div>';
+  if (enemy) { h += '<h4>Right now in ' + TERR[at].name + '</h4><p class="lead">Sabotage</p>' + why(L.sabWhy(S, at), L.sabOdds(S, at)); if (ldr) h += '<p class="lead">Covert strike on ' + ldr.name + '</p>' + why(L.covertWhy(S, ldr), L.covertOdds(S, ldr));
+    h += '<p class="note">To raise these: wait out the alert, thin the garrison with missiles or bombers first, build Radar nearby, or research Ghost Suits.</p>'; }
+  showModal(h + '<div class="row">' + btn('closeModal', 'Got it', { cls: 'gold big' }) + '</div>', 'intel'); }
+let dayRep = null;
+function dayModal() { if (!dayRep || !S || S.over) return; if (modal) { setTimeout(dayModal, 700); return; } const d = dayRep; dayRep = null; SFX.play('good');
+  const R = (cls, t, body) => '<div class="ritem ' + cls + '"><b>' + t + '</b><span>' + body + '</span></div>', names = a => a.map(id => TERR[id].name).join(', ');
+  let h = '<div class="mhead"><small>Midnight · the clock is paused</small><h1>Day ' + d.day + ' report</h1></div><div class="rlist">';
+  h += R('good', '❖ ' + d.orders + ' Orders to spend today', (d.kept ? d.kept + ' unused carried over from yesterday. ' : '') + 'Attack costs 2, most other actions cost 1.');
+  h += R('good', 'Income collected', '<span class="gain">+' + d.inc.metal + ' metal</span> <span class="gain">+' + d.inc.fuel + ' fuel</span> <span class="gain">+' + d.inc.research + ' research</span>' + (d.intel > 0 ? ' <span class="gain">+' + d.intel + ' intel</span>' : '') + (d.uranium > 0 ? ' <span class="gain">+' + d.uranium + ' uranium</span>' : '') + '<br>You now have ' + Math.floor(S.res.metal) + ' metal, ' + Math.floor(S.res.fuel) + ' fuel, ' + Math.floor(S.res.research) + ' research.');
+  h += R('good', '+' + d.pool + ' new troop' + (d.pool === 1 ? '' : 's') + ' in reserve', d.poolNow + ' waiting in reserve. They are not on the map yet: tap one of your strongholds (✦) and press Reinforce to place them. Free.' + (d.bar.length ? '<br>Barracks trained ' + d.bar.map(b => '+' + b.n + ' in ' + TERR[b.id].name).join(', ') + ', already in place.' : ''));
+  if (d.built.length) h += R('good', 'Construction finished', d.built.map(b => BUILD[b.k].name + ' in ' + TERR[b.id].name).join(', ') + '.');
+  if (d.won.length) h += R('good', 'Liberated yesterday', names(d.won) + '.');
+  if (d.lost.length) h += R('bad', 'Lost yesterday', names(d.lost) + '.');
+  h += R('bad', 'The enemy', 'Harvest +' + d.harvest.toFixed(1) + '%, now ' + Math.floor(d.harvestNow) + '%. At 100% you lose. Their total strength is ' + d.enemy + (d.enemy !== d.enemyWas ? ' (' + (d.enemy > d.enemyWas ? '+' : '') + (d.enemy - d.enemyWas) + ' since yesterday).' : ', unchanged.'));
+  showModal(h + '</div><div class="row">' + btn('dayGo', 'Start day ' + d.day, { cls: 'gold big', sub: 'Resumes the clock' }) + '</div>', 'intel'); }
 function defendModal() { const p = S && S.pending; if (!p || modal) return; const su = L.defenseSetup(S, p), ex = [su.fort && 'fortress wall', su.battery && (su.railgun ? '3 railgun strikes' : '2 missile strikes'), su.radar && 'radar (longer range)', su.team && 'your strike team'].filter(Boolean);
   SFX.play('alert'); selId = su.to; V.focus(su.to);
   showModal('<div class="mhead"><small>War party arriving from ' + TERR[p.from].name + '</small><h1>Defend ' + su.name + '</h1></div><p class="lead"><b>' + su.A + '</b> attackers against <b>' + su.D + '</b> defenders' + (ex.length ? ', with ' + ex.join(', ') : '') + '.' + (su.aB ? ' They are veterans and hit harder.' : '') + '</p><div class="row">' + btn('defAuto', 'Auto-resolve', { sub: 'Settle it with dice' }) + btn('defGo', 'Command the defense', { cls: 'gold big', sub: 'About a minute' }) + '</div>', 'defend'); }
@@ -372,6 +396,8 @@ function act(a, id) { if (!S && a !== 'start' && a !== 'diff' && a !== 'doc') re
     case 'tutSkip': S.tut = 9; break;
     case 'help': helpModal(); return;
     case 'newAsk': showModal('<div class="mhead"><small>Day ' + L.day(S) + '</small><h1>Start over?</h1></div><p class="lead">This ends the current war and sets up a fresh one. It cannot be undone.</p><div class="row">' + btn('closeModal', 'Keep playing') + btn('new', 'New game', { cls: 'gold big' }) + '</div>', 'confirm'); return;
+    case 'teamHelp': teamHelp(); return;
+    case 'dayGo': closeModal(); setSpeed(1); break;
     case 'cmd': S.cmd = !S.cmd; break;
     case 'mute': SFX.muted = !SFX.muted; { const b = document.querySelector('[data-a="mute"]'); if (b) b.textContent = SFX.muted ? '🔇' : '🔊'; } return;
     case 'buildGo': { const q = id.split(':'), ok = report(L.build(S, q[0], q[1])); if (ok) { SFX.play('build'); if (S.tut === 2) S.tut = 3; } if (S.mob && selId === q[0]) { renderAll(true); buildMenu(); return; } closeModal(); break; }
@@ -409,7 +435,8 @@ function drain() { if (!S) return; const ev = S.ev.splice(0); for (const e of ev
     else if (e.k === 'defend') setTimeout(defendModal, 50);
     else if (e.k === 'colStop') setTimeout(colModal, 60);
     else if (e.k === 'report') { reports.push(e); setTimeout(reportModal, 250); }
-    else if (e.k === 'arrive') { selId = e.id; tab = 'territory'; toast('Strike team has arrived in ' + TERR[e.id].name + '.', 'info'); }
+    else if (e.k === 'arrive') { selId = e.id; tab = 'territory'; V.focus(e.id); toast(S.terr[e.id].owner === 'enemy' ? 'Strike team has landed in ' + TERR[e.id].name + ', undetected. It has not fought yet: choose Sabotage or a strike on the leader.' : 'Strike team has arrived in ' + TERR[e.id].name + ' and joins its defense.', 'info'); }
+    else if (e.k === 'day') { dayRep = e; setTimeout(dayModal, 300); }
     else if (e.k === 'intel' && !asl) { const i = e.i; setTimeout(() => { if (!modal && !S.over) showModal('<div class="mhead"><small>Intel recovered · fragment ' + (i + 1) + ' of ' + INTEL.length + '</small><h1>Intelligence brief</h1></div><p class="lead quote">' + esc(INTEL[i]) + '</p><p class="note">Recovered from the dead leader\'s command post. +3 intel, which pays for covert strikes and sabotage.</p><div class="row">' + btn('closeModal', 'Continue', { cls: 'gold big' }) + '</div>', 'intelm'); }, 300); }
     else if (e.k === 'over') setTimeout(overModal, 600); } }
 function renderAll(force) { if (!S) return; renderTop(); renderPanel(force); actionBar(); coach(); V.sync(S, selId); }

@@ -163,3 +163,7 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 
 .flankline{display:flex;gap:10px;align-items:baseline;margin:8px 0;padding:8px 12px;border-radius:9px;border:1px solid #ffffff1c;background:#ffffff08;font-size:13.5px;line-height:1.4}.flankline b{white-space:nowrap;opacity:.75}.flankline.on{border-color:#e8be6099;background:#e8be6018}.flankline.on b{color:var(--gold);opacity:1}
 .suph{margin:10px 0 6px}.tactics.two{grid-template-columns:1fr 1fr}
+
+.ritem .gain{display:inline-block;margin:0 6px 4px 0;padding:2px 8px;border-radius:999px;background:#46d6d022;border:1px solid #46d6d055;font-weight:600}
+
+.why{display:grid;gap:2px;margin:4px 0 12px;font-size:13.5px}.why>div{display:flex;justify-content:space-between;gap:12px;padding:4px 10px;border-radius:6px;background:#ffffff08}.why .neg{color:#ff8a70}.why .pos{color:#7fe3c4}.why .tot{background:#e8be6022;border:1px solid #e8be6066;font-weight:700}.why .tot b{color:var(--gold)}
