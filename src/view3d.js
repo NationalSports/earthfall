@@ -237,12 +237,17 @@ const V = (() => {
       if (mode === 'globe') { const k = (gl.dist - GR) * 0.0029 * (700 / Math.max(300, el.clientHeight)); gl.lon -= dx * k; gl.lat = clamp(gl.lat + dy * k, -75, 80); return; }
       if (down && (down.btn === 2 || e.shiftKey)) { cam.yaw -= dx * 0.005; cam.pitch = clamp(cam.pitch + dy * 0.004, 0.45, 1.45); return; }
       const k = cam.dist * 0.00105 * (900 / Math.max(300, el.clientHeight)), c = Math.cos(cam.yaw), s = Math.sin(cam.yaw); cam.tx -= (dx * c + dy * s) * k; cam.tz -= (-dx * s + dy * c) * k; });
-    let lastPick = 0; const up = e => { pts.delete(e.pointerId); pinch = 0; if (moved < 8 && down && down.btn !== 2) { lastPick = performance.now(); pickAt(e.clientX, e.clientY); } down = null; };
+    let lastPick = 0, tapT = 0, tapX = 0, tapY = 0; const up = e => { pts.delete(e.pointerId); pinch = 0; if (moved < 8 && down && down.btn !== 2) { const now = e.timeStamp; lastPick = performance.now();
+      // Second tap on the same spot within a third of a second: zoom in 40% toward it. At full zoom it steps back out.
+      if (now - tapT < 380 && Math.hypot(e.clientX - tapX, e.clientY - tapY) < 34) { tapT = 0; dblZoom(e.clientX, e.clientY); } else { tapT = now; tapX = e.clientX; tapY = e.clientY; pickAt(e.clientX, e.clientY); } } down = null; };
     dom.addEventListener('click', e => { if (performance.now() - lastPick > 400 && moved < 8) { lastPick = performance.now(); pickAt(e.clientX, e.clientY); } });
     dom.addEventListener('pointerup', up); dom.addEventListener('pointercancel', e => { pts.delete(e.pointerId); pinch = 0; });
     dom.addEventListener('wheel', e => { e.preventDefault(); const f = e.deltaY > 0 ? 1.07 : 0.935; if (mode === 'globe') gl.dist = clamp(gl.dist * f, 40, 150); else cam.dist = clamp(cam.dist * f, 34, 190); }, { passive: false }); dom.addEventListener('contextmenu', e => e.preventDefault()); }
   const ray = new THREE.Raycaster(), plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.5);
   const gsph = new THREE.Sphere(new THREE.Vector3(), GR);
+  function dblZoom(cx, cy) { const r = renderer.domElement.getBoundingClientRect(); ray.setFromCamera({ x: (cx - r.left) / r.width * 2 - 1, y: -(cy - r.top) / r.height * 2 + 1 }, camera); const h = new THREE.Vector3();
+    if (mode === 'globe') { if (gl.dist <= 44) { gl.dist = 90; return; } if (ray.ray.intersectSphere(gsph, h)) { const lat = Math.asin(clamp(h.y / GR, -1, 1)) * 57.2958; let lon = Math.atan2(h.z, -h.x) * 57.2958 - 180; if (lon < -180) lon += 360; const dl = ((lon - gl.lon) % 360 + 540) % 360 - 180; gl.lon += dl * 0.7; gl.lat = clamp(gl.lat + (lat - gl.lat) * 0.7, -75, 80); } gl.dist = clamp(gl.dist * 0.6, 40, 150); return; }
+    if (cam.dist <= 37) { cam.dist = 80; return; } plane.constant = -0.5; if (ray.ray.intersectPlane(plane, h)) { cam.tx += (h.x - cam.tx) * 0.7; cam.tz += (h.z - cam.tz) * 0.7; } cam.dist = clamp(cam.dist * 0.6, 34, 190); }
   function pickAt(cx, cy) { const r = renderer.domElement.getBoundingClientRect(); ray.setFromCamera({ x: (cx - r.left) / r.width * 2 - 1, y: -(cy - r.top) / r.height * 2 + 1 }, camera);
     if (mode === 'globe') { const h = new THREE.Vector3(); if (!ray.ray.intersectSphere(gsph, h)) return onPick(null); const lat = Math.asin(clamp(h.y / GR, -1, 1)) * 57.2958; let lon = Math.atan2(h.z, -h.x) * 57.2958 - 180; if (lon < -180) lon += 360;
       const X = clamp(Math.floor((lon + 180) / 360 * GWp), 0, GWp - 1), Y = clamp(Math.floor((90 - lat) / 180 * GHp), 0, GHp - 1), i = Y * GWp + X; if (landG[i]) return onPick(TIDS[idxG[i]]);

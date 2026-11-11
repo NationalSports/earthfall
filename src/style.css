@@ -92,3 +92,4 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 
 /* keep sub-text on gold buttons readable over their illustration */
 .btn.gold>small{color:#2a1c08;font-weight:600;text-shadow:0 1px 0 #ffe9b866}
+#view canvas,canvas{touch-action:none}
