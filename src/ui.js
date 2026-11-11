@@ -178,7 +178,7 @@ function helpModal() { const li = (t, d) => '<div class="obj"><span>' + t + '</s
     li('▶', '<b>Time</b><small>The clock runs only while ▶ is on. One hour takes about 5 seconds (a day in 2 minutes), or 1 second on ▶▶. It pauses itself when a war party is spotted or a city is attacked. The swarm grows and attacks as time passes.</small>') +
     li('◆', '<b>Strike team</b><small>Send it into enemy land to sabotage or to kill leaders. Each Warlord you kill weakens the Overlord.</small>') +
     li('⌕', '<b>Look closer</b><small>Double tap or pinch to zoom into a city and see what is built there.</small>') +
-    '</div><div class="row">' + btn('closeModal', 'Got it', { cls: 'gold big' }) + '</div>', 'intel'); }
+    '</div><div class="row">' + btn('newAsk', 'Start a new game') + btn('closeModal', 'Got it', { cls: 'gold big' }) + '</div>', 'intel'); }
 
 // ---------- Sound ----------
 // Small synthesized effects, no audio files. Starts on the first tap, as browsers require.
@@ -253,6 +253,7 @@ function act(a, id) { if (!S && a !== 'start' && a !== 'diff') return;
     case 'desel': selId = null; break;
     case 'tutSkip': S.tut = 9; break;
     case 'help': helpModal(); return;
+    case 'newAsk': showModal('<div class="mhead"><small>Day ' + L.day(S) + '</small><h1>Start over?</h1></div><p class="lead">This ends the current war and sets up a fresh one. It cannot be undone.</p><div class="row">' + btn('closeModal', 'Keep playing') + btn('new', 'New game', { cls: 'gold big' }) + '</div>', 'confirm'); return;
     case 'cmd': S.cmd = !S.cmd; break;
     case 'mute': SFX.muted = !SFX.muted; { const b = document.querySelector('[data-a="mute"]'); if (b) b.textContent = SFX.muted ? '🔇' : '🔊'; } return;
     case 'buildGo': { closeModal(); const q = id.split(':'); if (report(L.build(S, q[0], q[1]))) { SFX.play('build'); if (S.tut === 2) S.tut = 3; } break; }
