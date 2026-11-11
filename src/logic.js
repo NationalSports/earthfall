@@ -345,9 +345,9 @@ L.reinforce = (S, id) => { const T = S.terr[id]; if (T.owner !== 'you') return f
 // Anything farther, or cut off, goes by airlift: a handful of troops, fuel, and the transports need time to turn around.
 L.reachable = (S, from) => { const seen = { [from]: 1 }, q = [from]; while (q.length) for (const x of L.playerNeighbors(S, q.shift())) if (!seen[x]) { seen[x] = 1; q.push(x); } delete seen[from]; return Object.keys(seen); };
 L.move = (S, from, to, n) => { const A = S.terr[from], B2 = S.terr[to]; if (!A || !B2 || A.owner !== 'you' || B2.owner !== 'you' || from === to) return fail('Pick two of your own territories.');
-  if (L.hops(S, from, to) > 3) return fail('Too far to march. Use an airlift.'); if (L.movesLeft(S) < 1) return fail('No marches left today.'); n = Math.min(n, A.n - 1); if (n < 1) return fail('One troop must stay behind.');
+  if (L.marchHops(S, from, to) > 3) return fail('Too far to march. Use an airlift.'); if (L.movesLeft(S) < 1) return fail('No marches left today.'); n = Math.min(n, A.n - 1); if (n < 1) return fail('One troop must stay behind.');
   A.n -= n; B2.n += n; S.moves = (S.moves || 0) + 1; L.log(S, n + ' troops moved from ' + TERR[from].name + ' to ' + TERR[to].name + '.', 'info'); return { ok: true }; };
-L.hops = (S, from, to) => { const d = { [from]: 0 }, q = [from]; while (q.length) { const x = q.shift(); if (x === to) return d[x]; for (const y of L.playerNeighbors(S, x)) if (d[y] === undefined) { d[y] = d[x] + 1; q.push(y); } } return Infinity; };
+L.marchHops = (S, from, to) => { const d = { [from]: 0 }, q = [from]; while (q.length) { const x = q.shift(); if (x === to) return d[x]; for (const y of L.playerNeighbors(S, x)) if (d[y] === undefined) { d[y] = d[x] + 1; q.push(y); } } return Infinity; };
 L.movesMax = S => S.up.transport ? 5 : 3; L.movesLeft = S => L.movesMax(S) - (S.moves || 0); L.airMax = S => S.up.transport ? 5 : 3;
 L.airMove = (S, from, to, n) => { const A = S.terr[from], B2 = S.terr[to]; if (!A || !B2 || A.owner !== 'you' || B2.owner !== 'you' || from === to) return fail('Pick two of your own territories.');
   if ((S.airT || 0) > S.t) return fail('Transports are refueling, ' + (S.airT - S.t) + 'h left.'); if (S.res.fuel < 15) return fail('Not enough fuel (15).'); n = Math.min(n, A.n - 1, L.airMax(S)); if (n < 1) return fail('One troop must stay behind.');
