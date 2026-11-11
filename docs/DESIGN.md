@@ -87,8 +87,20 @@ A simple test bot that never uses the strike team, cards or defense battles wins
 
 Planned: orbital interceptor (shoots down one war party per week), naval landing for assaults without a land border, shield dome (blocks one breakout).
 
-## Time (Built)
-A running clock, slow: one game hour takes about 5 seconds (a day in 2 minutes), or 1 second on fast. It runs only while play is on, and pauses itself when a war party is spotted, a city is attacked or lost, the strike team arrives, or a warhead is ready.
+## Time: the war room (Built)
+A running clock, slow: one game hour takes about 5 seconds (a day in 2 minutes), or 1 second on fast. It pauses itself when a war party is spotted, a city is attacked or lost, a column's destination falls, the strike team arrives, or a warhead is ready.
+
+You give orders instantly; most of them take time to carry out, and you watch them happen on the map.
+
+| Action | Time |
+| --- | --- |
+| March | 6 hours per territory (4 with Rapid Transport), up to 3 territories |
+| Airlift | 3 hours, anywhere, up to 3 troops |
+| Attack | Instant: the troops are already on the border |
+| Any building or upgrade | 24 hours (16 for the Engineer), one job per city |
+| Reinforce | Instant and free, at strongholds only: reserves muster there and march out |
+
+Troops on the road defend nothing. If their destination falls first, the clock pauses and you choose: return, or divert to one of your territories beside either end. A build in progress is lost if the city falls.
 
 ## Orders (Built)
 One daily budget that every action draws on. You get 6 at midnight; unused Orders carry over, up to 3 above the daily amount. A Command Post (strongholds only) adds +1 a day each. The Double Time card adds 2 on the spot.
@@ -99,10 +111,6 @@ One daily budget that every action draws on. You get 6 at midnight; unused Order
 | Airlift | 2 |
 | March, build or upgrade, missile salvo, bomber raid, send the strike team, sabotage, covert strike | 1 |
 | Reinforce from reserve, play a card, defend | Free |
-
-## Moving troops (Built)
-- **March:** tap source, tap destination. Instant, up to 3 territories away through your own land. One troop always stays behind.
-- **Airlift:** for anything farther or cut off. Up to 3 troops (5 with Rapid Transport), 15 fuel, then 12 hours to refuel.
 
 ## Who fights in an attack (Built)
 The spare troops in your territories bordering the target (each keeps one behind). Your reserve is for reinforcing, except when you have no land border: then the reserve lands from the sea and the defenders roll +1. **Flank** is free but positional: it needs spare troops in two bordering territories. Missile and air support cost resources.

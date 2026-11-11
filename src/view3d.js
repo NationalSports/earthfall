@@ -143,6 +143,10 @@ const V = (() => {
       { const e = c.at(1), e0 = c.at(0.93), ah = new THREE.Mesh(G.cone, M.arc); ah.position.copy(e); ah.quaternion.setFromUnitVectors(UP, e.clone().sub(e0).normalize()); ah.scale.set(2.2, 1.1, 2.2); arcs.add(ah); }
       const head = piece('swarm', 0, 0, 2.2); head.userData = { party: p, curve: c }; arcs.add(head);
       const d = document.createElement('div'); d.className = 'plabel'; labelsEl.appendChild(d); d._p = p; d._head = head; partyLabels.push(d); }
+    // Your own columns: a thin teal route and a marching piece (a transport for airlifts).
+    for (const p of S.cols || []) { const c = curveFor(p.from, p.to); for (const s of c.segs) { const t = new THREE.Mesh(new THREE.TubeGeometry(s, 24, 0.07, 5), M.arcTeam); t.userData.own = 1; arcs.add(t); }
+      const head = piece(p.air && pieceImgs.tiltrotor ? 'tiltrotor' : 'infantry', 0, 0, 1.9); head.userData = { party: p, curve: c }; arcs.add(head);
+      const d = document.createElement('div'); d.className = 'plabel you'; labelsEl.appendChild(d); d._p = p; d._head = head; partyLabels.push(d); }
     const tm = S.team; if (tm.dest) { const c = curveFor(tm.from, tm.dest); for (const s of c.segs) { const t = new THREE.Mesh(new THREE.TubeGeometry(s, 24, 0.05, 5), M.arcTeam); t.userData.own = 1; arcs.add(t); } teamTok.userData.curve = c; } else teamTok.userData.curve = null; }
 
   function init(container, pick, art) { el = container; onPick = pick;
@@ -181,7 +185,7 @@ const V = (() => {
     sun.shadow.mapSize.set(2048, 2048); sun.shadow.mapSize.set(4096, 4096); const sc = sun.shadow.camera; sc.left = -72; sc.right = 72; sc.top = 48; sc.bottom = -48; sc.far = 220; sun.shadow.bias = -0.0008; sun.shadow.normalBias = 0.06; scene.add(sun);
     tokens = new THREE.Group(); arcs = new THREE.Group(); fxGroup = new THREE.Group(); scene.add(tokens, arcs, fxGroup); buildLinks();
     teamTok = new THREE.Group(); const tc = piece('tiltrotor', 0, 0, 2.3); const tr = mesh(G.ring, M.team, 0, 0.5, 0, 0.9); tr.rotation.x = Math.PI / 2; teamTok.add(tc, tr); scene.add(teamTok);
-    for (const id of TIDS) { const d = document.createElement('div'); d.className = 'tlabel'; d.innerHTML = '<span class="tn"></span><b></b><i></i>'; labelsEl.appendChild(d); labels[id] = d; }
+    for (const id of TIDS) { const d = document.createElement('div'); d.className = 'tlabel' + (L.isStrong(id) ? ' strong' : ''); d.innerHTML = '<span class="tn"></span><b></b><i></i>'; labelsEl.appendChild(d); labels[id] = d; }
     buildBoardBorders();
     boardRoot = new THREE.Group(); for (const c of scene.children.slice()) if (c !== tokens && c !== arcs && c !== fxGroup && c !== teamTok && !c.isLight) boardRoot.add(c); worldRoot = new THREE.Group(); worldRoot.add(boardRoot, tokens, arcs, fxGroup, teamTok); scene.add(worldRoot); renderer.autoClear = false;
     controls(); resize(); window.addEventListener('resize', resize);
@@ -302,7 +306,7 @@ const V = (() => {
       cityCells(th, (x, z, d) => { if (!keep(x, z) || d < 0.3 || r() < (T.owner === 'you' ? 0.14 : 0.45)) return; const core = Math.max(0, 1 - d / 1.9), tall = (0.16 + r() * 0.3 + core * core * (0.5 + r() * 1.1)) * (T.owner === 'you' ? 1 : 0.5), w = CELL * (0.5 + r() * 0.22), b = new THREE.Mesh(bg, mats[Math.floor(r() * 3)]);
         b.scale.set(w, tall, CELL * (0.5 + r() * 0.22)); b.position.set(x, 0.14 + tall / 2, z); b.rotation.y = -th; if (T.owner === 'enemy') b.rotation.z = (r() - 0.5) * 0.25; g.add(b); }); }
     if (T.owner === 'you') { const PAD = { fort: ['FORT', 'barricade', 1.25], radar: ['RADAR', 'radar-dish', 1.35], battery: ['BATTERY', S.up.railgun ? 'railgun' : 'launcher', 1.3], works: ['INDUSTRY', { metal: 'foundry', fuel: 'missile-truck', research: 'drone-bay' }[TERR[id].res] || 'foundry', 1.0], barracks: ['BARRACKS', 'shield-dome', 0.9] }, LV = { works: L.maxLevel(id, 'works'), barracks: L.maxLevel(id, 'barracks'), fort: L.maxLevel(id, 'fort') };
-      for (const k in pads) { const lv = T[k] || 0, built = LV[k] > 1 ? lv >= LV[k] : !!lv, q = pads[k], m = new THREE.Mesh(new THREE.CircleGeometry(0.62, 32), new THREE.MeshBasicMaterial({ map: padMark(PAD[k][0] + (LV[k] > 1 && lv ? ' ' + (lv + 1) : ''), built), transparent: true, depthWrite: false, toneMapped: false })); m.rotation.x = -Math.PI / 2; m.position.set(q[0], 0.17, q[1]); m.renderOrder = 5; g.add(m); if (lv) put(PAD[k][1], q[0] + (built ? 0 : -0.2), q[1] + (built ? 0.1 : -0.45), PAD[k][2] + (LV[k] > 1 ? Math.min(lv, 4) * 0.22 : 0)); cityPads.push({ key: k, x: q[0], z: q[1], built }); }
+      for (const k in pads) { const lv = T[k] || 0, built = LV[k] > 1 ? lv >= LV[k] : !!lv, q = pads[k], m = new THREE.Mesh(new THREE.CircleGeometry(0.62, 32), new THREE.MeshBasicMaterial({ map: padMark(PAD[k][0] + (LV[k] > 1 && lv ? ' ' + (lv + 1) : ''), built), transparent: true, depthWrite: false, toneMapped: false })); m.rotation.x = -Math.PI / 2; m.position.set(q[0], 0.17, q[1]); m.renderOrder = 5; g.add(m); if (T.job && T.job.key === k) put('barricade', q[0] + 0.35, q[1] + 0.3, 0.55); if (lv) put(PAD[k][1], q[0] + (built ? 0 : -0.2), q[1] + (built ? 0.1 : -0.45), PAD[k][2] + (LV[k] > 1 ? Math.min(lv, 4) * 0.22 : 0)); cityPads.push({ key: k, x: q[0], z: q[1], built }); }
       if (T.fort) { const wm = new THREE.MeshStandardMaterial({ color: 0x161d28, roughness: 0.7, metalness: 0.3, emissive: 0x0a2c33, emissiveIntensity: 0.5 }), R = CITY_R - 0.05, n = 16;
         for (let i = 0; i < n; i++) { const a = i / n * 6.283, a2 = (i + 0.5) / n * 6.283, tw = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 0.42, 8), wm); tw.scale.y = 1 + (T.fort - 1) * 0.6; tw.position.set(Math.cos(a) * R, 0.12 + 0.21 * tw.scale.y, Math.sin(a) * R); g.add(tw);
           if (i === 4) continue; const seg = new THREE.Mesh(new THREE.BoxGeometry(2 * R * Math.sin(Math.PI / n) - 0.12, 0.24, 0.07), wm); seg.scale.y = 1 + (T.fort - 1) * 0.6; seg.position.set(Math.cos(a2) * R, 0.13 + 0.12 * seg.scale.y, Math.sin(a2) * R); seg.rotation.y = -a2 + Math.PI / 2; g.add(seg); } }
@@ -318,7 +322,7 @@ const V = (() => {
   function cityFrame(dt) { cam.dist = Math.max(cam.dist, zmin()); const raw = mode === 'globe' || !S0 ? 0 : clamp((zmin() + 15 - camS.dist) / 11, 0, 1), f = raw * raw * (3 - 2 * raw); cityF = f; if (f <= 0) { if (cityGrp) cityGrp.visible = false; return null; }
     let best = null, bd = 6.5; for (const id of TIDS) { const p = P(id), dx = ((p.x - camS.tx) % BW + BW * 1.5) % BW - BW / 2, d = Math.hypot(dx, p.z - camS.tz - 1); if (d < bd) { bd = d; best = id; } }
     if (!best) { if (cityGrp) cityGrp.visible = false; return null; }
-    const T = S0.terr[best], sg = sigTok + T.n + (L.teamAt(S0) === best) + (T.works || 0) + (T.barracks || 0) + (T.fort || 0); if (best !== cityId || citySig !== sg) { buildCity(S0, best); citySig = sg; }
+    const T = S0.terr[best], sg = sigTok + T.n + (L.teamAt(S0) === best) + (T.works || 0) + (T.barracks || 0) + (T.fort || 0) + (T.job ? T.job.key : ''); if (best !== cityId || citySig !== sg) { buildCity(S0, best); citySig = sg; }
     cityGrp.visible = true; cityGrp.scale.set(0.3 + 0.7 * f, Math.max(0.02, f), 0.3 + 0.7 * f); if (cityGrp.userData.halo) cityGrp.userData.halo.material.opacity = f;
     if (f > 0.75) { const p = P(best), dx = ((p.x - cam.tx) % BW + BW * 1.5) % BW - BW / 2, dz = p.z - 0.4 - cam.tz; if (Math.hypot(dx, dz) < 2.6) { cam.tx += dx * Math.min(1, dt * 1.6); cam.tz += dz * Math.min(1, dt * 1.6); } } // settle on the city once you are in it
     return f > 0.03 ? best : null; }
@@ -327,9 +331,9 @@ const V = (() => {
     const st = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (S.obs[id] ? 1 : 0); }).join('') + sel; if (mode === 'globe') { if (st !== sigTexG) { sigTexG = st; paintGlobe(S); colorBorders(bordG, S); } } else if (st !== sigTex) { sigTex = st; paint(S); colorBorders(bordB, S); }
     const sk = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (T.owner === 'you' ? (T.n >= 7 ? 3 : T.n >= 4 ? 2 : 1) : (S.obs[id] ? T.n : 'u' + T.seenN)) + (T.fort | 0) + (T.radar | 0) + (T.battery | 0); }).join('') + [S.nuke.building, S.nuke.stage, S.nuke.ready, S.emp.building, S.emp.n, S.up.bombers, S.up.railgun].map(x => +!!x).join('') + S.leaders.map(l => l.alive && L.leaderKnown(S, l) ? l.at + l.rank[0] : '-').join('');
     if (sk !== sigTok) { sigTok = sk; buildTokens(S); }
-    const sa = S.parties.map(p => p.id + (L.partyVisible(S, p) ? 'v' : 'h')).join(',') + '|' + (S.team.dest || ''); if (sa !== sync.sa) { sync.sa = sa; buildArcs(S); }
+    const sa = S.parties.map(p => p.id + (L.partyVisible(S, p) ? 'v' : 'h')).join(',') + '|' + (S.team.dest || '') + '|' + (S.cols || []).map(c => c.id).join(','); if (sa !== sync.sa) { sync.sa = sa; buildArcs(S); }
     const threat = {}; for (const p of S.parties) if (L.partyVisible(S, p)) threat[p.to] = 1;
-    for (const id of TIDS) { const T = S.terr[id], d = labels[id], known = S.obs[id]; d.className = 'tlabel ' + T.owner + (id === sel ? ' sel' : '') + (threat[id] ? ' threat' : '') + (id === HQ ? ' hq' : '');
+    for (const id of TIDS) { const T = S.terr[id], d = labels[id], known = S.obs[id]; d.className = 'tlabel ' + T.owner + (id === sel ? ' sel' : '') + (threat[id] ? ' threat' : '') + (id === HQ ? ' hq' : '') + (L.isStrong(id) ? ' strong' : '');
       d.children[0].textContent = TERR[id].name; d.children[1].textContent = T.owner === 'waste' ? '☢' : T.owner === 'enemy' ? (known ? L.enemyDefense(S, id) : '?') : T.n;
       const ls = S.leaders.filter(l => l.alive && l.at === id && L.leaderKnown(S, l)); d.children[2].textContent = ls.map(l => l.rank === 'overlord' ? '♛' : l.rank === 'warlord' ? '★' : '▲').join(''); } }
   const v3 = new THREE.Vector3();

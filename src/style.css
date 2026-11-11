@@ -122,3 +122,6 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 @media (prefers-reduced-motion:reduce){.u.fire,.tracer{animation:none}}
 
 .chip.orders b{color:var(--gold)}.yield{margin:8px 0}.yield h4{margin:0 0 6px}.yield .stats b{font-size:17px}.yield .stats label{text-transform:capitalize}
+
+.plabel.you{background:#14606a;border-color:#6fe0da}.labels .tlabel.strong .tn::before{content:'✦ ';color:var(--gold)}
+#coach.show .helpb{padding:4px 9px;border-radius:50%}.note.job{color:var(--gold)}
