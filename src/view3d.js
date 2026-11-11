@@ -5,7 +5,7 @@ const V = (() => {
   const px = lon => (lon + 180) / 360 * RW, py = lat => fy(lat) * RH;
   const wx = lon => (lon + 180) / 360 * BW - BW / 2, wz = lat => fy(lat) * BH - BH / 2, AW = 1920, AH = 1080;
   const curve = (x, z) => -(z * z) / 1500; let worldRoot = null;
-  let bd, cd, landF; let renderer, scene, camera, el, labelsEl, tex, texCtx, img, idx, landA, heights, boardMesh, hp, shade, texE, ctxE, imgE, trees, treeT = [], seaTex, clouds = [], glowTex;
+  let bd, cd, landF, idx2, idx2G; let renderer, scene, camera, el, labelsEl, tex, texCtx, img, idx, landA, heights, boardMesh, hp, shade, texE, ctxE, imgE, trees, treeT = [], seaTex, clouds = [], glowTex;
   let tokens, arcs, fxGroup, labels = {}, partyLabels = [], sigTok = '', sigTex = '', sel = null, onPick = () => {};
   const cam = { tx: 20, tz: 0, dist: 70, yaw: 0, pitch: 1.02 };
   const fx = []; let teamTok, time = 0, S0 = null, artData = null, INF = null;
@@ -24,14 +24,14 @@ const V = (() => {
 
   function buildRaster(maskImg) {
     const c = document.createElement('canvas'); c.width = RW; c.height = RH; const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.drawImage(maskImg, 0, 0, RW, RH);
-    const d = g.getImageData(0, 0, RW, RH).data; landA = new Uint8Array(RW * RH); idx = new Int8Array(RW * RH); bd = new Float32Array(RW * RH);
+    const d = g.getImageData(0, 0, RW, RH).data; landA = new Uint8Array(RW * RH); idx = new Int8Array(RW * RH); idx2 = new Int8Array(RW * RH); bd = new Float32Array(RW * RH);
     const an = TIDS.map(id => [TERR[id].ax / AW * RW, TERR[id].ay / AH * RH]);
     { const N = RW * RH, din = new Float32Array(N), dout = new Float32Array(N), ch = D => { for (let y = 1; y < RH; y++) for (let x = 1; x < RW - 1; x++) { const i = y * RW + x; if (D[i]) D[i] = Math.min(D[i], D[i - 1] + 1, D[i - RW] + 1, D[i - RW - 1] + 1.414, D[i - RW + 1] + 1.414); } for (let y = RH - 2; y >= 0; y--) for (let x = RW - 2; x > 0; x--) { const i = y * RW + x; if (D[i]) D[i] = Math.min(D[i], D[i + 1] + 1, D[i + RW] + 1, D[i + RW + 1] + 1.414, D[i + RW - 1] + 1.414); } };
       for (let i = 0; i < N; i++) { const m = d[i * 4] > 100; din[i] = m ? 99 : 0; dout[i] = m ? 0 : 99; } ch(din); ch(dout);
       for (let i = 0; i < N; i++) { const o = i * 4, col = artData[o] > artData[o + 2] * 1.04; landA[i] = (din[i] > 7 || (col && dout[i] < 12)) ? 1 : 0; }
       landF = new Float32Array(N); for (let y = 2; y < RH - 2; y++) for (let x = 2; x < RW - 2; x++) { const i = y * RW + x; let sm = 0; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) sm += landA[i + dy * RW + dx]; landF[i] = sm / 25; } }
-    for (let y = 0; y < RH; y++) for (let x = 0; x < RW; x++) { const i = y * RW + x; let best = 1e12, sec = 1e12, bi = 0;
-      for (let k = 0; k < an.length; k++) { const dx = x - an[k][0], dy = y - an[k][1], q = dx * dx + dy * dy; if (q < best) { sec = best; best = q; bi = k; } else if (q < sec) sec = q; } idx[i] = bi; bd[i] = (Math.sqrt(sec) - Math.sqrt(best)) * 0.5; }
+    for (let y = 0; y < RH; y++) for (let x = 0; x < RW; x++) { const i = y * RW + x; let best = 1e12, sec = 1e12, bi = 0, si2 = 0;
+      for (let k = 0; k < an.length; k++) { const dx = x - an[k][0], dy = y - an[k][1], q = dx * dx + dy * dy; if (q < best) { sec = best; si2 = bi; best = q; bi = k; } else if (q < sec) { sec = q; si2 = k; } } idx[i] = bi; idx2[i] = si2; bd[i] = (Math.sqrt(sec) - Math.sqrt(best)) * 0.5; }
     cd = new Float32Array(RW * RH); for (let i = 0; i < RW * RH; i++) cd[i] = landA[i] ? 99 : 0;
     for (let y = 1; y < RH; y++) for (let x = 1; x < RW - 1; x++) { const i = y * RW + x; if (cd[i]) cd[i] = Math.min(cd[i], cd[i - 1] + 1, cd[i - RW] + 1, cd[i - RW - 1] + 1.414, cd[i - RW + 1] + 1.414); }
     for (let y = RH - 2; y >= 0; y--) for (let x = RW - 2; x > 0; x--) { const i = y * RW + x; if (cd[i]) cd[i] = Math.min(cd[i], cd[i + 1] + 1, cd[i + RW] + 1, cd[i + RW + 1] + 1.414, cd[i + RW - 1] + 1.414); }
@@ -68,7 +68,7 @@ const V = (() => {
           if (snow && !A) { r += (236 * shade[i] - r) * snow; g += (240 * shade[i] - g) * snow; b += (246 * shade[i] - b) * snow; }
           if (own[k] === 'enemy') { const v = Math.abs(fbm(x * 0.08, y * 0.08) - 0.5); const bl = fbm(x * 0.018 + 50, y * 0.018 + 20); if (INF) { const io = ((y % INF.h) * INF.w + (x % INF.w)) * 4, m2 = 0.55; r = r * (1 - m2) + INF.d[io] * m2; g = g * (1 - m2) + INF.d[io + 1] * m2; b = b * (1 - m2) + INF.d[io + 2] * m2; } else { if (bl > 0.56) { const q = Math.min(1, (bl - 0.56) * 6) * 0.45; r = r * (1 - q) + 70 * q; g = g * (1 - q) + 12 * q; b = b * (1 - q) + 40 * q; } const v2 = Math.abs(fbm(x * 0.035 + 9, y * 0.035 + 4) - 0.5); if (v < 0.03 || v2 < 0.022) { const q = v2 < 0.022 ? 1 : 0.7; r += 62 * q; g += 16 * q; b += 6 * q; er = 190 * q; eg = 44 * q; eb = 14 * q; } }
             if (!obs[k]) { r *= 0.8; g *= 0.8; b *= 0.84; } }
-          const line = 0, gl = Math.max(Math.max(0, 1 - bd[i] / 13), Math.max(0, 1 - cd[i] / 9) * 0.9); lf = landF[i];
+          const front = own[idx2[i]] !== own[k] || k === si || idx2[i] === si, line = 0, gl = Math.max(Math.max(0, 1 - bd[i] / (front ? 14 : 5)) * (front ? 1 : 0.35), Math.max(0, 1 - cd[i] / 9) * 0.9); lf = landF[i];
           if (k === si) { r = r * 1.12 + 8; g = g * 1.12 + 8; b = b * 1.12 + 4; const t = Math.max(line, gl * 0.75); r += (236 - r) * t; g += (190 - g) * t; b += (90 - b) * t; er = 200 * t; eg = 150 * t; eb = 50 * t; }
           else { const q = gl * gl * 0.62; r += (c[0] * 1.15 - r) * q; g += (c[1] * 1.15 - g) * q; b += (c[2] * 1.15 - b) * q;
             if (own[k] === 'you') { er = Math.max(er, 20 * gl * gl); eg = Math.max(eg, 150 * gl * gl); eb = Math.max(eb, 150 * gl * gl); } else if (own[k] === 'enemy') { er = Math.max(er, 200 * gl * gl); eg = Math.max(eg, 40 * gl * gl); eb = Math.max(eb, 16 * gl * gl); } }
@@ -184,7 +184,7 @@ const V = (() => {
     const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.96, depthWrite: false, toneMapped: false, side: THREE.DoubleSide })); m.renderOrder = 2; parent.add(m); return { mesh: m, pi, pj }; }
   function colorBorders(B, S) { if (!B) return; const c = B.mesh.geometry.attributes.color, si = sel ? TIDS.indexOf(sel) : -1, own = TIDS.map(id => S.terr[id].owner);
     for (let v = 0; v < B.pi.length; v++) { const i = B.pi[v], j = B.pj[v], a = own[i], b = own[j]; let r = 0.03, g = 0.05, bl = 0.08;
-      if (i === si || j === si) { r = 0.97; g = 0.8; bl = 0.38; } else if (a !== b && a !== 'waste' && b !== 'waste') { r = 1; g = 0.9; bl = 0.78; } else if (a === 'you' && b === 'you') { r = 0.03; g = 0.2; bl = 0.22; } else if (a === 'enemy' && b === 'enemy') { r = 0.26; g = 0.04; bl = 0.03; }
+      if (i === si || j === si) { r = 0.97; g = 0.8; bl = 0.38; } else if (a !== b && a !== 'waste' && b !== 'waste') { r = 1; g = 0.9; bl = 0.78; } else if (a === 'you' && b === 'you') { r = 0.02; g = 0.13; bl = 0.15; } else if (a === 'enemy' && b === 'enemy') { r = 0.13; g = 0.02; bl = 0.02; }
       c.setXYZ(v, r, g, bl); } c.needsUpdate = true; }
   function buildBoardBorders() { const an = TIDS.map(id => [TERR[id].ax / AW * RW, TERR[id].ay / AH * RH]), runs = [], HW = 0.075;
     for (const [i, j] of pairsOf(idx, landA, RW, RH)) { const mx = (an[i][0] + an[j][0]) / 2, my = (an[i][1] + an[j][1]) / 2; let dx = -(an[j][1] - an[i][1]), dy = an[j][0] - an[i][0]; const dl = Math.hypot(dx, dy); dx /= dl; dy /= dl; const half2 = (dl / 2) * (dl / 2);
@@ -205,10 +205,10 @@ const V = (() => {
       if (cur && cur.pts.length > 2) runs.push(cur); }
     bordG = ribbons(runs, globeRoot); }
   function buildGlobe() { GWp = globeImg.width; GHp = globeImg.height; const c = document.createElement('canvas'); c.width = GWp; c.height = GHp; ctxG = c.getContext('2d'); ctxG.drawImage(globeImg, 0, 0); artG = ctxG.getImageData(0, 0, GWp, GHp).data; imgG = ctxG.createImageData(GWp, GHp);
-    idxG = new Int8Array(GWp * GHp); landG = new Uint8Array(GWp * GHp); bdG = new Float32Array(GWp * GHp); const dirs = TIDS.map(id => gdir(TERR[id].lat, TERR[id].lon)), ppd = GWp / 360;
-    for (let y = 0; y < GHp; y++) { const lat = 90 - (y + 0.5) / GHp * 180; for (let x = 0; x < GWp; x++) { const i = y * GWp + x, o = i * 4, d = gdir(lat, (x + 0.5) / GWp * 360 - 180); let b1 = -2, b2 = -2, bi = 0;
-        for (let k = 0; k < dirs.length; k++) { const q = d.x * dirs[k].x + d.y * dirs[k].y + d.z * dirs[k].z; if (q > b1) { b2 = b1; b1 = q; bi = k; } else if (q > b2) b2 = q; }
-        idxG[i] = bi; bdG[i] = (Math.acos(Math.min(1, b2)) - Math.acos(Math.min(1, b1))) * 0.5 * 57.2958 * ppd; landG[i] = (lat > -60 && artG[o] > artG[o + 2] * 1.05) ? 1 : 0; } }
+    idxG = new Int8Array(GWp * GHp); idx2G = new Int8Array(GWp * GHp); landG = new Uint8Array(GWp * GHp); bdG = new Float32Array(GWp * GHp); const dirs = TIDS.map(id => gdir(TERR[id].lat, TERR[id].lon)), ppd = GWp / 360;
+    for (let y = 0; y < GHp; y++) { const lat = 90 - (y + 0.5) / GHp * 180; for (let x = 0; x < GWp; x++) { const i = y * GWp + x, o = i * 4, d = gdir(lat, (x + 0.5) / GWp * 360 - 180); let b1 = -2, b2 = -2, bi = 0, b2i = 0;
+        for (let k = 0; k < dirs.length; k++) { const q = d.x * dirs[k].x + d.y * dirs[k].y + d.z * dirs[k].z; if (q > b1) { b2 = b1; b2i = bi; b1 = q; bi = k; } else if (q > b2) { b2 = q; b2i = k; } }
+        idxG[i] = bi; idx2G[i] = b2i; bdG[i] = (Math.acos(Math.min(1, b2)) - Math.acos(Math.min(1, b1))) * 0.5 * 57.2958 * ppd; landG[i] = (lat > -60 && artG[o] > artG[o + 2] * 1.05) ? 1 : 0; } }
     texG = new THREE.CanvasTexture(c); texG.encoding = THREE.sRGBEncoding; texG.anisotropy = 8; globeRoot = new THREE.Group();
     const sph = new THREE.Mesh(new THREE.SphereGeometry(GR, 96, 64), new THREE.MeshBasicMaterial({ map: texG, toneMapped: false })); globeRoot.add(sph);
     const atm = new THREE.Mesh(new THREE.SphereGeometry(GR * 1.045, 64, 40), new THREE.MeshBasicMaterial({ color: 0x3f8fe0, transparent: true, opacity: 0.16, side: THREE.BackSide, blending: THREE.AdditiveBlending, depthWrite: false })); globeRoot.add(atm);
@@ -218,7 +218,7 @@ const V = (() => {
   function paintGlobe(S) { const d = imgG.data, A = artG, own = TIDS.map(id => S.terr[id].owner), obs = TIDS.map(id => S.obs[id] ? 1 : 0), si = sel ? TIDS.indexOf(sel) : -1, n = GWp * GHp;
     for (let i = 0; i < n; i++) { const o = i * 4; let r = A[o], g = A[o + 1], b = A[o + 2];
       if (landG[i]) { const k = idxG[i], c = COL[own[k]], am = own[k] === 'waste' ? 0.8 : own[k] === 'enemy' ? (obs[k] ? 0.62 : 0.5) : 0.46, lum = (r + g + b) / 3 / 112; r = r * (1 - am) + c[0] * lum * am; g = g * (1 - am) + c[1] * lum * am; b = b * (1 - am) + c[2] * lum * am;
-        const line = 0, gw = Math.max(0, 1 - bdG[i] / 9);
+        const fr = own[idx2G[i]] !== own[k] || k === si, line = 0, gw = Math.max(0, 1 - bdG[i] / (fr ? 9 : 4)) * (fr ? 1 : 0.35);
         if (k === si) { const t = Math.max(line, gw * 0.75); r = r * 1.12 + 8; g = g * 1.12 + 8; b = b * 1.12 + 4; r += (236 - r) * t; g += (190 - g) * t; b += (90 - b) * t; }
         else { const q = gw * gw * 0.62; r += (c[0] * 1.15 - r) * q; g += (c[1] * 1.15 - g) * q; b += (c[2] * 1.15 - b) * q; } }
       d[o] = r; d[o + 1] = g; d[o + 2] = b; d[o + 3] = 255; }
@@ -257,11 +257,12 @@ const V = (() => {
       d.children[0].textContent = TERR[id].name; d.children[1].textContent = T.owner === 'waste' ? '☢' : T.owner === 'enemy' ? (known ? L.enemyDefense(S, id) : '?') : T.n;
       const ls = S.leaders.filter(l => l.alive && l.at === id && L.leaderKnown(S, l)); d.children[2].textContent = ls.map(l => l.rank === 'overlord' ? '♛' : l.rank === 'warlord' ? '★' : '▲').join(''); } }
   const v3 = new THREE.Vector3();
-  function place(d, p, dy, below) { if (mode === 'globe' && p.dot(camera.position) < GR * GR * 1.02) { d.style.display = 'none'; return; } v3.copy(p); if (mode === 'globe') v3.multiplyScalar(1 + dy / GR); else { v3.y += dy; if (camS) v3.x += Math.round((camS.tx - p.x) / BW) * BW; } v3.project(camera); if (v3.z > 1) { d.style.display = 'none'; return; } d.style.display = ''; d.style.transform = (below ? 'translate(-50%,11px) translate(' : 'translate(-50%,-50%) translate(') + ((v3.x + 1) / 2 * el.clientWidth).toFixed(1) + 'px,' + ((1 - v3.y) / 2 * el.clientHeight).toFixed(1) + 'px)'; }
-  function frame(dt) { time += dt; cam.tz = clamp(cam.tz, -BH / 2 + 4, BH / 2 + 2); if (camS) { if (cam.tx > BW / 2) { cam.tx -= BW; camS.tx -= BW; } else if (cam.tx < -BW / 2) { cam.tx += BW; camS.tx += BW; } }
+  function place(d, p, dy, below) { if (mode === 'globe' && p.dot(camera.position) < GR * GR * 1.02) { d.style.display = 'none'; return; } v3.copy(p); if (mode === 'globe') v3.multiplyScalar(1 + dy / GR); else { v3.y += dy; if (camS) v3.x += Math.round((camS.tx - p.x) / BW) * BW; } v3.project(camera); if (v3.z > 1) { d.style.display = 'none'; return; } d.style.display = ''; d.style.transform = (below ? 'translate(-50%,17px) translate(' : 'translate(-50%,-50%) translate(') + ((v3.x + 1) / 2 * el.clientWidth).toFixed(1) + 'px,' + ((1 - v3.y) / 2 * el.clientHeight).toFixed(1) + 'px)'; }
+  function frame(dt) { time += dt; cam.tz = clamp(cam.tz, -BH / 2 + 10, BH / 2 - 8); if (camS) { if (cam.tx > BW / 2) { cam.tx -= BW; camS.tx -= BW; } else if (cam.tx < -BW / 2) { cam.tx += BW; camS.tx += BW; } }
     if (!camS) { camS = Object.assign({}, cam); glS = Object.assign({}, gl); } { const k = 1 - Math.exp(-dt * 11); for (const q in cam) camS[q] += (cam[q] - camS[q]) * k; for (const q in gl) glS[q] += (gl[q] - glS[q]) * k; }
     const G3 = mode === 'globe'; if (G3) { camera.position.copy(gdir(glS.lat, glS.lon).multiplyScalar(glS.dist)); camera.up.set(0, 1, 0); camera.lookAt(0, 0, 0); } else {
     const cp = Math.cos(camS.pitch), sp = Math.sin(camS.pitch); camera.position.set(camS.tx + Math.sin(camS.yaw) * cp * camS.dist, sp * camS.dist, camS.tz + Math.cos(camS.yaw) * cp * camS.dist); camera.lookAt(camS.tx, 0, camS.tz); }
+    camera.updateMatrixWorld(true);
     const vd = G3 ? (glS.dist - GR) * 1.15 : camS.dist, ppu = el.clientHeight / (2 * vd * 0.3057); labelsEl.classList.toggle('far', ppu < 7.5); labelsEl.classList.toggle('mid', ppu >= 7.5 && ppu < 13);
     if (S0) { for (const id of TIDS) place(labels[id], P(id), 0, true);
       for (const c of arcs.children) if (c.userData.party) { const p = c.userData.party, f = (S0.t + (V.frac || 0) - p.t0) / (p.eta - p.t0), q = c.userData.curve.at(f), q2 = c.userData.curve.at(f + 0.02); c.position.copy(q); }
