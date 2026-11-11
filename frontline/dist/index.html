@@ -42,7 +42,7 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
 <div class="hud" id="bars"><div class="bar" id="core"><i></i><span>City core</span><b></b></div><div class="bar" id="hp"><i></i><span>You</span><b></b></div></div>
 <div class="hud" id="ammo"></div>
 <div class="panel on" id="intro"><div class="card"><small>Earthfall · Frontline · first playable</small><h1>Defend Los Angeles</h1>
-<p>The swarm is coming down two streets from the north. Keep it off the city core for three waves. Your turrets will help.</p>
+<p>The swarm is coming over the hills, across the whole northern horizon. Keep it off the city core for three waves. Your turrets will help.</p>
 <table><tr><td>W A S D</td><td>move</td></tr><tr><td>Mouse</td><td>aim (Q and E also turn)</td></tr><tr><td>Click, hold</td><td>fire</td></tr><tr><td>R</td><td>reload</td></tr><tr><td>Shift</td><td>sprint</td></tr></table>
 <button id="start">Start the defense</button></div></div>
 <div class="panel" id="over"></div>
@@ -64,7 +64,7 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
 
   // ---------- Setup handed over by Earthfall (or the defaults when run on its own)
   const SETUP = Object.assign({ city: 'Los Angeles', mode: 'defense', attackers: 9, defenders: 5, armor: 0, fort: 1, battery: 1, radar: 1, research: [] }, window.FRONTLINE_SETUP || {});
-  const WAVES = [0.3, 0.45, 0.6].map(f => Math.max(8, Math.round(SETUP.attackers * 6 * f))); // three waves sized from the attack
+  const WAVES = [0.45, 0.7, 0.95].map(f => Math.max(10, Math.round(SETUP.attackers * 6 * f))); // three waves sized from the attack
 
   // ---------- Renderer, scene, light
   const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -72,11 +72,11 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.outputEncoding = THREE.sRGBEncoding;
   $('#game').appendChild(renderer.domElement);
-  const scene = new THREE.Scene(); scene.background = new THREE.Color(0x243246).convertSRGBToLinear(); scene.fog = new THREE.Fog(scene.background.getHex(), 55, 180);
-  const camera = new THREE.PerspectiveCamera(62, 1, 0.1, 400);
+  const scene = new THREE.Scene(); scene.background = new THREE.Color(0x6b86a3).convertSRGBToLinear(); scene.fog = new THREE.Fog(scene.background.getHex(), 70, 230);
+  const camera = new THREE.PerspectiveCamera(62, 1, 0.1, 600);
   scene.add(new THREE.HemisphereLight(0x9fc4e8, 0x2a2018, 0.9));
-  const sun = new THREE.DirectionalLight(0xffd9a8, 1.6); sun.position.set(-40, 70, 30); sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -90, right: 90, top: 90, bottom: -90, near: 1, far: 220 }); scene.add(sun);
+  const sun = new THREE.DirectionalLight(0xffd9a8, 1.6); sun.position.set(-60, 90, 70); sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -130, right: 130, top: 130, bottom: -130, near: 1, far: 300 }); scene.add(sun);
   function resize() { const w = window.innerWidth, h = window.innerHeight; renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); }
   window.addEventListener('resize', resize); resize();
 
@@ -88,26 +88,27 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
   const box = (w, h, d, m, x, y, z) => { const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); b.position.set(x || 0, y || 0, z || 0); b.castShadow = b.receiveShadow = true; return b; };
   const cyl = (r1, r2, h, m, x, y, z, seg) => { const b = new THREE.Mesh(new THREE.CylinderGeometry(r1, r2, h, seg || 10), m); b.position.set(x || 0, y || 0, z || 0); b.castShadow = b.receiveShadow = true; return b; };
 
-  // ---------- Arena: the core is at +Z (south), the swarm comes from -Z (north) down two lanes.
-  const ARENA = 70, solids = []; // solids: axis-aligned boxes the player cannot walk through
-  { const g = new THREE.Mesh(new THREE.PlaneGeometry(ARENA * 2, ARENA * 2), M.ground); g.rotation.x = -Math.PI / 2; g.receiveShadow = true; scene.add(g);
-    for (const x of [-16, 16]) { const l = new THREE.Mesh(new THREE.PlaneGeometry(11, ARENA * 2 - 16), M.lane); l.rotation.x = -Math.PI / 2; l.position.set(x, 0.02, -4); l.receiveShadow = true; scene.add(l); }
-    const cross = new THREE.Mesh(new THREE.PlaneGeometry(ARENA * 2 - 20, 9), M.road); cross.rotation.x = -Math.PI / 2; cross.position.set(0, 0.021, 8); scene.add(cross); }
-  function building(x, z, w, d, h) { const b = box(w, h, d, M.bld[(Math.abs(x * 7 + z * 3) | 0) % 3], x, h / 2, z); scene.add(b);
-    for (let i = 0; i < Math.floor(h / 4); i++) { const s = box(w + 0.05, 0.9, d + 0.05, M.win, x, 2.5 + i * 4, z); s.castShadow = false; scene.add(s); }
+  // ---------- Arena: the city core sits at the south edge of town. North of it is open, rolling ground,
+  // and the swarm pours over the hills across a 110 degree arc.
+  const ARENA = 125, solids = [], CORE = { x: 0, z: 46, hp: 100, max: 100 }; // solids: boxes nothing can walk through
+  const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+  // Height of the ground at any point: flat around the core, hills rising to the north.
+  function H(x, z) { const d = Math.hypot(x - CORE.x, z - CORE.z), k = smooth(20, 52, d); return k * (Math.sin(x * 0.045 + 1.3) * Math.cos(z * 0.05 - 0.4) * 4.2 + Math.sin(x * 0.11 + z * 0.07) * 1.5 + Math.cos(z * 0.021 + x * 0.013) * 3.2 + 2.2 * smooth(60, 110, d)); }
+  { const geo = new THREE.PlaneGeometry(ARENA * 2, ARENA * 2, 150, 150); geo.rotateX(-Math.PI / 2); const p = geo.attributes.position, col = new Float32Array(p.count * 3), c = new THREE.Color();
+    for (let i = 0; i < p.count; i++) { const x = p.getX(i), z = p.getZ(i), h = H(x, z); p.setY(i, h); const d = Math.hypot(x - CORE.x, z - CORE.z), t = smooth(18, 50, d); c.setRGB(0.16 + t * 0.02 + h * 0.008, 0.19 + t * 0.07 + h * 0.012, 0.23 - t * 0.07).convertSRGBToLinear(); col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b; }
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3)); geo.computeVertexNormals(); const g = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95, metalness: 0 })); g.receiveShadow = true; scene.add(g); }
+  function building(x, z, w, d, h) { const y0 = H(x, z) - 1.5, b = box(w, h, d, M.bld[(Math.abs(x * 7 + z * 3) | 0) % 3], x, y0 + h / 2, z); scene.add(b);
+    for (let i = 0; i < Math.floor(h / 4); i++) { const s = box(w + 0.05, 0.9, d + 0.05, M.win, x, y0 + 2.5 + i * 4, z); s.castShadow = false; scene.add(s); }
     solids.push({ x0: x - w / 2, x1: x + w / 2, z0: z - d / 2, z1: z + d / 2 }); }
-  // city blocks: between the lanes, and along the outside edges
-  for (const z of [-48, -30, -12]) { building(0, z, 12, 12, 10 + (z % 7 + 7)); building(-36, z, 14, 12, 8 + ((z * 3) % 9 + 9) % 9); building(36, z, 14, 12, 9 + ((z * 5) % 8 + 8) % 8); }
-  building(-36, 26, 14, 14, 12); building(36, 26, 14, 14, 11);
-  // low cover the player can shoot over
-  const covers = [[-16, 14], [16, 14], [-6, 22], [6, 22], [-24, 4], [24, 4]]; for (const c of covers) { scene.add(box(4, 1.1, 0.8, M.wall, c[0], 0.55, c[1])); solids.push({ x0: c[0] - 2, x1: c[0] + 2, z0: c[1] - 0.4, z1: c[1] + 0.4 }); }
-  // boundary walls
-  for (const s of [[0, -ARENA, ARENA * 2, 1], [0, ARENA, ARENA * 2, 1], [-ARENA, 0, 1, ARENA * 2], [ARENA, 0, 1, ARENA * 2]]) { scene.add(box(s[2], 4, s[3], M.wall, s[0], 2, s[1])); }
+  // the edge of town behind and beside the core, plus a few ruined outbuildings out on the approach
+  for (const x of [-52, -34, 34, 52]) { building(x, 62, 14, 12, 10 + Math.abs(x % 9)); building(x, 44 - Math.abs(x) * 0.1, 12, 12, 8 + Math.abs((x * 3) % 7)); }
+  building(-16, 70, 14, 10, 14); building(16, 70, 14, 10, 12); building(-30, 6, 9, 9, 5); building(26, -4, 10, 8, 6); building(2, -22, 9, 9, 4); building(-58, -10, 8, 10, 5); building(60, 8, 9, 8, 5);
+  // low cover on an arc in front of the core
+  for (let a = -60; a <= 60; a += 24) { const r = a % 48 === 0 ? 24 : 17, ar = a * Math.PI / 180, x = CORE.x + Math.sin(ar) * r, z = CORE.z - Math.cos(ar) * r, w = box(4.2, 1.1, 0.8, M.wall, x, H(x, z) + 0.55, z); w.rotation.y = -ar; scene.add(w); solids.push({ x0: x - 1.8, x1: x + 1.8, z0: z - 0.7, z1: z + 0.7 }); }
 
   // The core: what you are defending
-  const CORE = { x: 0, z: 40, hp: 100, max: 100 };
   { const g = new THREE.Group(); g.add(cyl(4, 4.6, 1, M.tealD, 0, 0.5, 0, 16)); const orb = new THREE.Mesh(new THREE.OctahedronGeometry(2.1, 0), M.core); orb.position.y = 4; orb.castShadow = true; g.add(orb); g.add(cyl(0.35, 0.35, 3, M.gun, 0, 2.2, 0));
-    const pl = new THREE.PointLight(0x46d6d0, 1.2, 40); pl.position.y = 4; g.add(pl); g.position.set(CORE.x, 0, CORE.z); scene.add(g); CORE.orb = orb; CORE.light = pl; solids.push({ x0: -4, x1: 4, z0: 36, z1: 44 }); }
+    const pl = new THREE.PointLight(0x46d6d0, 1.2, 40); pl.position.y = 4; g.add(pl); g.position.set(CORE.x, 0, CORE.z); scene.add(g); CORE.orb = orb; CORE.light = pl; solids.push({ x0: CORE.x - 4, x1: CORE.x + 4, z0: CORE.z - 4, z1: CORE.z + 4 }); }
 
   // ---------- Models built from shapes
   function soldier() { const g = new THREE.Group(); const legL = box(0.28, 0.8, 0.3, M.tealD, -0.18, 0.4, 0), legR = box(0.28, 0.8, 0.3, M.tealD, 0.18, 0.4, 0);
@@ -122,18 +123,20 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
     top.position.y = 1.05; g.add(top); g.userData = { top }; return g; }
 
   // ---------- Player
-  const player = { x: 0, z: 30, yaw: 0, pitch: -0.12, hp: 100, max: 100, ammo: 30, mag: 30, reload: 0, fireT: 0, mesh: soldier(), walk: 0, dead: false };
+  const player = { x: 7, z: 36, yaw: 0, pitch: -0.12, hp: 100, max: 100, ammo: 30, mag: 30, reload: 0, fireT: 0, mesh: soldier(), walk: 0, dead: false };
   scene.add(player.mesh);
 
   // ---------- Turrets (what you built in Earthfall is already standing)
-  const turrets = []; function addTurret(x, z) { const m = turretModel(); m.position.set(x, 0, z); scene.add(m); turrets.push({ x, z, m, t: 0, yaw: 0 }); solids.push({ x0: x - 1, x1: x + 1, z0: z - 1, z1: z + 1 }); }
-  if (SETUP.battery) addTurret(-16, 20); if (SETUP.fort) addTurret(16, 20); if (SETUP.fort > 1) addTurret(0, 28);
+  const turrets = []; function addTurret(x, z) { const m = turretModel(); m.position.set(x, H(x, z), z); scene.add(m); turrets.push({ x, z, m, t: 0, yaw: 0 }); solids.push({ x0: x - 1, x1: x + 1, z0: z - 1, z1: z + 1 }); }
+  { const at = a => { const ar = a * Math.PI / 180; addTurret(CORE.x + Math.sin(ar) * 14, CORE.z - Math.cos(ar) * 14); }; if (SETUP.battery) at(-38); if (SETUP.fort) at(38); at(0); if (SETUP.fort > 1) { at(-70); at(70); } }
 
   // ---------- Enemies and waves
   const enemies = []; let wave = 0, toSpawn = 0, spawnT = 0, between = 4, state = 'intro', kills = 0, scrap = 0;
-  function spawn() { const lane = Math.random() < 0.5 ? -16 : 16, big = wave >= 2 && Math.random() < 0.18, m = swarmling(big); const e = { x: lane + rnd(-3.5, 3.5), z: -ARENA + 6 + rnd(0, 6), hp: big ? 9 : 3, max: big ? 9 : 3, sp: big ? 3.2 : rnd(4.6, 5.8), big, m, t: rnd(0, 6), bite: 0, lane };
-    m.position.set(e.x, 0, e.z); scene.add(m); enemies.push(e); }
-  function startWave() { wave++; toSpawn = WAVES[wave - 1]; spawnT = 0; state = 'wave'; banner('Wave ' + wave + ' of ' + WAVES.length, toSpawn + ' incoming down both lanes'); }
+  const ARC = 110 * Math.PI / 180; // the swarm arrives anywhere across this arc, centred on north
+  function spawn() { const a = rnd(-ARC / 2, ARC / 2), r = rnd(96, 112), big = wave >= 2 && Math.random() < 0.18, m = swarmling(big);
+    const e = { x: clamp(CORE.x + Math.sin(a) * r, -ARENA + 4, ARENA - 4), z: Math.max(-ARENA + 4, CORE.z - Math.cos(a) * r), hp: big ? 9 : 3, max: big ? 9 : 3, sp: big ? 3.6 : rnd(5.2, 6.6), big, m, t: rnd(0, 6), bite: 0, drift: rnd(-1, 1) };
+    m.position.set(e.x, H(e.x, e.z), e.z); scene.add(m); enemies.push(e); }
+  function startWave() { wave++; toSpawn = WAVES[wave - 1]; spawnT = 0; state = 'wave'; banner('Wave ' + wave + ' of ' + WAVES.length, toSpawn + ' coming over the hills'); }
 
   // ---------- Effects: tracers and hit flashes
   const fx = []; const tracerMat = new THREE.LineBasicMaterial({ color: 0xffe9a0, transparent: true });
@@ -165,32 +168,32 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
   // ---------- Simulation
   const v3 = new THREE.Vector3(), ray = new THREE.Raycaster(), muzzle = new THREE.Vector3(), aim = new THREE.Vector3();
   function collide(o, r) { for (const s of solids) { const cx = clamp(o.x, s.x0, s.x1), cz = clamp(o.z, s.z0, s.z1), dx = o.x - cx, dz = o.z - cz, d2 = dx * dx + dz * dz; if (d2 < r * r) { if (d2 > 1e-6) { const d = Math.sqrt(d2); o.x = cx + dx / d * r; o.z = cz + dz / d * r; } else { o.x = s.x0 - r; } } } o.x = clamp(o.x, -ARENA + 1.5, ARENA - 1.5); o.z = clamp(o.z, -ARENA + 1.5, ARENA - 1.5); }
-  function hurtEnemy(e, dmg, at) { e.hp -= dmg; puff(at || v3.set(e.x, 0.8, e.z), 0xff6a8a, 2.5); if (e.hp <= 0) { scene.remove(e.m); enemies.splice(enemies.indexOf(e), 1); kills++; scrap += e.big ? 3 : 1; puff(v3.set(e.x, 0.7, e.z), 0xb04adf, 6); } }
+  function hurtEnemy(e, dmg, at) { e.hp -= dmg; puff(at || v3.set(e.x, H(e.x, e.z) + 0.8, e.z), 0xff6a8a, 2.5); if (e.hp <= 0) { scene.remove(e.m); enemies.splice(enemies.indexOf(e), 1); kills++; scrap += e.big ? 3 : 1; puff(v3.set(e.x, H(e.x, e.z) + 0.7, e.z), 0xb04adf, 6); } }
   function shoot() { if (player.reload > 0 || player.dead) return; if (player.ammo < 1) { reload(); return; } player.ammo--; player.fireT = 0.105;
     // aim where the camera's centre points, then fire from the gun toward that spot
     ray.setFromCamera({ x: 0, y: 0 }, camera); let best = null, bd = 140; aim.copy(ray.ray.origin).addScaledVector(ray.ray.direction, 140);
-    for (const e of enemies) { v3.set(e.x, e.big ? 1.2 : 0.75, e.z); const r = e.big ? 1.25 : 0.8, d = ray.ray.distanceToPoint(v3), along = v3.clone().sub(ray.ray.origin).dot(ray.ray.direction); if (d < r && along > 2 && along < bd) { bd = along; best = e; } }
+    for (const e of enemies) { v3.set(e.x, H(e.x, e.z) + (e.big ? 1.2 : 0.75), e.z); const r = e.big ? 1.25 : 0.8, d = ray.ray.distanceToPoint(v3), along = v3.clone().sub(ray.ray.origin).dot(ray.ray.direction); if (d < r && along > 2 && along < bd) { bd = along; best = e; } }
     if (best) aim.copy(ray.ray.origin).addScaledVector(ray.ray.direction, bd);
     player.mesh.userData.gun.getWorldPosition(muzzle); tracer(muzzle.clone(), aim.clone()); if (best) hurtEnemy(best, 1, aim.clone()); }
 
   function step(dt) {
-    if (state === 'wave') { if (toSpawn > 0) { spawnT -= dt; if (spawnT <= 0) { spawn(); toSpawn--; spawnT = Math.max(0.25, 0.9 - wave * 0.15); } } else if (!enemies.length) { if (wave >= WAVES.length) return finish(true); state = 'between'; between = 7; banner('Wave cleared', 'Next wave in a few seconds. Reload with R.'); player.hp = Math.min(player.max, player.hp + 25); } }
+    if (state === 'wave') { if (toSpawn > 0) { spawnT -= dt; if (spawnT <= 0) { spawn(); toSpawn--; spawnT = Math.max(0.12, 0.5 - wave * 0.1) * rnd(0.3, 1.6); } } else if (!enemies.length) { if (wave >= WAVES.length) return finish(true); state = 'between'; between = 7; banner('Wave cleared', 'Next wave in a few seconds. Reload with R.'); player.hp = Math.min(player.max, player.hp + 25); } }
     else if (state === 'between') { between -= dt; if (between <= 0) startWave(); }
     // player
     if (!player.dead) { const f = (keys.KeyW ? 1 : 0) - (keys.KeyS ? 1 : 0), s = (keys.KeyD ? 1 : 0) - (keys.KeyA ? 1 : 0); player.yaw += ((keys.KeyQ ? 1 : 0) - (keys.KeyE ? 1 : 0)) * dt * 2.2;
       const sp = (keys.ShiftLeft || keys.ShiftRight ? 9.5 : 6.2) * dt, sin = Math.sin(player.yaw), cos = Math.cos(player.yaw), len = Math.hypot(f, s) || 1;
       player.x += (-sin * f + cos * s) / len * sp; player.z += (-cos * f - sin * s) / len * sp; collide(player, 0.6); if (f || s) player.walk += dt * 11;
       player.fireT -= dt; if (player.reload > 0) { player.reload -= dt; if (player.reload <= 0) player.ammo = player.mag; } if (firing && player.fireT <= 0) shoot(); }
-    const pm = player.mesh; pm.position.set(player.x, 0, player.z); pm.rotation.y = player.yaw; pm.userData.legL.rotation.x = Math.sin(player.walk) * 0.6; pm.userData.legR.rotation.x = -Math.sin(player.walk) * 0.6; pm.userData.gun.rotation.x = player.pitch * 0.8;
+    const pm = player.mesh; player.y = H(player.x, player.z); pm.position.set(player.x, player.y, player.z); pm.rotation.y = player.yaw; pm.userData.legL.rotation.x = Math.sin(player.walk) * 0.6; pm.userData.legR.rotation.x = -Math.sin(player.walk) * 0.6; pm.userData.gun.rotation.x = player.pitch * 0.8;
     // enemies: down the lane, then turn in on the core; bite the player if he is in the way
-    for (const e of enemies.slice()) { e.t += dt; let tx = e.z < 26 ? e.lane + Math.sin(e.t * 0.7) * 2.5 : CORE.x, tz = e.z < 26 ? 30 : CORE.z; const pd = Math.hypot(player.x - e.x, player.z - e.z); if (!player.dead && pd < 9) { tx = player.x; tz = player.z; }
-      const dx = tx - e.x, dz = tz - e.z, d = Math.hypot(dx, dz) || 1; if (d > 1.3) { e.x += dx / d * e.sp * dt; e.z += dz / d * e.sp * dt; } e.m.position.set(e.x, Math.abs(Math.sin(e.t * 9)) * 0.08, e.z); e.m.rotation.y = Math.atan2(dx, dz); e.m.userData.legs.forEach((l, i) => { l.rotation.x = Math.sin(e.t * 12 + i * 1.6) * 0.6; });
-      e.bite -= dt; if (!player.dead && pd < 1.6 && e.bite <= 0) { e.bite = 0.8; player.hp -= e.big ? 14 : 7; hud.hit.classList.add('on'); setTimeout(() => hud.hit.classList.remove('on'), 120); if (player.hp <= 0) { player.dead = true; pm.rotation.z = Math.PI / 2; pm.position.y = 0.3; setTimeout(() => finish(false), 900); } }
-      if (Math.hypot(CORE.x - e.x, CORE.z - e.z) < 5.6 && e.bite <= 0) { e.bite = 0.9; CORE.hp -= e.big ? 4 : 1.5; puff(v3.set(e.x, 1.5, e.z), 0x46d6d0, 3); if (CORE.hp <= 0 && state !== 'over') return finish(false); } }
+    for (const e of enemies.slice()) { e.t += dt; const cd = Math.hypot(CORE.x - e.x, CORE.z - e.z); let tx = CORE.x + (cd > 30 ? Math.sin(e.t * 0.5 + e.drift * 4) * 9 * e.drift : 0), tz = CORE.z; const pd = Math.hypot(player.x - e.x, player.z - e.z); if (!player.dead && pd < 10) { tx = player.x; tz = player.z; }
+      const dx = tx - e.x, dz = tz - e.z, d = Math.hypot(dx, dz) || 1; if (d > 1.3) { e.x += dx / d * e.sp * dt; e.z += dz / d * e.sp * dt; collide(e, 0.7); } e.m.position.set(e.x, H(e.x, e.z) + Math.abs(Math.sin(e.t * 9)) * 0.08, e.z); e.m.rotation.y = Math.atan2(dx, dz); e.m.userData.legs.forEach((l, i) => { l.rotation.x = Math.sin(e.t * 12 + i * 1.6) * 0.6; });
+      e.bite -= dt; if (!player.dead && pd < 1.6 && e.bite <= 0) { e.bite = 0.8; player.hp -= e.big ? 14 : 7; hud.hit.classList.add('on'); setTimeout(() => hud.hit.classList.remove('on'), 120); if (player.hp <= 0) { player.dead = true; pm.rotation.z = Math.PI / 2; pm.position.y = player.y + 0.3; setTimeout(() => finish(false), 900); } }
+      if (cd < 6.2 && e.bite <= 0) { e.bite = 0.9; CORE.hp -= e.big ? 4 : 1.5; puff(v3.set(e.x, H(e.x, e.z) + 1.5, e.z), 0x46d6d0, 3); if (CORE.hp <= 0 && state !== 'over') return finish(false); } }
     // turrets: nearest enemy in range
-    for (const t of turrets) { t.t -= dt; let best = null, bd = 26; for (const e of enemies) { const d = Math.hypot(e.x - t.x, e.z - t.z); if (d < bd) { bd = d; best = e; } }
+    for (const t of turrets) { t.t -= dt; let best = null, bd = 30; for (const e of enemies) { const d = Math.hypot(e.x - t.x, e.z - t.z); if (d < bd) { bd = d; best = e; } }
       if (best) { const want = Math.atan2(-(best.x - t.x), -(best.z - t.z)); let da = want - t.yaw; da = Math.atan2(Math.sin(da), Math.cos(da)); t.yaw += clamp(da, -dt * 5, dt * 5); t.m.userData.top.rotation.y = t.yaw;
-        if (t.t <= 0 && Math.abs(da) < 0.2) { t.t = 0.6; tracer(new THREE.Vector3(t.x, 1.1, t.z), new THREE.Vector3(best.x, 0.8, best.z), 0x9be8e2); hurtEnemy(best, 1); } } }
+        if (t.t <= 0 && Math.abs(da) < 0.2) { t.t = 0.6; tracer(new THREE.Vector3(t.x, H(t.x, t.z) + 1.1, t.z), new THREE.Vector3(best.x, H(best.x, best.z) + 0.8, best.z), 0x9be8e2); hurtEnemy(best, 1); } } }
     // effects
     for (let i = fx.length - 1; i >= 0; i--) { const f = fx[i]; f.t += dt; const k = f.t / f.d; if (k >= 1) { scene.remove(f.o); fx.splice(i, 1); continue; } f.o.material.opacity = 1 - k; if (f.grow) f.o.scale.setScalar(1 + k * f.grow); }
     CORE.orb.rotation.y += dt * 0.8; CORE.orb.position.y = 4 + Math.sin(performance.now() / 600) * 0.25; CORE.light.intensity = 0.6 + 0.9 * CORE.hp / CORE.max;
@@ -198,12 +201,13 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
   }
   function placeCamera() { // over the right shoulder, pulled in if a building is behind you
     const sin = Math.sin(player.yaw), cos = Math.cos(player.yaw), back = 5.2 * Math.cos(player.pitch), up = 2.4 - player.pitch * 3.2;
-    camera.position.set(player.x + sin * back + cos * 0.9, up + 0.9, player.z + cos * back - sin * 0.9);
-    camera.lookAt(player.x - sin * 12 + cos * 0.9, 1.5 + player.pitch * 12, player.z - cos * 12 - sin * 0.9); }
+    const py = player.y || 0, cx = player.x + sin * back + cos * 0.9, cz = player.z + cos * back - sin * 0.9;
+    camera.position.set(cx, Math.max(py + up + 0.9, H(cx, cz) + 0.6), cz);
+    camera.lookAt(player.x - sin * 12 + cos * 0.9, py + 1.5 + player.pitch * 12, player.z - cos * 12 - sin * 0.9); }
 
   let last = performance.now();
   function frame(now) { const dt = Math.min(0.05, (now - last) / 1000); last = now; if (state === 'wave' || state === 'between') step(dt); placeCamera(); drawHud(); renderer.render(scene, camera); requestAnimationFrame(frame); }
-  function begin() { if (state !== 'intro') return; $('#intro').classList.remove('on'); state = 'between'; between = 3; banner('Defend ' + SETUP.city, 'Hold the core. The swarm comes from the north.'); if (cv.requestPointerLock) { try { cv.requestPointerLock(); } catch (e) { /* fine */ } } }
+  function begin() { if (state !== 'intro') return; $('#intro').classList.remove('on'); state = 'between'; between = 3; banner('Defend ' + SETUP.city, 'Hold the core. The swarm is coming over the hills, all across the north.'); if (cv.requestPointerLock) { try { cv.requestPointerLock(); } catch (e) { /* fine */ } } }
   $('#start').onclick = begin; placeCamera(); requestAnimationFrame(frame);
   window.__f = { player, enemies, CORE, step, begin, get state() { return state; }, get wave() { return wave; }, turrets, shoot, SETUP };
 })();
