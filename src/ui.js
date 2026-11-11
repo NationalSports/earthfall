@@ -259,7 +259,7 @@ function advise() { const key = [S.t, S.orders, S.pool, S.night, S.proj, S.redep
   if (S.mob) { if (S.pool > 0 && front[0]) add('<b>Place ' + S.pool + ' troops.</b> Anywhere you hold, such as ' + TERR[front[0]].name + ' on the front.', front[0]);
     const fb = front.find(id => !S.terr[id].fort && L.canPay(S, L.costOf(S, 'fort'))); if (fb) add('<b>Fortify the front.</b> A Fortress in ' + TERR[fb].name + ' is ' + cost(L.costOf(S, 'fort')) + '.', fb);
     if (bar && canArm) add('<b>Train armor</b> in ' + TERR[bar].name + ': counts double on the attack.', bar); else if (strongFront && L.canPay(S, L.costOf(S, 'barracks'))) add('<b>Build a Barracks</b> in ' + TERR[strongFront].name + ' to train armor.', strongFront);
-    if (S.res.research >= 60) add('<b>Buy research</b> with your ' + Math.floor(S.res.research) + ' research.', null, { act: 'tab', aid: 'arsenal', label: 'Arsenal' });
+    if (S.res.research >= 60) add('<b>Pick a research project</b> in the Lab at Los Angeles. You have ' + Math.floor(S.res.research) + ' research.', null, { act: 'lab', aid: '', label: 'Open Lab' });
     return advise.v = out; }
   const inc = S.parties.filter(p => S.terr[p.to].owner === 'you' && L.partyVisible(S, p)).sort((a, b) => a.eta - b.eta)[0];
   if (inc && S.terr[inc.to].n + (S.terr[inc.to].arm || 0) < inc.n + 1 && !(S.cols || []).some(c => c.to === inc.to)) add('⚠ <b>Defend ' + TERR[inc.to].name + '.</b> ' + inc.n + ' attackers strike tonight; it holds ' + (S.terr[inc.to].n + (S.terr[inc.to].arm || 0)) + '. March or airlift troops in.', inc.to);
