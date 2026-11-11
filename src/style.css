@@ -120,3 +120,5 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 @keyframes trc{to{translate:70px 0}}@keyframes trc2{to{translate:-70px 0}}
 .blow{text-align:center;font-size:13.5px;opacity:.9;margin:2px 0 8px;min-height:18px}
 @media (prefers-reduced-motion:reduce){.u.fire,.tracer{animation:none}}
+
+.chip.orders b{color:var(--gold)}.yield{margin:8px 0}.yield h4{margin:0 0 6px}.yield .stats b{font-size:17px}.yield .stats label{text-transform:capitalize}

@@ -90,9 +90,22 @@ Planned: orbital interceptor (shoots down one war party per week), naval landing
 ## Time (Built)
 A running clock, slow: one game hour takes about 5 seconds (a day in 2 minutes), or 1 second on fast. It runs only while play is on, and pauses itself when a war party is spotted, a city is attacked or lost, the strike team arrives, or a warhead is ready.
 
+## Orders (Built)
+One daily budget that every action draws on. You get 6 at midnight; unused Orders carry over, up to 3 above the daily amount. A Command Post (strongholds only) adds +1 a day each. The Double Time card adds 2 on the spot.
+
+| Action | Orders |
+| --- | --- |
+| Attack | 2 |
+| Airlift | 2 |
+| March, build or upgrade, missile salvo, bomber raid, send the strike team, sabotage, covert strike | 1 |
+| Reinforce from reserve, play a card, defend | Free |
+
 ## Moving troops (Built)
-- **March:** tap source, tap destination. Instant, up to 3 territories away through your own land, 3 marches a day (5 with Rapid Transport). One troop always stays behind.
+- **March:** tap source, tap destination. Instant, up to 3 territories away through your own land. One troop always stays behind.
 - **Airlift:** for anything farther or cut off. Up to 3 troops (5 with Rapid Transport), 15 fuel, then 12 hours to refuel.
+
+## Who fights in an attack (Built)
+The spare troops in your territories bordering the target (each keeps one behind). Your reserve is for reinforcing, except when you have no land border: then the reserve lands from the sea and the defenders roll +1. **Flank** is free but positional: it needs spare troops in two bordering territories. Missile and air support cost resources.
 
 ## Battles
 
