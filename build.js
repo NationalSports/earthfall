@@ -19,7 +19,11 @@ const js = [assets, icons, fxJs, r('src/logic.js').replace(/if \(typeof module[^
 // only the part after its "replacement theme" marker is used, so newer base rules are not overridden by a stale copy.
 let theme = fs.existsSync(path.join(__dirname, 'theme/theme.css')) ? r('theme/theme.css') : '';
 { const m = theme.indexOf('/* Earthfall concept HUD'); if (m > 0) theme = theme.slice(m); }
-const page = r('src/index.tpl.html').replace('/*CSS*/', () => r('src/style.css') + '\n' + theme).replace('/*JS*/', () => js);
+// Painted frames and button plates from assets/ui/ (art request #11). Listed by name on purpose: only reviewed files are embedded.
+// Each becomes a CSS variable (--ui-dialog-frame and so on) that src/frames.css uses; frames.css comes after the theme so it wins.
+const uiPng = ['dialog-frame', 'panel-frame', 'button-neutral', 'button-teal', 'button-gold', 'button-violet', 'button-cyan', 'button-danger'].filter(n => has('assets/ui/' + n + '.png'));
+const frames = uiPng.length ? ':root{' + uiPng.map(n => '--ui-' + n + ':url("' + uri('assets/ui/' + n + '.png', 'image/png') + '")').join(';') + '}\n' + r('src/frames.css') : '';
+const page = r('src/index.tpl.html').replace('/*CSS*/', () => r('src/style.css') + '\n' + theme + '\n' + frames).replace('/*JS*/', () => js);
 const cdn = '<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>';
 fs.mkdirSync(path.join(__dirname, 'dist'), { recursive: true });
 fs.writeFileSync(path.join(__dirname, 'dist/index.html'), page.replace('<!--THREE-->', cdn));
