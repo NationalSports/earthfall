@@ -27,7 +27,7 @@ main{display:grid;grid-template-columns:1fr 372px;min-height:0}
 .tlabel.threat b{animation:pulse 1s infinite}.far .tlabel:not(.sel):not(.hq) .tn{display:none}.mid .tlabel.you:not(.sel):not(.hq):not(.threat) .tn{display:none}
 .plabel{background:#8f2a1c;border:1px solid #ff9a7a;border-radius:3px;padding:0 5px;font-size:11px;font-variant-numeric:tabular-nums}
 @keyframes pulse{50%{box-shadow:0 0 0 6px #ff5a4055}}
-.mapctl{position:absolute;right:10px;bottom:10px;display:grid;grid-template-columns:repeat(3,36px);gap:4px}.mapctl button{height:36px;background:#0f1a2ce6;border:1px solid var(--line);border-radius:6px;font-size:15px}
+.mapctl{position:absolute;right:10px;bottom:10px;display:grid;grid-template-columns:repeat(3,36px);gap:4px}.mapctl .viewbtn{grid-column:1/-1;font-family:var(--display);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}.mapctl button{height:36px;background:#0f1a2ce6;border:1px solid var(--line);border-radius:6px;font-size:15px}
 .legend{position:absolute;left:10px;bottom:10px;background:#0f1a2ce6;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:12px;display:grid;gap:3px}.legend span{display:flex;gap:7px;align-items:center}.legend i{width:14px;height:10px;display:inline-block;border-radius:2px}
 #toasts{position:absolute;left:10px;top:10px;display:grid;gap:6px;max-width:min(380px,calc(100% - 20px));pointer-events:none}
 .toast{background:#0f1a2cf2;border:1px solid var(--line);border-left:4px solid var(--muted);padding:7px 10px;border-radius:4px;font-size:13px;transition:opacity .4s}.toast.out{opacity:0}

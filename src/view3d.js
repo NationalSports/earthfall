@@ -10,7 +10,10 @@ const V = (() => {
   const cam = { tx: 20, tz: 0, dist: 70, yaw: 0, pitch: 1.02 };
   const fx = []; let teamTok, time = 0, S0 = null, artData = null;
   function setArt(image) { const c = document.createElement('canvas'); c.width = RW; c.height = RH; const g = c.getContext('2d'); g.drawImage(image, 0, 0, RW, RH); artData = g.getImageData(0, 0, RW, RH).data; if (trees) trees.visible = false; sigTex = ''; if (S0) sync(S0, sel); }
-  const P = id => { const t = TERR[id], x = t.ax / AW * BW - BW / 2, z = t.ay / AH * BH - BH / 2; return new THREE.Vector3(x, hAt(x, z), z); };
+  let mode = 'board', boardRoot, globeRoot = null, globeImg = null, idxG, landG, bdG, texG, ctxG, imgG, artG, sigTexG = '', GWp = 0, GHp = 0;
+  const GR = 26, gl = { lon: 125, lat: 28, dist: 96 };
+  const gdir = (lat, lon) => { const ph = (lon + 180) * Math.PI / 180, la = lat * Math.PI / 180, c = Math.cos(la); return new THREE.Vector3(-Math.cos(ph) * c, Math.sin(la), Math.sin(ph) * c); };
+  const P = id => { const t = TERR[id]; if (mode === 'globe') return gdir(t.lat, t.lon).multiplyScalar(GR + 0.02); const x = t.ax / AW * BW - BW / 2, z = t.ay / AH * BH - BH / 2; return new THREE.Vector3(x, hAt(x, z), z); };
   const wraps = (a, b) => Math.abs(TERR[a].ax - TERR[b].ax) > AW * 0.6;
   function vnoise(x, y) { const s = (i, j) => { const n = Math.sin(i * 127.1 + j * 311.7) * 43758.5453; return n - Math.floor(n); };
     const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
@@ -83,7 +86,7 @@ const V = (() => {
   const mesh = (g, m, x, y, z, sx, sy, sz) => { const o = new THREE.Mesh(g, m); o.position.set(x || 0, y || 0, z || 0); if (sx !== undefined) o.scale.set(sx, sy === undefined ? sx : sy, sz === undefined ? sx : sz); o.castShadow = true; return o; };
   function soldier(x, z) { const g = new THREE.Group(); g.add(mesh(G.base, M.youBase, 0, 0.05), mesh(G.body, M.you, 0, 0.41), mesh(G.head, M.you, 0, 0.83), mesh(G.sph, M.youBase, 0, 0.9, 0, 0.2, 0.13, 0.2)); const r = mesh(G.box, M.rifle, 0.2, 0.52, 0.08, 0.05, 0.05, 0.6); r.rotation.x = -0.5; g.add(r); g.position.set(x, 0, z); g.scale.setScalar(1.3); return g; }
   function city(k, mat, n) { const g = new THREE.Group(); for (let i = 0; i < n; i++) { const a = Math.sin(k * 12.9 + i * 78.2) * 43758.5, rx = (a - Math.floor(a)) - 0.5, b2 = Math.sin(k * 3.1 + i * 51.7) * 9631.3, rz = (b2 - Math.floor(b2)) - 0.5, h = 0.3 + Math.abs(Math.sin(k + i * 2.3)) * (i < 2 ? 1.5 : 0.8), w = 0.24 + Math.abs(rx) * 0.3; g.add(mesh(G.box, mat, rx * 1.9, h / 2, rz * 1.2 - 0.9, w, h, w)); } return g; }
-  const sprM = {}; let pieceImgs = {};
+  const UP = new THREE.Vector3(0, 1, 0); const sprM = {}; let pieceImgs = {};
   function piece(name, x, z, size, dim) { const key = name + (dim ? 'd' : ''); if (!sprM[key]) { const t = new THREE.Texture(pieceImgs[name]); t.needsUpdate = true; t.encoding = THREE.sRGBEncoding; sprM[key] = new THREE.SpriteMaterial({ map: t, alphaTest: 0.3, transparent: true, color: dim ? 0x6f6a80 : 0xffffff, toneMapped: false }); }
     const sp = new THREE.Sprite(sprM[key]); sp.center.set(0.5, 0.04); sp.scale.set(size, size, 1); sp.position.set(x, 0.06, z); return sp; }
   function blob(x, z, r) { const m = new THREE.Mesh(G.circ, M.blob); m.rotation.x = -Math.PI / 2; m.position.set(x, 0.1, z); m.scale.set(r, r * 0.7, 1); return m; }
@@ -94,7 +97,7 @@ const V = (() => {
     g.scale.setScalar(s * 0.75); return g; }
   function buildTokens(S) {
     while (tokens.children.length) tokens.remove(tokens.children[0]);
-    for (const id of TIDS) { const T = S.terr[id], p = P(id), g = new THREE.Group(); g.position.copy(p); g.userData.grp = 1; tokens.add(g);
+    for (const id of TIDS) { const T = S.terr[id], p = P(id), g = new THREE.Group(); g.position.copy(p); g.userData.grp = 1; if (mode === 'globe') g.quaternion.setFromUnitVectors(UP, p.clone().normalize()); tokens.add(g);
       const put = (name, x, z, size, dim) => { g.add(blob(x, z, size * 0.36), piece(name, x, z, size, dim)); };
       if (T.owner !== 'waste') g.add(glow(T.owner === 'you' ? 0x2fd0cc : 0xff3a1c, T.owner === 'you' ? 2.2 : 2.8));
       if (T.owner === 'you') { if (id === HQ) { put('foundry', 0, -1.1, 2.5); if (S.nuke.building || S.nuke.stage || S.nuke.ready) put('silo', -2.2, -1.3, 2.3); if (S.emp.building || S.emp.n) put('emp-tower', 2.3, -1.6, 2.2); if (S.up.bombers) put('drone-bay', -2.6, 0.4, 2.0); }
@@ -106,9 +109,12 @@ const V = (() => {
           ls.forEach((l, k) => put(l.rank, 1.5 + k * 1.2, -0.2 + k * 0.2, l.rank === 'overlord' ? 2.9 : l.rank === 'warlord' ? 2.5 : 2.1)); }
       } else { const cr = mesh(G.cyl, M.dark, 0, 0.03, 0, 1.5, 0.06, 1.5); cr.castShadow = false; g.add(cr); const e = mesh(G.ring, M.ember, 0, 0.08, 0, 1.6); e.rotation.x = Math.PI / 2; e.castShadow = false; g.add(e); }
     }
-    for (const l of S.leaders) if (l.alive && L.leaderKnown(S, l) && !S.obs[l.at]) { const p = P(l.at), sp = piece(l.rank, p.x + 1.2, p.z, 1.8); sp.position.y = p.y + 0.06; tokens.add(sp); }
+    for (const l of S.leaders) if (l.alive && L.leaderKnown(S, l) && !S.obs[l.at]) { const p = P(l.at), sp = piece(l.rank, 0, 0, 1.8); if (mode === 'globe') sp.position.copy(p).multiplyScalar(1.02); else sp.position.set(p.x + 1.2, p.y + 0.06, p.z); tokens.add(sp); }
   }
-  function curveFor(a, b, lift) { const A = P(a), B = P(b); const segs = [];
+  function curveFor(a, b, lift) { if (mode === 'globe') { const A = gdir(TERR[a].lat, TERR[a].lon), B = gdir(TERR[b].lat, TERR[b].lon), ang = A.angleTo(B), h = (lift || 1.2) * 0.8 + ang * 3.2, pts = [];
+      for (let i = 0; i <= 28; i++) { const t = i / 28, v = A.clone().multiplyScalar(Math.sin((1 - t) * ang) / Math.sin(ang)).add(B.clone().multiplyScalar(Math.sin(t * ang) / Math.sin(ang))); pts.push(v.normalize().multiplyScalar(GR + 0.35 + Math.sin(t * Math.PI) * h)); }
+      const cv = new THREE.CatmullRomCurve3(pts); return { at: f => cv.getPoint(clamp(f, 0, 1)), segs: [cv] }; }
+    const A = P(a), B = P(b); const segs = [];
     const mk = (p, q) => { const m = p.clone().lerp(q, 0.5); m.y = Math.max(p.y, q.y) + (lift || 1.2) + p.distanceTo(q) * 0.16; return new THREE.QuadraticBezierCurve3(p.clone().setY(p.y + 0.5), m, q.clone().setY(q.y + 0.5)); };
     if (wraps(a, b)) { const left = A.x < B.x ? A : B, right = A.x < B.x ? B : A, zm = (A.z + B.z) / 2; const e1 = new THREE.Vector3(-BW / 2 - 3, 0.3, zm), e2 = new THREE.Vector3(BW / 2 + 3, 0.3, zm);
       if (A === left) segs.push(mk(A, e1), mk(e2, B)); else segs.push(mk(A, e2), mk(e1, B)); } else segs.push(mk(A, B));
@@ -130,7 +136,7 @@ const V = (() => {
     renderer.outputEncoding = THREE.sRGBEncoding; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.18; renderer.setClearColor(0x070c15); el.appendChild(renderer.domElement);
     labelsEl = document.createElement('div'); labelsEl.className = 'labels'; el.appendChild(labelsEl);
     scene = new THREE.Scene(); scene.fog = new THREE.Fog(0x070c15, 120, 260); camera = new THREE.PerspectiveCamera(34, 1, 0.5, 500);
-    pieceImgs = art.pieces; assets(); buildRaster(art.mask); { const c0 = document.createElement('canvas'); c0.width = RW; c0.height = RH; const g0 = c0.getContext('2d'); g0.drawImage(art.map, 0, 0, RW, RH); artData = g0.getImageData(0, 0, RW, RH).data; }
+    pieceImgs = art.pieces; globeImg = art.globe; assets(); buildRaster(art.mask); { const c0 = document.createElement('canvas'); c0.width = RW; c0.height = RH; const g0 = c0.getContext('2d'); g0.drawImage(art.map, 0, 0, RW, RH); artData = g0.getImageData(0, 0, RW, RH).data; }
     const c = document.createElement('canvas'); c.width = RW; c.height = RH; texCtx = c.getContext('2d'); img = texCtx.createImageData(RW, RH); tex = new THREE.CanvasTexture(c); tex.encoding = THREE.sRGBEncoding; tex.anisotropy = 8;
     const ce = document.createElement('canvas'); ce.width = RW; ce.height = RH; ctxE = ce.getContext('2d'); imgE = ctxE.createImageData(RW, RH); texE = new THREE.CanvasTexture(ce); texE.encoding = THREE.sRGBEncoding;
     const gc = document.createElement('canvas'); gc.width = gc.height = 128; const gg = gc.getContext('2d'), gr = gg.createRadialGradient(64, 64, 2, 64, 64, 64); gr.addColorStop(0, 'rgba(255,255,255,0.9)'); gr.addColorStop(0.35, 'rgba(255,255,255,0.3)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); gg.fillStyle = gr; gg.fillRect(0, 0, 128, 128); glowTex = new THREE.CanvasTexture(gc);
@@ -148,27 +154,54 @@ const V = (() => {
     tokens = new THREE.Group(); arcs = new THREE.Group(); fxGroup = new THREE.Group(); scene.add(tokens, arcs, fxGroup); buildLinks();
     teamTok = new THREE.Group(); const tc = piece('tiltrotor', 0, 0, 2.3); const tr = mesh(G.ring, M.team, 0, 0.5, 0, 0.9); tr.rotation.x = Math.PI / 2; teamTok.add(tc, tr); scene.add(teamTok);
     for (const id of TIDS) { const d = document.createElement('div'); d.className = 'tlabel'; d.innerHTML = '<span class="tn"></span><b></b><i></i>'; labelsEl.appendChild(d); labels[id] = d; }
+    boardRoot = new THREE.Group(); for (const c of scene.children.slice()) if (c !== tokens && c !== arcs && c !== fxGroup && c !== teamTok && !c.isLight) boardRoot.add(c); scene.add(boardRoot);
     controls(); resize(); window.addEventListener('resize', resize);
     if (el.clientWidth < 700 && el.clientHeight > el.clientWidth) { cam.tx = 24; cam.tz = -2; cam.dist = 70; } else fit(); }
-  function fit() { const a = el.clientWidth / Math.max(1, el.clientHeight), t = Math.tan(17 * Math.PI / 180); cam.tx = 0; cam.tz = 2; cam.yaw = 0; cam.dist = clamp(Math.max((BW + 8) / (2 * t * a), (BH + 14) / (2 * t) * 0.8), 30, 190); }
+  function buildGlobe() { GWp = globeImg.width; GHp = globeImg.height; const c = document.createElement('canvas'); c.width = GWp; c.height = GHp; ctxG = c.getContext('2d'); ctxG.drawImage(globeImg, 0, 0); artG = ctxG.getImageData(0, 0, GWp, GHp).data; imgG = ctxG.createImageData(GWp, GHp);
+    idxG = new Int8Array(GWp * GHp); landG = new Uint8Array(GWp * GHp); bdG = new Float32Array(GWp * GHp); const dirs = TIDS.map(id => gdir(TERR[id].lat, TERR[id].lon)), ppd = GWp / 360;
+    for (let y = 0; y < GHp; y++) { const lat = 90 - (y + 0.5) / GHp * 180; for (let x = 0; x < GWp; x++) { const i = y * GWp + x, o = i * 4, d = gdir(lat, (x + 0.5) / GWp * 360 - 180); let b1 = -2, b2 = -2, bi = 0;
+        for (let k = 0; k < dirs.length; k++) { const q = d.x * dirs[k].x + d.y * dirs[k].y + d.z * dirs[k].z; if (q > b1) { b2 = b1; b1 = q; bi = k; } else if (q > b2) b2 = q; }
+        idxG[i] = bi; bdG[i] = (Math.acos(Math.min(1, b2)) - Math.acos(Math.min(1, b1))) * 0.5 * 57.2958 * ppd; landG[i] = (lat > -60 && artG[o] > artG[o + 2] * 1.05) ? 1 : 0; } }
+    texG = new THREE.CanvasTexture(c); texG.encoding = THREE.sRGBEncoding; texG.anisotropy = 8; globeRoot = new THREE.Group();
+    const sph = new THREE.Mesh(new THREE.SphereGeometry(GR, 96, 64), new THREE.MeshBasicMaterial({ map: texG, toneMapped: false })); globeRoot.add(sph);
+    const atm = new THREE.Mesh(new THREE.SphereGeometry(GR * 1.045, 64, 40), new THREE.MeshBasicMaterial({ color: 0x3f8fe0, transparent: true, opacity: 0.16, side: THREE.BackSide, blending: THREE.AdditiveBlending, depthWrite: false })); globeRoot.add(atm);
+    const sp = []; for (let i = 0; i < 900; i++) { const a = Math.sin(i * 12.9898) * 43758.5453, b = Math.sin(i * 78.233) * 12543.21, u = (a - Math.floor(a)) * 2 - 1, th = (b - Math.floor(b)) * 6.2832, r = Math.sqrt(1 - u * u); sp.push(r * Math.cos(th) * 300, u * 300, r * Math.sin(th) * 300); }
+    const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.Float32BufferAttribute(sp, 3)); globeRoot.add(new THREE.Points(sg, new THREE.PointsMaterial({ color: 0xcfd8ff, size: 1.1, sizeAttenuation: false, transparent: true, opacity: 0.7, fog: false })));
+    const lg = new THREE.Group(); for (const l of LINKS) { const cv = curveFor(l[0], l[1], 0.01).segs[0], pts = cv.getPoints(24).map(v => v.normalize().multiplyScalar(GR + 0.08)); const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), l[2] ? M.sea : M.link); if (l[2]) line.computeLineDistances(); lg.add(line); } globeRoot.add(lg); scene.add(globeRoot); }
+  function paintGlobe(S) { const d = imgG.data, A = artG, own = TIDS.map(id => S.terr[id].owner), obs = TIDS.map(id => S.obs[id] ? 1 : 0), si = sel ? TIDS.indexOf(sel) : -1, n = GWp * GHp;
+    for (let i = 0; i < n; i++) { const o = i * 4; let r = A[o], g = A[o + 1], b = A[o + 2];
+      if (landG[i]) { const k = idxG[i], c = COL[own[k]], am = own[k] === 'waste' ? 0.78 : own[k] === 'enemy' ? (obs[k] ? 0.5 : 0.4) : 0.34, lum = (r + g + b) / 3 / 105; r = r * (1 - am) + c[0] * lum * am; g = g * (1 - am) + c[1] * lum * am; b = b * (1 - am) + c[2] * lum * am;
+        const line = Math.max(0, 1 - bdG[i] / 1.3), gw = Math.max(0, 1 - bdG[i] / 5);
+        if (k === si) { const t = Math.max(line, gw * 0.75); r = r * 1.12 + 8; g = g * 1.12 + 8; b = b * 1.12 + 4; r += (236 - r) * t; g += (190 - g) * t; b += (90 - b) * t; }
+        else { const dk = 1 - 0.6 * line, q = gw * (1 - line) * 0.45; r = r * dk + c[0] * q; g = g * dk + c[1] * q; b = b * dk + c[2] * q; } }
+      d[o] = r; d[o + 1] = g; d[o + 2] = b; d[o + 3] = 255; }
+    ctxG.putImageData(imgG, 0, 0); texG.needsUpdate = true; }
+  function setMode(m) { if (m === mode) return mode; mode = m; if (m === 'globe' && !globeRoot) buildGlobe(); boardRoot.visible = m === 'board'; if (globeRoot) globeRoot.visible = m === 'globe'; scene.fog.near = m === 'globe' ? 900 : 120; scene.fog.far = m === 'globe' ? 1000 : 260;
+    sigTok = ''; sigTexG = ''; sync.sa = null; teamTok.quaternion.identity(); if (m === 'globe' && sel) { gl.lon = TERR[sel].lon; gl.lat = clamp(TERR[sel].lat, -60, 70); } if (S0) sync(S0, sel); return mode; }
+  function fit() { if (mode === 'globe') { gl.dist = 96; return; } const a = el.clientWidth / Math.max(1, el.clientHeight), t = Math.tan(17 * Math.PI / 180); cam.tx = 0; cam.tz = 2; cam.yaw = 0; cam.dist = clamp(Math.max((BW + 8) / (2 * t * a), (BH + 14) / (2 * t) * 0.8), 30, 190); }
   function resize() { const w = el.clientWidth, h = el.clientHeight; if (!w || !h) return; if (resize.w && (w > h) !== (resize.w > resize.h)) setTimeout(() => { if (w > h) fit(); }, 50); resize.w = w; resize.h = h; renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); }
   function controls() { const dom = renderer.domElement, pts = new Map(); let moved = 0, pinch = 0, down = null; dom.style.touchAction = 'none';
     dom.addEventListener('pointerdown', e => { pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); moved = 0; down = { x: e.clientX, y: e.clientY, btn: e.button }; try { dom.setPointerCapture(e.pointerId); } catch (_) {} if (pts.size === 2) { const a = [...pts.values()]; pinch = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); } });
     dom.addEventListener('pointermove', e => { const p = pts.get(e.pointerId); if (!p) return; const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
-      if (pts.size === 2) { const a = [...pts.values()], d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); if (pinch) cam.dist = clamp(cam.dist * pinch / d, 24, 190); pinch = d; return; }
+      if (pts.size === 2) { const a = [...pts.values()], d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); if (pinch) { if (mode === 'globe') gl.dist = clamp(gl.dist * pinch / d, 40, 150); else cam.dist = clamp(cam.dist * pinch / d, 24, 190); } pinch = d; return; }
+      if (mode === 'globe') { const k = gl.dist * 0.0045 * (700 / Math.max(300, el.clientHeight)); gl.lon -= dx * k; gl.lat = clamp(gl.lat + dy * k, -75, 80); return; }
       if (down && (down.btn === 2 || e.shiftKey)) { cam.yaw -= dx * 0.005; cam.pitch = clamp(cam.pitch + dy * 0.004, 0.45, 1.45); return; }
       const k = cam.dist * 0.0013 * (900 / Math.max(300, el.clientHeight)), c = Math.cos(cam.yaw), s = Math.sin(cam.yaw); cam.tx -= (dx * c + dy * s) * k; cam.tz -= (-dx * s + dy * c) * k; });
     let lastPick = 0; const up = e => { pts.delete(e.pointerId); pinch = 0; if (moved < 8 && down && down.btn !== 2) { lastPick = performance.now(); pickAt(e.clientX, e.clientY); } down = null; };
     dom.addEventListener('click', e => { if (performance.now() - lastPick > 400 && moved < 8) { lastPick = performance.now(); pickAt(e.clientX, e.clientY); } });
     dom.addEventListener('pointerup', up); dom.addEventListener('pointercancel', e => { pts.delete(e.pointerId); pinch = 0; });
-    dom.addEventListener('wheel', e => { e.preventDefault(); cam.dist = clamp(cam.dist * (e.deltaY > 0 ? 1.12 : 0.89), 24, 190); }, { passive: false }); dom.addEventListener('contextmenu', e => e.preventDefault()); }
+    dom.addEventListener('wheel', e => { e.preventDefault(); const f = e.deltaY > 0 ? 1.12 : 0.89; if (mode === 'globe') gl.dist = clamp(gl.dist * f, 40, 150); else cam.dist = clamp(cam.dist * f, 24, 190); }, { passive: false }); dom.addEventListener('contextmenu', e => e.preventDefault()); }
   const ray = new THREE.Raycaster(), plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.5);
+  const gsph = new THREE.Sphere(new THREE.Vector3(), GR);
   function pickAt(cx, cy) { const r = renderer.domElement.getBoundingClientRect(); ray.setFromCamera({ x: (cx - r.left) / r.width * 2 - 1, y: -(cy - r.top) / r.height * 2 + 1 }, camera);
+    if (mode === 'globe') { const h = new THREE.Vector3(); if (!ray.ray.intersectSphere(gsph, h)) return onPick(null); const lat = Math.asin(clamp(h.y / GR, -1, 1)) * 57.2958; let lon = Math.atan2(h.z, -h.x) * 57.2958 - 180; if (lon < -180) lon += 360;
+      const X = clamp(Math.floor((lon + 180) / 360 * GWp), 0, GWp - 1), Y = clamp(Math.floor((90 - lat) / 180 * GHp), 0, GHp - 1), i = Y * GWp + X; if (landG[i]) return onPick(TIDS[idxG[i]]);
+      let best = null, ba = 0.14; const hd = h.clone().normalize(); for (const id of TIDS) { const a = hd.angleTo(gdir(TERR[id].lat, TERR[id].lon)); if (a < ba) { ba = a; best = id; } } return onPick(best); }
     const hit = new THREE.Vector3(); if (!ray.ray.intersectPlane(plane, hit)) return; for (let n = 0; n < 3; n++) { plane.constant = -(0.3 + curve(hit.x, hit.z)); if (!ray.ray.intersectPlane(plane, hit)) break; } plane.constant = -0.5; let best = null, bd = 1e9; for (const id of TIDS) { const p = P(id), d = Math.hypot(p.x - hit.x, p.z - hit.z); if (d < bd) { bd = d; best = id; } }
     const X = Math.round((hit.x + BW / 2) / BW * RW), Y = Math.round((hit.z + BH / 2) / BH * RH);
     if (X >= 0 && Y >= 0 && X < RW && Y < RH && landA[Y * RW + X]) return onPick(TIDS[idx[Y * RW + X]]); if (bd < 4.5) onPick(best); else onPick(null); }
   function sync(S, selected) { S0 = S; sel = selected;
-    const st = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (S.obs[id] ? 1 : 0); }).join('') + sel; if (st !== sigTex) { sigTex = st; paint(S); }
+    const st = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (S.obs[id] ? 1 : 0); }).join('') + sel; if (mode === 'globe') { if (st !== sigTexG) { sigTexG = st; paintGlobe(S); } } else if (st !== sigTex) { sigTex = st; paint(S); }
     const sk = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (T.owner === 'you' ? (T.n >= 7 ? 3 : T.n >= 4 ? 2 : 1) : (S.obs[id] ? T.n : 'u' + T.seenN)) + (T.fort | 0) + (T.radar | 0) + (T.battery | 0); }).join('') + [S.nuke.building, S.nuke.stage, S.nuke.ready, S.emp.building, S.emp.n, S.up.bombers, S.up.railgun].map(x => +!!x).join('') + S.leaders.map(l => l.alive && L.leaderKnown(S, l) ? l.at + l.rank[0] : '-').join('');
     if (sk !== sigTok) { sigTok = sk; buildTokens(S); }
     const sa = S.parties.map(p => p.id + (L.partyVisible(S, p) ? 'v' : 'h')).join(',') + '|' + (S.team.dest || ''); if (sa !== sync.sa) { sync.sa = sa; buildArcs(S); }
@@ -177,16 +210,18 @@ const V = (() => {
       d.children[0].textContent = TERR[id].name; d.children[1].textContent = T.owner === 'waste' ? '☢' : T.owner === 'enemy' ? (known ? L.enemyDefense(S, id) : '?') : T.n;
       const ls = S.leaders.filter(l => l.alive && l.at === id && L.leaderKnown(S, l)); d.children[2].textContent = ls.map(l => l.rank === 'overlord' ? '♛' : l.rank === 'warlord' ? '★' : '▲').join(''); } }
   const v3 = new THREE.Vector3();
-  function place(d, p, dy, below) { v3.copy(p); v3.y += dy; v3.project(camera); if (v3.z > 1) { d.style.display = 'none'; return; } d.style.display = ''; d.style.transform = (below ? 'translate(-50%,5px) translate(' : 'translate(-50%,-50%) translate(') + ((v3.x + 1) / 2 * el.clientWidth).toFixed(1) + 'px,' + ((1 - v3.y) / 2 * el.clientHeight).toFixed(1) + 'px)'; }
+  function place(d, p, dy, below) { if (mode === 'globe' && p.dot(camera.position) < GR * GR * 1.02) { d.style.display = 'none'; return; } v3.copy(p); if (mode === 'globe') v3.multiplyScalar(1 + dy / GR); else v3.y += dy; v3.project(camera); if (v3.z > 1) { d.style.display = 'none'; return; } d.style.display = ''; d.style.transform = (below ? 'translate(-50%,5px) translate(' : 'translate(-50%,-50%) translate(') + ((v3.x + 1) / 2 * el.clientWidth).toFixed(1) + 'px,' + ((1 - v3.y) / 2 * el.clientHeight).toFixed(1) + 'px)'; }
   function frame(dt) { time += dt; cam.tx = clamp(cam.tx, -BW / 2, BW / 2); cam.tz = clamp(cam.tz, -BH / 2, BH / 2 + 6);
-    const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch); camera.position.set(cam.tx + Math.sin(cam.yaw) * cp * cam.dist, sp * cam.dist, cam.tz + Math.cos(cam.yaw) * cp * cam.dist); camera.lookAt(cam.tx, 0, cam.tz);
-    const ppu = el.clientHeight / (2 * cam.dist * 0.3057); labelsEl.classList.toggle('far', ppu < 7.5); labelsEl.classList.toggle('mid', ppu >= 7.5 && ppu < 13);
+    const G3 = mode === 'globe'; if (G3) { camera.position.copy(gdir(gl.lat, gl.lon).multiplyScalar(gl.dist)); camera.up.set(0, 1, 0); camera.lookAt(0, 0, 0); } else {
+    const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch); camera.position.set(cam.tx + Math.sin(cam.yaw) * cp * cam.dist, sp * cam.dist, cam.tz + Math.cos(cam.yaw) * cp * cam.dist); camera.lookAt(cam.tx, 0, cam.tz); }
+    const vd = G3 ? (gl.dist - GR) * 1.15 : cam.dist, ppu = el.clientHeight / (2 * vd * 0.3057); labelsEl.classList.toggle('far', ppu < 7.5); labelsEl.classList.toggle('mid', ppu >= 7.5 && ppu < 13);
     if (S0) { for (const id of TIDS) place(labels[id], P(id), 0, true);
       for (const c of arcs.children) if (c.userData.party) { const p = c.userData.party, f = (S0.t + (V.frac || 0) - p.t0) / (p.eta - p.t0), q = c.userData.curve.at(f), q2 = c.userData.curve.at(f + 0.02); c.position.copy(q); }
       for (const d of partyLabels) { d.textContent = d._p.n + ' · ' + Math.max(0, d._p.eta - S0.t) + 'h'; place(d, d._head.position, 1.2); }
-      const tm = S0.team; if (tm.dest && teamTok.userData.curve) teamTok.position.copy(teamTok.userData.curve.at((S0.t + (V.frac || 0) - tm.t0) / Math.max(1, tm.eta - tm.t0))); else { const p = P(tm.at); teamTok.position.set(p.x - 1.5, p.y + 0.2, p.z - 0.6); }
+      const tm = S0.team; if (tm.dest && teamTok.userData.curve) teamTok.position.copy(teamTok.userData.curve.at((S0.t + (V.frac || 0) - tm.t0) / Math.max(1, tm.eta - tm.t0))); else { const p = P(tm.at); if (G3) teamTok.position.copy(p).multiplyScalar(1.03); else teamTok.position.set(p.x - 1.5, p.y + 0.2, p.z - 0.6); }
+      if (G3) { teamTok.quaternion.setFromUnitVectors(UP, teamTok.position.clone().normalize()); teamTok.visible = teamTok.position.dot(camera.position) > GR * GR; } else teamTok.visible = true;
       teamTok.children[1].rotation.z = time * 1.5; teamTok.children[0].position.y = 0.9 + Math.sin(time * 2.4) * 0.1; }
-    const zf = clamp(cam.dist / 46, 1, 2.5); for (const t of tokens.children) if (t.userData.grp) t.scale.setScalar(0.9 * zf); teamTok.scale.setScalar(zf); V.zf = zf;
+    const zf = clamp(vd / 46, 1, 2.5); for (const t of tokens.children) { if (t.userData.grp) t.scale.setScalar(0.9 * zf); t.visible = !G3 || t.position.dot(camera.position) > GR * GR * 1.0; } for (const c of arcs.children) if (c.userData.party) c.visible = !G3 || c.position.dot(camera.position) > GR * GR; teamTok.scale.setScalar(zf); V.zf = zf;
     for (const t of tokens.children) { if (t.userData.pulse) t.material.opacity = 0.32 + Math.sin(time * 2.2) * 0.12; else for (const c of t.children) if (c.userData.pulse) c.material.opacity = 0.24 + Math.sin(time * 1.8 + t.position.x) * 0.1; }
     if (seaTex) { seaTex.offset.x = time * 0.006; seaTex.offset.y = time * 0.004; } for (const c of clouds) { c.position.x += dt * 0.5; if (c.position.x > BW / 2 + 16) c.position.x = -BW / 2 - 16; }
     if (boardMesh) boardMesh.material.emissiveIntensity = 0.42 + Math.sin(time * 1.4) * 0.14;
@@ -194,9 +229,9 @@ const V = (() => {
     renderer.render(scene, camera); }
   function flash(p, size, color, dur) { const m = new THREE.Mesh(G.sph, new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.9 })); m.position.copy(p); fxGroup.add(m);
     fx.push({ obj: m, t: 0, update(t) { const k = t / dur; if (k >= 1) return false; m.scale.setScalar(0.2 + size * Math.sqrt(k)); m.material.opacity = 0.9 * (1 - k); } }); }
-  function missile(from, to, kind) { const A = P(from), B = P(to), big = kind === 'nuke', c = new THREE.QuadraticBezierCurve3(A.clone().setY(A.y + 0.6), A.clone().lerp(B, 0.5).setY(8 + A.distanceTo(B) * 0.2), B.clone().setY(B.y + 0.3));
+  function missile(from, to, kind) { const A = P(from), B = P(to), big = kind === 'nuke', c = mode === 'globe' ? { getPoint: t => curveFor(from, to, 3).at(t) } : new THREE.QuadraticBezierCurve3(A.clone().setY(A.y + 0.6), A.clone().lerp(B, 0.5).setY(8 + A.distanceTo(B) * 0.2), B.clone().setY(B.y + 0.3));
     const m = new THREE.Mesh(G.sph, new THREE.MeshBasicMaterial({ color: kind === 'emp' ? 0x8fd8ff : big ? 0xffe9a0 : 0xffb060 })); m.scale.setScalar(big ? 0.45 : 0.25); fxGroup.add(m); const dur = big ? 2.2 : 1.1;
     fx.push({ obj: m, t: 0, update(t) { if (t >= dur) { flash(B, big ? 9 : kind === 'emp' ? 5 : 2.6, kind === 'emp' ? 0x7fd0ff : 0xffa040, big ? 2.4 : 0.8); if (big) flash(B, 4, 0xffffff, 1.2); return false; } m.position.copy(c.getPoint(t / dur)); } }); }
-  function focus(id, lift) { const p = P(id); if (cam.dist > 70) cam.dist = 60; cam.tx = p.x; cam.tz = p.z + 2 + (lift ? cam.dist * 0.3 : 0); }
-  return { init, sync, frame, setArt, missile, flash: id => flash(P(id), 2.5, 0xff5030, 0.7), focus, fit, cam, resize, zoom: k => { cam.dist = clamp(cam.dist * k, 24, 190); }, rotate: a => { cam.yaw += a; }, tilt: () => { cam.pitch = cam.pitch > 1.2 ? 1.02 : cam.pitch > 0.9 ? 0.7 : 1.45; } };
+  function focus(id, lift) { if (mode === 'globe') { gl.lon = TERR[id].lon; gl.lat = clamp(TERR[id].lat - (lift ? 18 : 0), -60, 70); return; } const p = P(id); if (cam.dist > 70) cam.dist = 60; cam.tx = p.x; cam.tz = p.z + 2 + (lift ? cam.dist * 0.3 : 0); }
+  return { init, sync, frame, setArt, missile, flash: id => flash(P(id), 2.5, 0xff5030, 0.7), focus, fit, cam, resize, zoom: k => { if (mode === 'globe') gl.dist = clamp(gl.dist * k, 40, 150); else cam.dist = clamp(cam.dist * k, 24, 190); }, toggleMode: () => setMode(mode === 'board' ? 'globe' : 'board'), getMode: () => mode, rotate: a => { if (mode === 'globe') gl.lon += a * 60; else cam.yaw += a; }, tilt: () => { cam.pitch = cam.pitch > 1.2 ? 1.02 : cam.pitch > 0.9 ? 0.7 : 1.45; } };
 })();

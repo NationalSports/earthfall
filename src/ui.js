@@ -163,6 +163,7 @@ function act(a, id) { if (!S && a !== 'start' && a !== 'diff') return;
     case 'rollAll': while (!asl.b.done) L.assaultRound(S, asl.b); assaultModal(); return;
     case 'withdraw': L.assaultEnd(S, asl.b, false); assaultModal(); return;
     case 'closeModal': closeModal(); break;
+    case 'globe': { const m = V.toggleMode(); const b = document.querySelector('[data-a="globe"]'); if (b) b.textContent = m === 'globe' ? 'Flat board' : 'Globe'; return; }
     case 'zoomIn': V.zoom(0.8); return; case 'zoomOut': V.zoom(1.25); return; case 'fit': V.fit(); return; case 'rotL': V.rotate(-0.3); return; case 'rotR': V.rotate(0.3); return; case 'tilt': V.tilt(); return;
   }
   drain(); renderAll(true); save(); }
@@ -177,7 +178,7 @@ function renderAll(force) { if (!S) return; renderTop(); renderPanel(force); V.s
 async function boot() {
   setPanel(!compact());
   const ld = src => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = src; });
-  const art = { map: await ld(ART.map), mask: await ld(ART.mask), pieces: {} }; await Promise.all(Object.keys(PIECES).map(async k => { art.pieces[k] = await ld(PIECES[k]); }));
+  const art = { map: await ld(ART.map), mask: await ld(ART.mask), globe: await ld(ART.globe), pieces: {} }; await Promise.all(Object.keys(PIECES).map(async k => { art.pieces[k] = await ld(PIECES[k]); }));
   { const st = document.createElement('style'); st.textContent = Object.keys(CARDS).map(k => '.art-' + k + '{background-image:url(' + CARDS[k] + ')}').join(''); document.head.appendChild(st); }
   V.init($('#map'), id => { if (!S) return; selId = id; if (id) { tab = 'territory'; setPanel(true); } else if (compact()) setPanel(false); renderAll(true); }, art);
   document.addEventListener('click', e => { const b = e.target.closest('[data-a]'); if (!b || b.disabled) return; act(b.dataset.a, b.dataset.id); });
