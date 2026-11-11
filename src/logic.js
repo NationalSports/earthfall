@@ -96,13 +96,13 @@ const BUILD = {
 const NUKE_STAGE = { cost:{metal:110,fuel:90,research:140,uranium:6}, hours:60 };
 const SALVO_COST = { fuel:20, metal:10 }, BOMB_COST = { fuel:40 };
 const INTEL = [
-  'Recovered sidearm. The grip is molded for a five-fingered hand. The safety catch is exactly where ours is.',
-  'Their field manual uses our own infantry doctrine. The edition number is one we have not written yet.',
-  'Comms decoded. It is not an alien language. It is a drifted dialect, and the linguists recognize one word in three.',
-  'Autopsy complete. Human genome, heavily damaged. Radiation scarring carried across some forty generations.',
-  'A prisoner speaks: "We are not taking your world. We are taking what ours no longer has." Seed stock. Clean water. Unbroken DNA.',
-  'The Overlord\'s dispatches cite this war as history: dates, battles, our launches. They know our next move because they studied it.',
-  'The prisoner gives the year they came from, and the name of the war that ruined it. It is this one.'
+  'SIGNALS INTERCEPT. Their command traffic is not noise. It is encrypted, and the cipher is built on a scheme our own cryptographers proposed last year and never finished.',
+  'CAPTURED ORDERS. A decoded order of battle lists our units by name and strength. Several of those units have not been formed yet.',
+  'LINGUISTIC ANALYSIS. The decrypted traffic is not an alien language. It is a drifted dialect of ours. Our analysts recognize one word in three.',
+  'MEDICAL INTELLIGENCE. Tissue recovered from the dead commander is human. The genome is badly damaged, with radiation scarring carried across some forty generations.',
+  'INTERROGATION SUMMARY. A prisoner, in his own words: "We are not taking your world. We are taking what ours no longer has." Seed stock. Clean water. Unbroken DNA.',
+  'DECRYPTED ARCHIVE. The Overlord\'s dispatches cite this war as history: dates, battles, our own launches. They anticipate our moves because they studied them.',
+  'FINAL ASSESSMENT. The prisoner gives the year they came from, and the name of the war that ruined it. It is this one.'
 ];
 const FIRST = ['Vael','Maren','Osk','Tavi','Renn','Juno','Kaed','Sio','Brann','Ilse','Dax','Yara','Corv','Neth','Halo','Emer'];
 const SUR = ['Okonkwo','Alvarez','Tanaka','Petrov','Singh','Moreau','Haddad','Kim','Novak','Santos','Lindqvist','Mbeki','Chen','Reyes','Walker','Rossi'];
@@ -285,7 +285,7 @@ L.moveLeaders = S => { for (const l of S.leaders) { if (!l.alive) continue;
       if (L.leaderKnown(S, l) || S.obs[l.from]) L.log(S, RANKN[l.rank] + ' ' + l.name + ' is relocating to ' + TERR[to].name + '. Security will be thin for 36 hours.', 'intel'); } } };
 L.killLeader = (S, l, how) => { l.alive = false; S.kills++; L.drawCard(S, 'for the kill'); S.res.intel = Math.min(30, S.res.intel + 3);
   L.log(S, RANKN[l.rank] + ' ' + l.name + ' is dead' + (how ? ' (' + how + ').' : '.'), 'good');
-  if (S.intel < INTEL.length) { S.ev.push({ k: 'intel', i: S.intel }); S.log.unshift({ t: S.t, msg: 'Intel recovered: ' + INTEL[S.intel], kind: 'story' }); S.intel++; }
+  if (S.intel < INTEL.length) { S.ev.push({ k: 'intel', i: S.intel }); S.res.intel = Math.min(30, S.res.intel + 3); S.log.unshift({ t: S.t, msg: 'Intel recovered: ' + INTEL[S.intel], kind: 'story' }); S.intel++; }
   if (l.rank === 'warlord') { S.next.promote.push({ t: S.t + 72, boss: l.id });
     for (const id of L.enemyT(S)) if (L.leadersAt(S, id).some(c => c.boss === l.id) || id === l.at) { S.terr[id].disarray = S.t + 96; S.terr[id].n = Math.max(1, S.terr[id].n - 1); }
     L.log(S, 'His theater is in disarray. The Overlord has lost two guards.', 'good'); }

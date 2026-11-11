@@ -408,7 +408,7 @@ function drain() { if (!S) return; const ev = S.ev.splice(0); for (const e of ev
     else if (e.k === 'colStop') setTimeout(colModal, 60);
     else if (e.k === 'report') { reports.push(e); setTimeout(reportModal, 250); }
     else if (e.k === 'arrive') { selId = e.id; tab = 'territory'; toast('Strike team has arrived in ' + TERR[e.id].name + '.', 'info'); }
-    else if (e.k === 'intel' && !asl) { const i = e.i; setTimeout(() => { if (!modal && !S.over) showModal('<div class="mhead"><small>Intel recovered · fragment ' + (i + 1) + ' of ' + INTEL.length + '</small><h1>Field report</h1></div><p class="lead quote">' + esc(INTEL[i]) + '</p><div class="row">' + btn('closeModal', 'Continue', { cls: 'gold big' }) + '</div>', 'intelm'); }, 300); }
+    else if (e.k === 'intel' && !asl) { const i = e.i; setTimeout(() => { if (!modal && !S.over) showModal('<div class="mhead"><small>Intel recovered · fragment ' + (i + 1) + ' of ' + INTEL.length + '</small><h1>Intelligence brief</h1></div><p class="lead quote">' + esc(INTEL[i]) + '</p><p class="note">Recovered from the dead leader\'s command post. +3 intel, which pays for covert strikes and sabotage.</p><div class="row">' + btn('closeModal', 'Continue', { cls: 'gold big' }) + '</div>', 'intelm'); }, 300); }
     else if (e.k === 'over') setTimeout(overModal, 600); } }
 function renderAll(force) { if (!S) return; renderTop(); renderPanel(force); actionBar(); coach(); V.sync(S, selId); }
 
