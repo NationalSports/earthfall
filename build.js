@@ -4,7 +4,7 @@ const fs = require('fs'), path = require('path');
 const r = f => fs.readFileSync(path.join(__dirname, f), 'utf8');
 const uri = (f, mime) => 'data:' + mime + ';base64,' + fs.readFileSync(path.join(__dirname, f)).toString('base64');
 const dir = (d, mime) => Object.fromEntries(fs.readdirSync(path.join(__dirname, d)).filter(f => f.endsWith('.webp')).sort().map(f => [f.replace(/\.webp$/, ''), uri(d + '/' + f, mime)]));
-const assets = 'const ART = { map: ' + JSON.stringify(uri('assets/board/map-world.jpg', 'image/jpeg')) + ', mask: ' + JSON.stringify(uri('assets/board/land-mask.png', 'image/png')) + ', globe: ' + JSON.stringify(uri('assets/board/globe-color.jpg', 'image/jpeg')) + ' };\n' +
+const assets = 'const ART = { map: ' + JSON.stringify(uri('assets/board/map-world.jpg', 'image/jpeg')) + ', mask: ' + JSON.stringify(uri('assets/board/land-mask.png', 'image/png')) + ', globe: ' + JSON.stringify(uri('assets/board/globe-color.jpg', 'image/jpeg')) + (fs.existsSync(path.join(__dirname, 'assets/board/infestation.jpg')) ? ', infest: ' + JSON.stringify(uri('assets/board/infestation.jpg', 'image/jpeg')) : '') + ' };\n' +
   'const ANCHORS = ' + r('assets/board/anchors.json') + ';\n' +
   'const PIECES = ' + JSON.stringify(dir('assets/pieces', 'image/webp')) + ';\n' +
   'const CARDS = ' + JSON.stringify(dir('assets/cards', 'image/webp')) + ';\n';
