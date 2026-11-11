@@ -68,6 +68,8 @@ A simple test bot that never uses the strike team, cards or defense battles wins
 ## Weapons and structures (Built)
 | Thing | What it does |
 | --- | --- |
+| Industry (3 levels) | +3 of the city's resource per day, per level |
+| Barracks (2 levels) | Raises 1 troop in the city every 3 days, per level |
 | Fortress | Defenders roll +1; a wall in defense battles |
 | Radar | Reveals strength, leaders and war parties within 2 territories; +1 intel per day; longer gun range in defense battles |
 | Missile battery | Salvo on territories or war parties within 2 territories; strikes you call in defense battles |

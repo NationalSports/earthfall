@@ -80,7 +80,10 @@ const UPGRADES = {
 const BUILD = {
   fort:{ name:'Fortress', cost:{metal:50}, desc:'Defenders roll +1 on their best die.' },
   radar:{ name:'Radar Station', cost:{metal:35,research:25}, desc:'Reveals enemy strength, leaders and war parties within 2 territories.' },
-  battery:{ name:'Missile Battery', cost:{metal:60,fuel:40}, desc:'Fires on enemy territories or war parties within 2 territories. Reloads in 24h.' }
+  battery:{ name:'Missile Battery', cost:{metal:60,fuel:40}, desc:'Fires on enemy territories or war parties within 2 territories. Reloads in 24h.' },
+  // Leveled buildings: each level costs one more multiple of the base cost.
+  works:{ name:'Industry', levels:3, cost:{metal:40,fuel:20}, desc:"+3 of this city's resource per day, per level." },
+  barracks:{ name:'Barracks', levels:2, cost:{metal:45,research:15}, desc:'Raises 1 troop here every 3 days, per level.' }
 };
 const NUKE_STAGE = { cost:{metal:110,fuel:90,research:140,uranium:6}, hours:60 };
 const SALVO_COST = { fuel:20, metal:10 }, BOMB_COST = { fuel:40 };
@@ -119,7 +122,7 @@ L.stamp = S => 'Day ' + L.day(S) + ' ' + String(Math.floor(S.t % 24)).padStart(2
 L.log = (S, msg, kind) => { S.log.unshift({ t: S.t, msg, kind: kind || 'info' }); if (S.log.length > 80) S.log.pop(); S.ev.push({ k: 'toast', msg, kind: kind || 'info' }); };
 L.canPay = (S, c) => Object.keys(c).every(k => S.res[k] >= c[k]);
 L.pay = (S, c) => { for (const k in c) S.res[k] -= c[k]; };
-L.costOf = (S, key) => { const c = Object.assign({}, BUILD[key].cost); if (S.spec === 'engineer') for (const k in c) c[k] = Math.ceil(c[k] / 2); return c; };
+L.costOf = (S, key, lvl) => { const c = Object.assign({}, BUILD[key].cost); if (BUILD[key].levels) for (const k in c) c[k] *= (lvl || 0) + 1; if (S.spec === 'engineer') for (const k in c) c[k] = Math.ceil(c[k] / 2); return c; };
 L.owned = S => TIDS.filter(id => S.terr[id].owner === 'you');
 L.enemyT = S => TIDS.filter(id => S.terr[id].owner === 'enemy');
 L.leadersAt = (S, id) => S.leaders.filter(l => l.alive && l.at === id);
@@ -240,7 +243,7 @@ L.arrive = (S, p, forced) => { const T = S.terr[p.to], name = TERR[p.to].name;
   if (r.D > 0) { const lost = Math.min(T.n, D0 - r.D); T.n = Math.max(teamHere ? 0 : 1, T.n - lost); if (T.n < 1) T.n = 1; S.stats.held++;
     if (teamHere) S.res.salvage++;
     L.log(S, name + ' held against ' + p.n + ' attackers' + (lost ? ', losing ' + lost + '.' : ' without loss.') + (teamHere ? ' Your strike team fought in the line.' : ''), 'good');
-  } else { T.owner = 'enemy'; T.n = Math.max(1, r.A); T.fort = 0; T.radar = 0; T.battery = 0; S.stats.lost++;
+  } else { T.owner = 'enemy'; T.n = Math.max(1, r.A); T.fort = 0; T.radar = 0; T.battery = 0; T.works = 0; T.barracks = 0; S.stats.lost++;
     L.log(S, name + ' has fallen to the invasion.', 'bad'); S.ev.push({ k: 'pause' });
     if (teamHere) { S.team.pips = Math.max(0, S.team.pips - 2); L.teamRetreat(S, p.to); }
     if (rnd() < 0.6) L.spawnCommander(S, p.to);
@@ -269,7 +272,7 @@ L.promote = (S, pr) => { let c = S.leaders.filter(l => l.alive && l.rank === 'co
   for (const l of S.leaders) if (l.boss === pr.boss || l.boss === old && false) l.boss = n.id;
   L.log(S, 'Commander ' + n.name + ' has been promoted to Warlord in ' + TERR[n.at].name + '.', 'bad'); };
 L.daily = S => { const own = L.owned(S); const inc = { metal: 0, fuel: 0, research: 0 };
-  for (const id of own) { inc[TERR[id].res] += 6; const pk = PERKS[id]; if (pk) { for (const k in pk.inc || {}) inc[k] += pk.inc[k]; if (pk.intel) S.res.intel = Math.min(30, S.res.intel + pk.intel); if (pk.pool && L.day(S) % 2 === 0) S.pool = Math.min(30, S.pool + 1); } }
+  for (const id of own) { const T = S.terr[id]; inc[TERR[id].res] += 6 + 3 * (T.works || 0); if (T.barracks && L.day(S) % 3 === 0) T.n += T.barracks; const pk = PERKS[id]; if (pk) { for (const k in pk.inc || {}) inc[k] += pk.inc[k]; if (pk.intel) S.res.intel = Math.min(30, S.res.intel + pk.intel); if (pk.pool && L.day(S) % 2 === 0) S.pool = Math.min(30, S.pool + 1); } }
   for (const k in inc) S.res[k] += inc[k];
   S.res.uranium += own.filter(id => URANIUM.includes(id)).length; S.res.intel = Math.min(30, S.res.intel + 1 + own.filter(id => S.terr[id].radar).length);
   let r = Math.max(1, Math.floor(own.length / L.P.div));
@@ -338,8 +341,8 @@ L.playCard = (S, i) => { const k = (S.cards || [])[i]; if (!k) return fail('No s
 const fail = msg => ({ ok: false, msg });
 L.reinforce = (S, id) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); if (S.pool < 1) return fail('No reinforcements available.');
   if (T.n >= 12) return fail('Garrison is at maximum.'); S.pool--; T.n++; return { ok: true }; };
-L.build = (S, id, key) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); if (T[key]) return fail('Already built.');
-  const c = L.costOf(S, key); if (!L.canPay(S, c)) return fail('Not enough resources.'); L.pay(S, c); T[key] = 1; if (key === 'battery') T.reload = 0;
+L.build = (S, id, key) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); const B0 = BUILD[key]; if (B0.levels ? (T[key] || 0) >= B0.levels : T[key]) return fail(B0.levels ? 'Fully upgraded.' : 'Already built.');
+  const c = L.costOf(S, key, T[key]); if (!L.canPay(S, c)) return fail('Not enough resources.'); L.pay(S, c); T[key] = (T[key] || 0) + 1; if (key === 'battery') T.reload = 0;
   L.log(S, BUILD[key].name + ' built in ' + TERR[id].name + '.', 'info'); L.refreshIntel(S); return { ok: true }; };
 L.buy = (S, key) => { if (S.up[key]) return fail('Already owned.'); const c = UPGRADES[key].cost; if (!L.canPay(S, c)) return fail('Not enough resources.');
   L.pay(S, c); S.up[key] = 1; L.log(S, UPGRADES[key].name + ' is now in service.', 'info'); L.refreshIntel(S); return { ok: true }; };
@@ -431,7 +434,7 @@ L.airlift = (S, id) => { const T = S.terr[id]; if (T.owner !== 'you') return fai
 L.nukeStart = S => { if (S.nuke.building) return fail('A stage is already in progress.'); if (S.terr[HQ].owner !== 'you') return fail('HQ is lost.'); if (!L.canPay(S, NUKE_STAGE.cost)) return fail('Not enough resources.');
   L.pay(S, NUKE_STAGE.cost); S.nuke.building = true; S.nuke.doneAt = S.t + NUKE_STAGE.hours; L.log(S, 'Warhead stage ' + (S.nuke.stage + 1) + ' is under construction at HQ. The enemy will notice.', 'info'); return { ok: true }; };
 L.nukeLaunch = (S, id) => { if (S.nuke.ready < 1) return fail('No warhead ready.'); const T = S.terr[id]; if (T.owner === 'waste') return fail('Already a wasteland.'); if (id === HQ) return fail('That is your own headquarters.');
-  S.nuke.ready--; S.nukes++; const was = T.owner; T.owner = 'waste'; T.n = 0; T.fort = T.radar = T.battery = 0;
+  S.nuke.ready--; S.nukes++; const was = T.owner; T.owner = 'waste'; T.n = 0; T.fort = T.radar = T.battery = T.works = T.barracks = 0;
   L.log(S, TERR[id].name + ' is gone. Nothing will grow there again.', 'story');
   for (const l of L.leadersAt(S, id)) { const esc = TERR[id].adj.filter(n => S.terr[n].owner === 'enemy'); if (l.rank === 'overlord' && esc.length && rnd() < 0.5) { l.at = pick(esc); l.exposed = S.t + 48; L.log(S, 'The Overlord was not there when it hit. He has surfaced in ' + TERR[l.at].name + '.', 'bad'); } else L.killLeader(S, l, 'vaporized'); }
   for (const n of TERR[id].adj) { const N = S.terr[n]; if (N.owner !== 'waste' && N.n > 1) N.n--; }

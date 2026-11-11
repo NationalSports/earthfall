@@ -402,7 +402,10 @@ const UPGRADES = {
 const BUILD = {
   fort:{ name:'Fortress', cost:{metal:50}, desc:'Defenders roll +1 on their best die.' },
   radar:{ name:'Radar Station', cost:{metal:35,research:25}, desc:'Reveals enemy strength, leaders and war parties within 2 territories.' },
-  battery:{ name:'Missile Battery', cost:{metal:60,fuel:40}, desc:'Fires on enemy territories or war parties within 2 territories. Reloads in 24h.' }
+  battery:{ name:'Missile Battery', cost:{metal:60,fuel:40}, desc:'Fires on enemy territories or war parties within 2 territories. Reloads in 24h.' },
+  // Leveled buildings: each level costs one more multiple of the base cost.
+  works:{ name:'Industry', levels:3, cost:{metal:40,fuel:20}, desc:"+3 of this city's resource per day, per level." },
+  barracks:{ name:'Barracks', levels:2, cost:{metal:45,research:15}, desc:'Raises 1 troop here every 3 days, per level.' }
 };
 const NUKE_STAGE = { cost:{metal:110,fuel:90,research:140,uranium:6}, hours:60 };
 const SALVO_COST = { fuel:20, metal:10 }, BOMB_COST = { fuel:40 };
@@ -441,7 +444,7 @@ L.stamp = S => 'Day ' + L.day(S) + ' ' + String(Math.floor(S.t % 24)).padStart(2
 L.log = (S, msg, kind) => { S.log.unshift({ t: S.t, msg, kind: kind || 'info' }); if (S.log.length > 80) S.log.pop(); S.ev.push({ k: 'toast', msg, kind: kind || 'info' }); };
 L.canPay = (S, c) => Object.keys(c).every(k => S.res[k] >= c[k]);
 L.pay = (S, c) => { for (const k in c) S.res[k] -= c[k]; };
-L.costOf = (S, key) => { const c = Object.assign({}, BUILD[key].cost); if (S.spec === 'engineer') for (const k in c) c[k] = Math.ceil(c[k] / 2); return c; };
+L.costOf = (S, key, lvl) => { const c = Object.assign({}, BUILD[key].cost); if (BUILD[key].levels) for (const k in c) c[k] *= (lvl || 0) + 1; if (S.spec === 'engineer') for (const k in c) c[k] = Math.ceil(c[k] / 2); return c; };
 L.owned = S => TIDS.filter(id => S.terr[id].owner === 'you');
 L.enemyT = S => TIDS.filter(id => S.terr[id].owner === 'enemy');
 L.leadersAt = (S, id) => S.leaders.filter(l => l.alive && l.at === id);
@@ -562,7 +565,7 @@ L.arrive = (S, p, forced) => { const T = S.terr[p.to], name = TERR[p.to].name;
   if (r.D > 0) { const lost = Math.min(T.n, D0 - r.D); T.n = Math.max(teamHere ? 0 : 1, T.n - lost); if (T.n < 1) T.n = 1; S.stats.held++;
     if (teamHere) S.res.salvage++;
     L.log(S, name + ' held against ' + p.n + ' attackers' + (lost ? ', losing ' + lost + '.' : ' without loss.') + (teamHere ? ' Your strike team fought in the line.' : ''), 'good');
-  } else { T.owner = 'enemy'; T.n = Math.max(1, r.A); T.fort = 0; T.radar = 0; T.battery = 0; S.stats.lost++;
+  } else { T.owner = 'enemy'; T.n = Math.max(1, r.A); T.fort = 0; T.radar = 0; T.battery = 0; T.works = 0; T.barracks = 0; S.stats.lost++;
     L.log(S, name + ' has fallen to the invasion.', 'bad'); S.ev.push({ k: 'pause' });
     if (teamHere) { S.team.pips = Math.max(0, S.team.pips - 2); L.teamRetreat(S, p.to); }
     if (rnd() < 0.6) L.spawnCommander(S, p.to);
@@ -591,7 +594,7 @@ L.promote = (S, pr) => { let c = S.leaders.filter(l => l.alive && l.rank === 'co
   for (const l of S.leaders) if (l.boss === pr.boss || l.boss === old && false) l.boss = n.id;
   L.log(S, 'Commander ' + n.name + ' has been promoted to Warlord in ' + TERR[n.at].name + '.', 'bad'); };
 L.daily = S => { const own = L.owned(S); const inc = { metal: 0, fuel: 0, research: 0 };
-  for (const id of own) { inc[TERR[id].res] += 6; const pk = PERKS[id]; if (pk) { for (const k in pk.inc || {}) inc[k] += pk.inc[k]; if (pk.intel) S.res.intel = Math.min(30, S.res.intel + pk.intel); if (pk.pool && L.day(S) % 2 === 0) S.pool = Math.min(30, S.pool + 1); } }
+  for (const id of own) { const T = S.terr[id]; inc[TERR[id].res] += 6 + 3 * (T.works || 0); if (T.barracks && L.day(S) % 3 === 0) T.n += T.barracks; const pk = PERKS[id]; if (pk) { for (const k in pk.inc || {}) inc[k] += pk.inc[k]; if (pk.intel) S.res.intel = Math.min(30, S.res.intel + pk.intel); if (pk.pool && L.day(S) % 2 === 0) S.pool = Math.min(30, S.pool + 1); } }
   for (const k in inc) S.res[k] += inc[k];
   S.res.uranium += own.filter(id => URANIUM.includes(id)).length; S.res.intel = Math.min(30, S.res.intel + 1 + own.filter(id => S.terr[id].radar).length);
   let r = Math.max(1, Math.floor(own.length / L.P.div));
@@ -660,8 +663,8 @@ L.playCard = (S, i) => { const k = (S.cards || [])[i]; if (!k) return fail('No s
 const fail = msg => ({ ok: false, msg });
 L.reinforce = (S, id) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); if (S.pool < 1) return fail('No reinforcements available.');
   if (T.n >= 12) return fail('Garrison is at maximum.'); S.pool--; T.n++; return { ok: true }; };
-L.build = (S, id, key) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); if (T[key]) return fail('Already built.');
-  const c = L.costOf(S, key); if (!L.canPay(S, c)) return fail('Not enough resources.'); L.pay(S, c); T[key] = 1; if (key === 'battery') T.reload = 0;
+L.build = (S, id, key) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); const B0 = BUILD[key]; if (B0.levels ? (T[key] || 0) >= B0.levels : T[key]) return fail(B0.levels ? 'Fully upgraded.' : 'Already built.');
+  const c = L.costOf(S, key, T[key]); if (!L.canPay(S, c)) return fail('Not enough resources.'); L.pay(S, c); T[key] = (T[key] || 0) + 1; if (key === 'battery') T.reload = 0;
   L.log(S, BUILD[key].name + ' built in ' + TERR[id].name + '.', 'info'); L.refreshIntel(S); return { ok: true }; };
 L.buy = (S, key) => { if (S.up[key]) return fail('Already owned.'); const c = UPGRADES[key].cost; if (!L.canPay(S, c)) return fail('Not enough resources.');
   L.pay(S, c); S.up[key] = 1; L.log(S, UPGRADES[key].name + ' is now in service.', 'info'); L.refreshIntel(S); return { ok: true }; };
@@ -753,7 +756,7 @@ L.airlift = (S, id) => { const T = S.terr[id]; if (T.owner !== 'you') return fai
 L.nukeStart = S => { if (S.nuke.building) return fail('A stage is already in progress.'); if (S.terr[HQ].owner !== 'you') return fail('HQ is lost.'); if (!L.canPay(S, NUKE_STAGE.cost)) return fail('Not enough resources.');
   L.pay(S, NUKE_STAGE.cost); S.nuke.building = true; S.nuke.doneAt = S.t + NUKE_STAGE.hours; L.log(S, 'Warhead stage ' + (S.nuke.stage + 1) + ' is under construction at HQ. The enemy will notice.', 'info'); return { ok: true }; };
 L.nukeLaunch = (S, id) => { if (S.nuke.ready < 1) return fail('No warhead ready.'); const T = S.terr[id]; if (T.owner === 'waste') return fail('Already a wasteland.'); if (id === HQ) return fail('That is your own headquarters.');
-  S.nuke.ready--; S.nukes++; const was = T.owner; T.owner = 'waste'; T.n = 0; T.fort = T.radar = T.battery = 0;
+  S.nuke.ready--; S.nukes++; const was = T.owner; T.owner = 'waste'; T.n = 0; T.fort = T.radar = T.battery = T.works = T.barracks = 0;
   L.log(S, TERR[id].name + ' is gone. Nothing will grow there again.', 'story');
   for (const l of L.leadersAt(S, id)) { const esc = TERR[id].adj.filter(n => S.terr[n].owner === 'enemy'); if (l.rank === 'overlord' && esc.length && rnd() < 0.5) { l.at = pick(esc); l.exposed = S.t + 48; L.log(S, 'The Overlord was not there when it hit. He has surfaced in ' + TERR[l.at].name + '.', 'bad'); } else L.killLeader(S, l, 'vaporized'); }
   for (const n of TERR[id].adj) { const N = S.terr[n]; if (N.owner !== 'waste' && N.n > 1) N.n--; }
@@ -1064,7 +1067,7 @@ const V = (() => {
   const gsph = new THREE.Sphere(new THREE.Vector3(), GR);
   function dblZoom(cx, cy) { const r = renderer.domElement.getBoundingClientRect(); ray.setFromCamera({ x: (cx - r.left) / r.width * 2 - 1, y: -(cy - r.top) / r.height * 2 + 1 }, camera); const h = new THREE.Vector3();
     if (mode === 'globe') { if (gl.dist <= 44) { gl.dist = 90; return; } if (ray.ray.intersectSphere(gsph, h)) { const lat = Math.asin(clamp(h.y / GR, -1, 1)) * 57.2958; let lon = Math.atan2(h.z, -h.x) * 57.2958 - 180; if (lon < -180) lon += 360; const dl = ((lon - gl.lon) % 360 + 540) % 360 - 180; gl.lon += dl * 0.7; gl.lat = clamp(gl.lat + (lat - gl.lat) * 0.7, -75, 80); } gl.dist = clamp(gl.dist * 0.6, 40, 150); return; }
-    if (cam.dist <= CITY_MIN + 1.5) { cam.dist = 80; return; } plane.constant = -0.5; if (ray.ray.intersectPlane(plane, h)) { cam.tx += (h.x - cam.tx) * 0.7; cam.tz += (h.z - cam.tz) * 0.7; } cam.dist = clamp(cam.dist * 0.6, CITY_MIN, 190); }
+    if (cam.dist <= zmin() + 8) { cam.dist = 80; return; } plane.constant = -0.5; const deep = cam.dist <= 60, k = deep ? 1 : 0.7; if (ray.ray.intersectPlane(plane, h)) { cam.tx += (h.x - cam.tx) * k; cam.tz += (h.z - cam.tz) * k; } cam.dist = deep ? zmin() + 2 : 40; } // three steps: region, city, back out
   function pickAt(cx, cy) { const r = renderer.domElement.getBoundingClientRect(); ray.setFromCamera({ x: (cx - r.left) / r.width * 2 - 1, y: -(cy - r.top) / r.height * 2 + 1 }, camera);
     if (mode === 'globe') { const h = new THREE.Vector3(); if (!ray.ray.intersectSphere(gsph, h)) return onPick(null); const lat = Math.asin(clamp(h.y / GR, -1, 1)) * 57.2958; let lon = Math.atan2(h.z, -h.x) * 57.2958 - 180; if (lon < -180) lon += 360;
       const X = clamp(Math.floor((lon + 180) / 360 * GWp), 0, GWp - 1), Y = clamp(Math.floor((90 - lat) / 180 * GHp), 0, GHp - 1), i = Y * GWp + X; if (landG[i]) return onPick(TIDS[idxG[i]]);
@@ -1095,6 +1098,8 @@ const V = (() => {
     g.fillStyle = owner === 'enemy' ? '#1a0e12' : owner === 'waste' ? '#14110f' : '#0f1926'; g.fillRect(0, 0, 64, 128); const lit = owner === 'you' ? 0.5 : owner === 'enemy' ? 0.1 : 0;
     for (let y = 0; y < 15; y++) for (let x = 0; x < 6; x++) { const on = r() < lit; g.fillStyle = on ? (owner === 'enemy' ? '#ff5a36' : r() < 0.3 ? '#8ff0ea' : '#ffd890') : (owner === 'enemy' ? '#2a151a' : '#182536'); g.fillRect(5 + x * 9.5, 6 + y * 8, 6, 5); }
     const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return winTexC[key] = t; }
+  // A dark pool around the open city, so the low-detail map near it recedes.
+  let haloT = null; function haloTex() { if (haloT) return haloT; const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d'), rg = g.createRadialGradient(128, 128, 20, 128, 128, 128); rg.addColorStop(0, 'rgba(4,8,14,0.94)'); rg.addColorStop(0.45, 'rgba(4,8,14,0.88)'); rg.addColorStop(1, 'rgba(4,8,14,0)'); g.fillStyle = rg; g.fillRect(0, 0, 256, 256); return haloT = new THREE.CanvasTexture(c); }
   function padMark(label, built) { const key = label + built; if (padTex[key]) return padTex[key]; const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
     g.strokeStyle = built ? 'rgba(70,214,208,0.95)' : 'rgba(232,190,96,0.95)'; g.lineWidth = 6; g.setLineDash(built ? [] : [14, 9]); g.beginPath(); g.arc(64, 64, 54, 0, 6.3); g.stroke(); g.fillStyle = built ? 'rgba(20,60,66,0.55)' : 'rgba(60,46,16,0.55)'; g.fill();
     if (!built) { g.fillStyle = 'rgba(244,214,140,1)'; g.font = '700 54px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('+', 64, 50); g.font = '700 17px sans-serif'; g.fillText(label, 64, 94); }
@@ -1102,17 +1107,17 @@ const V = (() => {
   function buildCity(S, id) { if (cityGrp) cityGrp.parent.remove(cityGrp); cityPads = []; const T = S.terr[id], p = P(id), g = new THREE.Group(); g.position.set(p.x, p.y + 0.03, p.z); cityGrp = g; cityId = id; tokens.parent.add(g);
     const seed = TIDS.indexOf(id) + 1; let s = seed * 104729; const r = () => (s = (s * 9301 + 49297) % 233280) / 233280, known = T.owner !== 'enemy' || S.obs[id], th = (seed * 0.37) % 1.2 - 0.6;
     const gm = new THREE.Mesh(new THREE.CircleGeometry(CITY_R + 0.5, 48), new THREE.MeshBasicMaterial({ map: cityGround(T.owner, id, th), transparent: true, depthWrite: false, toneMapped: false })); gm.rotation.x = -Math.PI / 2; gm.position.y = 0.13; gm.renderOrder = 4; g.add(gm);
+    { const hm = new THREE.Mesh(new THREE.CircleGeometry(15, 40), new THREE.MeshBasicMaterial({ map: haloTex(), transparent: true, depthWrite: false, toneMapped: false, opacity: 0 })); hm.rotation.x = -Math.PI / 2; hm.position.y = 0.1; hm.renderOrder = 3; g.add(hm); g.userData.halo = hm; }
     const put = (name, x, z, size, dim) => { if (!pieceImgs[name]) return; g.add(blob(x, z, size * 0.34), piece(name, x, z, size, dim)); };
-    const pads = { fort: [-2.15, 1.25], radar: [2.25, -1.2], battery: [2.05, 1.45] }, keep = (x, z) => Object.values(pads).every(q => Math.hypot(q[0] - x, q[1] - z) > 0.75) && Math.hypot(x, z - 2.3) > 1.2;
+    const pads = { fort: [-2.15, 1.25], radar: [2.25, -1.2], battery: [2.05, 1.45], works: [-1.75, -1.35], barracks: [0.2, -2.35] }, keep = (x, z) => Object.values(pads).every(q => Math.hypot(q[0] - x, q[1] - z) > 0.75) && Math.hypot(x, z - 2.3) > 1.2;
     if (T.owner !== 'waste') { const roof = new THREE.MeshStandardMaterial({ color: T.owner === 'enemy' ? 0x08040a : 0x060b12, roughness: 0.9 }), bg = new THREE.BoxGeometry(1, 1, 1), mats = [0, 1, 2].map(v => { const t = winTex(T.owner, v), m = new THREE.MeshStandardMaterial({ map: t, emissiveMap: t, emissive: 0xffffff, emissiveIntensity: T.owner === 'you' ? 0.9 : 0.7, color: 0x556070, roughness: 0.6, metalness: 0.25 }); return [m, m, roof, roof, m, m]; });
       cityCells(th, (x, z, d) => { if (!keep(x, z) || d < 0.3 || r() < (T.owner === 'you' ? 0.14 : 0.45)) return; const core = Math.max(0, 1 - d / 1.9), tall = (0.16 + r() * 0.3 + core * core * (0.5 + r() * 1.1)) * (T.owner === 'you' ? 1 : 0.5), w = CELL * (0.5 + r() * 0.22), b = new THREE.Mesh(bg, mats[Math.floor(r() * 3)]);
         b.scale.set(w, tall, CELL * (0.5 + r() * 0.22)); b.position.set(x, 0.14 + tall / 2, z); b.rotation.y = -th; if (T.owner === 'enemy') b.rotation.z = (r() - 0.5) * 0.25; g.add(b); }); }
-    if (T.owner === 'you') { const PAD = { fort: ['FORT', 'barricade', 1.25], radar: ['RADAR', 'radar-dish', 1.35], battery: ['BATTERY', S.up.railgun ? 'railgun' : 'launcher', 1.3] };
-      for (const k in pads) { const built = !!T[k], q = pads[k], m = new THREE.Mesh(new THREE.CircleGeometry(0.62, 32), new THREE.MeshBasicMaterial({ map: padMark(PAD[k][0], built), transparent: true, depthWrite: false, toneMapped: false })); m.rotation.x = -Math.PI / 2; m.position.set(q[0], 0.17, q[1]); m.renderOrder = 5; g.add(m); if (built) put(PAD[k][1], q[0], q[1] + 0.1, PAD[k][2]); cityPads.push({ key: k, x: q[0], z: q[1], built }); }
+    if (T.owner === 'you') { const PAD = { fort: ['FORT', 'barricade', 1.25], radar: ['RADAR', 'radar-dish', 1.35], battery: ['BATTERY', S.up.railgun ? 'railgun' : 'launcher', 1.3], works: ['INDUSTRY', { metal: 'foundry', fuel: 'missile-truck', research: 'drone-bay' }[TERR[id].res] || 'foundry', 1.0], barracks: ['BARRACKS', 'shield-dome', 0.9] }, LV = { works: 3, barracks: 2 };
+      for (const k in pads) { const lv = T[k] || 0, built = LV[k] ? lv >= LV[k] : !!lv, q = pads[k], m = new THREE.Mesh(new THREE.CircleGeometry(0.62, 32), new THREE.MeshBasicMaterial({ map: padMark(PAD[k][0] + (LV[k] && lv ? ' ' + (lv + 1) : ''), built), transparent: true, depthWrite: false, toneMapped: false })); m.rotation.x = -Math.PI / 2; m.position.set(q[0], 0.17, q[1]); m.renderOrder = 5; g.add(m); if (lv) put(PAD[k][1], q[0] + (built ? 0 : -0.2), q[1] + (built ? 0.1 : -0.45), PAD[k][2] + (LV[k] ? lv * 0.28 : 0)); cityPads.push({ key: k, x: q[0], z: q[1], built }); }
       if (T.fort) { const wm = new THREE.MeshStandardMaterial({ color: 0x161d28, roughness: 0.7, metalness: 0.3, emissive: 0x0a2c33, emissiveIntensity: 0.5 }), R = CITY_R - 0.05, n = 16;
         for (let i = 0; i < n; i++) { const a = i / n * 6.283, a2 = (i + 0.5) / n * 6.283, tw = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 0.42, 8), wm); tw.position.set(Math.cos(a) * R, 0.33, Math.sin(a) * R); g.add(tw);
           if (i === 4) continue; const seg = new THREE.Mesh(new THREE.BoxGeometry(2 * R * Math.sin(Math.PI / n) - 0.12, 0.24, 0.07), wm); seg.position.set(Math.cos(a2) * R, 0.25, Math.sin(a2) * R); seg.rotation.y = -a2 + Math.PI / 2; g.add(seg); } }
-      put({ metal: 'foundry', fuel: 'missile-truck', research: 'drone-bay' }[TERR[id].res] || 'foundry', -0.9, -1.5, 1.5);
       if (id === HQ) { if (S.nuke.building || S.nuke.stage || S.nuke.ready) put('silo', 0.6, -2.1, 1.3); if (S.emp.building || S.emp.n) put('emp-tower', -2.3, -0.6, 1.3); }
       const n = Math.min(12, T.n); for (let i = 0; i < n; i++) put(i % 4 === 3 ? 'rover' : 'infantry', (i % 6 - 2.5) * 0.52, 2.0 + Math.floor(i / 6) * 0.55, 0.8);
       if (L.teamAt(S) === id) put('tiltrotor', -1.9, -1.9, 1.3);
@@ -1121,11 +1126,14 @@ const V = (() => {
         ls.forEach((l, k) => put(l.rank, 1.1 + k * 0.9, 0.9, l.rank === 'overlord' ? 1.6 : 1.3)); } }
     else { const e = mesh(G.ring, M.ember, 0, 0.2, 0, 2.2); e.rotation.x = Math.PI / 2; e.castShadow = false; g.add(e); } }
   // Called every frame: decides whether a city is close enough to open, and keeps it in step with the game.
-  function cityFrame() { const f = mode === 'globe' || !S0 ? 0 : clamp((CITY_IN - camS.dist) / 9, 0, 1); cityF = f; if (f <= 0) { if (cityGrp) cityGrp.visible = false; return null; }
+  const zmin = () => CITY_MIN * (camera.aspect < 1 ? Math.min(2.6, 1.15 / camera.aspect) : 1);
+  function cityFrame(dt) { cam.dist = Math.max(cam.dist, zmin()); const raw = mode === 'globe' || !S0 ? 0 : clamp((zmin() + 23 - camS.dist) / 18, 0, 1), f = raw * raw * (3 - 2 * raw); cityF = f; if (f <= 0) { if (cityGrp) cityGrp.visible = false; return null; }
     let best = null, bd = 6.5; for (const id of TIDS) { const p = P(id), dx = ((p.x - camS.tx) % BW + BW * 1.5) % BW - BW / 2, d = Math.hypot(dx, p.z - camS.tz - 1); if (d < bd) { bd = d; best = id; } }
     if (!best) { if (cityGrp) cityGrp.visible = false; return null; }
-    if (best !== cityId || citySig !== sigTok + S0.terr[best].n + (L.teamAt(S0) === best)) { buildCity(S0, best); citySig = sigTok + S0.terr[best].n + (L.teamAt(S0) === best); }
-    cityGrp.visible = true; cityGrp.scale.set(0.55 + 0.45 * f, Math.max(0.02, f), 0.55 + 0.45 * f); return f > 0.3 ? best : null; }
+    const T = S0.terr[best], sg = sigTok + T.n + (L.teamAt(S0) === best) + (T.works || 0) + (T.barracks || 0); if (best !== cityId || citySig !== sg) { buildCity(S0, best); citySig = sg; }
+    cityGrp.visible = true; cityGrp.scale.set(0.3 + 0.7 * f, Math.max(0.02, f), 0.3 + 0.7 * f); if (cityGrp.userData.halo) cityGrp.userData.halo.material.opacity = f;
+    if (f > 0.75) { const p = P(best), dx = ((p.x - cam.tx) % BW + BW * 1.5) % BW - BW / 2, dz = p.z - 0.4 - cam.tz; if (Math.hypot(dx, dz) < 2.6) { cam.tx += dx * Math.min(1, dt * 1.6); cam.tz += dz * Math.min(1, dt * 1.6); } } // settle on the city once you are in it
+    return f > 0.3 ? best : null; }
   function cityPick(hit) { if (!cityGrp || !cityGrp.visible || cityF < 0.6) return false; for (const q of cityPads) if (Math.hypot(cityGrp.position.x + q.x - hit.x, cityGrp.position.z + q.z - hit.z) < 0.7) { onCity(cityId, q.key, q.built); return true; } return false; }
   function sync(S, selected) { S0 = S; sel = selected;
     const st = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (S.obs[id] ? 1 : 0); }).join('') + sel; if (mode === 'globe') { if (st !== sigTexG) { sigTexG = st; paintGlobe(S); colorBorders(bordG, S); } } else if (st !== sigTex) { sigTex = st; paint(S); colorBorders(bordB, S); }
@@ -1150,7 +1158,7 @@ const V = (() => {
       const tm = S0.team; if (tm.dest && teamTok.userData.curve) teamTok.position.copy(teamTok.userData.curve.at((S0.t + (V.frac || 0) - tm.t0) / Math.max(1, tm.eta - tm.t0))); else { const p = P(tm.at); if (G3) teamTok.position.copy(p).multiplyScalar(1.03); else teamTok.position.set(p.x - 1.5, p.y + 0.2, p.z - 0.6); }
       if (G3) { teamTok.quaternion.setFromUnitVectors(UP, teamTok.position.clone().normalize()); teamTok.visible = teamTok.position.dot(camera.position) > GR * GR; } else teamTok.visible = true;
       teamTok.children[1].rotation.z = time * 1.5; teamTok.children[0].position.y = 0.9 + Math.sin(time * 2.4) * 0.1; }
-    const zf = clamp(vd / 44, 1, 2.9); for (const t of tokens.children) { if (t.userData.grp) t.scale.setScalar(1.12 * zf); t.visible = !G3 || t.position.dot(camera.position) > GR * GR * 1.0; } for (const c of arcs.children) if (c.userData.party) c.visible = !G3 || c.position.dot(camera.position) > GR * GR; teamTok.scale.setScalar(zf); V.zf = zf; { const open = cityFrame(); if (open) for (const t of tokens.children) if (t.userData.id === open) t.visible = false; V.city = open; }
+    const zf = clamp(vd / 44, 1, 2.9); for (const t of tokens.children) { if (t.userData.grp) t.scale.setScalar(1.12 * zf); t.visible = !G3 || t.position.dot(camera.position) > GR * GR * 1.0; } for (const c of arcs.children) if (c.userData.party) c.visible = !G3 || c.position.dot(camera.position) > GR * GR; teamTok.scale.setScalar(zf); V.zf = zf; { const open = cityFrame(dt); if (open) for (const t of tokens.children) if (t.userData.id === open) t.visible = false; V.city = open; }
     for (const t of tokens.children) { if (t.userData.pulse) t.material.opacity = 0.32 + Math.sin(time * 2.2) * 0.12; else for (const c of t.children) if (c.userData.pulse) c.material.opacity = 0.24 + Math.sin(time * 1.8 + t.position.x) * 0.1; }
     if (seaTex) { seaTex.offset.x = time * 0.006; seaTex.offset.y = time * 0.004; } for (const c of clouds) { c.position.x += dt * 0.5; if (c.position.x > BW / 2 + 16) c.position.x = -BW / 2 - 16; }
     if (boardMesh) boardMesh.material.emissiveIntensity = 0.42 + Math.sin(time * 1.4) * 0.14;
@@ -1205,12 +1213,13 @@ function panelTerritory() { if (!selId) return '<div class="empty"><h3>Select a 
   if (PERKS[selId] && T.owner !== 'waste') h += '<div class="perk' + (T.owner === 'you' ? ' on' : '') + '"><b>★ ' + PERKS[selId].name + '</b><span>' + PERKS[selId].desc + (T.owner === 'you' ? '' : ' · liberate to gain') + '</span></div>';
   const inc = S.parties.filter(p => p.to === selId && L.partyVisible(S, p));
   if (T.owner === 'you') {
-    const st = [T.fort && 'Fortress', T.radar && 'Radar', T.battery && ('Missile battery' + ((T.reload || 0) > S.t ? ' (reloading ' + (T.reload - S.t) + 'h)' : ''))].filter(Boolean).join(', ') || 'None';
+    const st = [T.works && 'Industry ' + T.works, T.barracks && 'Barracks ' + T.barracks, T.fort && 'Fortress', T.radar && 'Radar', T.battery && ('Missile battery' + ((T.reload || 0) > S.t ? ' (reloading ' + (T.reload - S.t) + 'h)' : ''))].filter(Boolean).join(', ') || 'None';
     h += '<div class="stats"><div><label>Garrison</label><b>' + T.n + '</b></div><div><label>Defense bonus</label><b>+' + Math.min(2, (T.fort ? 1 : 0) + (S.up.hardened ? 1 : 0) + (PERKS[selId] && PERKS[selId].def || 0)) + '</b></div><div class="wide"><label>Structures</label><span>' + st + '</span></div></div>';
     if (inc.length) { h += '<div class="alert"><b>⚠ Under attack</b>'; for (const p of inc) { h += '<div class="inc"><span>' + p.n + ' attackers from ' + TERR[p.from].name + ' arrive in ' + Math.max(0, p.eta - S.t) + 'h</span>';
         if (teamHere && !p.hit) h += btn('ambush', 'Ambush', { id: p.id, cls: 'sm' }); if (L.batteriesInRange(S, p.to).length || L.batteriesInRange(S, p.from).length) h += btn('salvoParty', 'Missiles', { id: p.id, cls: 'sm' }); h += '</div>'; } h += '</div>'; }
     h += '<div class="acts">' + btn('reinforce', 'Reinforce', { id: selId, art: 'deploy', cls: 'teal big', sub: 'Add 1 troop from reserve (' + S.pool + ' left)', dis: S.pool < 1 }) +
       btn('airlift', 'Airlift in', { id: selId, art: 'airlift', sub: 'Move 2 troops from your largest garrison · ' + cost({ fuel: 15 }), dis: (S.airT || 0) > S.t });
+    for (const k of ['works', 'barracks']) { const lv = T[k] || 0; if (lv < BUILD[k].levels) h += btn('build', (lv ? 'Upgrade ' : 'Build ') + BUILD[k].name + (lv ? ' to level ' + (lv + 1) : ''), { art: k === 'works' ? 'research' : 'deploy', id: selId + ':' + k, sub: BUILD[k].desc + ' ' + cost(L.costOf(S, k, lv)), dis: !L.canPay(S, L.costOf(S, k, lv)) }); }
     for (const k of ['fort', 'radar', 'battery']) if (!T[k]) h += btn('build', 'Build ' + BUILD[k].name, { art: { fort: 'fortify', radar: 'radar', battery: 'missile-battery' }[k], id: selId + ':' + k, sub: BUILD[k].desc + ' ' + cost(L.costOf(S, k)), dis: !L.canPay(S, L.costOf(S, k)) });
     h += '</div>';
   } else if (T.owner === 'enemy') {
@@ -1409,8 +1418,8 @@ async function boot() {
   const art = { map: await ld(ART.map), mask: await ld(ART.mask), globe: await ld(ART.globe), infest: ART.infest ? await ld(ART.infest) : null, pieces: {} }; await Promise.all(Object.keys(PIECES).map(async k => { art.pieces[k] = await ld(PIECES[k]); }));
   { const st = document.createElement('style'); st.textContent = Object.keys(CARDS).map(k => '.art-' + k + '{background-image:url(' + CARDS[k] + ')}').join(''); document.head.appendChild(st); }
   PIMG = art.pieces; V.init($('#map'), id => { if (!S) return; SFX.play('tap'); selId = id; if (id) { tab = 'territory'; setPanel(true); } else if (compact()) setPanel(false); renderAll(true); }, art);
-  V.onCity = (id, key, built) => { if (!S) return; if (built) return toast(BUILD[key].name + ' is already in place here.', 'info'); const c = L.costOf(S, key), can = L.canPay(S, c);
-    showModal('<div class="mhead"><small>' + TERR[id].name + '</small><h1>Build ' + BUILD[key].name + '?</h1></div><p class="lead">' + BUILD[key].desc + '</p><p class="lead">' + cost(c) + (can ? '' : ' · not enough resources yet') + '</p><div class="row">' + btn('closeModal', 'Cancel') + btn('buildGo', 'Build', { id: id + ':' + key, cls: 'gold big', dis: !can }) + '</div>', 'confirm'); };
+  V.onCity = (id, key, built) => { if (!S) return; if (built) return toast(BUILD[key].name + (BUILD[key].levels ? ' is fully upgraded here.' : ' is already in place here.'), 'info'); const lv = S.terr[id][key] || 0, c = L.costOf(S, key, lv), can = L.canPay(S, c);
+    showModal('<div class="mhead"><small>' + TERR[id].name + '</small><h1>' + (lv ? 'Upgrade ' + BUILD[key].name + ' to level ' + (lv + 1) : 'Build ' + BUILD[key].name) + '?</h1></div><p class="lead">' + BUILD[key].desc + '</p><p class="lead">' + cost(c) + (can ? '' : ' · not enough resources yet') + '</p><div class="row">' + btn('closeModal', 'Cancel') + btn('buildGo', 'Build', { id: id + ':' + key, cls: 'gold big', dis: !can }) + '</div>', 'confirm'); };
   document.addEventListener('click', e => { const b = e.target.closest('[data-a]'); if (!b || b.disabled) return; act(b.dataset.a, b.dataset.id); });
   const p = $('#panel'); p.addEventListener('pointerdown', () => { hold = true; }); window.addEventListener('pointerup', () => { setTimeout(() => { hold = false; }, 60); });
   document.addEventListener('keydown', e => { if (!S || modal || e.target.tagName === 'INPUT') return; if (e.code === 'Space') { e.preventDefault(); setSpeed(S.speed ? 0 : 1); renderTop(); } });
