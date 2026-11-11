@@ -90,13 +90,39 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 .mapctl{left:8px;right:auto;top:auto;bottom:8px}.specs{grid-template-columns:repeat(3,1fr)}.how{display:none}.sheet{gap:8px;padding:12px 16px}.lead{font-size:14px}}
 /* City label: one plate holding count, name and leader mark, so nothing drifts apart */
 .tlabel{display:flex;grid-template-columns:none;align-items:center;gap:5px;padding:2px 8px 2px 3px;background:#0b1422f0;border:1px solid var(--gold2);border-radius:12px;box-shadow:0 1px 5px #000a}
-.tlabel .tn{grid-column:auto;background:none;border:0;padding:0;box-shadow:none;border-radius:0}
+.labels .tlabel .tn{grid-column:auto;background:none;border:0;padding:0;box-shadow:none;border-radius:0}
 .tlabel b{grid-column:auto;order:-1;min-width:19px;height:19px;font-size:11px;border-width:1px}
 .tlabel i{position:static;left:auto;bottom:auto;font-size:12px}
-.tlabel.sel{background:var(--gold);border-color:#fff6}.tlabel.sel .tn{background:none;color:#1a1205;border:0}.tlabel.hq{border-color:var(--gold)}.tlabel.hq .tn{border:0}
+.tlabel.sel{background:var(--gold);border-color:#fff6}.labels .tlabel.sel .tn{background:none;color:#1a1205;border:0}.tlabel.hq{border-color:var(--gold)}.labels .tlabel.hq .tn{border:0;color:var(--gold)}
 .far .tlabel:not(.sel):not(.hq),.mid .tlabel.you:not(.sel):not(.hq):not(.threat){padding:2px 3px}
 .mapctl,#ptoggle{z-index:4}
 @media (prefers-reduced-motion:reduce){.tlabel.threat b{animation:none}}
+
+/* keep sub-text on gold buttons readable over their illustration */
+.btn.gold>small{color:#2a1c08;font-weight:600;text-shadow:0 1px 0 #ffe9b866}
+
+/* Earthfall concept HUD — replacement theme, Issue #11. Original selectors and responsive behavior retained. */
+:root{--ink:#050e18;--panel:#0a1724;--panel2:#112435;--line:#40516a;--gold:#e5b765;--gold2:#956a30;--text:#f5ead6;--muted:#b4c0cb;--teal:#4ad8d7;--red:#f06a55;--violet:#ba88fa;--good:#91d9a3;--warn:#f3c16e}
+body{background:radial-gradient(ellipse at 45% 40%,#11283a,#050b13 80%);color:var(--text)}
+#top{background:linear-gradient(180deg,#182b39f7,#081522f9);border-bottom:1px solid #c4934d;box-shadow:0 2px 18px #0009,inset 0 1px #f4d49a20}
+.brand b{color:#f3c67a;text-shadow:0 0 20px #c9934c55;letter-spacing:.22em}
+#panel{background:linear-gradient(135deg,#142638,#091521 55%,#07111c);border-left-color:#b58a4b;box-shadow:-12px 0 32px #0008,inset 1px 0 #f6d9a527}
+.tabs{background:#091523;border-bottom-color:#9e783e}.tabs button{min-height:44px;color:#d0c7b4}.tabs button.on{background:linear-gradient(#3d321e66,#151d24);color:#ffe3a5;text-shadow:0 0 10px #ffcc7755}
+.chip,.stats>div,.card,.thead,.leader,.spec,.tac,.est,.result{background:linear-gradient(150deg,#1b2c3b,#0d1c2a);border-color:#5c647060;box-shadow:inset 0 1px #ffffff0c,0 4px 12px #0004}
+.btn{min-height:44px;background:linear-gradient(165deg,#233749,#0d1b29);border:1px solid #6c798655;box-shadow:inset 0 1px #ffffff15,0 3px 10px #0005;transition:background .15s,border-color .15s,transform .15s}
+.btn:hover:not(:disabled){background:linear-gradient(160deg,#30485c,#142738);border-color:#e9bd72;transform:translateY(-1px)}
+.btn:focus-visible,.tabs button:focus-visible,.mapctl button:focus-visible,.speed button:focus-visible,.pclose:focus-visible{outline:3px solid #ffe4a2;outline-offset:2px}
+.btn.gold{background:linear-gradient(#edbb67,#a46b27 48%,#604013);border-color:#ffe3a6;color:#17100a;box-shadow:inset 0 1px #fff3ce,0 0 15px #d9a04c44}.btn.gold small{color:#382a16}
+.btn.teal{background:linear-gradient(#237b87,#0a424f);border-color:#71e4e7}.btn.danger{background:linear-gradient(#a54338,#571c20);border-color:#ff927d}.btn.violet{background:linear-gradient(#654b89,#302348);border-color:#c39dff}
+.btn.sm{min-height:40px}.speed button{min-height:40px}.mapctl button{min-height:40px;min-width:40px;background:#0a1b2aeb;border-color:#ad8750}.mapctl{grid-template-columns:repeat(3,40px)}
+.tlabel .tn{background:#0a1b29ef;border-color:#b38b50;color:#fff0d2;box-shadow:0 2px 7px #0009,0 0 8px #d4a15420}
+.legend,.toast{background:#091724ed;border-color:#8e795b88;box-shadow:0 5px 18px #0008}
+.sheet{background:linear-gradient(150deg,#1b2c3c,#0b1725 70%);border:1px solid #d6a45c;box-shadow:0 25px 80px #000c,inset 0 1px #ffe5ad3d}
+.sheet h1,.thead h2{color:#ffe2aa}.card h3,.spec b,.tac b{color:#f5ca82}
+.bar{background:#06101b;border:1px solid #526072}.bar i{box-shadow:0 0 10px #b885ff66}
+@media(max-width:860px),(max-height:520px){#panel{border-top-color:#bd9254}.mapctl{grid-template-columns:repeat(3,40px)}.mapctl button{height:40px}.speed button{min-width:40px}.pclose{min-height:44px}}
+@media(max-height:520px) and (orientation:landscape){#panel{border-left-color:#bd9254}body.pclosed #ptoggle{min-height:44px;background:linear-gradient(#edbb67,#8b5a20);color:#1b140c}}
+@media(prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover:not(:disabled){transform:none}}
 </style>
 </head>
 <body>
