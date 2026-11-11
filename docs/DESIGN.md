@@ -211,3 +211,9 @@ Strongholds are bases: Industry, Barracks, Radar, Missile Battery and Command Po
 - Each new threat level launches an orbital drop on territory behind your lines (two from level 3). Radar shows where; elsewhere it is a surprise.
 - Endgame: when the last Warlord dies the Overlord is exposed and the swarm is enraged, growing and attacking harder until he falls.
 - Bot win rates over 30 games: Recruit 27, Veteran 16, Last Stand 6.
+
+## Twists
+
+- **Supply lines.** Your territory must connect through your land to one of your strongholds, or it produces nothing and defends at −1. Enemy territory must connect through occupied land to a leader, or it cannot grow, loses 1 strength a night, and is attacked at +1. Cut-off territories show ✂.
+- **Warlord powers.** Each living Warlord gives the swarm one power (Fury, Brood, Shroud, Drain, Bulwark) until he is killed. Listed under the Enemy button with a Hunt shortcut.
+- **Missions.** From day 2 headquarters offers one optional objective at a time (liberate, hold, kill) with a reward: troops, resources, or a warhead.

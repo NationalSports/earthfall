@@ -340,7 +340,7 @@ const V = (() => {
     if (sk !== sigTok) { sigTok = sk; buildTokens(S); }
     const sa = S.parties.map(p => p.id + (L.partyVisible(S, p) ? 'v' : 'h')).join(',') + '|' + (S.team.dest || '') + '|' + L.allCols(S).map(c => c.id).join(',') + '|' + (V.moveArrow ? V.moveArrow.from + '>' + V.moveArrow.to : '') + '|' + (sel && S.terr[sel] && S.terr[sel].owner === 'enemy' ? sel + L.assaultAvail(S, sel).by.map(b => b.id + b.max).join('') : ''); if (sa !== sync.sa) { sync.sa = sa; buildArcs(S); }
     const threat = {}; for (const p of S.parties) if (L.partyVisible(S, p)) threat[p.to] = 1;
-    for (const id of TIDS) { const T = S.terr[id], d = labels[id], known = S.obs[id]; d.className = 'tlabel ' + T.owner + (id === sel ? ' sel' : '') + (threat[id] ? ' threat' : '') + (id === HQ ? ' hq' : '') + (L.isStrong(id) ? ' strong' : '');
+    for (const id of TIDS) { const T = S.terr[id], d = labels[id], known = S.obs[id]; d.className = 'tlabel ' + T.owner + (id === sel ? ' sel' : '') + (threat[id] ? ' threat' : '') + (id === HQ ? ' hq' : '') + (L.isStrong(id) ? ' strong' : '') + (L.cutOff(S, id) ? ' cut' : '');
       d.children[0].textContent = TERR[id].name; d.children[1].textContent = T.owner === 'waste' ? '☢' : T.owner === 'enemy' ? (known ? L.enemyDefense(S, id) : '?') : T.n + (T.arm || 0);
       const ls = S.leaders.filter(l => l.alive && l.at === id && L.leaderKnown(S, l)); d.children[2].textContent = (T.owner === 'you' && T.arm ? '▰' + T.arm : '') + ls.map(l => l.rank === 'overlord' ? '♛' : l.rank === 'warlord' ? '★' : '▲').join(''); } }
   const v3 = new THREE.Vector3();
