@@ -258,7 +258,7 @@ function coach() { const el = $('#coach'); if (!el) return; let h = '';
     if (st === 0 && T && T.owner === 'enemy') st = S.tut = 1; else if (st === 1 && !(T && T.owner === 'enemy')) st = S.tut = 0;
     if (st === 3 && S.speed > 0) { st = S.tut = 9; toast('That is the loop: attack, reinforce, build, run the clock. Kill the Overlord before the Harvest completes.', 'good'); }
     if (st < 9) { let msg; if (st === 0) { const tg = L.enemyT(S).filter(id => L.playerNeighbors(S, id).length).sort((a, b) => S.terr[a].n - S.terr[b].n)[0]; msg = '<b>1 of 4</b> Teal is yours, red is the swarm. You have ' + S.pool + ' reserve troops to place: tap one of your strongholds (marked ✦) and press ✚ Reinforce. Then tap a red territory that touches yours' + (tg ? ', such as <b>' + TERR[tg].name + '</b>' : '') + '.'; }
-      else if (st === 1) msg = '<b>2 of 4</b> Press <b>⚔ Attack</b>. Troops from your neighboring territories and your reserve join in, then you roll the dice.';
+      else if (st === 1) msg = '<b>2 of 4</b> Press <b>⚔ Attack</b> (2 Orders). The gold arrows show which of your territories will send troops. You choose how many from each, then watch the fight.';
       else if (st === 2) msg = '<b>3 of 4</b> Now tap one of your own territories and press <b>⚒ Build</b>, or a stronghold (✦) and <b>✚ Reinforce</b>.';
       else msg = '<b>4 of 4</b> Press <b>▶</b> at the top to run the clock. The swarm only moves while it runs, and you can pause any time.';
       h = '<span>' + msg + '</span><button data-a="tutSkip">Skip</button>'; }
