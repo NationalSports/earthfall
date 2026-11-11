@@ -148,3 +148,11 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 .bimg{width:76px;height:60px;border-radius:7px;background-size:cover;background-position:center;display:block}.btxt b{display:block;font-family:var(--display);letter-spacing:.04em;color:#f4e6c4;font-size:15px}.btxt b small{font-family:inherit;font-size:11px;opacity:.65;letter-spacing:0;margin-left:4px}.btxt span{display:block;font-size:13px;line-height:1.4;opacity:.9;margin-top:2px}.btxt span b{display:inline;font-family:inherit;font-size:inherit;color:var(--gold);letter-spacing:0}
 .bact{display:flex;flex-direction:column;gap:5px;min-width:112px}.bact .btn{padding:6px 8px;text-align:center}.bact .btn b{display:block;font-size:13px}.bact .btn small{display:block;font-size:11px;opacity:.85}
 @media (max-width:560px){.bitem{grid-template-columns:1fr auto}.bimg{display:none}.bact{min-width:92px}}
+
+.wallet{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:2px 0 10px;padding:8px 10px;border-radius:10px;background:#ffffff0a;border:1px solid #e8be6044}.wallet .wl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-right:2px}.wallet .chip b{font-size:16px}.wallet .helpb{margin-left:auto}
+.bhelp{margin:0 0 10px}.bhelp .glist li{font-size:13.5px}
+#modal.build .sheet{max-height:92vh;overflow:auto}
+
+.binfo{margin-top:5px;background:none;border:0;color:var(--gold);font:inherit;font-size:12px;padding:0;cursor:pointer;opacity:.9;text-decoration:underline;text-underline-offset:3px}
+.bmore{grid-column:1/-1;margin:4px 0 0;padding:10px 12px;border-radius:8px;background:#0a1220;border:1px solid #e8be6040;display:grid;grid-template-columns:auto 1fr;gap:5px 12px;font-size:13px;line-height:1.45}.bmore dt{color:var(--gold);font-weight:700;white-space:nowrap}.bmore dd{margin:0;opacity:.92}
+@media (max-width:560px){.bmore{grid-template-columns:1fr}.bmore dt{margin-top:4px}}
