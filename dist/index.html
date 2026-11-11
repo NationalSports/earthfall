@@ -101,6 +101,12 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 /* keep sub-text on gold buttons readable over their illustration */
 .btn.gold>small{color:#2a1c08;font-weight:600;text-shadow:0 1px 0 #ffe9b866}
 #view canvas,canvas{touch-action:none}
+.perk{margin:8px 0;padding:8px 10px;border:1px solid #e8be6055;border-radius:8px;background:#e8be6012;display:flex;flex-direction:column;gap:2px}.perk b{color:var(--gold);font-size:13px;letter-spacing:.04em}.perk span{font-size:12.5px;opacity:.85}.perk.on{background:#e8be6022;border-color:#e8be6099}
+.leader .lf{width:34px;height:42px;border-radius:6px;background-size:cover;background-position:center 15%;flex:none;border:1px solid #fff2}.leader.dead .lf{filter:grayscale(1) brightness(.6)}.tag.trait{background:#8a5cf033;color:#cdb4ff;border-color:#8a5cf066}
+.hand{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 8px}.ccard{display:flex;flex-direction:column;text-align:left;padding:0 0 8px;border:1px solid #e8be6066;border-radius:10px;background:#0f1a28;color:inherit;overflow:hidden;cursor:pointer;font:inherit}.ccard .art.top{display:block;height:64px;width:100%;background-size:cover;background-position:center}.ccard b{padding:6px 8px 0;color:var(--gold);font-size:13px}.ccard span{padding:2px 8px 0;font-size:12px;opacity:.85;line-height:1.3}.ccard:hover{border-color:var(--gold)}
+#modal.battle .sheet{max-width:960px;width:96vw}#bcv{width:100%;height:auto;display:block;border-radius:10px;border:1px solid #ffffff22;touch-action:none;background:#0b1420}#bui{margin-top:8px}#bui .note{margin:4px 0 8px}
+@media (max-height:520px){#modal.battle .mhead{display:none}#modal.battle .sheet{padding:8px}#bcv{max-height:62vh;width:auto;max-width:100%;margin:0 auto}}
+.mapctl button.viewbtn{grid-column:span 2}
 
 /* Earthfall concept HUD — replacement theme, Issue #11. Original selectors and responsive behavior retained. */
 :root{--ink:#050e18;--panel:#0a1724;--panel2:#112435;--line:#40516a;--gold:#e5b765;--gold2:#956a30;--text:#f5ead6;--muted:#b4c0cb;--teal:#4ad8d7;--red:#f06a55;--violet:#ba88fa;--good:#91d9a3;--warn:#f3c16e}
@@ -133,7 +139,7 @@ body{background:radial-gradient(ellipse at 45% 40%,#11283a,#050b13 80%);color:va
     <div id="toasts" aria-live="polite"></div>
     <div class="legend"><span><i style="background:#2e969c"></i>Coalition held</span><span><i style="background:#b03a2e"></i>Occupied</span><span><i style="background:#3a3430"></i>Wasteland</span><span>♛ ★ ▲ Overlord, Warlord, Commander</span><span>◆ Strike team (white marker)</span></div>
     <button id="ptoggle" data-a="ptoggle">Orders</button>
-    <div class="mapctl"><button data-a="globe" class="viewbtn">Globe</button><button data-a="rotL" aria-label="Rotate left">⟲</button><button data-a="tilt" aria-label="Change tilt">◭</button><button data-a="rotR" aria-label="Rotate right">⟳</button><button data-a="zoomOut" aria-label="Zoom out">−</button><button data-a="fit" aria-label="Fit map">⤢</button><button data-a="zoomIn" aria-label="Zoom in">+</button></div>
+    <div class="mapctl"><button data-a="globe" class="viewbtn">Globe</button><button data-a="mute" aria-label="Sound on or off">🔊</button><button data-a="rotL" aria-label="Rotate left">⟲</button><button data-a="tilt" aria-label="Change tilt">◭</button><button data-a="rotR" aria-label="Rotate right">⟳</button><button data-a="zoomOut" aria-label="Zoom out">−</button><button data-a="fit" aria-label="Fit map">⤢</button><button data-a="zoomIn" aria-label="Zoom in">+</button></div>
   </section>
   <aside id="panel"></aside>
 </main>
@@ -359,6 +365,24 @@ const REGIONS = { NA:{name:'North America',bonus:2}, SA:{name:'South America',bo
   AF:{name:'Africa',bonus:1}, AS:{name:'Asia',bonus:3}, OC:{name:'Oceania',bonus:1} };
 const HQ = 'la';
 const URANIUM = ['vancouver', 'astana', 'perth', 'joburg'];
+// Special cities: a standing boost for whoever on the player side holds them. The invaders know their worth and aim for them.
+const PERKS = {
+  london: { name: 'Signals Hub', desc: '+1 intel per day', intel: 1 },
+  berlin: { name: 'Foundries', desc: '+4 metal per day', inc: { metal: 4 } },
+  saopaulo: { name: 'Refineries', desc: '+4 fuel per day', inc: { fuel: 4 } },
+  nairobi: { name: 'Field Labs', desc: '+3 research per day', inc: { research: 3 } },
+  cairo: { name: 'Canal Zone', desc: '+2 metal and +2 fuel per day', inc: { metal: 2, fuel: 2 } },
+  delhi: { name: 'Recruitment Depot', desc: '+1 reserve every second day', pool: 1 },
+  denver: { name: 'Mountain Complex', desc: 'Defenders roll +1', def: 1 },
+  moscow: { name: 'Winter Line', desc: 'Defenders roll +1', def: 1 },
+  sydney: { name: 'Deep Space Array', desc: '+2 intel per day', intel: 2 } };
+// Enemy leader traits. One per Warlord and Commander; revealed once the leader is located.
+const TRAITS = {
+  butcher: { name: 'Butcher', desc: 'War parties from this territory roll +1.' },
+  warden: { name: 'Warden', desc: 'One extra guard.' },
+  ghost: { name: 'Ghost', desc: 'Covert strikes against this leader are 12% harder.' },
+  breeder: { name: 'Breeder', desc: 'This territory grows one extra strength per day.' },
+  raider: { name: 'Raider', desc: 'War parties from this territory arrive 30% sooner.' } };
 const SPECS = {
   assault:{ name:'Assault', desc:'Your strike team leads from the front. Attacks you join roll +1 on their best die, and the team counts as 3 troops instead of 2.' },
   shadow:{ name:'Shadow', desc:'Covert specialists. +15% on covert strikes and sabotage, and the team is never spotted while waiting in enemy territory.' },
@@ -396,7 +420,7 @@ const SUR = ['Okonkwo','Alvarez','Tanaka','Petrov','Singh','Moreau','Haddad','Ki
 const RANKN = { overlord:'Overlord', warlord:'Warlord', commander:'Commander' };
 
 // ---------- Helpers ----------
-const L = {}; const DIFFS = { easy: { name: 'Recruit', desc: 'Slower invasion, more reinforcements. For learning the board.', div: 11, grow: 6, escDays: 8, harv: 0.11 }, normal: { name: 'Veteran', desc: 'The intended fight. You will lose ground before you gain it.', div: 13, grow: 9, escDays: 6, harv: 0.14 }, hard: { name: 'Last Stand', desc: 'Fast growth, quick escalation, thin reserves.', div: 16, grow: 11, escDays: 5, harv: 0.17 } };
+const L = {}; const DIFFS = { easy: { name: 'Recruit', desc: 'Slower invasion, more reinforcements. For learning the board.', div: 11, grow: 6, escDays: 8, harv: 0.11, iq: 0.3 }, normal: { name: 'Veteran', desc: 'The intended fight. You will lose ground before you gain it.', div: 12, grow: 9, escDays: 6, harv: 0.14, iq: 0.7 }, hard: { name: 'Last Stand', desc: 'Fast growth, quick escalation, thin reserves.', div: 16, grow: 11, escDays: 5, harv: 0.17, iq: 1 } };
 L.P = DIFFS.normal; L.setDiff = d => { L.P = DIFFS[d] || DIFFS.normal; };
 L.rand = Math.random;
 const rnd = () => L.rand();
@@ -443,7 +467,8 @@ L.guards = (S, id) => { let g = 0;
   for (const l of L.leadersAt(S, id)) {
     if (l.rank === 'overlord') g += 3 + 2 * L.warlordsAlive(S);
     else if (l.rank === 'warlord') g += 2;
-    else if (!L.inDisarray(S, l)) g += 1; }
+    else if (!L.inDisarray(S, l)) g += 1;
+    if (l.trait === 'warden') g += 1; }
   if (S.terr[id].soft > S.t) g = Math.max(0, g - 1);
   if (S.terr[id].emp > S.t) g = Math.floor(g / 2);
   return g; };
@@ -467,7 +492,7 @@ L.newGame = (spec, diff) => { L.setDiff(diff);
   const E = { tokyo: 7, beijing: 6, seoul: 4, hongkong: 4, yakutsk: 4, bangkok: 3, manila: 5, jakarta: 4, perth: 3, sydney: 4, joburg: 5, kinshasa: 4 };
   for (const id of TIDS) S.terr[id] = id in E ? { owner: 'enemy', n: E[id], seenN: E[id], seenT: 0 } : { owner: 'you', n: 2, seenN: 2, seenT: 0 };
   S.terr[HQ].n = 5; S.terr[HQ].fort = 1; S.terr[HQ].radar = 1;
-  const mk = (rank, at, boss) => { const l = { id: 'L' + S.lid++, rank, at, alive: true, boss: boss || null, seenAt: at, seenT: 0, exposed: 0,
+  const mk = (rank, at, boss) => { const l = { id: 'L' + S.lid++, rank, at, alive: true, boss: boss || null, seenAt: at, seenT: 0, exposed: 0, trait: rank === 'overlord' ? null : pick(Object.keys(TRAITS)),
     name: pick(FIRST) + ' ' + pick(SUR) + '-' + ri(31, 47) }; S.leaders.push(l); return l; };
   mk('overlord', 'tokyo');
   const w1 = mk('warlord', 'beijing'), w2 = mk('warlord', 'manila'), w3 = mk('warlord', 'joburg');
@@ -478,7 +503,8 @@ L.newGame = (spec, diff) => { L.setDiff(diff);
 
 // ---------- Enemy behavior ----------
 L.cap = S => 7 + Math.min(3, S.esc);
-L.launchParty = (S, from, to, n, breakout) => { S.parties.push({ id: S.pid++, from, to, n, t0: S.t, eta: S.t + (breakout ? 24 : ri(36, 54)), breakout: !!breakout, hit: 0 }); };
+L.launchParty = (S, from, to, n, breakout, eta) => { const ls = L.leadersAt(S, from), dur = (eta || S.t + (breakout ? 24 : ri(36, 54))) - S.t;
+  S.parties.push({ id: S.pid++, from, to, n, t0: S.t, eta: S.t + Math.round(dur * (ls.some(l => l.trait === 'raider') ? 0.7 : 1)), breakout: !!breakout, hit: 0, aB: ls.some(l => l.trait === 'butcher') ? 1 : 0 }); };
 L.playerNeighbors = (S, id) => TERR[id].adj.filter(n => S.terr[n].owner === 'you');
 L.grow = S => { const en = L.enemyT(S); if (!en.length) return;
   const k = Math.max(1, L.P.grow + Math.min(5, S.esc) - (S.up.disruptor ? 1 : 0));
@@ -487,8 +513,34 @@ L.grow = S => { const en = L.enemyT(S); if (!en.length) return;
       const nb = L.playerNeighbors(S, id); if (!nb.length) continue;
       T.n -= 2; for (const to of nb) L.launchParty(S, id, to, 2, true);
       L.log(S, 'Breakout from ' + TERR[id].name + ': war parties are heading for ' + nb.map(x => TERR[x].name).join(', ') + '.', 'bad');
-    } else T.n++; } };
-L.planAttack = S => { const opts = [];
+    } else T.n++; }
+  for (const l of S.leaders) if (l.alive && l.trait === 'breeder' && S.terr[l.at].owner === 'enemy' && S.terr[l.at].n < L.cap(S)) S.terr[l.at].n++; };
+// ---------- Enemy strategy ----------
+// How much the invaders want a given player territory.
+L.targetValue = (S, to) => { const T = S.terr[to]; let v = 1 + Math.max(0, 5 - T.n) - (T.fort ? 1 : 0);
+  if (to === HQ) v += (S.nuke.building || S.nuke.ready) ? 6 : 1.5;
+  if (URANIUM.includes(to)) v += 2.5; if (T.battery) v += 2; if (T.radar) v += 1;
+  const rg = TERR[to].region; if (TIDS.every(i => TERR[i].region !== rg || S.terr[i].owner === 'you')) v += 2.5; // breaks a region bonus
+  if (PERKS[to]) v += 1.5; if (L.teamAt(S) === to) v -= 1; return Math.max(0.3, v); };
+// Warlord-led offensives: choose an objective, mass troops from the rear if the front is too thin, then strike, from two sides when possible.
+L.smartAttack = S => { const fronts = [];
+  for (const id of L.enemyT(S)) { const T = S.terr[id]; if (T.disarray > S.t) continue; const ls = L.leadersAt(S, id); if (ls.length && ls.every(l => L.inDisarray(S, l))) continue;
+    for (const to of L.playerNeighbors(S, id)) fronts.push({ id, to }); }
+  if (!fronts.length) return; const ai = S.ai || (S.ai = { obj: null, until: 0, massed: 0 });
+  if (!ai.obj || S.terr[ai.obj].owner !== 'you' || S.t > ai.until || !fronts.some(f => f.to === ai.obj)) { let best = null, bs = -1;
+    for (const to of new Set(fronts.map(f => f.to))) { const sc = L.targetValue(S, to) * (0.75 + rnd() * 0.5); if (sc > bs) { bs = sc; best = to; } }
+    ai.obj = best; ai.until = S.t + 96; ai.massed = 0; }
+  const to = ai.obj, srcs = fronts.filter(f => f.to === to).map(f => f.id).sort((a, b) => S.terr[b].n - S.terr[a].n), main = srcs[0];
+  const def = S.terr[to].n + (S.terr[to].fort ? 1.5 : 0), avail = srcs.slice(0, 2).reduce((n, id) => n + Math.floor(S.terr[id].n / 2), 0);
+  if (avail < def * 0.9 && ai.massed < 3) { ai.massed++;
+    const rear = L.enemyT(S).filter(id => !L.playerNeighbors(S, id).length && S.terr[id].n >= 3 && !L.leadersAt(S, id).length).sort((a, b) => L.dist(a, main) - L.dist(b, main))[0];
+    if (rear) { const k = Math.min(2, S.terr[rear].n - 1); S.terr[rear].n -= k; S.terr[main].n = Math.min(L.cap(S) + 2, S.terr[main].n + k);
+      if (S.obs[main]) L.log(S, 'The swarm is massing in ' + TERR[main].name + ', facing ' + TERR[to].name + '.', 'intel'); return; } }
+  ai.massed = 0; const eta = S.t + ri(36, 54); let sent = 0;
+  for (const id of srcs.slice(0, S.esc >= 2 ? 2 : 1)) { const T = S.terr[id]; if (T.n < (sent ? 4 : 2)) continue;
+    const n = Math.max(2, Math.floor(T.n / 2) + (!sent && S.esc > 2 ? 1 : 0)); T.n -= Math.floor(T.n / 2); L.launchParty(S, id, to, n, false, eta); sent++; }
+  if (sent) ai.until = Math.min(ai.until, S.t + 60); };
+L.planAttack = S => { if (rnd() < (L.P.iq == null ? 0.7 : L.P.iq)) return L.smartAttack(S); const opts = [];
   for (const id of L.enemyT(S)) { const T = S.terr[id]; if (T.n < 3) continue;
     const ls = L.leadersAt(S, id); if (ls.length && ls.every(l => L.inDisarray(S, l))) continue;
     if (T.disarray > S.t) continue;
@@ -500,13 +552,13 @@ L.planAttack = S => { const opts = [];
   L.launchParty(S, c.id, c.to, n, false); };
 L.partyVisible = (S, p) => !!(S.obs[p.from] || p.eta - S.t <= 14 || (S.scanUntil || 0) > S.t);
 L.spawnCommander = (S, at) => { if (S.leaders.filter(l => l.alive).length >= 14) return; const ws = S.leaders.filter(l => l.alive && l.rank === 'warlord'); if (!ws.length) return;
-  S.leaders.push({ id: 'L' + S.lid++, rank: 'commander', at, alive: true, boss: pick(ws).id, seenAt: at, seenT: S.t, exposed: S.t + 36, name: pick(FIRST) + ' ' + pick(SUR) + '-' + ri(31, 47) }); };
-L.arrive = (S, p) => { const T = S.terr[p.to], name = TERR[p.to].name;
+  S.leaders.push({ id: 'L' + S.lid++, rank: 'commander', trait: pick(Object.keys(TRAITS)), at, alive: true, boss: pick(ws).id, seenAt: at, seenT: S.t, exposed: S.t + 36, name: pick(FIRST) + ' ' + pick(SUR) + '-' + ri(31, 47) }); };
+L.arrive = (S, p, forced) => { const T = S.terr[p.to], name = TERR[p.to].name;
   if (T.owner !== 'you') { if (T.owner === 'enemy') T.n = Math.min(L.cap(S) + 2, T.n + p.n); return; }
   const teamHere = L.teamAt(S) === p.to && S.team.pips > 0;
   let D = T.n + (teamHere ? L.teamN(S) : 0);
-  let dB = (T.fort ? 1 : 0) + (S.up.hardened ? 1 : 0) + (teamHere && S.spec === 'engineer' ? 1 : 0);
-  const aB = S.esc >= 4 ? 1 : 0, D0 = D, r = L.fight(p.n, D, aB, Math.min(2, dB));
+  let dB = (T.fort ? 1 : 0) + (S.up.hardened ? 1 : 0) + (teamHere && S.spec === 'engineer' ? 1 : 0) + (PERKS[p.to] && PERKS[p.to].def || 0);
+  const aB = (S.esc >= 4 ? 1 : 0) + (p.aB || 0), D0 = D, r = forced || L.fight(p.n, D, Math.min(2, aB), Math.min(2, dB));
   if (r.D > 0) { const lost = Math.min(T.n, D0 - r.D); T.n = Math.max(teamHere ? 0 : 1, T.n - lost); if (T.n < 1) T.n = 1; S.stats.held++;
     if (teamHere) S.res.salvage++;
     L.log(S, name + ' held against ' + p.n + ' attackers' + (lost ? ', losing ' + lost + '.' : ' without loss.') + (teamHere ? ' Your strike team fought in the line.' : ''), 'good');
@@ -515,6 +567,11 @@ L.arrive = (S, p) => { const T = S.terr[p.to], name = TERR[p.to].name;
     if (teamHere) { S.team.pips = Math.max(0, S.team.pips - 2); L.teamRetreat(S, p.to); }
     if (rnd() < 0.6) L.spawnCommander(S, p.to);
     if (p.to === HQ) return L.end(S, 'hq'); } };
+// Everything the "command the defense" battle needs to know about an incoming war party.
+L.defenseSetup = (S, p) => { const T = S.terr[p.to], teamHere = L.teamAt(S) === p.to && S.team.pips > 0;
+  return { to: p.to, name: TERR[p.to].name, A: p.n, D: T.n + (teamHere ? L.teamN(S) : 0), garrison: T.n, team: teamHere ? L.teamN(S) : 0, spec: S.spec, fort: !!T.fort, radar: !!T.radar, battery: !!T.battery, railgun: !!S.up.railgun,
+    hardened: !!S.up.hardened, perkDef: !!(PERKS[p.to] && PERKS[p.to].def), aB: Math.min(2, (S.esc >= 4 ? 1 : 0) + (p.aB || 0)) }; };
+L.resolveDefense = (S, forced) => { const p = S.pending; if (!p) return; S.pending = null; L.arrive(S, p, forced); };
 L.teamRetreat = (S, from) => { const own = L.owned(S); if (!own.length) return; own.sort((a, b) => L.dist(from, a) - L.dist(from, b)); S.team.at = own[0]; S.team.dest = null; };
 L.moveLeaders = S => { for (const l of S.leaders) { if (!l.alive) continue;
     const opts = TERR[l.at].adj.filter(n => S.terr[n].owner === 'enemy'); if (!opts.length) continue;
@@ -522,7 +579,7 @@ L.moveLeaders = S => { for (const l of S.leaders) { if (!l.alive) continue;
     let p = l.rank === 'overlord' ? (threatened && S.kills >= 2 ? 0.5 : 0.05) : l.rank === 'warlord' ? 0.3 : 0.35;
     if (rnd() < p) { const to = pick(opts); l.from = l.at; l.at = to; l.moveT0 = S.t; l.exposed = S.t + 36;
       if (L.leaderKnown(S, l) || S.obs[l.from]) L.log(S, RANKN[l.rank] + ' ' + l.name + ' is relocating to ' + TERR[to].name + '. Security will be thin for 36 hours.', 'intel'); } } };
-L.killLeader = (S, l, how) => { l.alive = false; S.kills++; S.res.intel = Math.min(30, S.res.intel + 3);
+L.killLeader = (S, l, how) => { l.alive = false; S.kills++; L.drawCard(S, 'for the kill'); S.res.intel = Math.min(30, S.res.intel + 3);
   L.log(S, RANKN[l.rank] + ' ' + l.name + ' is dead' + (how ? ' (' + how + ').' : '.'), 'good');
   if (S.intel < INTEL.length) { S.ev.push({ k: 'intel', i: S.intel }); S.log.unshift({ t: S.t, msg: 'Intel recovered: ' + INTEL[S.intel], kind: 'story' }); S.intel++; }
   if (l.rank === 'warlord') { S.next.promote.push({ t: S.t + 72, boss: l.id });
@@ -534,7 +591,8 @@ L.promote = (S, pr) => { let c = S.leaders.filter(l => l.alive && l.rank === 'co
   for (const l of S.leaders) if (l.boss === pr.boss || l.boss === old && false) l.boss = n.id;
   L.log(S, 'Commander ' + n.name + ' has been promoted to Warlord in ' + TERR[n.at].name + '.', 'bad'); };
 L.daily = S => { const own = L.owned(S); const inc = { metal: 0, fuel: 0, research: 0 };
-  for (const id of own) inc[TERR[id].res] += 6; for (const k in inc) S.res[k] += inc[k];
+  for (const id of own) { inc[TERR[id].res] += 6; const pk = PERKS[id]; if (pk) { for (const k in pk.inc || {}) inc[k] += pk.inc[k]; if (pk.intel) S.res.intel = Math.min(30, S.res.intel + pk.intel); if (pk.pool && L.day(S) % 2 === 0) S.pool = Math.min(30, S.pool + 1); } }
+  for (const k in inc) S.res[k] += inc[k];
   S.res.uranium += own.filter(id => URANIUM.includes(id)).length; S.res.intel = Math.min(30, S.res.intel + 1 + own.filter(id => S.terr[id].radar).length);
   let r = Math.max(1, Math.floor(own.length / L.P.div));
   for (const k in REGIONS) if (TIDS.filter(i => TERR[i].region === k).every(i => S.terr[i].owner === 'you')) r += REGIONS[k].bonus;
@@ -547,12 +605,13 @@ L.end = (S, why) => { if (S.over) return; S.over = { why, t: S.t, own: L.owned(S
 
 // ---------- Clock ----------
 L.step = S => { // advance one hour
-  if (S.over) return; S.t++;
+  if (S.over || S.pending) return; S.t++;
   const N = S.next, tm = S.team;
   if (tm.dest && S.t >= tm.eta) { tm.at = tm.dest; tm.dest = null; tm.arrT = S.t;
     S.ev.push({ k: 'arrive', id: tm.at }); S.ev.push({ k: 'pause' }); }
   for (const p of S.parties.slice()) if (S.t >= p.eta) { S.parties.splice(S.parties.indexOf(p), 1);
     if (S.terr[p.from].owner !== 'enemy' && !p.breakout && rnd() < 0.5) { L.log(S, 'A war party bound for ' + TERR[p.to].name + ' scattered after losing its base.', 'good'); continue; }
+    if (S.cmd && S.terr[p.to].owner === 'you' && p.n >= 3) { S.pending = p; S.ev.push({ k: 'defend' }); S.ev.push({ k: 'pause' }); return; }
     L.arrive(S, p); if (S.over) return; }
   if (S.t >= N.grow) { N.grow = S.t + 24; L.grow(S); }
   if (S.t >= N.attack) { N.attack = S.t + Math.max(12, 30 - S.esc * 4) + ri(-4, 4); if (S.parties.length < 4 + S.esc) L.planAttack(S); }
@@ -571,6 +630,32 @@ L.step = S => { // advance one hour
   if (S.t >= N.daily) { N.daily = S.t + 24; L.daily(S); }
   L.refreshIntel(S); };
 
+// ---------- Command cards ----------
+// Earned by liberating a territory (one per day) or killing a leader. Play one for its effect, or trade any three for reserves.
+const CARDS_DEF = {
+  airdrop: { name: 'Airdrop', art: 'deploy', desc: '+3 reserve troops, now.' },
+  intercept: { name: 'Intercept', art: 'interceptor', desc: 'The largest incoming war party loses 3 strength.' },
+  quiet: { name: 'Quiet Night', art: 'disruptor', desc: 'The invasion skips its next day of growth.' },
+  convoy: { name: 'Supply Convoy', art: 'rapid-transport', desc: '+40 metal and +40 fuel.' },
+  eyes: { name: 'Eyes Everywhere', art: 'deep-recon', desc: '+6 intel and the whole map revealed for 48 hours.' },
+  rally: { name: 'Rally', art: 'elite-training', desc: 'Strike team back to full readiness.' },
+  dig: { name: 'Dig In', art: 'fortify', desc: '+2 troops in every territory with a war party inbound.' } };
+L.drawCard = (S, why) => { S.cards = S.cards || []; if (S.cards.length >= 6) return; const k = pick(Object.keys(CARDS_DEF)); S.cards.push(k);
+  L.log(S, 'Command card earned ' + why + ': ' + CARDS_DEF[k].name + '.', 'good'); S.ev.push({ k: 'toast', msg: 'Command card: ' + CARDS_DEF[k].name, kind: 'good' }); };
+L.tradeValue = S => 4 + 2 * (S.trades || 0);
+L.tradeCards = S => { if (!S.cards || S.cards.length < 3) return fail('You need three cards.'); S.cards.splice(0, 3); const n = L.tradeValue(S); S.trades = (S.trades || 0) + 1; S.pool = Math.min(30, S.pool + n);
+  L.log(S, 'Three command cards traded for ' + n + ' reserve troops.', 'good'); return { ok: true }; };
+L.playCard = (S, i) => { const k = (S.cards || [])[i]; if (!k) return fail('No such card.');
+  if (k === 'intercept') { const p = S.parties.slice().sort((a, b) => b.n - a.n)[0]; if (!p) return fail('No war party is inbound.'); p.n -= 3; if (p.n < 1) S.parties.splice(S.parties.indexOf(p), 1);
+    L.log(S, 'Interceptors tore into the war party bound for ' + TERR[p.to].name + '.', 'good'); }
+  else if (k === 'dig') { const ids = [...new Set(S.parties.map(p => p.to))].filter(id => S.terr[id].owner === 'you'); if (!ids.length) return fail('No territory is under threat.'); for (const id of ids) S.terr[id].n += 2; L.log(S, 'Garrisons dug in at ' + ids.map(id => TERR[id].name).join(', ') + '.', 'good'); }
+  else if (k === 'airdrop') S.pool = Math.min(30, S.pool + 3);
+  else if (k === 'quiet') { S.next.grow += 24; L.log(S, 'The invasion is quiet tonight.', 'good'); }
+  else if (k === 'convoy') { S.res.metal += 40; S.res.fuel += 40; }
+  else if (k === 'eyes') { S.res.intel = Math.min(30, S.res.intel + 6); S.scanUntil = Math.max(S.scanUntil || 0, S.t + 48); L.refreshIntel(S); }
+  else if (k === 'rally') { if (S.team.pips >= 4) return fail('The team is already at full readiness.'); S.team.pips = 4; }
+  S.cards.splice(i, 1); return { ok: true }; };
+
 // ---------- Player actions ----------
 const fail = msg => ({ ok: false, msg });
 L.reinforce = (S, id) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); if (S.pool < 1) return fail('No reinforcements available.');
@@ -584,7 +669,7 @@ L.deploy = (S, id) => { const tm = S.team; if (tm.dest) return fail('The team is
   if (S.terr[id].owner === 'waste') return fail('Nothing survives there.'); if (tm.pips < 1) return fail('The team is out of action until it rests.');
   if (S.res.fuel < 8) return fail('Not enough fuel (8).'); S.res.fuel -= 8; tm.from = tm.at; tm.dest = id; tm.t0 = S.t; tm.eta = S.t + L.travelHours(S, tm.at, id); tm.restT = 0; return { ok: true }; };
 L.covertOdds = (S, l) => { const T = S.terr[l.at]; let p = 0.52;
-  if (S.spec === 'shadow') p += 0.15; if (S.up.ghost) p += 0.15; if (S.obs[l.at]) p += 0.08; if (l.exposed > S.t) p += 0.2;
+  if (S.spec === 'shadow') p += 0.15; if (S.up.ghost) p += 0.15; if (S.obs[l.at]) p += 0.08; if (l.exposed > S.t) p += 0.2; if (l.trait === 'ghost') p -= 0.12;
   p -= 0.045 * T.n; p -= l.rank === 'warlord' ? 0.12 : l.rank === 'overlord' ? 0.22 + 0.11 * L.warlordsAlive(S) : 0;
   if (T.alert > S.t) p -= 0.2; if (T.disarray > S.t) p += 0.1; if (T.soft > S.t) p += 0.06; p -= 0.07 * (4 - S.team.pips);
   return clamp(p, 0.02, 0.92); };
@@ -628,7 +713,7 @@ L.assaultEnd = (S, b, won) => { if (b.done) return; b.done = true; b.won = won; 
   const lostFrac = 1 - Math.max(0, b.A) / b.A0; const surv = Math.max(0, Math.min(b.troops, b.A - (b.teamHere ? 0 : 0)));
   if (won) { S.stats.won++; const ls = L.leadersAt(S, b.id); T.owner = 'you'; T.n = Math.max(1, Math.min(surv, b.A)); T.alert = 0; T.disarray = 0; T.soft = 0;
     S.parties = S.parties.filter(p => !(p.from === b.id && S.t - p.t0 < 10));
-    L.log(S, name + ' is liberated. ' + T.n + ' troops hold it.', 'good'); b.notes = [];
+    L.log(S, name + ' is liberated. ' + T.n + ' troops hold it.', 'good'); b.notes = []; if (S.cardDay !== L.day(S)) { S.cardDay = L.day(S); L.drawCard(S, 'for liberating ' + name); }
     for (const l of ls) { const esc = TERR[b.id].adj.filter(n => S.terr[n].owner === 'enemy');
       if (esc.length && rnd() < 0.45) { l.at = pick(esc); l.exposed = S.t + 48; l.from = b.id; l.moveT0 = S.t; b.notes.push(RANKN[l.rank] + ' ' + l.name + ' escaped to ' + TERR[l.at].name + ', wounded and exposed.'); L.log(S, b.notes[b.notes.length - 1], 'intel'); }
       else { b.notes.push(RANKN[l.rank] + ' ' + l.name + ' was killed in the fighting.'); L.killLeader(S, l, 'killed in the assault on ' + name); } }
@@ -675,6 +760,58 @@ L.nukeLaunch = (S, id) => { if (S.nuke.ready < 1) return fail('No warhead ready.
   S.parties = S.parties.filter(p => p.from !== id && p.to !== id); if (L.teamAt(S) === id) { S.team.pips = 0; L.teamRetreat(S, id); }
   S.esc++; if (!S.over) L.log(S, 'Somewhere upstream, their world just got worse. They are coming harder. Threat level ' + S.esc + '.', 'story'); L.refreshIntel(S); return { ok: true, was }; };
 
+
+// ---------- Command the defense ----------
+// A short lane battle that can replace the dice when a war party reaches one of your cities.
+// Pure rules, no drawing: the same code runs in the browser and in the balance simulation.
+const B = (() => {
+  const W = 900, H = 420, LANES = [105, 210, 315], COLS = [470, 590, 710], WALL_X = 380, CORE_X = 850;
+  const TUNE = { unitHp: 3, unitSpeed: 30, unitHit: 0.9, gunHp: 6, gunRange: 175, gunRate: 0.8, gunDmg: 1, perSquad: 4.2, wallHp: 10, missileDmg: 2, missileR: 72, acc: 0.7 };
+  function create(su, rand) { rand = rand || Math.random;
+    const st = { W, H, LANES, COLS, WALL_X, CORE_X, su, rand, t: 0, phase: 'place', units: [], guns: [], shots: [], blasts: [], queue: [], focus: null, focusT: 0, sel: null, result: null, uid: 1,
+      missiles: su.battery ? (su.railgun ? 3 : 2) : 0, missileCd: 0, wall: (su.fort || su.perkDef) ? { hp: (su.fort ? TUNE.wallHp : 0) + (su.perkDef ? 9 : 0) } : null };
+    if (st.wall) st.wall.max = st.wall.hp;
+    const n = Math.min(18, su.D), extra = su.D - n; // more than 18 squads: the rest reinforce the line as extra health
+    for (let i = 0; i < n; i++) { const team = i < Math.min(su.team, n), lane = i % 3, col = 2 - (Math.floor(i / 3) % 3);
+      st.guns.push({ id: st.uid++, lane, col, team, hp: 0, cd: rand() * 0.5, flash: 0 }); }
+    for (const g of st.guns) { g.max = (g.team ? 9 : TUNE.gunHp) + (su.hardened ? 2 : 0) + Math.ceil(extra * TUNE.gunHp / n); g.hp = g.max; }
+    layout(st);
+    // The size of a war party is never certain: each squad is a handful of creatures, and the whole wave runs thin or thick.
+    let total = 0; const thick = 0.65 + rand() * 0.7; for (let i = 0; i < su.A; i++) total += TUNE.perSquad * (0.5 + rand()) * thick; total = Math.max(su.A * 2, Math.round(total)); const span = clamp(su.A * 1.7, 8, 26);
+    for (let i = 0; i < total; i++) st.queue.push({ at: 1 + (i / total) * span + rand() * 1.2, lane: Math.floor(rand() * 3) });
+    st.queue.sort((a, b) => a.at - b.at); st.total = total; return st; }
+  // Guns sharing a slot stand side by side.
+  function layout(st) { const by = {}; for (const g of st.guns) { const k = g.lane + ':' + g.col; (by[k] = by[k] || []).push(g); }
+    for (const k in by) by[k].forEach((g, i, a) => { g.x = COLS[g.col] + (i - (a.length - 1) / 2) * 30; g.y = LANES[g.lane] + ((i % 2) ? 14 : -14) * (a.length > 1 ? 1 : 0); }); }
+  function move(st, gun, lane, col) { if (st.phase !== 'place') return false; if (st.guns.filter(g => g !== gun && g.lane === lane && g.col === col).length >= 3) return false; gun.lane = lane; gun.col = col; layout(st); return true; }
+  function start(st) { if (st.phase === 'place') st.phase = 'fight'; }
+  function missile(st, x, y) { if (st.phase !== 'fight' || st.missiles < 1 || st.missileCd > 0) return false; st.missiles--; st.missileCd = 2.5; st.blasts.push({ x, y, t: 0.55, r: TUNE.missileR * (st.su.railgun ? 1.25 : 1), done: false }); return true; }
+  function focus(st, x, y) { let best = null, bd = 40; for (const u of st.units) { const d = Math.hypot(u.x - x, u.y - y); if (d < bd) { bd = d; best = u; } } if (best) { st.focus = best.id; st.focusT = 4; } return !!best; }
+  function step(st, dt) { if (st.phase !== 'fight') return; st.t += dt; const su = st.su, rand = st.rand;
+    while (st.queue.length && st.queue[0].at <= st.t) { const q = st.queue.shift(); st.units.push({ id: st.uid++, lane: q.lane, x: -20 - rand() * 30, y: LANES[q.lane] + (rand() - 0.5) * 44, hp: TUNE.unitHp + su.aB, max: TUNE.unitHp + su.aB, cd: rand(), sp: TUNE.unitSpeed * (0.85 + rand() * 0.3), hit: 0 }); }
+    if (st.focusT > 0) st.focusT -= dt; if (st.missileCd > 0) st.missileCd -= dt;
+    for (const u of st.units) { u.hit = Math.max(0, u.hit - dt); let block = null;
+      if (st.wall && st.wall.hp > 0 && u.x >= WALL_X - 16 && u.x < WALL_X + 6) block = st.wall;
+      else for (const g of st.guns) if (g.hp > 0 && Math.abs(g.x - u.x) < 24 && Math.abs(g.y - u.y) < 46) { block = g; break; }
+      if (block) { u.cd -= dt; if (u.cd <= 0) { u.cd = TUNE.unitHit; block.hp -= 1; block.flash = 0.15; } }
+      else { u.x += u.sp * dt; if (u.x >= CORE_X) { u.hp = 0; u.through = true; const g = st.guns.filter(g => g.hp > 0).sort((a, b) => b.x - a.x)[0]; if (g) { g.hp -= 3; g.flash = 0.2; } } } }
+    const range = TUNE.gunRange + (su.radar ? 30 : 0); const wallUp = st.wall && st.wall.hp > 0;
+    for (const g of st.guns) { g.flash = Math.max(0, g.flash - dt); if (g.hp <= 0) continue; g.cd -= dt; if (g.cd > 0) continue; let tgt = null, bd = 1e9;
+      for (const u of st.units) { if (u.hp <= 0 || u.x < 0) continue; const d = Math.hypot(u.x - g.x, u.y - g.y); if (d > range && !(wallUp && u.x >= WALL_X - 34)) continue; /* everyone can fire on creatures stuck at the wall */ const sc = (st.focusT > 0 && u.id === st.focus) ? -1 : (CORE_X - u.x) + Math.abs(u.y - g.y) * 0.4; if (sc < bd) { bd = sc; tgt = u; } }
+      if (tgt) { g.cd = TUNE.gunRate * (g.team ? 0.6 : 1); const dmg = TUNE.gunDmg + (g.team && su.spec === 'assault' ? 1 : 0); if (rand() < TUNE.acc) { tgt.hp -= dmg; tgt.hit = 0.12; } st.shots.push({ x1: g.x, y1: g.y, x2: tgt.x, y2: tgt.y, t: 0.09, team: g.team }); } }
+    for (const b of st.blasts) { b.t -= dt; if (b.t <= 0 && !b.done) { b.done = true; b.fade = 0.5; for (const u of st.units) if (Math.hypot(u.x - b.x, u.y - b.y) < b.r) { u.hp -= TUNE.missileDmg; u.hit = 0.2; } } if (b.done) b.fade -= dt; }
+    st.blasts = st.blasts.filter(b => !b.done || b.fade > 0); for (const s of st.shots) s.t -= dt; st.shots = st.shots.filter(s => s.t > 0);
+    st.killed = (st.killed || 0) + st.units.filter(u => u.hp <= 0 && !u.through).length; st.units = st.units.filter(u => u.hp > 0);
+    const alive = st.guns.filter(g => g.hp > 0).length, left = st.units.length + st.queue.length;
+    if (!alive) finish(st, { A: Math.max(1, Math.ceil(left / TUNE.perSquad)), D: 0 }); else if (!left) finish(st, { A: 0, D: Math.max(1, Math.min(su.D, Math.round(st.guns.reduce((n, g) => n + Math.max(0, g.hp) / g.max, 0) / st.guns.length * su.D))) }); }
+  function finish(st, r) { st.phase = 'done'; st.result = r; }
+  // Plays the battle with no player input except sensible missile use. Used for auto-resolve previews and for balance checks.
+  function auto(st) { start(st); let n = 0; while (st.phase === 'fight' && n++ < 20000) { step(st, 0.08);
+      if (st.missiles && st.missileCd <= 0) { let best = null, bc = 3; for (const u of st.units) { const c = st.units.filter(v => Math.hypot(v.x - u.x, v.y - u.y) < 60).length; if (c > bc && u.x > 120) { bc = c; best = u; } } if (best) missile(st, best.x + 12, best.y); } }
+    return st.result || { A: 1, D: 0 }; }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  return { create, step, start, move, missile, focus, auto, TUNE, W, H };
+})();
 
 // ---------- 3D board ----------
 const V = (() => {
@@ -784,7 +921,7 @@ const V = (() => {
     g.scale.setScalar(s * 0.75); return g; }
   function buildTokens(S) {
     while (tokens.children.length) tokens.remove(tokens.children[0]);
-    for (const id of TIDS) { const T = S.terr[id], p = P(id), g = new THREE.Group(); g.position.copy(p); g.userData.grp = 1; if (mode === 'globe') g.quaternion.setFromUnitVectors(UP, p.clone().normalize()); tokens.add(g);
+    for (const id of TIDS) { const T = S.terr[id], p = P(id), g = new THREE.Group(); g.position.copy(p); g.userData.grp = 1; g.userData.id = id; if (mode === 'globe') g.quaternion.setFromUnitVectors(UP, p.clone().normalize()); tokens.add(g);
       { const nr = new THREE.Mesh(G.nring, M.node), nd = new THREE.Mesh(G.ndot, T.owner === 'you' ? M.nodeYou : T.owner === 'enemy' ? M.nodeEnemy : M.nodeWaste); nr.rotation.x = nd.rotation.x = -Math.PI / 2; nr.position.y = nd.position.y = 0.14; nr.renderOrder = nd.renderOrder = 3; g.add(nr, nd); }
       const put = (name, x, z, size, dim) => { g.add(blob(x, z, size * 0.36), piece(name, x, z, size, dim)); };
       if (T.owner !== 'waste') g.add(glow(T.owner === 'you' ? 0x2fd0cc : 0xff3a1c, T.owner === 'you' ? 2.2 : 2.8));
@@ -911,7 +1048,7 @@ const V = (() => {
   function controls() { const dom = renderer.domElement, pts = new Map(); let moved = 0, pinch = 0, down = null; dom.style.touchAction = 'none';
     dom.addEventListener('pointerdown', e => { pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); moved = 0; down = { x: e.clientX, y: e.clientY, btn: e.button }; try { dom.setPointerCapture(e.pointerId); } catch (_) {} if (pts.size === 2) { const a = [...pts.values()]; pinch = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); } });
     dom.addEventListener('pointermove', e => { const p = pts.get(e.pointerId); if (!p) return; const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
-      if (pts.size === 2) { const a = [...pts.values()], d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); if (pinch) { if (mode === 'globe') gl.dist = clamp(gl.dist * pinch / d, 40, 150); else cam.dist = clamp(cam.dist * pinch / d, 34, 190); } pinch = d; return; }
+      if (pts.size === 2) { const a = [...pts.values()], d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); if (pinch) { if (mode === 'globe') gl.dist = clamp(gl.dist * pinch / d, 40, 150); else cam.dist = clamp(cam.dist * pinch / d, CITY_MIN, 190); } pinch = d; return; }
       if (mode === 'globe') { const k = (gl.dist - GR) * 0.0029 * (700 / Math.max(300, el.clientHeight)); gl.lon -= dx * k; gl.lat = clamp(gl.lat + dy * k, -75, 80); return; }
       if (down && (down.btn === 2 || e.shiftKey)) { cam.yaw -= dx * 0.005; cam.pitch = clamp(cam.pitch + dy * 0.004, 0.45, 1.45); return; }
       const k = cam.dist * 0.00105 * (900 / Math.max(300, el.clientHeight)), c = Math.cos(cam.yaw), s = Math.sin(cam.yaw); cam.tx -= (dx * c + dy * s) * k; cam.tz -= (-dx * s + dy * c) * k; });
@@ -920,19 +1057,59 @@ const V = (() => {
       if (now - tapT < 380 && Math.hypot(e.clientX - tapX, e.clientY - tapY) < 34) { tapT = 0; dblZoom(e.clientX, e.clientY); } else { tapT = now; tapX = e.clientX; tapY = e.clientY; pickAt(e.clientX, e.clientY); } } down = null; };
     dom.addEventListener('click', e => { if (performance.now() - lastPick > 400 && moved < 8) { lastPick = performance.now(); pickAt(e.clientX, e.clientY); } });
     dom.addEventListener('pointerup', up); dom.addEventListener('pointercancel', e => { pts.delete(e.pointerId); pinch = 0; });
-    dom.addEventListener('wheel', e => { e.preventDefault(); const f = e.deltaY > 0 ? 1.07 : 0.935; if (mode === 'globe') gl.dist = clamp(gl.dist * f, 40, 150); else cam.dist = clamp(cam.dist * f, 34, 190); }, { passive: false }); dom.addEventListener('contextmenu', e => e.preventDefault()); }
+    dom.addEventListener('wheel', e => { e.preventDefault(); const f = e.deltaY > 0 ? 1.07 : 0.935; if (mode === 'globe') gl.dist = clamp(gl.dist * f, 40, 150); else cam.dist = clamp(cam.dist * f, CITY_MIN, 190); }, { passive: false }); dom.addEventListener('contextmenu', e => e.preventDefault()); }
   const ray = new THREE.Raycaster(), plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.5);
   const gsph = new THREE.Sphere(new THREE.Vector3(), GR);
   function dblZoom(cx, cy) { const r = renderer.domElement.getBoundingClientRect(); ray.setFromCamera({ x: (cx - r.left) / r.width * 2 - 1, y: -(cy - r.top) / r.height * 2 + 1 }, camera); const h = new THREE.Vector3();
     if (mode === 'globe') { if (gl.dist <= 44) { gl.dist = 90; return; } if (ray.ray.intersectSphere(gsph, h)) { const lat = Math.asin(clamp(h.y / GR, -1, 1)) * 57.2958; let lon = Math.atan2(h.z, -h.x) * 57.2958 - 180; if (lon < -180) lon += 360; const dl = ((lon - gl.lon) % 360 + 540) % 360 - 180; gl.lon += dl * 0.7; gl.lat = clamp(gl.lat + (lat - gl.lat) * 0.7, -75, 80); } gl.dist = clamp(gl.dist * 0.6, 40, 150); return; }
-    if (cam.dist <= 37) { cam.dist = 80; return; } plane.constant = -0.5; if (ray.ray.intersectPlane(plane, h)) { cam.tx += (h.x - cam.tx) * 0.7; cam.tz += (h.z - cam.tz) * 0.7; } cam.dist = clamp(cam.dist * 0.6, 34, 190); }
+    if (cam.dist <= CITY_MIN + 1.5) { cam.dist = 80; return; } plane.constant = -0.5; if (ray.ray.intersectPlane(plane, h)) { cam.tx += (h.x - cam.tx) * 0.7; cam.tz += (h.z - cam.tz) * 0.7; } cam.dist = clamp(cam.dist * 0.6, CITY_MIN, 190); }
   function pickAt(cx, cy) { const r = renderer.domElement.getBoundingClientRect(); ray.setFromCamera({ x: (cx - r.left) / r.width * 2 - 1, y: -(cy - r.top) / r.height * 2 + 1 }, camera);
     if (mode === 'globe') { const h = new THREE.Vector3(); if (!ray.ray.intersectSphere(gsph, h)) return onPick(null); const lat = Math.asin(clamp(h.y / GR, -1, 1)) * 57.2958; let lon = Math.atan2(h.z, -h.x) * 57.2958 - 180; if (lon < -180) lon += 360;
       const X = clamp(Math.floor((lon + 180) / 360 * GWp), 0, GWp - 1), Y = clamp(Math.floor((90 - lat) / 180 * GHp), 0, GHp - 1), i = Y * GWp + X; if (landG[i]) return onPick(TIDS[idxG[i]]);
       let best = null, ba = 0.14; const hd = h.clone().normalize(); for (const id of TIDS) { const a = hd.angleTo(gdir(TERR[id].lat, TERR[id].lon)); if (a < ba) { ba = a; best = id; } } return onPick(best); }
-    const hit = new THREE.Vector3(); if (!ray.ray.intersectPlane(plane, hit)) return; for (let n = 0; n < 3; n++) { plane.constant = -(0.55 * FLAT + curve(hit.x, hit.z)); if (!ray.ray.intersectPlane(plane, hit)) break; } plane.constant = -0.5; hit.x = ((hit.x + BW / 2) % BW + BW) % BW - BW / 2; let best = null, bd = 1e9; for (const id of TIDS) { const p = P(id), d = Math.hypot(p.x - hit.x, p.z - hit.z); if (d < bd) { bd = d; best = id; } }
+    const hit = new THREE.Vector3(); if (!ray.ray.intersectPlane(plane, hit)) return; for (let n = 0; n < 3; n++) { plane.constant = -(0.55 * FLAT + curve(hit.x, hit.z)); if (!ray.ray.intersectPlane(plane, hit)) break; } plane.constant = -0.5; hit.x = ((hit.x + BW / 2) % BW + BW) % BW - BW / 2; if (cityPick(hit)) return; let best = null, bd = 1e9; for (const id of TIDS) { const p = P(id), d = Math.hypot(p.x - hit.x, p.z - hit.z); if (d < bd) { bd = d; best = id; } }
     const X = Math.round((hit.x + BW / 2) / BW * RW), Y = Math.round((hit.z + BH / 2) / BH * RH);
     if (X >= 0 && Y >= 0 && X < RW && Y < RH && landA[Y * RW + X]) return onPick(TIDS[idx[Y * RW + X]]); if (bd < 4.5) onPick(best); else onPick(null); }
+  // ---------- City close-up ----------
+  // Zooming past the closest board level keeps descending into the nearest city: streets, garrison, what is built there, and pads for what is not.
+  const CITY_IN = 30, CITY_MIN = 11, CITY_R = 3.3; let cityGrp = null, cityId = null, citySig = '', cityPads = [], cityF = 0, onCity = () => {}; const cityTex = {}, padTex = {};
+  function cityGround(owner, seed) { const key = owner + (seed % 5); if (cityTex[key]) return cityTex[key];
+    const c = document.createElement('canvas'); c.width = c.height = 512; const g = c.getContext('2d'); let s = seed * 7919 + 13; const r = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+    const col = owner === 'you' ? '70,214,208' : owner === 'enemy' ? '236,92,60' : '130,122,112';
+    const rg = g.createRadialGradient(256, 256, 30, 256, 256, 254); rg.addColorStop(0, 'rgba(13,21,33,0.97)'); rg.addColorStop(0.72, 'rgba(11,19,31,0.93)'); rg.addColorStop(1, 'rgba(11,19,31,0)'); g.fillStyle = rg; g.fillRect(0, 0, 512, 512);
+    for (let i = 0; i < 300; i++) { const a = r() * 6.283, d = 26 + Math.sqrt(r()) * 200, w = 7 + r() * 13, h = 7 + r() * 13; g.save(); g.translate(256 + Math.cos(a) * d, 256 + Math.sin(a) * d); g.rotate(a); g.fillStyle = r() < 0.16 ? 'rgba(' + col + ',0.5)' : 'rgba(38,54,76,' + (0.5 + r() * 0.45) + ')'; g.fillRect(-w / 2, -h / 2, w, h); g.restore(); }
+    g.strokeStyle = 'rgba(' + col + ',0.55)'; g.lineWidth = 2.5; for (const R of [64, 128, 196]) { g.beginPath(); g.arc(256, 256, R, 0, 6.3); g.stroke(); }
+    g.lineWidth = 2; for (let i = 0; i < 9; i++) { const a = i / 9 * 6.283 + r() * 0.3; g.beginPath(); g.moveTo(256 + Math.cos(a) * 34, 256 + Math.sin(a) * 34); g.lineTo(256 + Math.cos(a) * 226, 256 + Math.sin(a) * 226); g.stroke(); }
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; return cityTex[key] = t; }
+  function padMark(label, built) { const key = label + built; if (padTex[key]) return padTex[key]; const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
+    g.strokeStyle = built ? 'rgba(70,214,208,0.95)' : 'rgba(232,190,96,0.95)'; g.lineWidth = 6; g.setLineDash(built ? [] : [14, 9]); g.beginPath(); g.arc(64, 64, 54, 0, 6.3); g.stroke(); g.fillStyle = built ? 'rgba(20,60,66,0.55)' : 'rgba(60,46,16,0.55)'; g.fill();
+    if (!built) { g.fillStyle = 'rgba(244,214,140,1)'; g.font = '700 54px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('+', 64, 50); g.font = '700 17px sans-serif'; g.fillText(label, 64, 94); }
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return padTex[key] = t; }
+  function buildCity(S, id) { if (cityGrp) cityGrp.parent.remove(cityGrp); cityPads = []; const T = S.terr[id], p = P(id), g = new THREE.Group(); g.position.set(p.x, p.y + 0.03, p.z); cityGrp = g; cityId = id; tokens.parent.add(g);
+    const seed = TIDS.indexOf(id) + 1; let s = seed * 104729; const r = () => (s = (s * 9301 + 49297) % 233280) / 233280, known = T.owner !== 'enemy' || S.obs[id];
+    const gm = new THREE.Mesh(new THREE.CircleGeometry(CITY_R + 0.5, 48), new THREE.MeshBasicMaterial({ map: cityGround(T.owner, seed), transparent: true, depthWrite: false, toneMapped: false })); gm.rotation.x = -Math.PI / 2; gm.position.y = 0.13; gm.renderOrder = 4; g.add(gm);
+    const put = (name, x, z, size, dim) => { if (!pieceImgs[name]) return; g.add(blob(x, z, size * 0.34), piece(name, x, z, size, dim)); };
+    const pads = { fort: [-2.15, 1.25], radar: [2.25, -1.2], battery: [2.05, 1.45] }, keep = (x, z) => Object.values(pads).every(q => Math.hypot(q[0] - x, q[1] - z) > 0.75) && Math.hypot(x, z - 2.3) > 1.2;
+    const bm = new THREE.MeshStandardMaterial({ color: T.owner === 'waste' ? 0x14110f : T.owner === 'enemy' ? 0x24141a : 0x121c2a, roughness: 0.6, metalness: 0.2, emissive: T.owner === 'you' ? 0x0a2c33 : T.owner === 'enemy' ? 0x3a0e06 : 0x000000, emissiveIntensity: 0.35 }), bg = new THREE.BoxGeometry(1, 1, 1);
+    for (let i = 0; i < 46; i++) { const a = r() * 6.283, d = 0.35 + Math.sqrt(r()) * 2.45, x = Math.cos(a) * d, z = Math.sin(a) * d; if (!keep(x, z)) continue; const tall = (T.owner === 'you' ? 1 : 0.45) * (0.18 + r() * 0.75) * (1.25 - d / 3.4), w = 0.16 + r() * 0.2, b = new THREE.Mesh(bg, bm); b.scale.set(w, tall, 0.16 + r() * 0.2); b.position.set(x, 0.14 + tall / 2, z); b.rotation.y = a; g.add(b); }
+    if (T.owner === 'you') { const PAD = { fort: ['FORT', 'barricade', 1.25], radar: ['RADAR', 'radar-dish', 1.35], battery: ['BATTERY', S.up.railgun ? 'railgun' : 'launcher', 1.3] };
+      for (const k in pads) { const built = !!T[k], q = pads[k], m = new THREE.Mesh(new THREE.CircleGeometry(0.62, 32), new THREE.MeshBasicMaterial({ map: padMark(PAD[k][0], built), transparent: true, depthWrite: false, toneMapped: false })); m.rotation.x = -Math.PI / 2; m.position.set(q[0], 0.17, q[1]); m.renderOrder = 5; g.add(m); if (built) put(PAD[k][1], q[0], q[1] + 0.1, PAD[k][2]); cityPads.push({ key: k, x: q[0], z: q[1], built }); }
+      if (T.fort) { const w = new THREE.Mesh(new THREE.TorusGeometry(CITY_R - 0.15, 0.07, 6, 56), new THREE.MeshStandardMaterial({ color: 0x3c4756, roughness: 0.7, emissive: 0x0c2a30 })); w.rotation.x = Math.PI / 2; w.position.y = 0.2; g.add(w); for (let i = 0; i < 6; i++) { const a = i / 6 * 6.283 + 0.5; put('barricade', Math.cos(a) * (CITY_R - 0.15), Math.sin(a) * (CITY_R - 0.15), 0.6); } }
+      put({ metal: 'foundry', fuel: 'missile-truck', research: 'drone-bay' }[TERR[id].res] || 'foundry', -0.9, -1.5, 1.5);
+      if (id === HQ) { if (S.nuke.building || S.nuke.stage || S.nuke.ready) put('silo', 0.6, -2.1, 1.3); if (S.emp.building || S.emp.n) put('emp-tower', -2.3, -0.6, 1.3); }
+      const n = Math.min(12, T.n); for (let i = 0; i < n; i++) put(i % 4 === 3 ? 'rover' : 'infantry', (i % 6 - 2.5) * 0.52, 2.0 + Math.floor(i / 6) * 0.55, 0.8);
+      if (L.teamAt(S) === id) put('tiltrotor', -1.9, -1.9, 1.3);
+    } else if (T.owner === 'enemy') { if (!known) { for (let i = 0; i < 4; i++) put('spore', Math.cos(i * 1.7) * 1.3, Math.sin(i * 1.7) * 1.3, 1.1, true); }
+      else { const ls = L.leadersAt(S, id); put(ls.some(l => l.rank === 'overlord') ? 'hive' : 'hive-spire', 0, -0.6, 2.0); const n = Math.min(12, T.n); for (let i = 0; i < n; i++) { const a = i / n * 6.283; put(i % 3 ? 'swarm' : 'infestation-stack', Math.cos(a) * 2.1, Math.sin(a) * 1.9 + 0.2, 0.85); }
+        ls.forEach((l, k) => put(l.rank, 1.1 + k * 0.9, 0.9, l.rank === 'overlord' ? 1.6 : 1.3)); } }
+    else { const e = mesh(G.ring, M.ember, 0, 0.2, 0, 2.2); e.rotation.x = Math.PI / 2; e.castShadow = false; g.add(e); } }
+  // Called every frame: decides whether a city is close enough to open, and keeps it in step with the game.
+  function cityFrame() { const f = mode === 'globe' || !S0 ? 0 : clamp((CITY_IN - camS.dist) / 9, 0, 1); cityF = f; if (f <= 0) { if (cityGrp) cityGrp.visible = false; return null; }
+    let best = null, bd = 6.5; for (const id of TIDS) { const p = P(id), dx = ((p.x - camS.tx) % BW + BW * 1.5) % BW - BW / 2, d = Math.hypot(dx, p.z - camS.tz - 1); if (d < bd) { bd = d; best = id; } }
+    if (!best) { if (cityGrp) cityGrp.visible = false; return null; }
+    if (best !== cityId || citySig !== sigTok + S0.terr[best].n + (L.teamAt(S0) === best)) { buildCity(S0, best); citySig = sigTok + S0.terr[best].n + (L.teamAt(S0) === best); }
+    cityGrp.visible = true; cityGrp.scale.set(0.55 + 0.45 * f, Math.max(0.02, f), 0.55 + 0.45 * f); return f > 0.3 ? best : null; }
+  function cityPick(hit) { if (!cityGrp || !cityGrp.visible || cityF < 0.6) return false; for (const q of cityPads) if (Math.hypot(cityGrp.position.x + q.x - hit.x, cityGrp.position.z + q.z - hit.z) < 0.7) { onCity(cityId, q.key, q.built); return true; } return false; }
   function sync(S, selected) { S0 = S; sel = selected;
     const st = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (S.obs[id] ? 1 : 0); }).join('') + sel; if (mode === 'globe') { if (st !== sigTexG) { sigTexG = st; paintGlobe(S); colorBorders(bordG, S); } } else if (st !== sigTex) { sigTex = st; paint(S); colorBorders(bordB, S); }
     const sk = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (T.owner === 'you' ? (T.n >= 7 ? 3 : T.n >= 4 ? 2 : 1) : (S.obs[id] ? T.n : 'u' + T.seenN)) + (T.fort | 0) + (T.radar | 0) + (T.battery | 0); }).join('') + [S.nuke.building, S.nuke.stage, S.nuke.ready, S.emp.building, S.emp.n, S.up.bombers, S.up.railgun].map(x => +!!x).join('') + S.leaders.map(l => l.alive && L.leaderKnown(S, l) ? l.at + l.rank[0] : '-').join('');
@@ -956,7 +1133,7 @@ const V = (() => {
       const tm = S0.team; if (tm.dest && teamTok.userData.curve) teamTok.position.copy(teamTok.userData.curve.at((S0.t + (V.frac || 0) - tm.t0) / Math.max(1, tm.eta - tm.t0))); else { const p = P(tm.at); if (G3) teamTok.position.copy(p).multiplyScalar(1.03); else teamTok.position.set(p.x - 1.5, p.y + 0.2, p.z - 0.6); }
       if (G3) { teamTok.quaternion.setFromUnitVectors(UP, teamTok.position.clone().normalize()); teamTok.visible = teamTok.position.dot(camera.position) > GR * GR; } else teamTok.visible = true;
       teamTok.children[1].rotation.z = time * 1.5; teamTok.children[0].position.y = 0.9 + Math.sin(time * 2.4) * 0.1; }
-    const zf = clamp(vd / 44, 1, 2.9); for (const t of tokens.children) { if (t.userData.grp) t.scale.setScalar(1.12 * zf); t.visible = !G3 || t.position.dot(camera.position) > GR * GR * 1.0; } for (const c of arcs.children) if (c.userData.party) c.visible = !G3 || c.position.dot(camera.position) > GR * GR; teamTok.scale.setScalar(zf); V.zf = zf;
+    const zf = clamp(vd / 44, 1, 2.9); for (const t of tokens.children) { if (t.userData.grp) t.scale.setScalar(1.12 * zf); t.visible = !G3 || t.position.dot(camera.position) > GR * GR * 1.0; } for (const c of arcs.children) if (c.userData.party) c.visible = !G3 || c.position.dot(camera.position) > GR * GR; teamTok.scale.setScalar(zf); V.zf = zf; { const open = cityFrame(); if (open) for (const t of tokens.children) if (t.userData.id === open) t.visible = false; V.city = open; }
     for (const t of tokens.children) { if (t.userData.pulse) t.material.opacity = 0.32 + Math.sin(time * 2.2) * 0.12; else for (const c of t.children) if (c.userData.pulse) c.material.opacity = 0.24 + Math.sin(time * 1.8 + t.position.x) * 0.1; }
     if (seaTex) { seaTex.offset.x = time * 0.006; seaTex.offset.y = time * 0.004; } for (const c of clouds) { c.position.x += dt * 0.5; if (c.position.x > BW / 2 + 16) c.position.x = -BW / 2 - 16; }
     if (boardMesh) boardMesh.material.emissiveIntensity = 0.42 + Math.sin(time * 1.4) * 0.14;
@@ -968,7 +1145,7 @@ const V = (() => {
     const m = new THREE.Mesh(G.sph, new THREE.MeshBasicMaterial({ color: kind === 'emp' ? 0x8fd8ff : big ? 0xffe9a0 : 0xffb060 })); m.scale.setScalar(big ? 0.45 : 0.25); fxGroup.add(m); const dur = big ? 2.2 : 1.1;
     fx.push({ obj: m, t: 0, update(t) { if (t >= dur) { flash(B, big ? 9 : kind === 'emp' ? 5 : 2.6, kind === 'emp' ? 0x7fd0ff : 0xffa040, big ? 2.4 : 0.8); if (big) flash(B, 4, 0xffffff, 1.2); return false; } m.position.copy(c.getPoint(t / dur)); } }); }
   function focus(id, lift) { if (mode === 'globe') { gl.lon = TERR[id].lon; gl.lat = clamp(TERR[id].lat - (lift ? 18 : 0), -60, 70); return; } const p = P(id); if (cam.dist > 70) cam.dist = 60; cam.tx = p.x + Math.round((cam.tx - p.x) / BW) * BW; cam.tz = p.z + 2 + (lift ? cam.dist * 0.3 : 0); }
-  return { init, sync, frame, setArt, missile, flash: id => flash(P(id), 2.5, 0xff5030, 0.7), focus, fit, cam, resize, zoom: k => { if (mode === 'globe') gl.dist = clamp(gl.dist * k, 40, 150); else cam.dist = clamp(cam.dist * k, 34, 190); }, toggleMode: () => setMode(mode === 'board' ? 'globe' : 'board'), getMode: () => mode, rotate: a => { if (mode === 'globe') gl.lon += a * 60; else cam.yaw += a; }, tilt: () => { cam.pitch = cam.pitch > 1.2 ? 1.02 : cam.pitch > 0.9 ? 0.7 : 1.45; } };
+  return { init, sync, frame, set onCity(f) { onCity = f; }, setArt, missile, flash: id => flash(P(id), 2.5, 0xff5030, 0.7), focus, fit, cam, resize, zoom: k => { if (mode === 'globe') gl.dist = clamp(gl.dist * k, 40, 150); else cam.dist = clamp(cam.dist * k, CITY_MIN, 190); }, toggleMode: () => setMode(mode === 'board' ? 'globe' : 'board'), getMode: () => mode, rotate: a => { if (mode === 'globe') gl.lon += a * 60; else cam.yaw += a; }, tilt: () => { cam.pitch = cam.pitch > 1.2 ? 1.02 : cam.pitch > 0.9 ? 0.7 : 1.45; } };
 })();
 
 // ---------- Interface ----------
@@ -984,7 +1161,7 @@ const btn = (a, label, o) => { o = o || {}; return '<button class="btn ' + (o.cl
 const pct = p => Math.round(p * 100) + '%';
 function save() { try { const c = Object.assign({}, S, { ev: [], obs: {} }); localStorage.setItem(SAVE, JSON.stringify(c)); } catch (e) {} }
 function load() { try { const s = JSON.parse(localStorage.getItem(SAVE)); if (s && s.v === 4 && !s.over) { s.ev = []; s.speed = 0; for (const k of ['uranium', 'intel', 'salvage']) if (s.res[k] === undefined) s.res[k] = 0; L.setDiff(s.diff); L.refreshIntel(s); return s; } } catch (e) {} return null; }
-function toast(msg, kind) { const t = document.createElement('div'); t.className = 'toast ' + kind; t.textContent = msg; const box = $('#toasts'); box.appendChild(t); while (box.children.length > (window.innerWidth < 860 ? 2 : 4)) box.removeChild(box.firstChild); setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 400); }, window.innerWidth < 860 ? 4200 : 6500); }
+function toast(msg, kind) { if (kind === 'bad') SFX.play('alert'); const t = document.createElement('div'); t.className = 'toast ' + kind; t.textContent = msg; const box = $('#toasts'); box.appendChild(t); while (box.children.length > (window.innerWidth < 860 ? 2 : 4)) box.removeChild(box.firstChild); setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 400); }, window.innerWidth < 860 ? 4200 : 6500); }
 function setSpeed(v) { if (S.over) v = 0; S.speed = v; }
 
 // ---------- Top bar ----------
@@ -1001,17 +1178,18 @@ function renderTop() {
 // ---------- Panel ----------
 function leaderRow(l, withOps) { const known = L.leaderKnown(S, l), dis = L.inDisarray(S, l);
   let where = !l.alive ? 'Dead' : known ? TERR[l.at].name : 'Last seen ' + TERR[l.seenAt].name + ', ' + Math.max(1, Math.round((S.t - l.seenT) / 24)) + 'd ago';
-  let tags = ''; if (l.alive && l.exposed > S.t && known) tags += '<em class="tag good">exposed</em>'; if (l.alive && dis) tags += '<em class="tag">leaderless</em>';
-  let h = '<div class="leader ' + l.rank + (l.alive ? '' : ' dead') + '" data-a="sel" data-id="' + (known ? l.at : l.seenAt) + '"><span class="gl">' + (l.rank === 'overlord' ? '♛' : l.rank === 'warlord' ? '★' : '▲') + '</span><div><b>' + esc(l.name) + '</b><small>' + RANKN[l.rank] + ' · ' + where + '</small></div>' + tags + '</div>';
+  let tags = ''; if (l.alive && l.exposed > S.t && known) tags += '<em class="tag good">exposed</em>'; if (l.alive && dis) tags += '<em class="tag">leaderless</em>'; if (l.trait && known && TRAITS[l.trait]) tags += '<em class="tag trait" title="' + TRAITS[l.trait].desc + '">' + TRAITS[l.trait].name + '</em>';
+  let h = '<div class="leader ' + l.rank + (l.alive ? '' : ' dead') + '" data-a="sel" data-id="' + (known ? l.at : l.seenAt) + '"><i class="lf art-enemy-' + l.rank + '"></i><span class="gl">' + (l.rank === 'overlord' ? '♛' : l.rank === 'warlord' ? '★' : '▲') + '</span><div><b>' + esc(l.name) + '</b><small>' + RANKN[l.rank] + ' · ' + where + (l.trait && known && l.alive && TRAITS[l.trait] ? ' · ' + TRAITS[l.trait].desc : '') + '</small></div>' + tags + '</div>';
   if (withOps && l.alive && L.teamAt(S) === l.at) h += btn('covert', 'Covert strike on ' + esc(l.name.split(' ')[0]), { id: l.id, cls: 'violet', sub: pct(L.covertOdds(S, l)) + ' success · ' + cost({ fuel: 10, intel: 2 }) });
   return h; }
 function panelTerritory() { if (!selId) return '<div class="empty"><h3>Select a territory</h3><p>Tap any region on the board. Teal is yours, red is occupied. Drag to pan, pinch or scroll to zoom.</p>' + objectives() + '</div>';
   const T = S.terr[selId], D = TERR[selId], known = S.obs[selId], tm = S.team, teamHere = L.teamAt(S) === selId;
   let h = '<div class="thead ' + T.owner + '"><small>' + D.area + ', ' + REGIONS[D.region].name + ' · produces ' + ICON[D.res] + ' ' + D.res + (URANIUM.includes(selId) ? ' and ' + ICON.uranium + ' uranium' : '') + '</small><h2>' + D.name + '</h2><span class="own">' + (T.owner === 'you' ? (selId === HQ ? 'Coalition HQ' : 'Coalition held') : T.owner === 'enemy' ? 'Occupied' : 'Wasteland') + '</span></div>';
+  if (PERKS[selId] && T.owner !== 'waste') h += '<div class="perk' + (T.owner === 'you' ? ' on' : '') + '"><b>★ ' + PERKS[selId].name + '</b><span>' + PERKS[selId].desc + (T.owner === 'you' ? '' : ' · liberate to gain') + '</span></div>';
   const inc = S.parties.filter(p => p.to === selId && L.partyVisible(S, p));
   if (T.owner === 'you') {
     const st = [T.fort && 'Fortress', T.radar && 'Radar', T.battery && ('Missile battery' + ((T.reload || 0) > S.t ? ' (reloading ' + (T.reload - S.t) + 'h)' : ''))].filter(Boolean).join(', ') || 'None';
-    h += '<div class="stats"><div><label>Garrison</label><b>' + T.n + '</b></div><div><label>Defense bonus</label><b>+' + Math.min(2, (T.fort ? 1 : 0) + (S.up.hardened ? 1 : 0)) + '</b></div><div class="wide"><label>Structures</label><span>' + st + '</span></div></div>';
+    h += '<div class="stats"><div><label>Garrison</label><b>' + T.n + '</b></div><div><label>Defense bonus</label><b>+' + Math.min(2, (T.fort ? 1 : 0) + (S.up.hardened ? 1 : 0) + (PERKS[selId] && PERKS[selId].def || 0)) + '</b></div><div class="wide"><label>Structures</label><span>' + st + '</span></div></div>';
     if (inc.length) { h += '<div class="alert"><b>⚠ Under attack</b>'; for (const p of inc) { h += '<div class="inc"><span>' + p.n + ' attackers from ' + TERR[p.from].name + ' arrive in ' + Math.max(0, p.eta - S.t) + 'h</span>';
         if (teamHere && !p.hit) h += btn('ambush', 'Ambush', { id: p.id, cls: 'sm' }); if (L.batteriesInRange(S, p.to).length || L.batteriesInRange(S, p.from).length) h += btn('salvoParty', 'Missiles', { id: p.id, cls: 'sm' }); h += '</div>'; } h += '</div>'; }
     h += '<div class="acts">' + btn('reinforce', 'Reinforce', { id: selId, art: 'deploy', cls: 'teal big', sub: 'Add 1 troop from reserve (' + S.pool + ' left)', dis: S.pool < 1 }) +
@@ -1044,6 +1222,11 @@ function objectives() { const wl = L.warlordsAlive(S), ov = L.overlord(S);
     '<div class="obj"><span>⚑</span><div><b>Hold headquarters</b><small>Lose Los Angeles and the war is over.</small></div></div></div>'; }
 function panelCommand() { const tm = S.team; let pips = ''; for (let i = 0; i < 4; i++) pips += '<i class="' + (i < tm.pips ? 'on' : '') + '"></i>';
   let h = '<div class="card team"><i class="art face art-' + ({ assault: 'vanguard', shadow: 'cipher', engineer: 'engineer' }[S.spec]) + '"></i><small>Your strike team · ' + SPECS[S.spec].name + '</small><h3>' + (tm.dest ? 'In transit to ' + TERR[tm.dest].name + ' (' + Math.max(0, tm.eta - S.t) + 'h)' : 'In ' + TERR[tm.at].name) + '</h3><div class="pips">' + pips + '<span>readiness</span></div><p>' + SPECS[S.spec].desc + '</p>' + (tm.dest ? '' : btn('sel', 'Show on map', { id: tm.at, cls: 'sm' })) + btn('recon', 'Deep recon', { sub: ((S.scanUntil || 0) > S.t ? 'Active for ' + (S.scanUntil - S.t) + 'h more' : 'Reveal the whole map for 3 days · ' + cost({ intel: 5 })), dis: S.res.intel < 5 || (S.scanUntil || 0) > S.t }) + '</div>';
+  { const cs = S.cards || []; h += '<h4>Command cards · ' + cs.length + ' of 6</h4>';
+    if (!cs.length) h += '<p class="note">Liberate a territory or kill a leader to earn a card. Play it for its effect, or trade any three for reserves.</p>';
+    else { h += '<div class="hand">' + cs.map((k, i) => '<button class="ccard" data-a="card" data-id="' + i + '"><i class="art top art-' + CARDS_DEF[k].art + '"></i><b>' + CARDS_DEF[k].name + '</b><span>' + CARDS_DEF[k].desc + '</span></button>').join('') + '</div>';
+      if (cs.length >= 3) h += btn('trade', 'Trade 3 cards', { sub: '+' + L.tradeValue(S) + ' reserve troops (uses your three oldest)' }); }
+    h += btn('cmd', 'Command defenses in person: ' + (S.cmd ? 'On' : 'Off'), { cls: 'sm', sub: S.cmd ? 'You fight war parties of 3 or more yourself' : 'Every attack is settled by dice' }); }
   h += '<h4>Enemy command</h4><p class="note">Nothing is locked. Every leader you remove weakens the ones above.</p>';
   const ov = L.overlord(S); h += leaderRow(ov);
   for (const w of S.leaders.filter(l => l.rank === 'warlord')) { h += '<div class="branch">' + leaderRow(w); for (const c of S.leaders.filter(l => l.rank === 'commander' && l.boss === w.id)) h += '<div class="branch">' + leaderRow(c) + '</div>'; h += '</div>'; }
@@ -1101,12 +1284,56 @@ function assaultModal() { const a = asl, D = TERR[a.id]; let h = '<div class="mh
   showModal(h, 'assault'); const sl = $('#troops'); if (sl) sl.addEventListener('input', () => { asl.troops = +sl.value; assaultModal(); const n = $('#troops'); if (n) n.focus(); }); }
 function confirmModal(title, text, act, id, label) { showModal('<div class="mhead"><small>Confirm</small><h1>' + title + '</h1></div><p class="lead">' + text + '</p><div class="row">' + btn('closeModal', 'Cancel') + btn(act, label, { id, cls: 'danger big' }) + '</div>', 'confirm'); }
 
+// ---------- Sound ----------
+// Small synthesized effects, no audio files. Starts on the first tap, as browsers require.
+const SFX = { muted: false, ctx: null, last: {},
+  play(k) { if (this.muted) return; try { const C = this.ctx || (this.ctx = new (window.AudioContext || window.webkitAudioContext)()); if (C.state === 'suspended') C.resume(); const now = C.currentTime; if (this.last[k] && now - this.last[k] < 0.07) return; this.last[k] = now;
+      const tone = (type, f0, f1, dur, vol, delay) => { const o = C.createOscillator(), g = C.createGain(), t = now + (delay || 0); o.type = type; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t + dur); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0008, t + dur); o.connect(g); g.connect(C.destination); o.start(t); o.stop(t + dur + 0.02); };
+      const noise = (dur, vol, freq) => { const n = Math.floor(C.sampleRate * dur), b = C.createBuffer(1, n, C.sampleRate), d = b.getChannelData(0); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n); const src = C.createBufferSource(), g = C.createGain(), f = C.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = freq; src.buffer = b; g.gain.value = vol; src.connect(f); f.connect(g); g.connect(C.destination); src.start(now); };
+      if (k === 'tap') tone('sine', 520, 700, 0.06, 0.05); else if (k === 'dice') { noise(0.12, 0.12, 2400); tone('square', 180, 120, 0.05, 0.03, 0.05); }
+      else if (k === 'shot') tone('square', 900, 240, 0.05, 0.018); else if (k === 'missile') { tone('sawtooth', 240, 900, 0.5, 0.04); noise(0.5, 0.05, 1200); }
+      else if (k === 'boom') { noise(0.7, 0.3, 500); tone('sine', 110, 36, 0.6, 0.2); } else if (k === 'alert') { tone('square', 440, 440, 0.12, 0.035); tone('square', 330, 330, 0.16, 0.035, 0.15); }
+      else if (k === 'good') { tone('sine', 520, 520, 0.12, 0.06); tone('sine', 780, 780, 0.2, 0.06, 0.1); } else if (k === 'build') { noise(0.08, 0.1, 1800); tone('triangle', 200, 320, 0.18, 0.07, 0.05); }
+    } catch (e) {} } };
+
+// ---------- Command the defense ----------
+let bat = null, PIMG = {};
+function defendModal() { const p = S && S.pending; if (!p || modal) return; const su = L.defenseSetup(S, p), ex = [su.fort && 'fortress wall', su.battery && (su.railgun ? '3 railgun strikes' : '2 missile strikes'), su.radar && 'radar (longer range)', su.team && 'your strike team'].filter(Boolean);
+  SFX.play('alert'); selId = su.to; V.focus(su.to);
+  showModal('<div class="mhead"><small>War party arriving from ' + TERR[p.from].name + '</small><h1>Defend ' + su.name + '</h1></div><p class="lead"><b>' + su.A + '</b> attackers against <b>' + su.D + '</b> defenders' + (ex.length ? ', with ' + ex.join(', ') : '') + '.' + (su.aB ? ' They are veterans and hit harder.' : '') + '</p><div class="row">' + btn('defAuto', 'Auto-resolve', { sub: 'Settle it with dice' }) + btn('defGo', 'Command the defense', { cls: 'gold big', sub: 'About a minute' }) + '</div>', 'defend'); }
+function battleModal() { const su = L.defenseSetup(S, S.pending); bat = { st: B.create(su), speed: 1, shotT: 0 };
+  showModal('<div class="mhead"><small>Defense of ' + su.name + '</small><h1>Hold the line</h1></div><canvas id="bcv" width="900" height="420"></canvas><div id="bui"></div>', 'battle'); battleUI();
+  const cv = $('#bcv'); cv.addEventListener('pointerdown', e => { const r = cv.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * B.W, y = (e.clientY - r.top) / r.height * B.H, st = bat.st;
+    if (st.phase === 'place') { const g = st.guns.slice().sort((a, b) => Math.hypot(a.x - x, a.y - y) - Math.hypot(b.x - x, b.y - y))[0]; if (g && Math.hypot(g.x - x, g.y - y) < 26) { st.sel = st.sel === g ? null : g; SFX.play('tap'); }
+      else if (st.sel) { let lane = 0, col = 0; st.LANES.forEach((ly, i) => { if (Math.abs(ly - y) < Math.abs(st.LANES[lane] - y)) lane = i; }); st.COLS.forEach((cx, i) => { if (Math.abs(cx - x) < Math.abs(st.COLS[col] - x)) col = i; }); if (B.move(st, st.sel, lane, col)) { st.sel = null; SFX.play('build'); } } }
+    else if (st.phase === 'fight') { if (B.missile(st, x, y)) SFX.play('missile'); else if (B.focus(st, x, y)) SFX.play('tap'); battleUI(); } }); }
+function battleUI() { const st = bat.st, el = $('#bui'); if (!el) return; let h;
+  if (st.phase === 'place') h = '<p class="note">Tap a squad, then tap a spot in any lane to move it. Squads in front take the first hits.</p><div class="row">' + btn('defStart', 'Start the battle', { cls: 'gold big' }) + '</div>';
+  else if (st.phase === 'fight') h = '<p class="note">' + (st.su.battery ? 'Tap the field to call a strike (' + st.missiles + ' left). ' : '') + 'Tap an attacker to focus fire on it.</p><div class="row">' + btn('defFast', bat.speed === 1 ? 'Speed ×2.5' : 'Normal speed', { cls: 'sm' }) + '</div>';
+  else { const r = st.result, held = r.D > 0; h = '<div class="result ' + (held ? 'good' : 'bad') + '"><h3>' + (held ? st.su.name + ' holds' : st.su.name + ' is overrun') + '</h3><p>' + (held ? r.D + ' of ' + st.su.D + ' defenders still standing.' : r.A + ' attackers take the city.') + '</p></div><div class="row">' + btn('defEnd', 'Continue', { cls: 'gold big' }) + '</div>'; }
+  if (battleUI.h !== h) { battleUI.h = h; el.innerHTML = h; } }
+function battleFrame(dt) { const st = bat.st, cv = $('#bcv'); if (!cv) return; const was = st.phase, shots = st.shots.length, blasts = st.blasts.filter(b => b.done).length;
+  let left = dt * bat.speed; while (left > 0 && st.phase === 'fight') { const d = Math.min(0.04, left); B.step(st, d); left -= d; }
+  if (st.shots.length > shots) SFX.play('shot'); if (st.blasts.filter(b => b.done).length > blasts) SFX.play('boom'); if (was !== st.phase) { battleUI.h = ''; battleUI(); SFX.play(st.result.D > 0 ? 'good' : 'alert'); }
+  const g = cv.getContext('2d'), W = B.W, H = B.H; const bgr = g.createLinearGradient(0, 0, W, 0); bgr.addColorStop(0, '#1a0d0c'); bgr.addColorStop(0.45, '#0e1722'); bgr.addColorStop(1, '#0b2230'); g.fillStyle = bgr; g.fillRect(0, 0, W, H);
+  for (const ly of st.LANES) { g.fillStyle = 'rgba(120,150,180,0.07)'; g.fillRect(0, ly - 40, W, 80); g.strokeStyle = 'rgba(140,170,200,0.12)'; g.setLineDash([10, 12]); g.beginPath(); g.moveTo(0, ly); g.lineTo(W, ly); g.stroke(); g.setLineDash([]); }
+  g.fillStyle = 'rgba(40,190,186,0.14)'; g.fillRect(st.CORE_X - 6, 0, W - st.CORE_X + 6, H); g.fillStyle = '#123a44'; for (let i = 0; i < 9; i++) g.fillRect(st.CORE_X + 6 + (i % 2) * 18, 16 + i * 44, 14, 30 + (i * 37 % 20)); g.fillStyle = '#7fe6e0'; g.font = '600 13px sans-serif'; g.save(); g.translate(W - 8, H / 2); g.rotate(-Math.PI / 2); g.textAlign = 'center'; g.fillText(st.su.name.toUpperCase(), 0, 0); g.restore();
+  if (st.wall) { const k = Math.max(0, st.wall.hp) / st.wall.max; g.fillStyle = k > 0 ? 'rgba(150,165,185,' + (0.35 + 0.55 * k) + ')' : 'rgba(90,60,50,0.4)'; g.fillRect(st.WALL_X, 20, 12, H - 40); if (PIMG.barricade && k > 0) for (const ly of st.LANES) g.drawImage(PIMG.barricade, st.WALL_X - 22, ly - 30, 56, 56); }
+  if (st.phase === 'place') for (const ly of st.LANES) for (const cx of st.COLS) { g.strokeStyle = 'rgba(232,190,96,0.5)'; g.setLineDash([5, 5]); g.beginPath(); g.arc(cx, ly, 34, 0, 6.3); g.stroke(); g.setLineDash([]); }
+  const img = (n, x, y, s) => { if (PIMG[n]) g.drawImage(PIMG[n], x - s / 2, y - s * 0.72, s, s); };
+  for (const q of st.guns) { if (q.hp <= 0) { g.fillStyle = 'rgba(160,60,40,0.35)'; g.beginPath(); g.arc(q.x, q.y, 9, 0, 6.3); g.fill(); continue; } if (st.sel === q) { g.strokeStyle = '#f0c868'; g.lineWidth = 3; g.beginPath(); g.arc(q.x, q.y, 24, 0, 6.3); g.stroke(); g.lineWidth = 1; }
+    if (q.flash > 0) { g.fillStyle = 'rgba(255,90,60,0.5)'; g.beginPath(); g.arc(q.x, q.y, 20, 0, 6.3); g.fill(); } img(q.team ? 'rover' : 'infantry', q.x, q.y + 10, 46); g.fillStyle = '#0a1018'; g.fillRect(q.x - 16, q.y + 16, 32, 4); g.fillStyle = q.team ? '#f0c868' : '#46d6d0'; g.fillRect(q.x - 16, q.y + 16, 32 * Math.max(0, q.hp) / q.max, 4); }
+  for (const u of st.units) { if (u.hit > 0) { g.fillStyle = 'rgba(255,240,200,0.6)'; g.beginPath(); g.arc(u.x, u.y, 12, 0, 6.3); g.fill(); } img('swarm', u.x, u.y + 8, 34); if (st.focusT > 0 && st.focus === u.id) { g.strokeStyle = '#f0c868'; g.beginPath(); g.arc(u.x, u.y, 16, 0, 6.3); g.stroke(); } }
+  for (const sh of st.shots) { g.strokeStyle = sh.team ? 'rgba(255,214,120,0.9)' : 'rgba(120,236,230,0.85)'; g.lineWidth = 2; g.beginPath(); g.moveTo(sh.x1, sh.y1 - 8); g.lineTo(sh.x2, sh.y2); g.stroke(); g.lineWidth = 1; }
+  for (const b of st.blasts) { if (!b.done) { g.strokeStyle = 'rgba(255,200,120,0.8)'; g.setLineDash([6, 6]); g.beginPath(); g.arc(b.x, b.y, b.r, 0, 6.3); g.stroke(); g.setLineDash([]); } else { g.fillStyle = 'rgba(255,170,80,' + Math.max(0, b.fade) * 1.4 + ')'; g.beginPath(); g.arc(b.x, b.y, b.r * (1.1 - b.fade * 0.4), 0, 6.3); g.fill(); } }
+  const alive = st.guns.filter(q => q.hp > 0).length, left2 = st.units.length + st.queue.length; g.fillStyle = 'rgba(8,14,22,0.7)'; g.fillRect(0, 0, W, 22); g.font = '600 13px sans-serif'; g.textAlign = 'left'; g.fillStyle = '#ff8a6a'; g.fillText('Swarm left: ' + left2 + ' of ' + st.total, 10, 15); g.textAlign = 'center'; g.fillStyle = '#e8be60'; if (st.su.battery) g.fillText('Strikes: ' + st.missiles, W / 2, 15); g.textAlign = 'right'; g.fillStyle = '#7fe6e0'; g.fillText('Squads standing: ' + alive + ' of ' + st.guns.length, W - 10, 15); }
+
 // ---------- Actions ----------
 function report(r) { if (r && !r.ok && r.msg) toast(r.msg, 'bad'); return r && r.ok; }
 function act(a, id) { if (!S && a !== 'start' && a !== 'diff') return;
   switch (a) {
     case 'diff': diff = id; introModal(); return;
-    case 'start': S = L.newGame(id, diff); selId = HQ; closeModal(); V.focus('tokyo'); toast('The clock is paused. Look around, then press ▶ to begin.', 'info'); break;
+    case 'start': S = L.newGame(id, diff); S.cmd = true; selId = HQ; closeModal(); V.focus('tokyo'); toast('The clock is paused. Look around, then press ▶ to begin.', 'info'); break;
     case 'new': introModal(); break;
     case 'speed': setSpeed(+id); break;
     case 'tab': tab = id; setPanel(true); break;
@@ -1116,11 +1343,21 @@ function act(a, id) { if (!S && a !== 'start' && a !== 'diff') return;
     case 'airlift': report(L.airlift(S, id)); break;
     case 'build': { const p = id.split(':'); report(L.build(S, p[0], p[1])); break; }
     case 'buy': report(L.buy(S, id)); break;
+    case 'card': if (report(L.playCard(S, +id))) SFX.play('good'); break;
+    case 'trade': report(L.tradeCards(S)); break;
+    case 'cmd': S.cmd = !S.cmd; break;
+    case 'mute': SFX.muted = !SFX.muted; { const b = document.querySelector('[data-a="mute"]'); if (b) b.textContent = SFX.muted ? '🔇' : '🔊'; } return;
+    case 'buildGo': { closeModal(); const q = id.split(':'); if (report(L.build(S, q[0], q[1]))) SFX.play('build'); break; }
+    case 'defAuto': closeModal(); L.resolveDefense(S); break;
+    case 'defGo': battleModal(); return;
+    case 'defStart': B.start(bat.st); battleUI(); return;
+    case 'defFast': bat.speed = bat.speed === 1 ? 2.5 : 1; battleUI(); return;
+    case 'defEnd': { const r = bat.st.result; bat = null; closeModal(); L.resolveDefense(S, r); break; }
     case 'recon': report(L.deepRecon(S)); break;
     case 'deploy': report(L.deploy(S, id)); if (S.speed === 0 && S.team.dest) setSpeed(1); break;
     case 'covert': { const l = S.leaders.find(x => x.id === id), at = l.at; const r = L.covert(S, id); if (report(r)) { V.flash(at); } break; }
     case 'sabotage': if (report(L.sabotage(S, id))) V.flash(id); break;
-    case 'salvo': { const bs = L.batteriesInRange(S, id); if (report(L.salvo(S, id))) V.missile(bs[0], id); break; }
+    case 'salvo': { const bs = L.batteriesInRange(S, id); if (report(L.salvo(S, id))) { V.missile(bs[0], id); SFX.play('missile'); setTimeout(() => SFX.play('boom'), 1100); } break; }
     case 'salvoParty': report(L.salvoParty(S, +id)); break;
     case 'ambush': report(L.ambush(S, +id)); break;
     case 'bomb': if (report(L.bomb(S, id))) V.missile(HQ, id); break;
@@ -1128,20 +1365,21 @@ function act(a, id) { if (!S && a !== 'start' && a !== 'diff') return;
     case 'empBuild': report(L.empBuild(S)); break;
     case 'nukeStart': report(L.nukeStart(S)); break;
     case 'nuke': confirmModal('Launch on ' + TERR[id].name + '?', 'This erases ' + TERR[id].name + ' for the rest of the war. It will produce nothing and can never be retaken. Neighboring territories lose a unit to fallout.', 'nukeGo', id, '☢ Launch'); return;
-    case 'nukeGo': closeModal(); if (report(L.nukeLaunch(S, id))) V.missile(HQ, id, 'nuke'); break;
+    case 'nukeGo': closeModal(); if (report(L.nukeLaunch(S, id))) { V.missile(HQ, id, 'nuke'); SFX.play('missile'); setTimeout(() => SFX.play('boom'), 2200); } break;
     case 'assault': asl = { id, troops: Math.min(L.assaultAvail(S, id).n, L.enemyDefense(S, id) + 3), o: {} }; assaultModal(); return;
     case 'tac': asl.o[id] = !asl.o[id]; assaultModal(); return;
     case 'commit': { const r = L.assaultStart(S, asl.id, asl.troops, asl.o); if (report(r)) { asl.b = r.b; V.flash(asl.id); } assaultModal(); return; }
-    case 'roll': L.assaultRound(S, asl.b); assaultModal(); return;
+    case 'roll': L.assaultRound(S, asl.b); SFX.play('dice'); assaultModal(); return;
     case 'rollAll': while (!asl.b.done) L.assaultRound(S, asl.b); assaultModal(); return;
     case 'withdraw': L.assaultEnd(S, asl.b, false); assaultModal(); return;
-    case 'closeModal': closeModal(); break;
+    case 'closeModal': closeModal(); if (S.pending) L.resolveDefense(S); break;
     case 'globe': { const m = V.toggleMode(); const b = document.querySelector('[data-a="globe"]'); if (b) b.textContent = m === 'globe' ? 'Flat board' : 'Globe'; return; }
     case 'zoomIn': V.zoom(0.8); return; case 'zoomOut': V.zoom(1.25); return; case 'fit': V.fit(); return; case 'rotL': V.rotate(-0.3); return; case 'rotR': V.rotate(0.3); return; case 'tilt': V.tilt(); return;
   }
   drain(); renderAll(true); save(); }
 function drain() { if (!S) return; const ev = S.ev.splice(0); for (const e of ev) {
     if (e.k === 'toast') toast(e.msg, e.kind); else if (e.k === 'pause') setSpeed(0);
+    else if (e.k === 'defend') setTimeout(defendModal, 50);
     else if (e.k === 'arrive') { selId = e.id; tab = 'territory'; toast('Strike team has arrived in ' + TERR[e.id].name + '.', 'info'); }
     else if (e.k === 'intel' && !asl) { const i = e.i; setTimeout(() => { if (!modal && !S.over) showModal('<div class="mhead"><small>Intel recovered · fragment ' + (i + 1) + ' of ' + INTEL.length + '</small><h1>Field report</h1></div><p class="lead quote">' + esc(INTEL[i]) + '</p><div class="row">' + btn('closeModal', 'Continue', { cls: 'gold big' }) + '</div>', 'intelm'); }, 300); }
     else if (e.k === 'over') setTimeout(overModal, 600); } }
@@ -1153,16 +1391,18 @@ async function boot() {
   const ld = src => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = src; });
   const art = { map: await ld(ART.map), mask: await ld(ART.mask), globe: await ld(ART.globe), infest: ART.infest ? await ld(ART.infest) : null, pieces: {} }; await Promise.all(Object.keys(PIECES).map(async k => { art.pieces[k] = await ld(PIECES[k]); }));
   { const st = document.createElement('style'); st.textContent = Object.keys(CARDS).map(k => '.art-' + k + '{background-image:url(' + CARDS[k] + ')}').join(''); document.head.appendChild(st); }
-  V.init($('#map'), id => { if (!S) return; selId = id; if (id) { tab = 'territory'; setPanel(true); } else if (compact()) setPanel(false); renderAll(true); }, art);
+  PIMG = art.pieces; V.init($('#map'), id => { if (!S) return; SFX.play('tap'); selId = id; if (id) { tab = 'territory'; setPanel(true); } else if (compact()) setPanel(false); renderAll(true); }, art);
+  V.onCity = (id, key, built) => { if (!S) return; if (built) return toast(BUILD[key].name + ' is already in place here.', 'info'); const c = L.costOf(S, key), can = L.canPay(S, c);
+    showModal('<div class="mhead"><small>' + TERR[id].name + '</small><h1>Build ' + BUILD[key].name + '?</h1></div><p class="lead">' + BUILD[key].desc + '</p><p class="lead">' + cost(c) + (can ? '' : ' · not enough resources yet') + '</p><div class="row">' + btn('closeModal', 'Cancel') + btn('buildGo', 'Build', { id: id + ':' + key, cls: 'gold big', dis: !can }) + '</div>', 'confirm'); };
   document.addEventListener('click', e => { const b = e.target.closest('[data-a]'); if (!b || b.disabled) return; act(b.dataset.a, b.dataset.id); });
   const p = $('#panel'); p.addEventListener('pointerdown', () => { hold = true; }); window.addEventListener('pointerup', () => { setTimeout(() => { hold = false; }, 60); });
   document.addEventListener('keydown', e => { if (!S || modal || e.target.tagName === 'INPUT') return; if (e.code === 'Space') { e.preventDefault(); setSpeed(S.speed ? 0 : 1); renderTop(); } });
-  S = load(); if (S) { selId = HQ; renderAll(true); toast('Campaign resumed on ' + L.stamp(S) + '. Paused.', 'info'); } else introModal();
+  S = load(); if (S && S.pending) L.resolveDefense(S); if (S) { selId = HQ; renderAll(true); toast('Campaign resumed on ' + L.stamp(S) + '. Paused.', 'info'); } else introModal();
   let last = performance.now(), rT = 0;
   function loop(now) { const dt = Math.min(0.1, (now - last) / 1000); last = now;
     if (S && S.speed > 0 && !modal && !S.over) { acc += dt * (S.speed === 1 ? 1 : 4); let n = 0; while (acc >= 1 && n++ < 6) { acc -= 1; L.step(S); if (S.ev.length) drain(); if (S.speed === 0) { acc = 0; break; } } }
-    V.frac = S && S.speed > 0 ? acc : 0; rT += dt; if (rT > 0.25) { rT = 0; renderAll(); if (S && now - lastSave > 8000) { lastSave = now; save(); } }
-    V.frame(dt); requestAnimationFrame(loop); }
+    V.frac = S && S.speed > 0 ? acc : 0; rT += dt; if (rT > 0.25) { rT = 0; if (S && V.city && V.city !== selId && !modal) { selId = V.city; tab = 'territory'; renderPanel(true); } renderAll(); if (S && now - lastSave > 8000) { lastSave = now; save(); } }
+    if (bat) battleFrame(dt); V.frame(dt); requestAnimationFrame(loop); }
   requestAnimationFrame(loop);
   window.__g = { get S() { return S; }, L, V, act };
 }

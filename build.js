@@ -8,7 +8,7 @@ const assets = 'const ART = { map: ' + JSON.stringify(uri('assets/board/map-worl
   'const ANCHORS = ' + r('assets/board/anchors.json') + ';\n' +
   'const PIECES = ' + JSON.stringify(dir('assets/pieces', 'image/webp')) + ';\n' +
   'const CARDS = ' + JSON.stringify(dir('assets/cards', 'image/webp')) + ';\n';
-const js = [assets, r('src/logic.js').replace(/if \(typeof module[^\n]*\n?/, ''), r('src/view3d.js'), r('src/ui.js')].join('\n');
+const js = [assets, r('src/logic.js').replace(/if \(typeof module[^\n]*\n?/, ''), r('src/battle.js').replace(/if \(typeof module[^\n]*\n?/, ''), r('src/view3d.js'), r('src/ui.js')].join('\n');
 // The theme is layered over the base stylesheet. If theme.css still carries a copy of the base rules,
 // only the part after its "replacement theme" marker is used, so newer base rules are not overridden by a stale copy.
 let theme = fs.existsSync(path.join(__dirname, 'theme/theme.css')) ? r('theme/theme.css') : '';
