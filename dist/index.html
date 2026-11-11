@@ -357,6 +357,48 @@ const CARDS = {"airlift":"data:image/webp;base64,UklGRlZjAABXRUJQVlA4IEpjAABwXAK
 
 const UI_ICONS = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"0\" height=\"0\" style=\"position:absolute\" aria-hidden=\"true\"><defs>\n<symbol id=\"ic-metal\" viewBox=\"0 0 24 24\"><path d=\"M5 6L10 3H20L16 8H10L5 6Z M5 6L4 18L11 21L16 17V8 M11 21V10L5 6 M11 10L16 8\"/></symbol>\n<symbol id=\"ic-fuel\" viewBox=\"0 0 24 24\"><path d=\"M9 3H15V7H9Z M7 7H17L19 10V21H5V10L7 7Z M8 13H16V17H8Z M17 11L21 13V19H19\"/></symbol>\n<symbol id=\"ic-research\" viewBox=\"0 0 24 24\"><path d=\"M4 20L9 15 M10 5L19 14 M7 3L21 17 M5 12L12 5 M3 18L6 21 M14 4L20 10 M9 3L15 3 M16 19L21 19\"/></symbol>\n<symbol id=\"ic-uranium\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"12\" r=\"2\" fill=\"#c0de69\" stroke=\"none\"/><path d=\"M11 10L8 4L14 4L13 10 M14 13L20 10L20 16L15 15 M10 14L7 20L3 15L9 12\"/></symbol>\n<symbol id=\"ic-intel\" viewBox=\"0 0 24 24\"><path d=\"M3 12Q12 3 21 12Q12 21 3 12Z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 4V2 M12 22V20 M4 4L7 7 M17 17L20 20\"/></symbol>\n<symbol id=\"ic-salvage\" viewBox=\"0 0 24 24\"><path d=\"M5 14L3 9L7 3L13 7L10 11L14 15L21 12L21 20L13 21L10 17L6 20L3 18L5 14Z\"/><path d=\"M14 4L17 7L20 4\"/></symbol>\n<symbol id=\"ic-reserve-troops\" viewBox=\"0 0 24 24\"><circle cx=\"8\" cy=\"7\" r=\"3\"/><circle cx=\"17\" cy=\"8\" r=\"2.5\"/><path d=\"M2 20V17Q2 12 8 12Q14 12 14 17V20Z M14 14Q21 12 22 17V20H16\"/></symbol>\n<symbol id=\"ic-territories-held\" viewBox=\"0 0 24 24\"><path d=\"M4 20V6L11 3L20 7V20Z M4 10L11 7L20 11 M11 7V20 M4 15L11 12L20 16\"/><circle cx=\"11\" cy=\"12\" r=\"2\" fill=\"#45d0cc\"/></symbol>\n<symbol id=\"ic-overlord\" viewBox=\"0 0 24 24\"><path d=\"M2 19L6 7L11 11L13 3L17 11L21 7L22 19Z M6 21H19 M8 16H16\"/><circle cx=\"12\" cy=\"6\" r=\"1\" fill=\"#b885e7\"/></symbol>\n<symbol id=\"ic-warlord\" viewBox=\"0 0 24 24\"><path d=\"M4 21L5 10L2 5L9 8L12 2L15 8L22 5L19 10L20 21Z M8 15L12 17L16 15 M9 12H10 M14 12H15\"/></symbol>\n<symbol id=\"ic-commander\" viewBox=\"0 0 24 24\"><path d=\"M4 9L12 3L20 9L19 18L12 22L5 18Z M7 12L12 15L17 12 M9 18H15 M12 3V7\"/></symbol>\n<symbol id=\"ic-strike-team\" viewBox=\"0 0 24 24\"><path d=\"M12 2L16 9L22 10L17 15L18 22L12 18L6 22L7 15L2 10L8 9Z M12 9V16 M9 12H15\"/></symbol>\n<symbol id=\"ic-threat\" viewBox=\"0 0 24 24\"><path d=\"M12 2L22 20H2Z M12 8V14 M12 18V18.1\"/><path d=\"M4 4L7 7 M20 4L17 7\"/></symbol>\n</defs></svg>";
 
+/* Earthfall: painterly infestation shader, WebGL1 / GLSL ES 1.00.
+ * Repeating tex = assets/board/infestation.jpg. Painting stays visible. */
+window.EARTHFALL_FX = window.EARTHFALL_FX || {};
+window.EARTHFALL_FX.infestation = {
+  glsl: `
+    float efHash(vec2 p) { return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+    float efNoise(vec2 p) {
+      vec2 i=floor(p),f=fract(p);
+      f=f*f*(3.0-2.0*f);
+      return mix(mix(efHash(i),efHash(i+vec2(1.0,0.0)),f.x),
+                 mix(efHash(i+vec2(0.0,1.0)),efHash(i+vec2(1.0,1.0)),f.x),f.y);
+    }
+    vec3 efInfest(vec3 base, vec2 uv, float time, float inside, float edge, sampler2D tex) {
+      if (inside <= 0.0) return base;
+      float m=clamp(inside,0.0,1.0);
+      float rim=clamp(edge,0.0,1.0)*m;
+      float pulse=0.5+0.5*sin(time*1.2566370614);
+      // Square features on the 16:9 map; drift <1% of board per minute.
+      vec2 drift=vec2(time*0.00012,time*0.00005);
+      vec2 boardUV=uv*vec2(1.7777778,1.0);
+      vec3 organic=texture2D(tex,(boardUV+drift)*24.0).rgb;
+      float structure=clamp(organic.r*1.4-organic.g*0.5,0.0,1.0);
+      // Multiply the painted linear RGB rather than replacing with opaque coral.
+      vec3 tint=base*vec3(0.83-0.09*structure,0.68-0.07*structure,0.73-0.07*structure);
+      vec3 color=mix(base,tint,m*0.32); // max 32% replacement
+      // Domain-warped iso-contours: dark branching fissure, thin lit vein core.
+      vec2 q=(boardUV+drift)*24.0;
+      float warp=efNoise(q*0.38+vec2(4.6,12.7));
+      float field=efNoise(q*0.82+vec2(2.2*warp,-1.8*warp));
+      float d=abs(field-0.50);
+      float crack=1.0-smoothstep(0.025,0.098,d);
+      float vein=1.0-smoothstep(0.0,0.014,d);
+      color*=1.0-(0.40+0.11*structure)*crack*m;
+      color+=vec3(0.070,0.014,0.008)*vein*m*(0.72+0.28*pulse);
+      color+=vec3(0.055,0.013,0.008)*rim*(0.70+0.30*pulse);
+      float glint=step(0.9988,efHash(floor(q*0.28)+vec2(19.0,13.0)));
+      color+=vec3(0.018,0.006,0.025)*glint*vein*rim;
+      return max(color,vec3(0.0));
+    }
+  `
+};
+
 /* Earthfall combat FX — Three.js r128, no imports, no timers. */
 window.EARTHFALL_FX = window.EARTHFALL_FX || {};
 (function(){
