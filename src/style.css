@@ -137,3 +137,8 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 .stats small{display:block;font-size:11px;opacity:.7;font-weight:400}
 @media (max-width:860px){.opt{font-size:12px;padding:4px 0}#coach.show.list{max-height:34vh;overflow:auto}}
 @media (max-height:520px){#coach.show.list .opt:nth-of-type(n+4){display:none}}
+
+#modal.guide .sheet{max-width:620px}.gimg{display:block;width:100%;height:190px;border-radius:10px;background-size:cover;background-position:center;border:1px solid #ffffff22;margin:6px 0 12px}
+.gbody p{margin:0 0 10px;font-size:15px;line-height:1.5}.glist{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:7px}.glist li{padding:8px 10px;border-radius:8px;background:#ffffff0a;border:1px solid #ffffff14;font-size:14px;line-height:1.4}.glist li b{color:var(--gold);margin-right:4px}
+.gdots{display:flex;gap:6px;justify-content:center;margin:6px 0 12px}.gdots i{width:8px;height:8px;border-radius:50%;background:#ffffff33}.gdots i.on{background:var(--gold)}
+@media (max-height:620px){.gimg{height:110px}.gbody p{font-size:14px}}@media (max-height:440px){.gimg{display:none}}
