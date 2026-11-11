@@ -56,6 +56,12 @@ The swarm picks an **objective** and works toward it for up to 4 days:
 
 Also: Vancouver, Astana, Perth and Johannesburg produce uranium. Holding every territory of a region adds daily reserves (North America 2, South America 1, Europe 2, Africa 1, Asia 3, Oceania 1).
 
+## Strongholds (Built)
+Los Angeles and the nine special cities. They produce double their resource, and their buildings go further: Industry to level 5 (3 elsewhere), Barracks to 4 (2), Fortress to 3 (1). Each fortress level adds +1 to the defenders' best die. The swarm values them accordingly.
+
+## Starting position (Built)
+Garrisons follow population: great cities (New York, London, Moscow, Delhi, Mexico City, São Paulo, Cairo, Istanbul, Lagos) start with 3, remote outposts (Anchorage, Manaus, Astana, Novosibirsk) with 1, the rest with 2, Los Angeles with 5. You also start with 8 reserve troops to place where you choose.
+
 ## Difficulty (Built)
 | Level | Invasion growth | Escalation | Harvest speed | AI planning |
 | --- | --- | --- | --- | --- |
@@ -68,6 +74,8 @@ A simple test bot that never uses the strike team, cards or defense battles wins
 ## Weapons and structures (Built)
 | Thing | What it does |
 | --- | --- |
+| Industry (3 levels) | +3 of the city's resource per day, per level |
+| Barracks (2 levels) | Raises 1 troop in the city every 3 days, per level |
 | Fortress | Defenders roll +1; a wall in defense battles |
 | Radar | Reveals strength, leaders and war parties within 2 territories; +1 intel per day; longer gun range in defense battles |
 | Missile battery | Salvo on territories or war parties within 2 territories; strikes you call in defense battles |
@@ -79,10 +87,38 @@ A simple test bot that never uses the strike team, cards or defense battles wins
 
 Planned: orbital interceptor (shoots down one war party per week), naval landing for assaults without a land border, shield dome (blocks one breakout).
 
+## Time: the war room (Built)
+A running clock, slow: one game hour takes about 5 seconds (a day in 2 minutes), or 1 second on fast. It pauses itself when a war party is spotted, a city is attacked or lost, a column's destination falls, the strike team arrives, or a warhead is ready.
+
+You give orders instantly; most of them take time to carry out, and you watch them happen on the map.
+
+| Action | Time |
+| --- | --- |
+| March | 6 hours per territory (4 with Rapid Transport), up to 3 territories |
+| Airlift | 3 hours, anywhere, up to 3 troops |
+| Attack | Instant: the troops are already on the border |
+| Any building or upgrade | 24 hours (16 for the Engineer), one job per city |
+| Reinforce | Instant and free, at strongholds only: reserves muster there and march out |
+
+Troops on the road defend nothing. If their destination falls first, the clock pauses and you choose: return, or divert to one of your territories beside either end. A build in progress is lost if the city falls.
+
+## Orders (Built)
+One daily budget that every action draws on. You get 6 at midnight; unused Orders carry over, up to 3 above the daily amount. A Command Post (strongholds only) adds +1 a day each. The Double Time card adds 2 on the spot.
+
+| Action | Orders |
+| --- | --- |
+| Attack | 2 |
+| Airlift | 2 |
+| March, build or upgrade, missile salvo, bomber raid, send the strike team, sabotage, covert strike | 1 |
+| Reinforce from reserve, play a card, defend | Free |
+
+## Who fights in an attack (Built)
+The spare troops in your territories bordering the target (each keeps one behind). Your reserve is for reinforcing, except when you have no land border: then the reserve lands from the sea and the defenders roll +1. **Flank** is free but positional: it needs spare troops in two bordering territories. Missile and air support cost resources.
+
 ## Battles
 
 ### When you attack (Built)
-Risk dice: you roll up to 3, they roll up to 2, highest pairs compared, ties to the defender. Before the first roll you can add tactics: Flank (+1 on your best die), Missile support (defense −2), Air support (defense −3). You can withdraw between rounds.
+The fight plays out over several seconds, one exchange about every second, with losses shown on both sides as they happen. You can withdraw or skip to the end. Under the hood it is Risk dice: you roll up to 3, they roll up to 2, highest pairs compared, ties to the defender. Before the first roll you can add tactics: Flank (+1 on your best die), Missile support (defense −2), Air support (defense −3). You can withdraw between rounds.
 
 ### When they attack (Built): Command the defense
 War parties of 3 or more can be fought in person, or auto-resolved with dice.
