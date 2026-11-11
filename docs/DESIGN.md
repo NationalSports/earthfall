@@ -59,8 +59,26 @@ Also: Vancouver, Astana, Perth and Johannesburg produce uranium. Holding every t
 ## Strongholds (Built)
 Los Angeles and the nine special cities. They produce double their resource, and their buildings go further: Industry to level 5 (3 elsewhere), Barracks to 4 (2), Fortress to 3 (1). Each fortress level adds +1 to the defenders' best die. The swarm values them accordingly.
 
-## Starting position (Built)
-Garrisons follow population: great cities (New York, London, Moscow, Delhi, Mexico City, São Paulo, Cairo, Istanbul, Lagos) start with 3, remote outposts (Anchorage, Manaus, Astana, Novosibirsk) with 1, the rest with 2, Los Angeles with 5. You also start with 8 reserve troops to place where you choose.
+## The opening (Built)
+1. **Choose** difficulty, a doctrine and a strike team leader.
+2. **The landing.** The swarm takes 12 territories: a main landing of 8 around one of six cities (Tokyo, Johannesburg, São Paulo, Stockholm, Sydney, Tehran) and a beachhead of 4 in another region. Los Angeles and its neighbors are always spared. The Overlord sits in the main landing.
+3. **Mobilization.** The clock is stopped. You have a war chest (400 metal, 350 fuel, 280 research) and 20 reserve troops. Buildings finish at once, troops can be placed and moved anywhere, research can be bought, and nothing costs Orders. "Mobilize for me" spends it to suit the doctrine.
+4. **Begin the war.** Normal rules apply from here.
+
+Your own garrisons follow population: great cities start with 3, remote outposts with 1, the rest with 2, Los Angeles with 5.
+
+### Doctrines (Built): permanent, chosen before the war
+| Doctrine | Effect |
+| --- | --- |
+| Fortress Earth | Fortresses and batteries cost half. Defenders roll +1 |
+| Blitz | 7 Orders a day. Your attacks roll +1 in the first exchange |
+| Shadow War | Strike team recovers twice as fast, +10% on covert work, +2 intel a day |
+| War Economy | Each Industry level yields +4, not +3. Construction takes a third less time |
+
+### Reserves
+About 7 new troops a day at the start: one per 11 territories held plus region bonuses. For comparison, Risk gives one per 3 territories (minimum 3) plus continent bonuses and card sets.
+
+Planned: Armor, a second unit type trained at a Barracks, counting double on the attack.
 
 ## Difficulty (Built)
 | Level | Invasion growth | Escalation | Harvest speed | AI planning |

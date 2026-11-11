@@ -129,3 +129,5 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 .srcs h4{margin:8px 0 2px}.srcs .slider{margin:4px 0}.srcs small{opacity:.6}
 .newg{margin-left:10px;background:none;border:1px solid #ffffff33;border-radius:6px;color:inherit;opacity:.75;padding:5px 9px;font:inherit;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}.newg:hover{opacity:1;border-color:var(--gold)}
 @media (max-width:860px){.newg{padding:4px 6px;font-size:10px}}
+
+#coach button.go{background:linear-gradient(#c9973a,#8a6218);border-color:#f0cd7a;color:#1a1205;font-weight:700;opacity:1;white-space:nowrap}

@@ -1,5 +1,5 @@
 const {L,TERR,TIDS,HQ}=require('../src/logic.js');
-function run(policy,maxDays=120){const S=L.newGame(policy.spec||'assault');
+function run(policy,maxDays=120){const S=L.newGame(policy.spec||'assault','normal',{doc:'fortress'});L.autoMobilize(S);L.begin(S);
  while(!S.over&&S.t<maxDays*24){L.step(S);S.ev.length=0;if(S.t%6===0)policy.act(S);}
  return S;}
 const passive={act(){}};
