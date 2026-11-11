@@ -191,3 +191,7 @@ The top bar's gold **Next** button always names the one thing still waiting (pla
 Under the hood the engine still counts hours (24 per night), so cooldowns and leader movement are unchanged.
 
 Radar twist: declared attacks are only visible a day ahead where a Radar Station (or headquarters) is within 2 territories of the target or source. Elsewhere the swarm strikes by surprise, and the morning report lists your blind spots.
+
+## Bases
+
+Strongholds are bases: Industry, Barracks, Radar, Missile Battery and Command Post are built only there, from a base page that also shows the garrison, income, Reinforce and Train armor. Ordinary territories hold troops, produce their resource and can only be fortified (2 levels). Research is one project at a time in the Lab on the Los Angeles base page.

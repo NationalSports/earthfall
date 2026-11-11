@@ -58,7 +58,8 @@ const PERKS = {
   sydney: { name: 'Deep Space Array', desc: '+2 intel per day', intel: 2 } };
 // Strongholds: Los Angeles and the nine special cities. They produce double, and their buildings can be taken further than anywhere else.
 const STRONG = ['la'].concat(Object.keys(PERKS));
-const MAXLV = { works: [3, 5], barracks: [2, 4], fort: [2, 3], radar: [2, 2], battery: [2, 2], post: [0, 1] };
+// Strongholds are your bases: everything is built there. An ordinary territory can only be fortified.
+const MAXLV = { works: [0, 5], barracks: [0, 4], fort: [2, 3], radar: [0, 2], battery: [0, 2], post: [0, 1] };
 // Starting garrisons follow population: great cities hold more, remote outposts less.
 const POP = { ny: 3, london: 3, moscow: 3, delhi: 3, mexico: 3, saopaulo: 3, cairo: 3, istanbul: 3, lagos: 3, manaus: 1, astana: 1, novosibirsk: 1, anchorage: 1 };
 // Enemy leader traits. One per Warlord and Commander; revealed once the leader is located.
@@ -397,7 +398,7 @@ L.move = (S, from, to, n) => { const A = S.terr[from], B2 = S.terr[to]; if (!A |
   L.log(S, n + ' troops marching from ' + TERR[from].name + ' to ' + TERR[to].name + '. They arrive tonight.', 'info'); return { ok: true, hours: 1 }; };
 // A missile battery relocates like troops: it leaves at once and is set up again at the destination when it arrives.
 L.moveBattery = (S, from, to) => { const A = S.terr[from], B2 = S.terr[to]; if (!A || !B2 || A.owner !== 'you' || B2.owner !== 'you' || from === to) return fail('Pick two of your own territories.');
-  if (!A.battery) return fail('No missile battery there.'); if (B2.battery) return fail(TERR[to].name + ' already has a missile battery.'); if (B2.job) return fail(TERR[to].name + ' is busy building. Wait for that to finish.');
+  if (!A.battery) return fail('No missile battery there.'); if (!L.maxLevel(to, 'battery')) return fail('A missile battery can only be set up at a stronghold (✦).'); if (B2.battery) return fail(TERR[to].name + ' already has a missile battery.'); if (B2.job) return fail(TERR[to].name + ' is busy building. Wait for that to finish.');
   if (S.mob) { B2.battery = A.battery; A.battery = 0; B2.reload = 0; return { ok: true, hours: 0 }; }
   const hops = L.marchHops(S, from, to); if (hops > 3) return fail('Too far. A battery can travel up to 3 territories.');
   if (hops <= 1) { if ((S.redeploy || 0) > 0) S.redeploy--; B2.battery = A.battery; A.battery = 0; B2.reload = A.reload || 0; return { ok: true, hours: 0 }; }
@@ -423,7 +424,7 @@ L.yieldOf = (S, id) => { const T = S.terr[id], pk = PERKS[id], y = { res: {}, ur
 L.airMove = (S, from, to, n) => { const A = S.terr[from], B2 = S.terr[to]; if (!A || !B2 || A.owner !== 'you' || B2.owner !== 'you' || from === to) return fail('Pick two of your own territories.');
   if ((S.airT || 0) > S.t) return fail('The transports have flown today. They are ready again tomorrow.'); if (S.res.fuel < 15) return fail('Not enough fuel (15).'); n = Math.min(n, A.n - 1, L.airMax(S)); if (n < 1) return fail('One troop must stay behind.');
   A.n -= n; (S.cols = S.cols || []).push({ id: S.cid = (S.cid || 0) + 1, from, to, n, t0: S.t, eta: S.t + 1, air: true }); S.res.fuel -= 15; S.airT = S.t + 24; L.log(S, n + ' troops airlifting from ' + TERR[from].name + ' to ' + TERR[to].name + '. They land tonight.', 'info'); return { ok: true, hours: 1 }; };
-L.build = (S, id, key) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); const B0 = BUILD[key]; if ((T[key] || 0) >= L.maxLevel(id, key)) return fail(L.maxLevel(id, key) > 1 ? 'Fully upgraded.' : 'Already built.');
+L.build = (S, id, key) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); const B0 = BUILD[key]; if (!L.maxLevel(id, key)) return fail('Only a stronghold (✦) can build that. Ordinary territories can only be fortified.'); if ((T[key] || 0) >= L.maxLevel(id, key)) return fail(L.maxLevel(id, key) > 1 ? 'Fully upgraded.' : 'Already built.');
   const c = L.costOf(S, key, T[key]); if (!L.canPay(S, c)) return fail('Not enough resources.'); if (T.job) return fail('Something is already under construction here.'); L.pay(S, c);
   if (S.mob) { T[key] = (T[key] || 0) + 1; if (key === 'battery') T.reload = 0; L.log(S, BUILD[key].name + ' built in ' + TERR[id].name + '.', 'info'); L.refreshIntel(S); return { ok: true }; } // instant while mobilizing
   const fast = L.buildHours(S) < 24; T.job = { key, doneAt: S.t + (fast ? 1 : 24) }; // engineers and the Economy doctrine finish by nightfall, before the swarm moves
@@ -575,7 +576,8 @@ for (const k in ORDER_COST) { const f = L[k]; L[k] = (S, ...a) => { const c = S.
 L.autoMobilize = S => { const own = L.owned(S), front = own.filter(id => L.enemyNeighborsN(S, id) > 0).sort((a, b) => L.enemyNeighborsN(S, b) - L.enemyNeighborsN(S, a)), strong = own.filter(L.isStrong);
   const up = { fortress: 'hardened', blitz: 'bombers', shadow: 'ghost' }[S.doc]; if (up) L.buy(S, up);
   const want = { fortress: ['fort', 'fort', 'fort', 'fort', 'battery', 'radar'], blitz: ['radar'], shadow: ['radar', 'radar', 'fort'], economy: ['fort'] }[S.doc] || ['fort', 'fort', 'radar'];
-  want.forEach((k, i) => { const id = front.filter(x => !S.terr[x][k])[k === 'fort' ? 0 : Math.min(i, 1)] || front[0]; if (id) L.build(S, id, k); });
+  const sf = strong.slice().sort((a, b) => L.enemyNeighborsN(S, b) - L.enemyNeighborsN(S, a));
+  want.forEach((k, i) => { const id = k === 'fort' ? (front.filter(x => !S.terr[x][k])[0] || front[0]) : sf.filter(x => !S.terr[x][k])[0]; if (id) L.build(S, id, k); });
   for (let pass = 0; pass < (S.doc === 'economy' ? 3 : 1); pass++) for (const id of strong.slice(0, S.doc === 'economy' ? 9 : 3)) L.build(S, id, 'works');
   let guard = 0; while (S.pool > 0 && front.length && guard++ < 80) { let best = front[0], bs = -1e9; for (const id of front) { const sc = L.enemyNeighborsN(S, id) - S.terr[id].n * (S.doc === 'blitz' ? 0.3 : 1.5); if (sc > bs) { bs = sc; best = id; } } if (!L.reinforce(S, best).ok) break; } };
 if (typeof module !== 'undefined') module.exports = { ARMOR_COST, DOCTRINES, LANDINGS, ORDER_COST, STRONG, PERKS, TRAITS, CARDS_DEF, URANIUM, DIFFS, EMP_COST, SALVO_COST, BOMB_COST, SPECS, L, TERR, TIDS, HQ, LINKS, REGIONS, UPGRADES, BUILD, NUKE_STAGE, INTEL };

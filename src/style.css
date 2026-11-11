@@ -180,3 +180,6 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 .tabs .dot,.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);margin-left:5px;vertical-align:middle}
 .note.proj{color:var(--gold)}
 @media (max-width:860px){.nextb,.endb{padding:4px 8px}.nextb b{font-size:12.5px}.endb small{display:none}}
+
+.basetop{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;padding:12px 14px;margin:8px 0 12px;border-radius:10px;background:#ffffff08;border:1px solid #ffffff1c}.basetop label{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.6}.basetop b{font-size:15px}.basetop .bbtns{display:flex;gap:8px;margin-left:auto}
+.mk .opt button+button{margin-left:6px}#lab{margin-top:14px;padding-top:6px;border-top:1px solid var(--line)}
