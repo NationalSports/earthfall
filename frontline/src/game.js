@@ -88,9 +88,20 @@
   function tracer(a, b, col) { const g = new THREE.BufferGeometry().setFromPoints([a, b]); const m = tracerMat.clone(); if (col) m.color.set(col); const l = new THREE.Line(g, m); scene.add(l); fx.push({ o: l, t: 0, d: 0.07 }); }
   function puff(p, col, s) { const m = new THREE.Mesh(new THREE.SphereGeometry(0.25, 6, 5), new THREE.MeshBasicMaterial({ color: col, transparent: true })); m.position.copy(p); scene.add(m); fx.push({ o: m, t: 0, d: 0.28, grow: s || 3 }); }
 
+  // ---------- Call-ins (support from orbit). Aim at the ground and press the key; a beacon marks the spot and it arrives a moment later.
+  const CALLS = [{ key: 'Digit1', name: 'Orbital strike', cd: 22, t: 0, delay: 2.2, col: 0xff7040 }, { key: 'Digit2', name: 'Turret drop', cd: 35, t: 0, delay: 2.0, col: 0x46d6d0, max: 4, used: 0 }];
+  const pending = [];
+  function groundAim() { ray.setFromCamera({ x: 0, y: 0 }, camera); const o = ray.ray.origin, d = ray.ray.direction; for (let t = 3; t < 160; t += 1.5) { const x = o.x + d.x * t, y = o.y + d.y * t, z = o.z + d.z * t; if (y <= H(x, z)) return { x: clamp(x, -ARENA + 3, ARENA - 3), z: clamp(z, -ARENA + 3, ARENA - 3) }; } return null; }
+  function callIn(i) { const c = CALLS[i]; if (c.t > 0 || player.dead || (state !== 'wave' && state !== 'between')) return; if (c.max && c.used >= c.max) { banner(c.name, 'No more available this battle.'); return; } const g = groundAim(); if (!g) { banner(c.name, 'Aim at the ground to mark a target.'); return; }
+    c.t = c.cd; if (c.max) c.used++; const y = H(g.x, g.z), beam = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 90, 8), new THREE.MeshBasicMaterial({ color: c.col, transparent: true, opacity: 0.75 })); beam.position.set(g.x, y + 45, g.z); scene.add(beam);
+    const ring = new THREE.Mesh(new THREE.RingGeometry(i === 0 ? 8.4 : 1.6, i === 0 ? 9 : 2, 40), new THREE.MeshBasicMaterial({ color: c.col, transparent: true, opacity: 0.8, side: THREE.DoubleSide })); ring.rotation.x = -Math.PI / 2; ring.position.set(g.x, y + 0.25, g.z); scene.add(ring);
+    pending.push({ i, x: g.x, z: g.z, t: c.delay, beam, ring }); }
+  function resolveCall(p) { scene.remove(p.beam); scene.remove(p.ring); const y = H(p.x, p.z);
+    if (p.i === 0) { puff(new THREE.Vector3(p.x, y + 1.5, p.z), 0xffd9a0, 46); puff(new THREE.Vector3(p.x, y + 1, p.z), 0xff6030, 30); for (const e of enemies.slice()) { const d = Math.hypot(e.x - p.x, e.z - p.z); if (d < 10) hurtEnemy(e, d < 6 ? 99 : 4); } if (!player.dead && Math.hypot(player.x - p.x, player.z - p.z) < 8) { player.hp -= 45; hud.hit.classList.add('on'); setTimeout(() => hud.hit.classList.remove('on'), 200); if (player.hp <= 0) { player.dead = true; setTimeout(() => finish(false), 900); } } }
+    else { puff(new THREE.Vector3(p.x, y + 1, p.z), 0x9be8e2, 14); for (const e of enemies.slice()) if (Math.hypot(e.x - p.x, e.z - p.z) < 3) hurtEnemy(e, 99); addTurret(p.x, p.z); } }
   // ---------- Input
   const keys = {}; let firing = false, locked = false;
-  window.addEventListener('keydown', e => { keys[e.code] = true; if (e.code === 'KeyR') reload(); if (e.code === 'Space') e.preventDefault(); });
+  window.addEventListener('keydown', e => { keys[e.code] = true; if (e.code === 'KeyR') reload(); if (e.code === 'Digit1') callIn(0); if (e.code === 'Digit2') callIn(1); if (e.code === 'Space') e.preventDefault(); });
   window.addEventListener('keyup', e => { keys[e.code] = false; });
   const cv = renderer.domElement;
   cv.addEventListener('mousedown', e => { if (state === 'intro' || state === 'over') return; if (e.button === 0) firing = true; if (!locked && cv.requestPointerLock) { try { cv.requestPointerLock(); } catch (err) { /* some frames forbid it; mouse-move still aims */ } } });
@@ -103,7 +114,8 @@
   const hud = { hp: $('#hp i'), hpT: $('#hp b'), core: $('#core i'), coreT: $('#core b'), ammo: $('#ammo'), wave: $('#wave'), msg: $('#msg'), sub: $('#sub'), over: $('#over'), hit: $('#hit') };
   let bannerT = 0; function banner(a, b) { hud.msg.textContent = a; hud.sub.textContent = b || ''; hud.msg.parentNode.classList.add('on'); bannerT = 2.6; }
   function drawHud() { hud.hp.style.width = clamp(player.hp / player.max * 100, 0, 100) + '%'; hud.hpT.textContent = Math.max(0, Math.ceil(player.hp)); hud.core.style.width = clamp(CORE.hp / CORE.max * 100, 0, 100) + '%'; hud.coreT.textContent = Math.max(0, Math.ceil(CORE.hp));
-    hud.ammo.innerHTML = player.reload > 0 ? '<b>Reloading</b>' : '<b>' + player.ammo + '</b> / ' + player.mag; hud.wave.innerHTML = 'Wave <b>' + Math.max(1, wave) + '</b> of ' + WAVES.length + ' · <b>' + (enemies.length + toSpawn) + '</b> left · ' + kills + ' kills'; }
+    hud.ammo.innerHTML = player.reload > 0 ? '<b>Reloading</b>' : '<b>' + player.ammo + '</b> / ' + player.mag; $('#calls').innerHTML = CALLS.map((c, i) => '<div class="call' + (c.t > 0 || (c.max && c.used >= c.max) ? ' wait' : '') + '"><kbd>' + (i + 1) + '</kbd><b>' + c.name + '</b><small>' + (c.max && c.used >= c.max ? 'none left' : c.t > 0 ? Math.ceil(c.t) + 's' : c.max ? (c.max - c.used) + ' left · ready' : 'ready') + '</small></div>').join('');
+    hud.wave.innerHTML = 'Wave <b>' + Math.max(1, wave) + '</b> of ' + WAVES.length + ' · <b>' + (enemies.length + toSpawn) + '</b> left · ' + kills + ' kills'; }
   function finish(won) { state = 'over'; firing = false; if (document.exitPointerLock) document.exitPointerLock();
     const left = Math.max(0, Math.round(SETUP.defenders * (won ? 0.5 + 0.5 * CORE.hp / CORE.max : 0)));
     const result = { won, defendersLeft: left, armorLeft: won ? SETUP.armor : 0, attackersKilled: Math.round(SETUP.attackers * Math.min(1, kills / WAVES.reduce((a, b) => a + b, 0))) };
@@ -139,6 +151,7 @@
     for (const t of turrets) { t.t -= dt; let best = null, bd = 30; for (const e of enemies) { const d = Math.hypot(e.x - t.x, e.z - t.z); if (d < bd) { bd = d; best = e; } }
       if (best) { const want = Math.atan2(-(best.x - t.x), -(best.z - t.z)); let da = want - t.yaw; da = Math.atan2(Math.sin(da), Math.cos(da)); t.yaw += clamp(da, -dt * 5, dt * 5); t.m.userData.top.rotation.y = t.yaw;
         if (t.t <= 0 && Math.abs(da) < 0.2) { t.t = 0.6; tracer(new THREE.Vector3(t.x, H(t.x, t.z) + 1.1, t.z), new THREE.Vector3(best.x, H(best.x, best.z) + 0.8, best.z), 0x9be8e2); hurtEnemy(best, 1); } } }
+    for (const c of CALLS) if (c.t > 0) c.t -= dt; for (let i = pending.length - 1; i >= 0; i--) { const p = pending[i]; p.t -= dt; p.beam.material.opacity = 0.45 + 0.4 * Math.abs(Math.sin(p.t * 9)); p.ring.rotation.z += dt * 2; if (p.t <= 0) { pending.splice(i, 1); resolveCall(p); } }
     // effects
     for (let i = fx.length - 1; i >= 0; i--) { const f = fx[i]; f.t += dt; const k = f.t / f.d; if (k >= 1) { scene.remove(f.o); fx.splice(i, 1); continue; } f.o.material.opacity = 1 - k; if (f.grow) f.o.scale.setScalar(1 + k * f.grow); }
     CORE.orb.rotation.y += dt * 0.8; CORE.orb.position.y = 4 + Math.sin(performance.now() / 600) * 0.25; CORE.light.intensity = 0.6 + 0.9 * CORE.hp / CORE.max;
@@ -154,5 +167,5 @@
   function frame(now) { const dt = Math.min(0.05, (now - last) / 1000); last = now; if (state === 'wave' || state === 'between') step(dt); placeCamera(); drawHud(); renderer.render(scene, camera); requestAnimationFrame(frame); }
   function begin() { if (state !== 'intro') return; $('#intro').classList.remove('on'); state = 'between'; between = 3; banner('Defend ' + SETUP.city, 'Hold the core. The swarm is coming over the hills, all across the north.'); if (cv.requestPointerLock) { try { cv.requestPointerLock(); } catch (e) { /* fine */ } } }
   $('#start').onclick = begin; placeCamera(); requestAnimationFrame(frame);
-  window.__f = { player, enemies, CORE, step, begin, get state() { return state; }, get wave() { return wave; }, turrets, shoot, SETUP };
+  window.__f = { callIn, CALLS, pending, player, enemies, CORE, step, begin, get state() { return state; }, get wave() { return wave; }, turrets, shoot, SETUP };
 })();

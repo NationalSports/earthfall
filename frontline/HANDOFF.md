@@ -176,3 +176,22 @@ To be filed as issues once the repo exists. Match Earthfall's painted-miniature 
 - **Location:** lives in the `frontline/` folder of `NationalSports/earthfall`, not a separate repository.
 - **Models:** built in three.js code from simple shapes (clean low-poly figures). Claude builds the soldier, enemies and turrets; ChatGPT paints textures, skybox, HUD and concept art, and may add model files.
 - **Multiplayer variant (later):** Steve wants a **Halo-style multiplayer shooter**: players against players in arenas, set **on other worlds as well as in Earth's cities**. Not designed yet. Open questions: team sizes and modes (slayer, capture the flag, objective), whether a co-op mode against the swarm is also wanted, and how many other worlds. It needs a small game server, which the single-player build does not, so it is a separate milestone after the Earthfall link.
+
+## 13. Direction: how it should play and look
+
+Steve's reference points, as inspiration for feel and tone. All characters, armour, weapons, enemies and names must be **original designs**; nothing is to be copied from those games.
+
+**Plays like a squad horde shooter with orbital support** (his reference: Helldivers).
+- Third-person, over the shoulder, against an overwhelming swarm that comes from a wide arc over open ground, not down lanes.
+- **Call-ins from orbit** are the signature mechanic: mark a spot, a beacon goes up, and support lands a moment later. Strikes hurt you too if you stand in them. First two are built: orbital strike (key 1) and turret drop (key 2).
+- Call-ins come from Earthfall: Missile Battery gives the orbital strike, Strategic Bombers an airstrike run, Barracks a reinforcement squad, Industry a supply drop, and the Warhead stays a map weapon.
+- You arrive by drop pod and extract at the end. Your Earthfall troop count is your pool of reinforcements (respawns).
+- Objectives beyond holding the core, for assault missions: destroy hives, escort a convoy, hold a relay.
+- Built for co-op from the start (up to four), even though the first builds are single-player.
+
+**Looks like clean, heroic science fiction** (his reference: Halo).
+- Smooth armoured soldiers with a visor and bold colour panels, readable silhouettes, bright saturated colour against big open skies.
+- Human kit is chunky, practical and teal-and-gold to match Earthfall. The swarm is purple, organic and glossy, with glowing weak points.
+- Sweeping alien and off-world vistas for the other-worlds arenas.
+
+The Halo-style multiplayer in section 12 is a separate mode: players against players in arenas.
