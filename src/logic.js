@@ -110,7 +110,7 @@ const SUR = ['Okonkwo','Alvarez','Tanaka','Petrov','Singh','Moreau','Haddad','Ki
 const RANKN = { overlord:'Overlord', warlord:'Warlord', commander:'Commander' };
 
 // ---------- Helpers ----------
-const L = {}; const DIFFS = { easy: { name: 'Recruit', desc: 'Slower invasion, more reinforcements. For learning the board.', div: 11, grow: 6, escDays: 8, harv: 0.11, iq: 0.3 }, normal: { name: 'Veteran', desc: 'The intended fight. You will lose ground before you gain it.', div: 12, grow: 9, escDays: 6, harv: 0.14, iq: 0.7 }, hard: { name: 'Last Stand', desc: 'Fast growth, quick escalation, thin reserves.', div: 15, grow: 10, escDays: 6, harv: 0.16, iq: 1 } };
+const L = {}; const DIFFS = { easy: { land: [9, 4], name: 'Recruit', desc: 'Slower invasion, more reinforcements. For learning the board.', div: 11, grow: 6, escDays: 8, harv: 0.11, iq: 0.3 }, normal: { land: [11, 5], name: 'Veteran', desc: 'The intended fight. You will lose ground before you gain it.', div: 12, grow: 8, escDays: 6, harv: 0.14, iq: 0.7 }, hard: { land: [11, 5, 3], name: 'Last Stand', desc: 'Fast growth, quick escalation, thin reserves.', div: 15, grow: 8, escDays: 7, harv: 0.16, iq: 1 } };
 L.P = DIFFS.normal; L.setDiff = d => { L.P = DIFFS[d] || DIFFS.normal; };
 L.rand = Math.random;
 const rnd = () => L.rand();
@@ -178,11 +178,13 @@ L.fight = (A, D, aBonus, dBonus) => { let n = 0; while (A > 0 && D > 0 && n++ < 
 // ---------- New game ----------
 // Where the swarm comes down. One main landing and one beachhead, different every game; Los Angeles and its neighbors are always spared.
 const LANDINGS = ['tokyo', 'joburg', 'saopaulo', 'stockholm', 'sydney', 'tehran'];
-L.landing = () => { const safe = new Set([HQ].concat(TERR[HQ].adj));
+L.landing = (sizes) => { sizes = sizes || [11, 5]; const safe = new Set([HQ].concat(TERR[HQ].adj));
   const spread = (seed, k, taken) => { const out = [seed], q = [seed]; while (q.length && out.length < k) { const x = q.shift(); for (const y of TERR[x].adj.map(y => [y, (TERR[y].region !== TERR[seed].region ? 1 : 0) + rnd() * 0.8]).sort((p, q) => p[1] - q[1]).map(p => p[0])) if (out.length < k && !out.includes(y) && !taken.has(y) && !safe.has(y)) { out.push(y); q.push(y); } } return out; };
-  const seed = pick(LANDINGS), main = spread(seed, 8, new Set()), cand = LANDINGS.filter(x => !main.includes(x) && TERR[x].region !== TERR[seed].region && !TERR[x].adj.some(y => main.includes(y)));
-  const beach = spread(pick(cand.length ? cand : LANDINGS.filter(x => !main.includes(x))), 4, new Set(main)), E = {};
-  main.forEach((id, i) => { E[id] = [7, 6, 5, 4, 4, 4, 3, 3][i] || 3; }); beach.forEach((id, i) => { E[id] = [5, 4, 4, 3][i] || 3; }); return { E, main, beach }; };
+  const seed = pick(LANDINGS), main = spread(seed, sizes[0], new Set()), cand = LANDINGS.filter(x => !main.includes(x) && TERR[x].region !== TERR[seed].region && !TERR[x].adj.some(y => main.includes(y)));
+  const beach = spread(pick(cand.length ? cand : LANDINGS.filter(x => !main.includes(x))), sizes[1], new Set(main)), E = {};
+  main.forEach((id, i) => { E[id] = [7, 6, 5, 5, 4, 4, 4, 3, 3][i] || 3; }); beach.forEach((id, i) => { E[id] = [5, 4, 4, 3][i] || 3; });
+  if (sizes[2]) { const used = new Set(main.concat(beach)), c2 = LANDINGS.filter(x => !used.has(x) && !TERR[x].adj.some(y => used.has(y))), b2 = spread(pick(c2.length ? c2 : LANDINGS.filter(x => !used.has(x))), sizes[2], used); b2.forEach((id, i) => { if (!used.has(id)) E[id] = [4, 3, 3][i] || 3; }); }
+  return { E, main, beach }; };
 // Doctrines: chosen once, before the war, and in force for the whole game.
 const DOCTRINES = {
   fortress: { name: 'Fortress Earth', desc: 'Fortresses and batteries cost half. Defenders roll +1.' },
@@ -194,7 +196,7 @@ L.newGame = (spec, diff, opt) => { L.setDiff(diff); opt = opt || {};
     team: { at: HQ, dest: null, from: null, t0: 0, eta: 0, pips: 4, restT: 0 }, up: {}, nuke: { stage: 0, doneAt: 0, building: false, ready: 0 },
     emp: { n: 0, building: false, doneAt: 0 }, nukes: 0, harvest: 0, esc: 0, kills: 0, intel: 0, log: [], ev: [], obs: {}, over: null, pid: 1, lid: 1,
     next: { grow: 24, attack: 10, daily: 24, move: 40, promote: [] }, stats: { won: 0, lost: 0, held: 0 } };
-  const land = L.landing(), E = land.E;
+  const land = L.landing(L.P.land), E = land.E;
   for (const id of TIDS) S.terr[id] = id in E ? { owner: 'enemy', n: E[id], seenN: E[id], seenT: 0 } : { owner: 'you', n: POP[id] || 2, seenN: POP[id] || 2, seenT: 0 };
   S.terr[HQ].n = 5; S.terr[HQ].fort = 1; S.terr[HQ].radar = 1; S.land = { main: land.main[0], beach: land.beach[0] };
   const mk = (rank, at, boss) => { const l = { id: 'L' + S.lid++, rank, at, alive: true, boss: boss || null, seenAt: at, seenT: 0, exposed: 0, trait: rank === 'overlord' ? null : pick(Object.keys(TRAITS)),
@@ -213,7 +215,8 @@ L.launchParty = (S, from, to, n, breakout, eta) => { const ls = L.leadersAt(S, f
 L.playerNeighbors = (S, id) => TERR[id].adj.filter(n => S.terr[n].owner === 'you');
 L.grow = S => { const en = L.enemyT(S); if (!en.length) return;
   const k = Math.max(1, L.P.grow + Math.min(5, S.esc) - (S.up.disruptor ? 1 : 0));
-  for (let i = 0; i < k; i++) { const id = pick(en), T = S.terr[id];
+  const gw = en.map(id => 1 + (L.playerNeighbors(S, id).length ? 1.5 : 0) + (L.leadersAt(S, id).length ? 1.5 : 0)), gt = gw.reduce((a, b) => a + b, 0), wpick = () => { let r = rnd() * gt; for (let i = 0; i < en.length; i++) { r -= gw[i]; if (r <= 0) return en[i]; } return en[en.length - 1]; };
+  for (let i = 0; i < k + (S.rage ? 3 : 0); i++) { const id = wpick(), T = S.terr[id];
     if (T.n >= L.cap(S)) { // breakout, Pandemic style
       const nb = L.playerNeighbors(S, id); if (!nb.length) continue;
       T.n -= 2; for (const to of nb) L.launchParty(S, id, to, 2, true);
@@ -224,7 +227,7 @@ L.grow = S => { const en = L.enemyT(S); if (!en.length) return;
 // How much the invaders want a given player territory.
 L.targetValue = (S, to) => { const T = S.terr[to]; let v = 1 + Math.max(0, 5 - T.n) - (T.fort ? 1 : 0);
   if (to === HQ) v += (S.nuke.building || S.nuke.ready) ? 6 : 1.5;
-  if (URANIUM.includes(to)) v += 2.5; if (T.battery) v += 2; if (T.radar) v += 1;
+  if (T.battery) v += 2; if (T.radar) v += 2.5; /* blinding you is worth a lot */ v += 0.6 * (T.works || 0) + 0.6 * (T.barracks || 0);
   const rg = TERR[to].region; if (TIDS.every(i => TERR[i].region !== rg || S.terr[i].owner === 'you')) v += 2.5; // breaks a region bonus
   if (L.isStrong(to)) v += 1.5 + 0.4 * (T.works || 0); if (L.teamAt(S) === to) v -= 1; return Math.max(0.3, v); };
 // Warlord-led offensives: choose an objective, mass troops from the rear if the front is too thin, then strike, from two sides when possible.
@@ -245,7 +248,16 @@ L.smartAttack = S => { const fronts = [];
   for (const id of srcs.slice(0, S.esc >= 2 ? 2 : 1)) { const T = S.terr[id]; if (T.n < (sent ? 4 : 2)) continue;
     const n = Math.max(2, Math.floor(T.n / 2) + (!sent && S.esc > 2 ? 1 : 0)); T.n -= Math.floor(T.n / 2); L.launchParty(S, id, to, n, false, eta); sent++; }
   if (sent) ai.until = Math.min(ai.until, S.t + 60); };
-L.planAttack = S => { if (rnd() < (L.P.iq == null ? 0.7 : L.P.iq)) return L.smartAttack(S); const opts = [];
+// The swarm protects its leaders: when your armies mass next to one, it pulls troops in from the rear.
+L.shoreUp = S => { for (const l of S.leaders) { if (!l.alive || S.terr[l.at].owner !== 'enemy') continue; const nb = L.playerNeighbors(S, l.at); if (!nb.length) continue;
+    const threat = nb.reduce((n, x) => n + Math.max(0, S.terr[x].n - 1) + 2 * (S.terr[x].arm || 0), 0); if (threat <= L.enemyDefense(S, l.at) + 1) continue;
+    const rear = L.enemyT(S).filter(id => id !== l.at && !L.playerNeighbors(S, id).length && S.terr[id].n >= 3).sort((a, b) => L.dist(a, l.at) - L.dist(b, l.at))[0]; if (!rear) continue;
+    const k = Math.min(2 + (l.rank === 'overlord' ? 1 : 0), S.terr[rear].n - 1); S.terr[rear].n -= k; S.terr[l.at].n += k; if (S.obs[l.at]) L.log(S, 'The swarm pulled ' + k + ' reinforcements into ' + TERR[l.at].name + ' to protect ' + l.name + '.', 'intel'); return; } };
+// Escalation: each new threat level drops a force from orbit on your rear. Radar shows where; without it, it is a surprise.
+L.orbitalDrop = S => { const ov = L.overlord(S); if (!ov || !ov.alive) return; const own = L.owned(S).filter(id => id !== HQ && !TERR[id].adj.some(x => S.terr[x].owner === 'enemy') && !S.parties.some(p => p.to === id)); if (!own.length) return;
+  own.sort((a, b) => (L.isStrong(b) ? 3 : 0) + (S.terr[b].radar ? 2 : 0) - S.terr[b].n * 0.7 + rnd() - ((L.isStrong(a) ? 3 : 0) + (S.terr[a].radar ? 2 : 0) - S.terr[a].n * 0.7 + rnd()));
+  L.launchParty(S, ov.at, own[0], 3 + Math.min(4, S.esc), true); S.parties[S.parties.length - 1].drop = 1; };
+L.planAttack = S => { if (rnd() < 0.6 * (L.P.iq == null ? 0.7 : L.P.iq)) L.shoreUp(S); if (rnd() < (L.P.iq == null ? 0.7 : L.P.iq)) return L.smartAttack(S); const opts = [];
   for (const id of L.enemyT(S)) { const T = S.terr[id]; if (T.n < 3) continue;
     const ls = L.leadersAt(S, id); if (ls.length && ls.every(l => L.inDisarray(S, l))) continue;
     if (T.disarray > S.t) continue;
@@ -270,9 +282,9 @@ L.arrive = (S, p, forced) => { const T = S.terr[p.to], name = TERR[p.to].name;
   if (r.D > 0) { const lost = Math.min(T.n + (T.arm || 0), D0 - r.D), li = Math.min(T.n, lost); T.n -= li; T.arm = Math.max(0, (T.arm || 0) - (lost - li)); if (T.n < 1) T.n = 1; S.stats.held++;
     if (teamHere) S.res.salvage++;
     L.log(S, name + ' held against ' + p.n + ' attackers' + (lost ? ', losing ' + lost + '.' : ' without loss.') + (teamHere ? ' Your strike team fought in the line.' : ''), 'good');
-    S.ev.push({ k: 'report', blind: !p.seen, to: p.to, from: p.from, n: p.n, d: D0, held: true, lost, left: T.n + (T.arm || 0) }); S.ev.push({ k: 'pause' });
+    S.ev.push({ k: 'report', drop: p.drop, blind: !p.seen, to: p.to, from: p.from, n: p.n, d: D0, held: true, lost, left: T.n + (T.arm || 0) }); S.ev.push({ k: 'pause' });
   } else { T.owner = 'enemy'; T.n = Math.max(1, r.A); T.fort = 0; T.radar = 0; T.battery = 0; T.works = 0; T.barracks = 0; T.post = 0; T.job = null; T.arm = 0; S.stats.lost++;
-    L.log(S, name + ' has fallen to the invasion.', 'bad'); S.ev.push({ k: 'report', blind: !p.seen, to: p.to, from: p.from, n: p.n, d: D0, held: false, lost: D0, left: T.n }); S.ev.push({ k: 'pause' });
+    L.log(S, name + ' has fallen to the invasion.', 'bad'); S.ev.push({ k: 'report', drop: p.drop, blind: !p.seen, to: p.to, from: p.from, n: p.n, d: D0, held: false, lost: D0, left: T.n }); S.ev.push({ k: 'pause' });
     if (teamHere) { S.team.pips = Math.max(0, S.team.pips - 2); L.teamRetreat(S, p.to); }
     if (rnd() < 0.6) L.spawnCommander(S, p.to);
     if (p.to === HQ) return L.end(S, 'hq'); } };
@@ -293,7 +305,8 @@ L.killLeader = (S, l, how) => { l.alive = false; S.kills++; L.drawCard(S, 'for t
   if (S.intel < INTEL.length) { S.ev.push({ k: 'intel', i: S.intel }); S.res.research += 20; S.log.unshift({ t: S.t, msg: 'Intel recovered: ' + INTEL[S.intel], kind: 'story' }); S.intel++; }
   if (l.rank === 'warlord') { S.next.promote.push({ t: S.t + 72, boss: l.id });
     for (const id of L.enemyT(S)) if (L.leadersAt(S, id).some(c => c.boss === l.id) || id === l.at) { S.terr[id].disarray = S.t + 96; S.terr[id].n = Math.max(1, S.terr[id].n - 1); }
-    L.log(S, 'His theater is in disarray. The Overlord has lost two guards.', 'good'); }
+    L.log(S, 'His theater is in disarray. The Overlord has lost two guards.', 'good');
+    if (!S.rage && L.warlordsAlive(S) === 0) { S.rage = true; S.rageDay = L.day(S); L.log(S, 'Every Warlord is dead. The Overlord is exposed, and the swarm is enraged: it will throw everything at you until he falls.', 'bad'); } }
   if (l.rank === 'overlord') L.end(S, 'win'); };
 L.promote = (S, pr) => { let c = S.leaders.filter(l => l.alive && l.rank === 'commander' && l.boss === pr.boss); if (!c.length) c = S.leaders.filter(l => l.alive && l.rank === 'commander');
   if (!c.length) return; const n = pick(c); n.rank = 'warlord'; const old = n.boss; n.boss = null;
@@ -311,11 +324,11 @@ L.daily = S => { const o0 = S.orders || 0, i0 = S.res.intel, u0 = S.res.uranium,
   S.pool = Math.min(30, S.pool + r);
   S.harvest = Math.min(100, S.harvest + L.enemyT(S).length * L.P.harv);
   { const prev = S.prevOwn || own, eN = L.enemyT(S).reduce((a, id) => a + S.terr[id].n, 0);
-    S.ev.push({ k: 'day', day: L.day(S), inc, intel: S.res.intel - i0, uranium: S.res.uranium - u0, pool: S.pool - p0, poolNow: S.pool, orders: S.orders, kept: o0, bar, built: S.dayBuilt || [], researched: done,
+    S.ev.push({ k: 'day', day: L.day(S), inc, intel: S.res.intel - i0, uranium: S.res.uranium - u0, pool: S.pool - p0, poolNow: S.pool, orders: S.orders, kept: o0, bar, built: S.dayBuilt || [], researched: done, esc: S.esc,
       won: own.filter(id => !prev.includes(id)), lost: prev.filter(id => !own.includes(id)), harvest: S.harvest - h0, harvestNow: S.harvest, enemy: eN, enemyWas: S.prevEnemy == null ? eN : S.prevEnemy });
     S.ev.push({ k: 'pause' }); S.prevOwn = own.slice(); S.prevEnemy = eN; S.dayBuilt = []; }
   if (S.harvest >= 100) return L.end(S, 'harvest');
-  const e = Math.floor((L.day(S) - 1) / L.P.escDays) + S.nukes; if (e > S.esc) { S.esc = e; L.log(S, 'The invasion is escalating. Threat level ' + S.esc + '.', 'bad'); }
+  const e = Math.floor((L.day(S) - 1) / L.P.escDays) + S.nukes; if (e > S.esc) { S.esc = e; S.escUp = e; for (let i = 0; i < (e >= 3 ? 2 : 1); i++) L.orbitalDrop(S); L.log(S, 'Threat level ' + S.esc + '. The swarm grows faster, and dropships are falling toward your rear.', 'bad'); }
   if (own.length < 8) L.end(S, 'collapse'); };
 L.end = (S, why) => { if (S.over) return; S.over = { why, t: S.t, own: L.owned(S).length }; S.speed = 0; S.ev.push({ k: 'over' }); };
 
@@ -338,7 +351,7 @@ L.step = S => { // advance one hour
     if (S.cmd && S.terr[p.to].owner === 'you' && p.n >= 3) { S.pending = p; S.ev.push({ k: 'defend' }); S.ev.push({ k: 'pause' }); return; }
     L.arrive(S, p); if (S.over) return; }
   if (S.t >= N.grow) { N.grow = S.t + 24; L.grow(S); }
-  if (S.t >= N.attack) { N.attack = S.t + Math.max(8, 16 - S.esc * 2) + ri(-3, 3); if (S.parties.length < 4 + S.esc) L.planAttack(S); }
+  if (S.t >= N.attack) { N.attack = S.t + Math.max(8, 16 - S.esc * 2) + ri(-3, 3); if (S.parties.length < 4 + S.esc + (S.rage ? 3 : 0)) { L.planAttack(S); if (S.rage) L.planAttack(S); } }
   if (S.t >= N.move) { N.move = S.t + ri(40, 70); L.moveLeaders(S); }
   for (const pr of N.promote.slice()) if (S.t >= pr.t) { N.promote.splice(N.promote.indexOf(pr), 1); L.promote(S, pr); }
   if (S.nuke.building && S.t >= S.nuke.doneAt) { S.nuke.building = false; S.nuke.stage++;
@@ -517,6 +530,7 @@ L.assaultEnd = (S, b, won) => { if (b.done) return; b.done = true; b.won = won; 
   const lostS = b.troops - surv, infLost = Math.min(b.inf, lostS), armLost = Math.min(b.arm || 0, Math.ceil((lostS - infLost) / 2)), infS = b.inf - infLost, armS = (b.arm || 0) - armLost;
   if (won) { S.stats.won++; const ls = L.leadersAt(S, b.id); T.owner = 'you'; T.n = Math.max(1, infS); T.arm = armS; T.alert = 0; T.disarray = 0; T.soft = 0;
     { const n0 = S.parties.length; S.parties = S.parties.filter(p => p.from !== b.id); if (S.parties.length < n0) { b.cancelled = n0 - S.parties.length; } }
+    if (TERR[b.id].adj.some(x => S.terr[x].owner === 'enemy' && x !== b.id)) S.ai = { obj: b.id, until: S.t + 60, massed: 1 }; /* the swarm tries to take it straight back */
     L.log(S, name + ' is liberated. ' + T.n + ' troops' + (T.arm ? ' and ' + T.arm + ' armor' : '') + ' hold it.', 'good'); b.notes = []; if (S.cardDay !== L.day(S)) { S.cardDay = L.day(S); L.drawCard(S, 'for liberating ' + name); }
     for (const l of ls) { const esc = TERR[b.id].adj.filter(n => S.terr[n].owner === 'enemy');
       if (esc.length && rnd() < 0.45) { l.at = pick(esc); l.exposed = S.t + 48; l.from = b.id; l.moveT0 = S.t; b.notes.push(RANKN[l.rank] + ' ' + l.name + ' escaped to ' + TERR[l.at].name + ', wounded and exposed.'); L.log(S, b.notes[b.notes.length - 1], 'intel'); }

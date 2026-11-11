@@ -202,3 +202,12 @@ Strongholds are bases: Industry, Barracks, Radar, Missile Battery and Command Po
 - No side panel. The map fills the screen; a selected territory shows its actions in the bar, Details opens a sheet, and the top bar has Enemy and Story buttons.
 - The night shows itself: the camera flies to each attack radar detects, battles stop with a report, and the morning report has a "Last night" list.
 - Regions are visible: each territory shows its region and how much of it you hold; the Strongholds list shows every region's bonus and what is missing.
+
+## A harder, livelier war
+
+- Landings are bigger: the swarm starts with about 16 territories on Veteran (13 on Recruit, 19 in three landings on Last Stand).
+- The swarm reinforces its front and its leaders first, pulls troops in when your armies mass beside a leader, and counterattacks a city you have just taken.
+- It values blinding you: radar and built-up bases are priority targets.
+- Each new threat level launches an orbital drop on territory behind your lines (two from level 3). Radar shows where; elsewhere it is a surprise.
+- Endgame: when the last Warlord dies the Overlord is exposed and the swarm is enraged, growing and attacking harder until he falls.
+- Bot win rates over 30 games: Recruit 27, Veteran 16, Last Stand 6.
