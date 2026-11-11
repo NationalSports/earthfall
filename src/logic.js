@@ -54,6 +54,11 @@ const PERKS = {
   denver: { name: 'Mountain Complex', desc: 'Defenders roll +1', def: 1 },
   moscow: { name: 'Winter Line', desc: 'Defenders roll +1', def: 1 },
   sydney: { name: 'Deep Space Array', desc: '+2 intel per day', intel: 2 } };
+// Strongholds: Los Angeles and the nine special cities. They produce double, and their buildings can be taken further than anywhere else.
+const STRONG = ['la'].concat(Object.keys(PERKS));
+const MAXLV = { works: [3, 5], barracks: [2, 4], fort: [1, 3], radar: [1, 1], battery: [1, 1] };
+// Starting garrisons follow population: great cities hold more, remote outposts less.
+const POP = { ny: 3, london: 3, moscow: 3, delhi: 3, mexico: 3, saopaulo: 3, cairo: 3, istanbul: 3, lagos: 3, manaus: 1, astana: 1, novosibirsk: 1, anchorage: 1 };
 // Enemy leader traits. One per Warlord and Commander; revealed once the leader is located.
 const TRAITS = {
   butcher: { name: 'Butcher', desc: 'War parties from this territory roll +1.' },
@@ -78,12 +83,12 @@ const UPGRADES = {
   disruptor:{ name:'Hive Disruptor', cost:{research:120,salvage:6}, desc:'Jams the swarm signal. One fewer occupied territory grows each day.' }
 };
 const BUILD = {
-  fort:{ name:'Fortress', cost:{metal:50}, desc:'Defenders roll +1 on their best die.' },
+  fort:{ name:'Fortress', cost:{metal:50}, desc:'Defenders roll +1 on their best die, per level.' },
   radar:{ name:'Radar Station', cost:{metal:35,research:25}, desc:'Reveals enemy strength, leaders and war parties within 2 territories.' },
   battery:{ name:'Missile Battery', cost:{metal:60,fuel:40}, desc:'Fires on enemy territories or war parties within 2 territories. Reloads in 24h.' },
   // Leveled buildings: each level costs one more multiple of the base cost.
-  works:{ name:'Industry', levels:3, cost:{metal:40,fuel:20}, desc:"+3 of this city's resource per day, per level." },
-  barracks:{ name:'Barracks', levels:2, cost:{metal:45,research:15}, desc:'Raises 1 troop here every 3 days, per level.' }
+  works:{ name:'Industry', cost:{metal:40,fuel:20}, desc:"+3 of this city's resource per day, per level." },
+  barracks:{ name:'Barracks', cost:{metal:45,research:15}, desc:'Raises 1 troop here every 3 days, per level.' }
 };
 const NUKE_STAGE = { cost:{metal:110,fuel:90,research:140,uranium:6}, hours:60 };
 const SALVO_COST = { fuel:20, metal:10 }, BOMB_COST = { fuel:40 };
@@ -122,7 +127,8 @@ L.stamp = S => 'Day ' + L.day(S) + ' ' + String(Math.floor(S.t % 24)).padStart(2
 L.log = (S, msg, kind) => { S.log.unshift({ t: S.t, msg, kind: kind || 'info' }); if (S.log.length > 80) S.log.pop(); S.ev.push({ k: 'toast', msg, kind: kind || 'info' }); };
 L.canPay = (S, c) => Object.keys(c).every(k => S.res[k] >= c[k]);
 L.pay = (S, c) => { for (const k in c) S.res[k] -= c[k]; };
-L.costOf = (S, key, lvl) => { const c = Object.assign({}, BUILD[key].cost); if (BUILD[key].levels) for (const k in c) c[k] *= (lvl || 0) + 1; if (S.spec === 'engineer') for (const k in c) c[k] = Math.ceil(c[k] / 2); return c; };
+L.isStrong = id => STRONG.includes(id); L.maxLevel = (id, key) => MAXLV[key][L.isStrong(id) ? 1 : 0];
+L.costOf = (S, key, lvl) => { const c = Object.assign({}, BUILD[key].cost); for (const k in c) c[k] *= (lvl || 0) + 1; if (S.spec === 'engineer') for (const k in c) c[k] = Math.ceil(c[k] / 2); return c; };
 L.owned = S => TIDS.filter(id => S.terr[id].owner === 'you');
 L.enemyT = S => TIDS.filter(id => S.terr[id].owner === 'enemy');
 L.leadersAt = (S, id) => S.leaders.filter(l => l.alive && l.at === id);
@@ -166,12 +172,12 @@ L.fight = (A, D, aBonus, dBonus) => { let n = 0; while (A > 0 && D > 0 && n++ < 
 
 // ---------- New game ----------
 L.newGame = (spec, diff) => { L.setDiff(diff);
-  const S = { v: 4, diff: diff || 'normal', t: 0, speed: 0, spec, res: { metal: 60, fuel: 60, research: 30, uranium: 0, intel: 3, salvage: 0 }, pool: 4, terr: {}, leaders: [], parties: [],
+  const S = { v: 4, diff: diff || 'normal', t: 0, speed: 0, spec, res: { metal: 60, fuel: 60, research: 30, uranium: 0, intel: 3, salvage: 0 }, pool: 8, terr: {}, leaders: [], parties: [],
     team: { at: HQ, dest: null, from: null, t0: 0, eta: 0, pips: 4, restT: 0 }, up: {}, nuke: { stage: 0, doneAt: 0, building: false, ready: 0 },
     emp: { n: 0, building: false, doneAt: 0 }, nukes: 0, harvest: 0, esc: 0, kills: 0, intel: 0, log: [], ev: [], obs: {}, over: null, pid: 1, lid: 1,
     next: { grow: 24, attack: 30, daily: 24, move: 40, promote: [] }, stats: { won: 0, lost: 0, held: 0 } };
   const E = { tokyo: 7, beijing: 6, seoul: 4, hongkong: 4, yakutsk: 4, bangkok: 3, manila: 5, jakarta: 4, perth: 3, sydney: 4, joburg: 5, kinshasa: 4 };
-  for (const id of TIDS) S.terr[id] = id in E ? { owner: 'enemy', n: E[id], seenN: E[id], seenT: 0 } : { owner: 'you', n: 2, seenN: 2, seenT: 0 };
+  for (const id of TIDS) S.terr[id] = id in E ? { owner: 'enemy', n: E[id], seenN: E[id], seenT: 0 } : { owner: 'you', n: POP[id] || 2, seenN: POP[id] || 2, seenT: 0 };
   S.terr[HQ].n = 5; S.terr[HQ].fort = 1; S.terr[HQ].radar = 1;
   const mk = (rank, at, boss) => { const l = { id: 'L' + S.lid++, rank, at, alive: true, boss: boss || null, seenAt: at, seenT: 0, exposed: 0, trait: rank === 'overlord' ? null : pick(Object.keys(TRAITS)),
     name: pick(FIRST) + ' ' + pick(SUR) + '-' + ri(31, 47) }; S.leaders.push(l); return l; };
@@ -202,7 +208,7 @@ L.targetValue = (S, to) => { const T = S.terr[to]; let v = 1 + Math.max(0, 5 - T
   if (to === HQ) v += (S.nuke.building || S.nuke.ready) ? 6 : 1.5;
   if (URANIUM.includes(to)) v += 2.5; if (T.battery) v += 2; if (T.radar) v += 1;
   const rg = TERR[to].region; if (TIDS.every(i => TERR[i].region !== rg || S.terr[i].owner === 'you')) v += 2.5; // breaks a region bonus
-  if (PERKS[to]) v += 1.5; if (L.teamAt(S) === to) v -= 1; return Math.max(0.3, v); };
+  if (L.isStrong(to)) v += 1.5 + 0.4 * (T.works || 0); if (L.teamAt(S) === to) v -= 1; return Math.max(0.3, v); };
 // Warlord-led offensives: choose an objective, mass troops from the rear if the front is too thin, then strike, from two sides when possible.
 L.smartAttack = S => { const fronts = [];
   for (const id of L.enemyT(S)) { const T = S.terr[id]; if (T.disarray > S.t) continue; const ls = L.leadersAt(S, id); if (ls.length && ls.every(l => L.inDisarray(S, l))) continue;
@@ -238,8 +244,8 @@ L.arrive = (S, p, forced) => { const T = S.terr[p.to], name = TERR[p.to].name;
   if (T.owner !== 'you') { if (T.owner === 'enemy') T.n = Math.min(L.cap(S) + 2, T.n + p.n); return; }
   const teamHere = L.teamAt(S) === p.to && S.team.pips > 0;
   let D = T.n + (teamHere ? L.teamN(S) : 0);
-  let dB = (T.fort ? 1 : 0) + (S.up.hardened ? 1 : 0) + (teamHere && S.spec === 'engineer' ? 1 : 0) + (PERKS[p.to] && PERKS[p.to].def || 0);
-  const aB = (S.esc >= 4 ? 1 : 0) + (p.aB || 0), D0 = D, r = forced || L.fight(p.n, D, Math.min(2, aB), Math.min(2, dB));
+  let dB = (T.fort || 0) + (S.up.hardened ? 1 : 0) + (teamHere && S.spec === 'engineer' ? 1 : 0) + (PERKS[p.to] && PERKS[p.to].def || 0);
+  const aB = (S.esc >= 4 ? 1 : 0) + (p.aB || 0), D0 = D, r = forced || L.fight(p.n, D, Math.min(2, aB), Math.min(L.isStrong(p.to) ? 3 : 2, dB));
   if (r.D > 0) { const lost = Math.min(T.n, D0 - r.D); T.n = Math.max(teamHere ? 0 : 1, T.n - lost); if (T.n < 1) T.n = 1; S.stats.held++;
     if (teamHere) S.res.salvage++;
     L.log(S, name + ' held against ' + p.n + ' attackers' + (lost ? ', losing ' + lost + '.' : ' without loss.') + (teamHere ? ' Your strike team fought in the line.' : ''), 'good');
@@ -272,7 +278,7 @@ L.promote = (S, pr) => { let c = S.leaders.filter(l => l.alive && l.rank === 'co
   for (const l of S.leaders) if (l.boss === pr.boss || l.boss === old && false) l.boss = n.id;
   L.log(S, 'Commander ' + n.name + ' has been promoted to Warlord in ' + TERR[n.at].name + '.', 'bad'); };
 L.daily = S => { S.moves = 0; const own = L.owned(S); const inc = { metal: 0, fuel: 0, research: 0 };
-  for (const id of own) { const T = S.terr[id]; inc[TERR[id].res] += 6 + 3 * (T.works || 0); if (T.barracks && L.day(S) % 3 === 0) T.n += T.barracks; const pk = PERKS[id]; if (pk) { for (const k in pk.inc || {}) inc[k] += pk.inc[k]; if (pk.intel) S.res.intel = Math.min(30, S.res.intel + pk.intel); if (pk.pool && L.day(S) % 2 === 0) S.pool = Math.min(30, S.pool + 1); } }
+  for (const id of own) { const T = S.terr[id]; inc[TERR[id].res] += (L.isStrong(id) ? 12 : 6) + 3 * (T.works || 0); if (T.barracks && L.day(S) % 3 === 0) T.n += T.barracks; const pk = PERKS[id]; if (pk) { for (const k in pk.inc || {}) inc[k] += pk.inc[k]; if (pk.intel) S.res.intel = Math.min(30, S.res.intel + pk.intel); if (pk.pool && L.day(S) % 2 === 0) S.pool = Math.min(30, S.pool + 1); } }
   for (const k in inc) S.res[k] += inc[k];
   S.res.uranium += own.filter(id => URANIUM.includes(id)).length; S.res.intel = Math.min(30, S.res.intel + 1 + own.filter(id => S.terr[id].radar).length);
   let r = Math.max(1, Math.floor(own.length / L.P.div));
@@ -352,7 +358,7 @@ L.movesMax = S => S.up.transport ? 5 : 3; L.movesLeft = S => L.movesMax(S) - (S.
 L.airMove = (S, from, to, n) => { const A = S.terr[from], B2 = S.terr[to]; if (!A || !B2 || A.owner !== 'you' || B2.owner !== 'you' || from === to) return fail('Pick two of your own territories.');
   if ((S.airT || 0) > S.t) return fail('Transports are refueling, ' + (S.airT - S.t) + 'h left.'); if (S.res.fuel < 15) return fail('Not enough fuel (15).'); n = Math.min(n, A.n - 1, L.airMax(S)); if (n < 1) return fail('One troop must stay behind.');
   A.n -= n; B2.n += n; S.res.fuel -= 15; S.airT = S.t + 12; L.log(S, 'Airlifted ' + n + ' troops from ' + TERR[from].name + ' to ' + TERR[to].name + '.', 'info'); return { ok: true }; };
-L.build = (S, id, key) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); const B0 = BUILD[key]; if (B0.levels ? (T[key] || 0) >= B0.levels : T[key]) return fail(B0.levels ? 'Fully upgraded.' : 'Already built.');
+L.build = (S, id, key) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); const B0 = BUILD[key]; if ((T[key] || 0) >= L.maxLevel(id, key)) return fail(L.maxLevel(id, key) > 1 ? 'Fully upgraded.' : 'Already built.');
   const c = L.costOf(S, key, T[key]); if (!L.canPay(S, c)) return fail('Not enough resources.'); L.pay(S, c); T[key] = (T[key] || 0) + 1; if (key === 'battery') T.reload = 0;
   L.log(S, BUILD[key].name + ' built in ' + TERR[id].name + '.', 'info'); L.refreshIntel(S); return { ok: true }; };
 L.buy = (S, key) => { if (S.up[key]) return fail('Already owned.'); const c = UPGRADES[key].cost; if (!L.canPay(S, c)) return fail('Not enough resources.');
@@ -452,4 +458,4 @@ L.nukeLaunch = (S, id) => { if (S.nuke.ready < 1) return fail('No warhead ready.
   S.parties = S.parties.filter(p => p.from !== id && p.to !== id); if (L.teamAt(S) === id) { S.team.pips = 0; L.teamRetreat(S, id); }
   S.esc++; if (!S.over) L.log(S, 'Somewhere upstream, their world just got worse. They are coming harder. Threat level ' + S.esc + '.', 'story'); L.refreshIntel(S); return { ok: true, was }; };
 
-if (typeof module !== 'undefined') module.exports = { PERKS, TRAITS, CARDS_DEF, URANIUM, DIFFS, EMP_COST, SALVO_COST, BOMB_COST, SPECS, L, TERR, TIDS, HQ, LINKS, REGIONS, UPGRADES, BUILD, NUKE_STAGE, INTEL };
+if (typeof module !== 'undefined') module.exports = { STRONG, PERKS, TRAITS, CARDS_DEF, URANIUM, DIFFS, EMP_COST, SALVO_COST, BOMB_COST, SPECS, L, TERR, TIDS, HQ, LINKS, REGIONS, UPGRADES, BUILD, NUKE_STAGE, INTEL };

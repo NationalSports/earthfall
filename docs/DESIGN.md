@@ -56,6 +56,12 @@ The swarm picks an **objective** and works toward it for up to 4 days:
 
 Also: Vancouver, Astana, Perth and Johannesburg produce uranium. Holding every territory of a region adds daily reserves (North America 2, South America 1, Europe 2, Africa 1, Asia 3, Oceania 1).
 
+## Strongholds (Built)
+Los Angeles and the nine special cities. They produce double their resource, and their buildings go further: Industry to level 5 (3 elsewhere), Barracks to 4 (2), Fortress to 3 (1). Each fortress level adds +1 to the defenders' best die. The swarm values them accordingly.
+
+## Starting position (Built)
+Garrisons follow population: great cities (New York, London, Moscow, Delhi, Mexico City, São Paulo, Cairo, Istanbul, Lagos) start with 3, remote outposts (Anchorage, Manaus, Astana, Novosibirsk) with 1, the rest with 2, Los Angeles with 5. You also start with 8 reserve troops to place where you choose.
+
 ## Difficulty (Built)
 | Level | Invasion growth | Escalation | Harvest speed | AI planning |
 | --- | --- | --- | --- | --- |
@@ -91,7 +97,7 @@ A running clock, slow: one game hour takes about 5 seconds (a day in 2 minutes),
 ## Battles
 
 ### When you attack (Built)
-Risk dice: you roll up to 3, they roll up to 2, highest pairs compared, ties to the defender. Before the first roll you can add tactics: Flank (+1 on your best die), Missile support (defense −2), Air support (defense −3). You can withdraw between rounds.
+The fight plays out over several seconds, one exchange about every second, with losses shown on both sides as they happen. You can withdraw or skip to the end. Under the hood it is Risk dice: you roll up to 3, they roll up to 2, highest pairs compared, ties to the defender. Before the first roll you can add tactics: Flank (+1 on your best die), Missile support (defense −2), Air support (defense −3). You can withdraw between rounds.
 
 ### When they attack (Built): Command the defense
 War parties of 3 or more can be fought in person, or auto-resolved with dice.
