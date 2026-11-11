@@ -167,3 +167,5 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 .ritem .gain{display:inline-block;margin:0 6px 4px 0;padding:2px 8px;border-radius:999px;background:#46d6d022;border:1px solid #46d6d055;font-weight:600}
 
 .why{display:grid;gap:2px;margin:4px 0 12px;font-size:13.5px}.why>div{display:flex;justify-content:space-between;gap:12px;padding:4px 10px;border-radius:6px;background:#ffffff08}.why .neg{color:#ff8a70}.why .pos{color:#7fe3c4}.why .tot{background:#e8be6022;border:1px solid #e8be6066;font-weight:700}.why .tot b{color:var(--gold)}
+
+.mk{display:grid;gap:6px;margin:6px 0 12px}.mk .opt{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;border-radius:9px;background:#ffffff0a;border:1px solid #ffffff18;font-size:14px}.mk .opt button{flex:none;padding:6px 14px;border-radius:8px;border:1px solid #e8be6088;background:#e8be6022;color:var(--gold);font-weight:700;cursor:pointer}.ab.num.bat{min-width:110px}

@@ -176,6 +176,8 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 
 .why{display:grid;gap:2px;margin:4px 0 12px;font-size:13.5px}.why>div{display:flex;justify-content:space-between;gap:12px;padding:4px 10px;border-radius:6px;background:#ffffff08}.why .neg{color:#ff8a70}.why .pos{color:#7fe3c4}.why .tot{background:#e8be6022;border:1px solid #e8be6066;font-weight:700}.why .tot b{color:var(--gold)}
 
+.mk{display:grid;gap:6px;margin:6px 0 12px}.mk .opt{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;border-radius:9px;background:#ffffff0a;border:1px solid #ffffff18;font-size:14px}.mk .opt button{flex:none;padding:6px 14px;border-radius:8px;border:1px solid #e8be6088;background:#e8be6022;color:var(--gold);font-weight:700;cursor:pointer}.ab.num.bat{min-width:110px}
+
 /* Earthfall concept HUD — replacement theme, Issue #11. Original selectors and responsive behavior retained. */
 :root{--ink:#050e18;--panel:#0a1724;--panel2:#112435;--line:#40516a;--gold:#e5b765;--gold2:#956a30;--text:#f5ead6;--muted:#b4c0cb;--teal:#4ad8d7;--red:#f06a55;--violet:#ba88fa;--good:#91d9a3;--warn:#f3c16e}
 body{background:radial-gradient(ellipse at 45% 40%,#11283a,#050b13 80%);color:var(--text)}
@@ -582,7 +584,7 @@ L.newGame = (spec, diff, opt) => { L.setDiff(diff); opt = opt || {};
   const S = { v: 4, diff: diff || 'normal', t: 0, speed: 0, spec, res: { metal: 400, fuel: 350, research: 280, uranium: 0, intel: 3, salvage: 0 }, pool: 20, orders: 99, mob: true, doc: opt.doc || null, cols: [], terr: {}, leaders: [], parties: [],
     team: { at: HQ, dest: null, from: null, t0: 0, eta: 0, pips: 4, restT: 0 }, up: {}, nuke: { stage: 0, doneAt: 0, building: false, ready: 0 },
     emp: { n: 0, building: false, doneAt: 0 }, nukes: 0, harvest: 0, esc: 0, kills: 0, intel: 0, log: [], ev: [], obs: {}, over: null, pid: 1, lid: 1,
-    next: { grow: 24, attack: 30, daily: 24, move: 40, promote: [] }, stats: { won: 0, lost: 0, held: 0 } };
+    next: { grow: 24, attack: 10, daily: 24, move: 40, promote: [] }, stats: { won: 0, lost: 0, held: 0 } };
   const land = L.landing(), E = land.E;
   for (const id of TIDS) S.terr[id] = id in E ? { owner: 'enemy', n: E[id], seenN: E[id], seenT: 0 } : { owner: 'you', n: POP[id] || 2, seenN: POP[id] || 2, seenT: 0 };
   S.terr[HQ].n = 5; S.terr[HQ].fort = 1; S.terr[HQ].radar = 1; S.land = { main: land.main[0], beach: land.beach[0] };
@@ -597,7 +599,7 @@ L.newGame = (spec, diff, opt) => { L.setDiff(diff); opt = opt || {};
 
 // ---------- Enemy behavior ----------
 L.cap = S => 7 + Math.min(3, S.esc);
-L.launchParty = (S, from, to, n, breakout, eta) => { const ls = L.leadersAt(S, from), dur = (eta || S.t + (breakout ? 24 : ri(36, 54))) - S.t;
+L.launchParty = (S, from, to, n, breakout, eta) => { const ls = L.leadersAt(S, from), dur = (eta || S.t + (breakout ? 18 : ri(22, 34))) - S.t;
   S.parties.push({ id: S.pid++, from, to, n, t0: S.t, eta: S.t + Math.round(dur * (ls.some(l => l.trait === 'raider') ? 0.7 : 1)), breakout: !!breakout, hit: 0, aB: ls.some(l => l.trait === 'butcher') ? 1 : 0 }); };
 L.playerNeighbors = (S, id) => TERR[id].adj.filter(n => S.terr[n].owner === 'you');
 L.grow = S => { const en = L.enemyT(S); if (!en.length) return;
@@ -626,11 +628,11 @@ L.smartAttack = S => { const fronts = [];
     ai.obj = best; ai.until = S.t + 96; ai.massed = 0; }
   const to = ai.obj, srcs = fronts.filter(f => f.to === to).map(f => f.id).sort((a, b) => S.terr[b].n - S.terr[a].n), main = srcs[0];
   const def = S.terr[to].n + (S.terr[to].fort ? 1.5 : 0), avail = srcs.slice(0, 2).reduce((n, id) => n + Math.floor(S.terr[id].n / 2), 0);
-  if (avail < def * 0.9 && ai.massed < 3) { ai.massed++;
+  if (avail < def * 0.9 && ai.massed < 1) { ai.massed++;
     const rear = L.enemyT(S).filter(id => !L.playerNeighbors(S, id).length && S.terr[id].n >= 3 && !L.leadersAt(S, id).length).sort((a, b) => L.dist(a, main) - L.dist(b, main))[0];
     if (rear) { const k = Math.min(2, S.terr[rear].n - 1); S.terr[rear].n -= k; S.terr[main].n = Math.min(L.cap(S) + 2, S.terr[main].n + k);
       if (S.obs[main]) L.log(S, 'The swarm is massing in ' + TERR[main].name + ', facing ' + TERR[to].name + '.', 'intel'); return; } }
-  ai.massed = 0; const eta = S.t + ri(36, 54); let sent = 0;
+  ai.massed = 0; const eta = S.t + ri(22, 34); let sent = 0;
   for (const id of srcs.slice(0, S.esc >= 2 ? 2 : 1)) { const T = S.terr[id]; if (T.n < (sent ? 4 : 2)) continue;
     const n = Math.max(2, Math.floor(T.n / 2) + (!sent && S.esc > 2 ? 1 : 0)); T.n -= Math.floor(T.n / 2); L.launchParty(S, id, to, n, false, eta); sent++; }
   if (sent) ai.until = Math.min(ai.until, S.t + 60); };
@@ -712,7 +714,7 @@ L.step = S => { // advance one hour
   for (const c of (S.cols || []).slice()) { const fell = S.terr[c.to].owner !== 'you'; if (!fell && S.t < c.eta) continue; S.cols.splice(S.cols.indexOf(c), 1);
     if (!fell) { S.terr[c.to].n += c.n; S.terr[c.to].arm = (S.terr[c.to].arm || 0) + (c.arm || 0); L.log(S, c.n + (c.arm || 0) + ' troops arrived in ' + TERR[c.to].name + '.', 'info'); S.ev.push({ k: 'toast', msg: c.n + ' troops arrived in ' + TERR[c.to].name, kind: 'info' }); continue; }
     L.log(S, TERR[c.to].name + ' fell while ' + c.n + ' troops were on their way there.', 'bad'); if (S.cmd) { S.pendingCol = c; S.ev.push({ k: 'colStop' }); S.ev.push({ k: 'pause' }); return; } L.colResolve(S, null, c); }
-  for (const id of TIDS) { const T = S.terr[id]; if (T.job && T.owner === 'you' && S.t >= T.job.doneAt) { const k = T.job.key; T.job = null; T[k] = (T[k] || 0) + 1; (S.dayBuilt = S.dayBuilt || []).push({ id, k }); if (k === 'battery') T.reload = 0;
+  for (const id of TIDS) { const T = S.terr[id]; if (T.job && T.owner === 'you' && S.t >= T.job.doneAt) { const k = T.job.key, mv = T.job.moved; T.job = null; T[k] = (T[k] || 0) + 1; if (!mv) (S.dayBuilt = S.dayBuilt || []).push({ id, k }); if (k === 'battery') T.reload = 0;
       L.log(S, BUILD[k].name + (T[k] > 1 ? ' level ' + T[k] : '') + ' completed in ' + TERR[id].name + '.', 'good'); S.ev.push({ k: 'toast', msg: BUILD[k].name + ' completed in ' + TERR[id].name, kind: 'good' }); L.refreshIntel(S); } }
   if (tm.dest && S.t >= tm.eta) { tm.at = tm.dest; tm.dest = null; tm.arrT = S.t;
     S.ev.push({ k: 'arrive', id: tm.at }); S.ev.push({ k: 'pause' }); }
@@ -721,7 +723,7 @@ L.step = S => { // advance one hour
     if (S.cmd && S.terr[p.to].owner === 'you' && p.n >= 3) { S.pending = p; S.ev.push({ k: 'defend' }); S.ev.push({ k: 'pause' }); return; }
     L.arrive(S, p); if (S.over) return; }
   if (S.t >= N.grow) { N.grow = S.t + 24; L.grow(S); }
-  if (S.t >= N.attack) { N.attack = S.t + Math.max(12, 30 - S.esc * 4) + ri(-4, 4); if (S.parties.length < 4 + S.esc) L.planAttack(S); }
+  if (S.t >= N.attack) { N.attack = S.t + Math.max(10, 22 - S.esc * 3) + ri(-4, 4); if (S.parties.length < 4 + S.esc) L.planAttack(S); }
   if (S.t >= N.move) { N.move = S.t + ri(40, 70); L.moveLeaders(S); }
   for (const pr of N.promote.slice()) if (S.t >= pr.t) { N.promote.splice(N.promote.indexOf(pr), 1); L.promote(S, pr); }
   if (S.nuke.building && S.t >= S.nuke.doneAt) { S.nuke.building = false; S.nuke.stage++;
@@ -778,6 +780,13 @@ L.move = (S, from, to, n) => { const A = S.terr[from], B2 = S.terr[to]; if (!A |
   if (L.marchHops(S, from, to) > 3) return fail('Too far to march. Use an airlift.');
   const hrs = L.marchHops(S, from, to) * L.marchHours(S); A.n -= nf; A.arm = (A.arm || 0) - ar; (S.cols = S.cols || []).push({ id: S.cid = (S.cid || 0) + 1, from, to, n: nf, arm: ar, t0: S.t, eta: S.t + hrs, air: false });
   L.log(S, n + ' troops marching from ' + TERR[from].name + ' to ' + TERR[to].name + ', ' + hrs + ' hours.', 'info'); return { ok: true, hours: hrs }; };
+// A missile battery relocates like troops: it leaves at once and is set up again at the destination when it arrives.
+L.moveBattery = (S, from, to) => { const A = S.terr[from], B2 = S.terr[to]; if (!A || !B2 || A.owner !== 'you' || B2.owner !== 'you' || from === to) return fail('Pick two of your own territories.');
+  if (!A.battery) return fail('No missile battery there.'); if (B2.battery) return fail(TERR[to].name + ' already has a missile battery.'); if (B2.job) return fail(TERR[to].name + ' is busy building. Wait for that to finish.');
+  if (S.mob) { A.battery = 0; B2.battery = 1; B2.reload = 0; return { ok: true, hours: 0 }; }
+  const hops = L.marchHops(S, from, to); if (hops > 3) return fail('Too far. A battery can travel up to 3 territories.');
+  const hrs = hops * L.marchHours(S); A.battery = 0; B2.job = { key: 'battery', doneAt: S.t + hrs, moved: 1 };
+  L.log(S, 'Missile battery moving from ' + TERR[from].name + ' to ' + TERR[to].name + ', ' + hrs + ' hours.', 'info'); return { ok: true, hours: hrs }; };
 L.enemyNeighborsN = (S, id) => TERR[id].adj.reduce((n, x) => n + (S.terr[x].owner === 'enemy' ? S.terr[x].n : 0), 0);
 L.marchHours = S => S.up.transport ? 4 : 6; // per territory
 // Where a column can go when its destination has fallen: back where it came from, or any of your territories beside either end.
@@ -924,9 +933,11 @@ L.nukeLaunch = (S, id) => { if (S.nuke.ready < 1) return fail('No warhead ready.
   S.esc++; if (!S.over) L.log(S, 'Somewhere upstream, their world just got worse. They are coming harder. Threat level ' + S.esc + '.', 'story'); L.refreshIntel(S); return { ok: true, was }; };
 
 // Every action that costs Orders is checked and charged in one place.
-const ORDER_COST = { trainArmor: 1, assaultStart: 2, move: 1, airMove: 2, airlift: 2, build: 1, salvo: 1, salvoParty: 1, bomb: 1, deploy: 1, covert: 1, sabotage: 1 };
+// Marching next door is free (Risk's fortify); longer marches cost an Order.
+L.orderCost = (S, k, a) => (k === 'move' || k === 'moveBattery') && L.marchHops(S, a[0], a[1]) <= 1 ? 0 : ORDER_COST[k];
+const ORDER_COST = { trainArmor: 1, assaultStart: 2, move: 1, moveBattery: 1, airMove: 2, airlift: 2, build: 1, salvo: 1, salvoParty: 1, bomb: 1, deploy: 1, covert: 1, sabotage: 1 };
 const WAR_ONLY = { assaultStart: 1, salvo: 1, salvoParty: 1, bomb: 1, covert: 1, sabotage: 1, deploy: 1, airMove: 1, airlift: 1 };
-for (const k in ORDER_COST) { const f = L[k]; L[k] = (S, ...a) => { const c = S.mob ? 0 : ORDER_COST[k]; if (S.mob && WAR_ONLY[k]) return fail('The war has not started. Finish mobilizing and press Begin.'); if ((S.orders == null ? 99 : S.orders) < c) return fail('Not enough Orders (' + c + ' needed, ' + S.orders + ' left). They refill at midnight.');
+for (const k in ORDER_COST) { const f = L[k]; L[k] = (S, ...a) => { const c = S.mob ? 0 : L.orderCost(S, k, a); if (S.mob && WAR_ONLY[k]) return fail('The war has not started. Finish mobilizing and press Begin.'); if ((S.orders == null ? 99 : S.orders) < c) return fail('Not enough Orders (' + c + ' needed, ' + S.orders + ' left). They refill at midnight.');
     const r = f(S, ...a); if (r && r.ok && S.orders != null) S.orders -= c; return r; }; }
 // Spends the war chest sensibly for the chosen doctrine. Used by "Mobilize for me" and by the test bot.
 L.autoMobilize = S => { const own = L.owned(S), front = own.filter(id => L.enemyNeighborsN(S, id) > 0).sort((a, b) => L.enemyNeighborsN(S, b) - L.enemyNeighborsN(S, a)), strong = own.filter(L.isStrong);
@@ -1517,14 +1528,14 @@ function confirmModal(title, text, act, id, label) { showModal('<div class="mhea
 function actionBar() { const el = $('#abar'); if (!el) return; let h = '';
   if (S && moveFrom && !S.over && !modal && S.terr[moveFrom].owner === 'you') { const F = S.terr[moveFrom], max = F.n - 1 + (F.arm || 0);
     if (!moveTo) h = '<div class="abh you"><b>Move from ' + TERR[moveFrom].name + '</b><span>now tap the territory to send them to</span><button data-a="moveCancel" aria-label="Cancel">✕</button></div>';
-    else { const hops = S.mob ? 0 : L.marchHops(S, moveFrom, moveTo), far = hops > 3, cap = far ? Math.min(F.n - 1, L.airMax(S)) : max, nums = cap <= 5 ? Array.from({ length: cap }, (_, k) => k + 1) : [...new Set([1, 2, 3, Math.ceil(cap / 2), cap])], wait = far && (S.airT || 0) > S.t, no = far ? (wait || S.res.fuel < 15 || S.orders < 2) : S.orders < 1;
-      h = '<div class="abh you"><b>' + TERR[moveFrom].name + ' → ' + TERR[moveTo].name + '</b><span>' + (S.mob ? 'instant while mobilizing' : far ? (wait ? 'transports refueling, ' + (S.airT - S.t) + 'h' : 'too far to march · airlift, 3h · ' + cost({ fuel: 15 }) + ' · 2 ❖') : hops * L.marchHours(S) + ' hours on the road · 1 ❖') + '</span><button data-a="moveCancel" aria-label="Cancel">✕</button></div><div class="abr"><span class="abq">How many?</span>' +
-        nums.map(n => '<button class="ab num' + (n === cap ? ' teal' : '') + '" data-a="' + (far ? 'airGo' : 'moveGo') + '" data-id="' + moveFrom + ':' + moveTo + ':' + n + '"' + (no ? ' disabled' : '') + '><b>' + (n === cap && cap > 1 ? 'All ' + n : n) + '</b></button>').join('') + '</div>'; } }
+    else { const hops = S.mob ? 0 : L.marchHops(S, moveFrom, moveTo), far = hops > 3, cap = far ? Math.min(F.n - 1, L.airMax(S)) : max, nums = cap <= 5 ? Array.from({ length: cap }, (_, k) => k + 1) : [...new Set([1, 2, 3, Math.ceil(cap / 2), cap])], wait = far && (S.airT || 0) > S.t, oc = hops <= 1 ? 0 : 1, no = far ? (wait || S.res.fuel < 15 || S.orders < 2) : S.orders < oc, batOk = F.battery && !far && !S.terr[moveTo].battery && !S.terr[moveTo].job && !no;
+      h = '<div class="abh you"><b>' + TERR[moveFrom].name + ' → ' + TERR[moveTo].name + '</b><span>' + (S.mob ? 'instant while mobilizing' : far ? (wait ? 'transports refueling, ' + (S.airT - S.t) + 'h' : 'too far to march · airlift, 3h · ' + cost({ fuel: 15 }) + ' · 2 ❖') : hops * L.marchHours(S) + ' hours on the road · ' + (oc ? '1 ❖' + (S.orders < 1 ? ' · out of Orders, but next door is free' : '') : 'free, no Order')) + '</span><button data-a="moveCancel" aria-label="Cancel">✕</button></div><div class="abr"><span class="abq">How many?</span>' +
+        nums.map(n => '<button class="ab num' + (n === cap ? ' teal' : '') + '" data-a="' + (far ? 'airGo' : 'moveGo') + '" data-id="' + moveFrom + ':' + moveTo + ':' + n + '"' + (no ? ' disabled' : '') + '><b>' + (n === cap && cap > 1 ? 'All ' + n : n) + '</b></button>').join('') + (F.battery ? '<button class="ab num bat" data-a="batGo" data-id="' + moveFrom + ':' + moveTo + '"' + (batOk ? '' : ' disabled') + '><b>🚀 Missiles</b></button>' : '') + '</div>'; } }
   else if (S && selId && !S.over && !modal) { const T = S.terr[selId], D = TERR[selId], tm = S.team, teamHere = L.teamAt(S) === selId, a = [];
     const A = (act, icon, label, sub, o) => a.push('<button class="ab ' + ((o && o.cls) || '') + '" data-a="' + act + '" data-id="' + selId + '"' + (o && o.dis ? ' disabled' : '') + '><i>' + icon + '</i><b>' + label + '</b><small>' + sub + '</small></button>');
     let who;
     if (T.owner === 'you') { who = (selId === HQ ? 'Your headquarters' : L.isStrong(selId) ? 'Your stronghold' : 'Yours') + ' · ' + T.n + ' infantry' + (T.arm ? ', ' + T.arm + ' armor' : ''); const built = ['works', 'barracks', 'fort', 'radar', 'battery'].filter(k => T[k]).length;
-      if (L.isStrong(selId) || S.mob) A('reinAsk', '✚', 'Reinforce', S.pool + ' in reserve · free', { cls: 'teal', dis: S.pool < 1 }); { const can = T.n - 1 + (T.arm || 0); A('moveFrom', '⇄', 'Move', can < 1 ? 'Only 1 here' : S.orders < 1 ? 'Out of Orders' : can + ' can go' + (S.mob ? '' : ' · 1 ❖'), { dis: can < 1 || S.orders < 1 }); }
+      if (L.isStrong(selId) || S.mob) A('reinAsk', '✚', 'Reinforce', S.pool + ' in reserve · free', { cls: 'teal', dis: S.pool < 1 }); { const can = T.n - 1 + (T.arm || 0); A('moveFrom', '⇄', 'Move', can < 1 && !T.battery ? 'Only 1 here' : (can > 0 ? can + ' can go' : 'Missile battery') + (S.mob ? '' : ' · next door free'), { dis: can < 1 && !T.battery }); }
       if (T.barracks) A('armAsk', '▰', 'Train armor', cost(ARMOR_COST) + ' each', { dis: !L.canPay(S, ARMOR_COST) || S.orders < 1 }); A('buildMenu', '⚒', L.isStrong(selId) ? 'Build up' : 'Build', T.job ? Math.max(1, T.job.doneAt - S.t) + 'h to finish' : L.isStrong(selId) ? 'Stronghold · 1 ❖' : built + ' of 5 · 1 ❖');
       if (!teamHere && !tm.dest) A('deploy', '◆', 'Strike team', L.travelHours(S, tm.at, selId) + 'h away', { dis: tm.pips < 1 }); }
     else if (T.owner === 'enemy') { const av = L.assaultAvail(S, selId), known = S.obs[selId]; who = 'Occupied · ' + (known ? 'defense ' + (T.n + L.guards(S, selId)) : 'strength unknown');
@@ -1616,7 +1627,7 @@ function advise() { const key = [S.t, S.orders, S.pool, S.speed, S.mob, S.partie
     else if (front[0]) add('<b>No attack is ready.</b> March troops to a border territory such as ' + TERR[front[0]].name + ' to set one up.', front[0]); }
   if (S.orders >= 1) { if (bar && canArm) add('<b>Train armor</b> in ' + TERR[bar].name + ': counts double on the attack. 1 Order.', bar);
     const b = own.filter(id => !S.terr[id].job && (S.terr[id].works || 0) < L.maxLevel(id, 'works') && L.canPay(S, L.costOf(S, 'works', S.terr[id].works))).sort((a, c) => L.isStrong(c) - L.isStrong(a))[0]; if (b) add('<b>Build Industry</b> in ' + TERR[b].name + ' for more income. 1 Order, ' + L.buildHours(S) + 'h.', b); }
-  if (S.orders < 1) add(S.speed > 0 ? '<b>Orders spent.</b> The day is running; new Orders arrive at midnight.' : '<b>Out of Orders.</b> Run the clock to midnight.', null, S.speed > 0 ? null : { act: 'speed', aid: '3', label: '▶▶ Run' });
+  if (S.orders < 1) add(S.speed > 0 ? '<b>Orders spent.</b> You can still march troops one territory for free. New Orders arrive at midnight.' : '<b>Out of Orders.</b> Run the clock to midnight.', null, S.speed > 0 ? null : { act: 'speed', aid: '3', label: '▶▶ Run' });
   else if (S.speed === 0) add('<b>Or let time pass.</b> The clock is paused; the swarm only moves while it runs.', null, { act: 'speed', aid: '1', label: '▶ Run' });
   return advise.v = out; }
 // ---------- First steps ----------
@@ -1689,6 +1700,13 @@ function dayModal() { if (!dayRep || !S || S.over) return; if (modal) { setTimeo
   if (d.won.length) h += R('good', 'Liberated yesterday', names(d.won) + '.');
   if (d.lost.length) h += R('bad', 'Lost yesterday', names(d.lost) + '.');
   h += R('bad', 'The enemy', 'Harvest +' + d.harvest.toFixed(1) + '%, now ' + Math.floor(d.harvestNow) + '%. At 100% you lose. Their total strength is ' + d.enemy + (d.enemy !== d.enemyWas ? ' (' + (d.enemy > d.enemyWas ? '+' : '') + (d.enemy - d.enemyWas) + ' since yesterday).' : ', unchanged.'));
+  h += '</div><h4>What you can create today</h4><div class="mk">'; { const own = L.owned(S), fr = id => L.enemyNeighborsN(S, id), mk = (t, sub, a, id, lab) => '<div class="opt"><span><b>' + t + '</b> ' + sub + '</span><button data-a="' + a + '" data-id="' + id + '">' + lab + '</button></div>'; let any = 0;
+    if (S.pool > 0) { const st = own.filter(id => L.isStrong(id)).sort((a, b) => fr(b) - fr(a))[0]; if (st) { any++; h += mk('Place ' + S.pool + ' reserve troops', 'at a stronghold · free', 'sel', st, 'Show'); } }
+    for (const k of ['works', 'barracks', 'fort', 'battery', 'radar', 'post']) { const sites = own.filter(id => !S.terr[id].job && (S.terr[id][k] || 0) < L.maxLevel(id, k) && L.canPay(S, L.costOf(S, k, S.terr[id][k] || 0))); if (!sites.length) continue;
+      const best = sites.sort((a, b) => k === 'works' || k === 'barracks' ? L.isStrong(b) - L.isStrong(a) || fr(a) - fr(b) : fr(b) - fr(a))[0]; any++; h += mk(BUILD[k].name, cost(L.costOf(S, k, S.terr[best][k] || 0)) + ' · ' + sites.length + ' possible site' + (sites.length > 1 ? 's' : '') + ' · best: ' + TERR[best].name, 'dayBuild', best, 'Build'); }
+    const bar = own.filter(id => S.terr[id].barracks).sort((a, b) => fr(b) - fr(a))[0]; if (bar && L.canPay(S, ARMOR_COST)) { any++; h += mk('Armor', cost(ARMOR_COST) + ' each · counts double in attack · ' + TERR[bar].name, 'dayArm', bar, 'Train'); }
+    const ups = Object.keys(UPGRADES).filter(k => !S.up[k] && L.canPay(S, UPGRADES[k].cost)); if (ups.length) { any++; h += mk('Research', ups.length + ' upgrade' + (ups.length > 1 ? 's' : '') + ' affordable: ' + ups.slice(0, 3).map(k => UPGRADES[k].name).join(', ') + (ups.length > 3 ? '…' : ''), 'dayTab', 'arsenal', 'Arsenal'); }
+    if (!any) h += '<p class="note">Nothing affordable yet. Industry raises daily income.</p>'; h += '<p class="note">Picking one closes this report with the clock still paused. Each build or training costs 1 Order.</p>'; }
   showModal(h + '</div><div class="row">' + btn('dayGo', 'Start day ' + d.day, { cls: 'gold big', sub: 'Resumes the clock' }) + '</div>', 'intel'); }
 function defendModal() { const p = S && S.pending; if (!p || modal) return; const su = L.defenseSetup(S, p), ex = [su.fort && 'fortress wall', su.battery && (su.railgun ? '3 railgun strikes' : '2 missile strikes'), su.radar && 'radar (longer range)', su.team && 'your strike team'].filter(Boolean);
   SFX.play('alert'); selId = su.to; V.focus(su.to);
@@ -1754,6 +1772,10 @@ function act(a, id) { if (!S && a !== 'start' && a !== 'diff' && a !== 'doc') re
     case 'moveFrom': moveFrom = id; moveTo = null; V.moveArrow = null; break;
     case 'moveCancel': moveFrom = moveTo = null; V.moveArrow = null; break;
     case 'colGo': closeModal(); L.colResolve(S, id); break;
+    case 'batGo': { const q = id.split(':'); if (report(L.moveBattery(S, q[0], q[1]))) { SFX.play('build'); selId = q[1]; } moveFrom = moveTo = null; V.moveArrow = null; break; }
+    case 'dayBuild': closeModal(); selId = id; V.focus(id); renderAll(true); buildMenu(); return;
+    case 'dayArm': closeModal(); selId = id; V.focus(id); renderAll(true); act('armAsk', id); return;
+    case 'dayTab': closeModal(); tab = id; setPanel(true); break;
     case 'airGo': { const q = id.split(':'); if (report(L.airMove(S, q[0], q[1], +q[2]))) SFX.play('missile'); moveFrom = moveTo = null; V.moveArrow = null; break; }
     case 'moveGo': { const q = id.split(':'); if (report(L.move(S, q[0], q[1], +q[2]))) { SFX.play('build'); selId = q[1]; } moveFrom = moveTo = null; V.moveArrow = null; break; }
     case 'more': tab = 'territory'; setPanel(true); break;
