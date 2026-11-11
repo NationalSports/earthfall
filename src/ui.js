@@ -138,7 +138,7 @@ function confirmModal(title, text, act, id, label) { showModal('<div class="mhea
 // ---------- Action bar ----------
 // The few things you can do with the selected territory, as large buttons on the map itself.
 function actionBar() { const el = $('#abar'); if (!el) return; let h = '';
-  if (S && moveFrom && !S.over && !modal) h = '<div class="abh you"><b>Move troops</b><span>from ' + TERR[moveFrom].name + ' · tap your destination</span><button data-a="moveCancel" aria-label="Cancel">✕</button></div>';
+  if (S && moveFrom && !S.over && !modal) h = '<div class="abh you"><b>Move troops</b><span>from ' + TERR[moveFrom].name + ' · tap a destination · ' + L.movesLeft(S) + ' marches left</span><button data-a="moveCancel" aria-label="Cancel">✕</button></div>';
   else if (S && selId && !S.over && !modal) { const T = S.terr[selId], D = TERR[selId], tm = S.team, teamHere = L.teamAt(S) === selId, a = [];
     const A = (act, icon, label, sub, o) => a.push('<button class="ab ' + ((o && o.cls) || '') + '" data-a="' + act + '" data-id="' + selId + '"' + (o && o.dis ? ' disabled' : '') + '><i>' + icon + '</i><b>' + label + '</b><small>' + sub + '</small></button>');
     let who;
@@ -175,7 +175,7 @@ function helpModal() { const li = (t, d) => '<div class="obj"><span>' + t + '</s
     li('♛', '<b>Win</b><small>Kill the Overlord before the Harvest reaches 100%. Do not lose Los Angeles.</small>') +
     li('⚔', '<b>Attack</b><small>Tap a red territory next to one of yours, press Attack, choose how many troops, roll the dice.</small>') +
     li('✚', '<b>Grow</b><small>Tap your own territory to Reinforce from reserve or Build. Industry gives resources, Barracks give troops, Fortress, Radar and Battery defend.</small>') +
-    li('▶', '<b>Time</b><small>The clock runs only while ▶ is on. One hour takes about 3 seconds, or under a second on ▶▶. The swarm grows and attacks as time passes.</small>') +
+    li('▶', '<b>Time</b><small>The clock runs only while ▶ is on. One hour takes about 5 seconds (a day in 2 minutes), or 1 second on ▶▶. It pauses itself when a war party is spotted or a city is attacked. The swarm grows and attacks as time passes.</small>') +
     li('◆', '<b>Strike team</b><small>Send it into enemy land to sabotage or to kill leaders. Each Warlord you kill weakens the Overlord.</small>') +
     li('⌕', '<b>Look closer</b><small>Double tap or pinch to zoom into a city and see what is built there.</small>') +
     '</div><div class="row">' + btn('closeModal', 'Got it', { cls: 'gold big' }) + '</div>', 'intel'); }
@@ -193,7 +193,7 @@ const SFX = { muted: false, ctx: null, last: {},
     } catch (e) {} } };
 
 // ---------- Command the defense ----------
-let bat = null, PIMG = {}, moveFrom = null;
+let bat = null, PIMG = {}, moveFrom = null; const seenP = {};
 function defendModal() { const p = S && S.pending; if (!p || modal) return; const su = L.defenseSetup(S, p), ex = [su.fort && 'fortress wall', su.battery && (su.railgun ? '3 railgun strikes' : '2 missile strikes'), su.radar && 'radar (longer range)', su.team && 'your strike team'].filter(Boolean);
   SFX.play('alert'); selId = su.to; V.focus(su.to);
   showModal('<div class="mhead"><small>War party arriving from ' + TERR[p.from].name + '</small><h1>Defend ' + su.name + '</h1></div><p class="lead"><b>' + su.A + '</b> attackers against <b>' + su.D + '</b> defenders' + (ex.length ? ', with ' + ex.join(', ') : '') + '.' + (su.aB ? ' They are veterans and hit harder.' : '') + '</p><div class="row">' + btn('defAuto', 'Auto-resolve', { sub: 'Settle it with dice' }) + btn('defGo', 'Command the defense', { cls: 'gold big', sub: 'About a minute' }) + '</div>', 'defend'); }
@@ -244,6 +244,7 @@ function act(a, id) { if (!S && a !== 'start' && a !== 'diff') return;
     case 'buildMenu': buildMenu(); return;
     case 'moveFrom': moveFrom = id; break;
     case 'moveCancel': moveFrom = null; break;
+    case 'airGo': { const q = id.split(':'); closeModal(); if (report(L.airMove(S, q[0], q[1], +q[2]))) SFX.play('missile'); break; }
     case 'moveGo': { const q = id.split(':'); closeModal(); if (report(L.move(S, q[0], q[1], +q[2]))) SFX.play('build'); break; }
     case 'more': tab = 'territory'; setPanel(true); break;
     case 'desel': selId = null; break;
@@ -296,8 +297,10 @@ async function boot() {
   const art = { map: await ld(ART.map), mask: await ld(ART.mask), globe: await ld(ART.globe), infest: ART.infest ? await ld(ART.infest) : null, pieces: {} }; await Promise.all(Object.keys(PIECES).map(async k => { art.pieces[k] = await ld(PIECES[k]); }));
   { const st = document.createElement('style'); st.textContent = Object.keys(CARDS).map(k => '.art-' + k + '{background-image:url(' + CARDS[k] + ')}').join(''); document.head.appendChild(st); }
   PIMG = art.pieces; V.init($('#map'), id => { if (!S) return; SFX.play('tap');
-    if (moveFrom) { const from = moveFrom; moveFrom = null; if (id && id !== from) { if (S.terr[id].owner !== 'you' || !L.reachable(S, from).includes(id)) toast(S.terr[id].owner !== 'you' ? 'You can only move into your own territory. To take this one, select it and press Attack.' : 'No friendly route from ' + TERR[from].name + ' to ' + TERR[id].name + '.', 'info');
-        else { const max = S.terr[from].n - 1, opts = [...new Set([1, Math.ceil(max / 2), max])]; showModal('<div class="mhead"><small>' + TERR[from].name + ' → ' + TERR[id].name + '</small><h1>Move how many?</h1></div><p class="lead">One troop stays behind to hold ' + TERR[from].name + '.</p><div class="row">' + opts.map(n => btn('moveGo', n === max && max > 1 ? 'All ' + n : String(n), { id: from + ':' + id + ':' + n, cls: n === max ? 'gold big' : '' })).join('') + btn('closeModal', 'Cancel') + '</div>', 'confirm'); return; } } renderAll(true); return; }
+    if (moveFrom) { const from = moveFrom; moveFrom = null; if (id && id !== from) { if (S.terr[id].owner !== 'you') toast('You can only move into your own territory. To take this one, select it and press Attack.', 'info');
+        else if (L.hops(S, from, id) > 3 || L.movesLeft(S) < 1) { const far = L.hops(S, from, id) > 3, max = Math.min(S.terr[from].n - 1, L.airMax(S)), wait = (S.airT || 0) > S.t, opts = [...new Set([1, Math.ceil(max / 2), max])];
+          showModal('<div class="mhead"><small>' + TERR[from].name + ' → ' + TERR[id].name + '</small><h1>Airlift</h1></div><p class="lead">' + (far ? 'Too far to march (more than 3 territories, or no land route).' : 'No marches left today.') + ' Transports can carry up to ' + L.airMax(S) + ' troops for ' + cost({ fuel: 15 }) + ', then refuel for 12 hours.' + (wait ? ' They are refueling for another ' + (S.airT - S.t) + ' hours.' : '') + '</p><div class="row">' + opts.map(n => btn('airGo', n + (n > 1 ? ' troops' : ' troop'), { id: from + ':' + id + ':' + n, cls: n === max ? 'gold big' : '', dis: wait || S.res.fuel < 15 })).join('') + btn('closeModal', 'Cancel') + '</div>', 'confirm'); return; }
+        else { const max = S.terr[from].n - 1, opts = [...new Set([1, Math.ceil(max / 2), max])]; showModal('<div class="mhead"><small>' + TERR[from].name + ' → ' + TERR[id].name + '</small><h1>March how many?</h1></div><p class="lead">One troop stays behind to hold ' + TERR[from].name + '. Marches left today: ' + L.movesLeft(S) + ' of ' + L.movesMax(S) + '.</p><div class="row">' + opts.map(n => btn('moveGo', n === max && max > 1 ? 'All ' + n : String(n), { id: from + ':' + id + ':' + n, cls: n === max ? 'gold big' : '' })).join('') + btn('closeModal', 'Cancel') + '</div>', 'confirm'); return; } } renderAll(true); return; }
     selId = id; if (id) { tab = 'territory'; setPanel(!compact()); } else if (compact()) setPanel(false); renderAll(true); }, art);
   V.onCity = (id, key, built) => { if (!S) return; if (built) return toast(BUILD[key].name + (BUILD[key].levels ? ' is fully upgraded here.' : ' is already in place here.'), 'info'); const lv = S.terr[id][key] || 0, c = L.costOf(S, key, lv), can = L.canPay(S, c);
     showModal('<div class="mhead"><small>' + TERR[id].name + '</small><h1>' + (lv ? 'Upgrade ' + BUILD[key].name + ' to level ' + (lv + 1) : 'Build ' + BUILD[key].name) + '?</h1></div><p class="lead">' + BUILD[key].desc + '</p><p class="lead">' + cost(c) + (can ? '' : ' · not enough resources yet') + '</p><div class="row">' + btn('closeModal', 'Cancel') + btn('buildGo', 'Build', { id: id + ':' + key, cls: 'gold big', dis: !can }) + '</div>', 'confirm'); };
@@ -307,8 +310,9 @@ async function boot() {
   S = load(); if (S && S.pending) L.resolveDefense(S); if (S) { selId = HQ; renderAll(true); toast('Campaign resumed on ' + L.stamp(S) + '. Paused.', 'info'); } else introModal();
   let last = performance.now(), rT = 0;
   function loop(now) { const dt = Math.min(0.1, (now - last) / 1000); last = now;
-    if (S && S.speed > 0 && !modal && !S.over) { acc += dt * (S.speed === 1 ? 0.33 : 1.4); /* game hours per second */ let n = 0; while (acc >= 1 && n++ < 6) { acc -= 1; L.step(S); if (S.ev.length) drain(); if (S.speed === 0) { acc = 0; break; } } }
-    V.frac = S && S.speed > 0 ? acc : 0; rT += dt; if (rT > 0.25) { rT = 0; actionBar(); coach(); if (S && V.city && V.city !== selId && !modal) { selId = V.city; tab = 'territory'; renderPanel(true); } renderAll(); if (S && now - lastSave > 8000) { lastSave = now; save(); } }
+    if (S && S.speed > 0 && !modal && !S.over) { acc += dt * (S.speed === 1 ? 0.2 : 1); /* game hours per second */ let n = 0; while (acc >= 1 && n++ < 6) { acc -= 1; L.step(S); if (S.ev.length) drain(); if (S.speed === 0) { acc = 0; break; } } }
+    V.frac = S && S.speed > 0 ? acc : 0; rT += dt; if (rT > 0.25) { rT = 0; actionBar(); coach();
+      if (S && !S.over) { for (const p of S.parties) if (!seenP[p.id] && S.terr[p.to].owner === 'you' && L.partyVisible(S, p)) { seenP[p.id] = 1; if (S.speed > 0) { setSpeed(0); renderTop(); } toast('War party of ' + p.n + ' heading for ' + TERR[p.to].name + ', arriving in ' + Math.max(0, p.eta - S.t) + 'h. Clock paused.', 'bad'); } } if (S && V.city && V.city !== selId && !modal) { selId = V.city; tab = 'territory'; renderPanel(true); } renderAll(); if (S && now - lastSave > 8000) { lastSave = now; save(); } }
     if (bat) battleFrame(dt); V.frame(dt); requestAnimationFrame(loop); }
   requestAnimationFrame(loop);
   window.__g = { get S() { return S; }, L, V, act };

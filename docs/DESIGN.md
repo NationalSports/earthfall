@@ -81,8 +81,12 @@ A simple test bot that never uses the strike team, cards or defense battles wins
 
 Planned: orbital interceptor (shoots down one war party per week), naval landing for assaults without a land border, shield dome (blocks one breakout).
 
+## Time (Built)
+A running clock, slow: one game hour takes about 5 seconds (a day in 2 minutes), or 1 second on fast. It runs only while play is on, and pauses itself when a war party is spotted, a city is attacked or lost, the strike team arrives, or a warhead is ready.
+
 ## Moving troops (Built)
-Select one of your territories, press Move, tap another of yours. Troops can go anywhere a chain of your territories connects, instantly, and one always stays behind. Airlift (2 troops from your largest garrison, costs fuel) reaches cut-off territories.
+- **March:** tap source, tap destination. Instant, up to 3 territories away through your own land, 3 marches a day (5 with Rapid Transport). One troop always stays behind.
+- **Airlift:** for anything farther or cut off. Up to 3 troops (5 with Rapid Transport), 15 fuel, then 12 hours to refuel.
 
 ## Battles
 

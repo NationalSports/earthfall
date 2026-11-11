@@ -271,7 +271,7 @@ L.promote = (S, pr) => { let c = S.leaders.filter(l => l.alive && l.rank === 'co
   if (!c.length) return; const n = pick(c); n.rank = 'warlord'; const old = n.boss; n.boss = null;
   for (const l of S.leaders) if (l.boss === pr.boss || l.boss === old && false) l.boss = n.id;
   L.log(S, 'Commander ' + n.name + ' has been promoted to Warlord in ' + TERR[n.at].name + '.', 'bad'); };
-L.daily = S => { const own = L.owned(S); const inc = { metal: 0, fuel: 0, research: 0 };
+L.daily = S => { S.moves = 0; const own = L.owned(S); const inc = { metal: 0, fuel: 0, research: 0 };
   for (const id of own) { const T = S.terr[id]; inc[TERR[id].res] += 6 + 3 * (T.works || 0); if (T.barracks && L.day(S) % 3 === 0) T.n += T.barracks; const pk = PERKS[id]; if (pk) { for (const k in pk.inc || {}) inc[k] += pk.inc[k]; if (pk.intel) S.res.intel = Math.min(30, S.res.intel + pk.intel); if (pk.pool && L.day(S) % 2 === 0) S.pool = Math.min(30, S.pool + 1); } }
   for (const k in inc) S.res[k] += inc[k];
   S.res.uranium += own.filter(id => URANIUM.includes(id)).length; S.res.intel = Math.min(30, S.res.intel + 1 + own.filter(id => S.terr[id].radar).length);
@@ -341,11 +341,17 @@ L.playCard = (S, i) => { const k = (S.cards || [])[i]; if (!k) return fail('No s
 const fail = msg => ({ ok: false, msg });
 L.reinforce = (S, id) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); if (S.pool < 1) return fail('No reinforcements available.');
   if (T.n >= 12) return fail('Garrison is at maximum.'); S.pool--; T.n++; return { ok: true }; };
-// Move troops between your own territories, as long as a chain of your territories connects them. One troop always stays behind.
+// Moving troops. Marching is instant but short: up to 3 territories away through your own land, a few times a day.
+// Anything farther, or cut off, goes by airlift: a handful of troops, fuel, and the transports need time to turn around.
 L.reachable = (S, from) => { const seen = { [from]: 1 }, q = [from]; while (q.length) for (const x of L.playerNeighbors(S, q.shift())) if (!seen[x]) { seen[x] = 1; q.push(x); } delete seen[from]; return Object.keys(seen); };
 L.move = (S, from, to, n) => { const A = S.terr[from], B2 = S.terr[to]; if (!A || !B2 || A.owner !== 'you' || B2.owner !== 'you' || from === to) return fail('Pick two of your own territories.');
-  if (!L.reachable(S, from).includes(to)) return fail('No friendly route between them.'); n = Math.min(n, A.n - 1); if (n < 1) return fail('One troop must stay behind.');
-  A.n -= n; B2.n += n; L.log(S, n + ' troops moved from ' + TERR[from].name + ' to ' + TERR[to].name + '.', 'info'); return { ok: true }; };
+  if (L.hops(S, from, to) > 3) return fail('Too far to march. Use an airlift.'); if (L.movesLeft(S) < 1) return fail('No marches left today.'); n = Math.min(n, A.n - 1); if (n < 1) return fail('One troop must stay behind.');
+  A.n -= n; B2.n += n; S.moves = (S.moves || 0) + 1; L.log(S, n + ' troops moved from ' + TERR[from].name + ' to ' + TERR[to].name + '.', 'info'); return { ok: true }; };
+L.hops = (S, from, to) => { const d = { [from]: 0 }, q = [from]; while (q.length) { const x = q.shift(); if (x === to) return d[x]; for (const y of L.playerNeighbors(S, x)) if (d[y] === undefined) { d[y] = d[x] + 1; q.push(y); } } return Infinity; };
+L.movesMax = S => S.up.transport ? 5 : 3; L.movesLeft = S => L.movesMax(S) - (S.moves || 0); L.airMax = S => S.up.transport ? 5 : 3;
+L.airMove = (S, from, to, n) => { const A = S.terr[from], B2 = S.terr[to]; if (!A || !B2 || A.owner !== 'you' || B2.owner !== 'you' || from === to) return fail('Pick two of your own territories.');
+  if ((S.airT || 0) > S.t) return fail('Transports are refueling, ' + (S.airT - S.t) + 'h left.'); if (S.res.fuel < 15) return fail('Not enough fuel (15).'); n = Math.min(n, A.n - 1, L.airMax(S)); if (n < 1) return fail('One troop must stay behind.');
+  A.n -= n; B2.n += n; S.res.fuel -= 15; S.airT = S.t + 12; L.log(S, 'Airlifted ' + n + ' troops from ' + TERR[from].name + ' to ' + TERR[to].name + '.', 'info'); return { ok: true }; };
 L.build = (S, id, key) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); const B0 = BUILD[key]; if (B0.levels ? (T[key] || 0) >= B0.levels : T[key]) return fail(B0.levels ? 'Fully upgraded.' : 'Already built.');
   const c = L.costOf(S, key, T[key]); if (!L.canPay(S, c)) return fail('Not enough resources.'); L.pay(S, c); T[key] = (T[key] || 0) + 1; if (key === 'battery') T.reload = 0;
   L.log(S, BUILD[key].name + ' built in ' + TERR[id].name + '.', 'info'); L.refreshIntel(S); return { ok: true }; };
