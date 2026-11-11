@@ -462,7 +462,7 @@ const PERKS = {
   sydney: { name: 'Deep Space Array', desc: '+2 intel per day', intel: 2 } };
 // Strongholds: Los Angeles and the nine special cities. They produce double, and their buildings can be taken further than anywhere else.
 const STRONG = ['la'].concat(Object.keys(PERKS));
-const MAXLV = { works: [3, 5], barracks: [2, 4], fort: [1, 3], radar: [1, 1], battery: [1, 1], post: [0, 1] };
+const MAXLV = { works: [3, 5], barracks: [2, 4], fort: [2, 3], radar: [2, 2], battery: [2, 2], post: [0, 1] };
 // Starting garrisons follow population: great cities hold more, remote outposts less.
 const POP = { ny: 3, london: 3, moscow: 3, delhi: 3, mexico: 3, saopaulo: 3, cairo: 3, istanbul: 3, lagos: 3, manaus: 1, astana: 1, novosibirsk: 1, anchorage: 1 };
 // Enemy leader traits. One per Warlord and Commander; revealed once the leader is located.
@@ -490,8 +490,8 @@ const UPGRADES = {
 };
 const BUILD = {
   fort:{ name:'Fortress', cost:{metal:50}, desc:'Defenders roll +1 on their best die, per level.' },
-  radar:{ name:'Radar Station', cost:{metal:35,research:25}, desc:'Early warning: attacks on or from anywhere within 2 territories are shown a day ahead. Without radar cover they strike by surprise. Also reveals enemy strength and leaders.' },
-  battery:{ name:'Missile Battery', cost:{metal:60,fuel:40}, desc:'Fires on enemy territories or war parties within 2 territories. Reloads in 24h.' },
+  radar:{ name:'Radar Station', cost:{metal:35,research:25}, desc:'Early warning: attacks on or from anywhere within 2 territories are shown a day ahead (3 territories at level 2). Without radar cover they strike by surprise. Also reveals enemy strength and leaders.' },
+  battery:{ name:'Missile Battery', cost:{metal:60,fuel:40}, desc:'Fires on enemy territories or war parties within 2 territories (3 at level 2). Reloads in a day.' },
   // Leveled buildings: each level costs one more multiple of the base cost.
   works:{ name:'Industry', cost:{metal:40,fuel:20}, desc:"+3 of this city's resource per day, per level." },
   post:{ name:'Command Post', cost:{metal:80,research:40}, desc:'Strongholds only. +1 Order every day.' },
@@ -549,7 +549,7 @@ L.teamN = S => (S.spec === 'assault' ? 3 : 2) + (S.up.exo ? 1 : 0);
 L.observedSet = S => { const o = {}; const range = S.up.deepscan ? 3 : 2; if ((S.scanUntil || 0) > S.t) { for (const id of TIDS) o[id] = 1; return o; }
   for (const id of TIDS) { const T = S.terr[id];
     if (T.owner === 'you') { o[id] = 1; for (const n of TERR[id].adj) o[n] = 1;
-      if (T.radar) { const h = L.hops(id, range); for (const k in h) o[k] = 1; } } }
+      if (T.radar) { const h = L.hops(id, range + T.radar - 1); for (const k in h) o[k] = 1; } } }
   const ta = L.teamAt(S); if (ta) { o[ta] = 1; for (const n of TERR[ta].adj) o[n] = 1; }
   return o; };
 L.refreshIntel = S => { const o = L.observedSet(S); S.obs = o;
@@ -659,8 +659,8 @@ L.planAttack = S => { if (rnd() < (L.P.iq == null ? 0.7 : L.P.iq)) return L.smar
   const T = S.terr[c.id], n = Math.max(2, Math.floor(T.n / 2) + (S.esc > 2 ? 1 : 0)); T.n -= Math.floor(T.n / 2);
   L.launchParty(S, c.id, c.to, n, false); };
 // Early warning: you only see an attack a day ahead if a Radar Station (or headquarters) is within range of its target or its source.
-L.radarSet = S => { const key = S.t + '|' + L.owned(S).length + '|' + (S.up.deepscan ? 1 : 0) + '|' + TIDS.reduce((n, id) => n + (S.terr[id].owner === 'you' && S.terr[id].radar ? 1 : 0), 0); if (S._rk === key && S._rs) return S._rs; const o = {}, range = S.up.deepscan ? 3 : 2;
-  for (const id of TIDS) { const T = S.terr[id]; if (T.owner === 'you' && (T.radar || id === HQ)) { o[id] = 1; const h = L.hops(id, range); for (const k in h) o[k] = 1; } } Object.defineProperty(S, '_rk', { value: key, writable: true, enumerable: false, configurable: true }); Object.defineProperty(S, '_rs', { value: o, writable: true, enumerable: false, configurable: true }); return o; };
+L.radarSet = S => { const key = S.t + '|' + L.owned(S).length + '|' + (S.up.deepscan ? 1 : 0) + '|' + TIDS.reduce((n, id) => n + (S.terr[id].owner === 'you' ? (S.terr[id].radar || 0) * 7 + 1 : 0), 0); if (S._rk === key && S._rs) return S._rs; const o = {}, range = S.up.deepscan ? 3 : 2;
+  for (const id of TIDS) { const T = S.terr[id]; if (T.owner === 'you' && (T.radar || id === HQ)) { o[id] = 1; const h = L.hops(id, range + Math.max(0, (T.radar || 1) - 1)); for (const k in h) o[k] = 1; } } Object.defineProperty(S, '_rk', { value: key, writable: true, enumerable: false, configurable: true }); Object.defineProperty(S, '_rs', { value: o, writable: true, enumerable: false, configurable: true }); return o; };
 L.partyVisible = (S, p) => { if ((S.scanUntil || 0) > S.t) return true; const r = L.radarSet(S); return !!(r[p.to] || r[p.from]); };
 L.spawnCommander = (S, at) => { if (S.leaders.filter(l => l.alive).length >= 14) return; const ws = S.leaders.filter(l => l.alive && l.rank === 'warlord'); if (!ws.length) return;
   S.leaders.push({ id: 'L' + S.lid++, rank: 'commander', trait: pick(Object.keys(TRAITS)), at, alive: true, boss: pick(ws).id, seenAt: at, seenT: S.t, exposed: S.t + 36, name: pick(FIRST) + ' ' + pick(SUR) + '-' + ri(31, 47) }); };
@@ -732,7 +732,7 @@ L.step = S => { // advance one hour
   for (const c of (S.cols || []).slice()) { const fell = S.terr[c.to].owner !== 'you'; if (!fell && S.t < c.eta) continue; S.cols.splice(S.cols.indexOf(c), 1);
     if (!fell) { S.terr[c.to].n += c.n; S.terr[c.to].arm = (S.terr[c.to].arm || 0) + (c.arm || 0); L.log(S, c.n + (c.arm || 0) + ' troops arrived in ' + TERR[c.to].name + '.', 'info'); S.ev.push({ k: 'toast', msg: c.n + ' troops arrived in ' + TERR[c.to].name, kind: 'info' }); continue; }
     L.log(S, TERR[c.to].name + ' fell while ' + c.n + ' troops were on their way there.', 'bad'); if (S.cmd) { S.pendingCol = c; S.ev.push({ k: 'colStop' }); S.ev.push({ k: 'pause' }); return; } L.colResolve(S, null, c); }
-  for (const id of TIDS) { const T = S.terr[id]; if (T.job && T.owner === 'you' && S.t >= T.job.doneAt) { const k = T.job.key, mv = T.job.moved; T.job = null; T[k] = (T[k] || 0) + 1; if (!mv) (S.dayBuilt = S.dayBuilt || []).push({ id, k }); if (k === 'battery') T.reload = 0;
+  for (const id of TIDS) { const T = S.terr[id]; if (T.job && T.owner === 'you' && S.t >= T.job.doneAt) { const k = T.job.key, mv = T.job.moved, jl = T.job.lv; T.job = null; T[k] = jl || (T[k] || 0) + 1; if (!mv) (S.dayBuilt = S.dayBuilt || []).push({ id, k }); if (k === 'battery') T.reload = 0;
       L.log(S, BUILD[k].name + (T[k] > 1 ? ' level ' + T[k] : '') + ' completed in ' + TERR[id].name + '.', 'good'); S.ev.push({ k: 'toast', msg: BUILD[k].name + ' completed in ' + TERR[id].name, kind: 'good' }); L.refreshIntel(S); } }
   if (tm.dest && S.t >= tm.eta) { tm.at = tm.dest; tm.dest = null; tm.arrT = S.t;
     S.ev.push({ k: 'arrive', id: tm.at }); S.ev.push({ k: 'pause' }); }
@@ -802,10 +802,10 @@ L.move = (S, from, to, n) => { const A = S.terr[from], B2 = S.terr[to]; if (!A |
 // A missile battery relocates like troops: it leaves at once and is set up again at the destination when it arrives.
 L.moveBattery = (S, from, to) => { const A = S.terr[from], B2 = S.terr[to]; if (!A || !B2 || A.owner !== 'you' || B2.owner !== 'you' || from === to) return fail('Pick two of your own territories.');
   if (!A.battery) return fail('No missile battery there.'); if (B2.battery) return fail(TERR[to].name + ' already has a missile battery.'); if (B2.job) return fail(TERR[to].name + ' is busy building. Wait for that to finish.');
-  if (S.mob) { A.battery = 0; B2.battery = 1; B2.reload = 0; return { ok: true, hours: 0 }; }
+  if (S.mob) { B2.battery = A.battery; A.battery = 0; B2.reload = 0; return { ok: true, hours: 0 }; }
   const hops = L.marchHops(S, from, to); if (hops > 3) return fail('Too far. A battery can travel up to 3 territories.');
-  if (hops <= 1) { if ((S.redeploy || 0) > 0) S.redeploy--; A.battery = 0; B2.battery = 1; B2.reload = A.reload || 0; return { ok: true, hours: 0 }; }
-  A.battery = 0; B2.job = { key: 'battery', doneAt: S.t + 1, moved: 1 }; L.log(S, 'Missile battery moving from ' + TERR[from].name + ' to ' + TERR[to].name + '. It arrives tonight.', 'info'); return { ok: true, hours: 1 }; };
+  if (hops <= 1) { if ((S.redeploy || 0) > 0) S.redeploy--; B2.battery = A.battery; A.battery = 0; B2.reload = A.reload || 0; return { ok: true, hours: 0 }; }
+  B2.job = { key: 'battery', doneAt: S.t + 1, moved: 1, lv: A.battery }; A.battery = 0; L.log(S, 'Missile battery moving from ' + TERR[from].name + ' to ' + TERR[to].name + '. It arrives tonight.', 'info'); return { ok: true, hours: 1 }; };
 L.enemyNeighborsN = (S, id) => TERR[id].adj.reduce((n, x) => n + (S.terr[x].owner === 'enemy' ? S.terr[x].n : 0), 0);
 L.marchHours = S => S.up.transport ? 4 : 6; // per territory
 // Where a column can go when its destination has fallen: back where it came from, or any of your territories beside either end.
@@ -931,7 +931,7 @@ L.assaultEnd = (S, b, won) => { if (b.done) return; b.done = true; b.won = won; 
     else { L.log(S, 'You withdrew from ' + name + '. ' + back + ' troops returned to the reserve.', 'info'); if (b.teamHere) L.teamRetreat(S, b.id); } }
   L.refreshIntel(S); };
 // Long-range fire
-L.batteriesInRange = (S, id) => { const out = []; for (const x of L.owned(S)) { const T = S.terr[x]; if (T.battery && (T.reload || 0) <= S.t && (L.hops(x, 2)[id] !== undefined)) out.push(x); } return out; };
+L.batteriesInRange = (S, id) => { const out = []; for (const x of L.owned(S)) { const T = S.terr[x]; if (T.battery && (T.reload || 0) <= S.t && (L.hops(x, 1 + T.battery)[id] !== undefined)) out.push(x); } return out; };
 L.strikeEffect = (S, id, power, label) => { const T = S.terr[id]; if (T.owner !== 'enemy') return fail('Not an enemy territory.');
   const hit = ri(1, power); T.n = Math.max(1, T.n - hit); T.soft = S.t + 24; let extra = '';
   for (const l of L.leadersAt(S, id)) if (rnd() < 0.15) { l.exposed = S.t + 36; extra = ' ' + RANKN[l.rank] + ' ' + l.name + ' was wounded and is exposed.'; }
@@ -1593,6 +1593,8 @@ function buildEffect(id, k) { const T = S.terr[id], lv = T[k] || 0, res = TERR[i
   if (k === 'barracks') return (lv ? 'Raises ' + lv + ' free troop' + (lv > 1 ? 's' : '') + ' here every 3 days. With this: <b>' + (lv + 1) + '</b>.' : 'Raises <b>1 free troop</b> here every 3 days, and lets you <b>train armor</b> in this city.');
   if (k === 'post') return 'You get ' + L.ordersMax(S) + ' Orders a day. With this: <b>' + (L.ordersMax(S) + 1) + '</b>, every day.';
   if (k === 'fort') { const D = T.n + (T.arm || 0), A = D + 2, cap = L.isStrong(id) ? 3 : 2, cur = Math.min(cap, lv + (S.doc === 'fortress' ? 1 : 0)), nxt = Math.min(cap + (S.doc === 'fortress' ? 1 : 0), lv + 1 + (S.doc === 'fortress' ? 1 : 0)); return 'If ' + A + ' attackers hit the ' + D + ' troops here, the city falls about <b>' + pct(L.estimate(A, D, 0, cur)) + '</b> of the time. With this: <b>' + pct(L.estimate(A, D, 0, nxt)) + '</b>.'; }
+  if (k === 'radar' && lv) return 'Covers everything within 2 territories. With this: <b>3 territories</b>, so you see attacks coming across a much wider front.';
+  if (k === 'battery' && lv) { const n3 = Object.keys(L.hops(id, 3)).filter(x => S.terr[x].owner === 'enemy').length; return 'Reaches 2 territories (' + near.length + ' enemy in range). With this: <b>3 territories</b> (' + n3 + ' enemy in range).'; }
   if (k === 'radar') return near.length ? 'Would show you the strength, leaders and attacks of <b>' + near.length + ' enemy territories</b> near here (' + near.slice(0, 3).map(x => TERR[x].name).join(', ') + (near.length > 3 ? '…' : '') + '), and adds +1 intel a day.' : 'No enemy territory is within 2 steps of here, so a radar would see nothing yet.';
   if (k === 'battery') return near.length ? 'Could fire on <b>' + near.length + ' enemy territories</b> from here (' + near.slice(0, 3).map(x => TERR[x].name).join(', ') + (near.length > 3 ? '…' : '') + '), knocking 1 to 2 strength off each time.' : 'No enemy territory is within 2 steps of here, so a battery would have no targets yet.';
   return BUILD[k].desc; }
