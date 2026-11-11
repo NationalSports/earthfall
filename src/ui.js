@@ -10,7 +10,7 @@ const cost = c => Object.keys(c).filter(k => c[k]).map(k => '<span class="c ' + 
 const btn = (a, label, o) => { o = o || {}; return '<button class="btn ' + (o.cls || '') + '" data-a="' + a + '"' + (o.id ? ' data-id="' + o.id + '"' : '') + (o.dis ? ' disabled' : '') + '>' + (o.art ? '<i class="art art-' + o.art + '"></i>' : '') + '<span>' + label + '</span>' + (o.sub ? '<small>' + o.sub + '</small>' : '') + '</button>'; };
 const pct = p => Math.round(p * 100) + '%';
 function save() { try { const c = Object.assign({}, S, { ev: [], obs: {} }); localStorage.setItem(SAVE, JSON.stringify(c)); } catch (e) {} }
-function load() { try { const s = JSON.parse(localStorage.getItem(SAVE)); if (s && s.v === 4 && !s.over) { s.ev = []; if (s.orders == null) s.orders = 6; s.speed = 0; for (const k of ['uranium', 'intel', 'salvage']) if (s.res[k] === undefined) s.res[k] = 0; L.setDiff(s.diff); L.refreshIntel(s); return s; } } catch (e) {} return null; }
+function load() { try { const s = JSON.parse(localStorage.getItem(SAVE)); if (s && s.v === 4 && !s.over) { s.ev = []; if (s.cmd == null) s.cmd = true; if (s.orders == null) s.orders = 6; s.speed = 0; for (const k of ['uranium', 'intel', 'salvage']) if (s.res[k] === undefined) s.res[k] = 0; L.setDiff(s.diff); L.refreshIntel(s); return s; } } catch (e) {} return null; }
 function toast(msg, kind) { if (kind === 'bad') SFX.play('alert'); const t = document.createElement('div'); t.className = 'toast ' + kind; t.textContent = msg; const box = $('#toasts'); box.appendChild(t); while (box.children.length > (window.innerWidth < 860 ? 2 : 4)) box.removeChild(box.firstChild); setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 400); }, window.innerWidth < 860 ? 4200 : 6500); }
 function setSpeed(v) { if (S.over) v = 0; S.speed = v; }
 
@@ -292,7 +292,13 @@ const SFX = { muted: false, ctx: null, last: {},
 let asTimer = 0;
 // A fight plays out over several seconds: one exchange about every second, with the losses shown as they happen.
 function battlePlay() { clearInterval(asTimer); asTimer = setInterval(() => { if (!asl || !asl.b || asl.b.done) return clearInterval(asTimer); L.assaultRound(S, asl.b); SFX.play('shot'); setTimeout(() => SFX.play('shot'), 140); if (asl.b.done) { clearInterval(asTimer); SFX.play(asl.b.won ? 'good' : 'alert'); } assaultModal(); }, 1100); }
-let bat = null, PIMG = {}, moveFrom = null, moveTo = null; const seenP = {};
+let bat = null, PIMG = {}, moveFrom = null, moveTo = null; const reports = [];
+// What the enemy just did: shown every time one of your territories is attacked, so nothing happens out of sight.
+function reportModal() { if (!reports.length || modal || !S || S.over) { if (reports.length && modal && S && !S.over) setTimeout(reportModal, 600); return; } const list = reports.splice(0), last = list[list.length - 1]; SFX.play(list.some(r => !r.held) ? 'alert' : 'good'); selId = last.to; V.focus(last.to);
+  showModal('<div class="mhead"><small>' + L.stamp(S) + ' · the clock is paused</small><h1>' + (list.length > 1 ? 'The swarm attacked ' + list.length + ' territories' : list[0].held ? TERR[list[0].to].name + ' held' : TERR[list[0].to].name + ' has fallen') + '</h1></div><div class="rlist">' +
+    list.map(r => '<div class="ritem ' + (r.held ? 'good' : 'bad') + '"><b>' + TERR[r.to].name + (r.held ? ' held' : ' fell') + '</b><span><b>' + r.n + '</b> attackers came from ' + TERR[r.from].name + ' against your <b>' + r.d + '</b>. ' + (r.held ? (r.lost ? 'You lost ' + r.lost + '; ' + r.left + ' remain.' : 'No losses; ' + r.left + ' remain.') : 'All ' + r.d + ' of your troops there were lost, with everything built in the city. ' + r.left + ' enemy now hold it.') + '</span>' +
+      (r.held ? '' : '<small>Why: ' + (r.d <= 2 ? 'the city had almost no garrison. A freshly captured city holds only the survivors of the attack, so march troops in or expect it to be retaken.' : r.n >= r.d * 1.5 ? 'you were badly outnumbered. Radar nearby would have warned you hours earlier.' : 'the dice went against you. A Fortress would have tilted them.') + '</small>') + '</div>').join('') +
+    '</div><div class="row">' + btn('closeModal', 'Continue', { cls: 'gold big' }) + '</div>', 'intel'); } const seenP = {};
 function defendModal() { const p = S && S.pending; if (!p || modal) return; const su = L.defenseSetup(S, p), ex = [su.fort && 'fortress wall', su.battery && (su.railgun ? '3 railgun strikes' : '2 missile strikes'), su.radar && 'radar (longer range)', su.team && 'your strike team'].filter(Boolean);
   SFX.play('alert'); selId = su.to; V.focus(su.to);
   showModal('<div class="mhead"><small>War party arriving from ' + TERR[p.from].name + '</small><h1>Defend ' + su.name + '</h1></div><p class="lead"><b>' + su.A + '</b> attackers against <b>' + su.D + '</b> defenders' + (ex.length ? ', with ' + ex.join(', ') : '') + '.' + (su.aB ? ' They are veterans and hit harder.' : '') + '</p><div class="row">' + btn('defAuto', 'Auto-resolve', { sub: 'Settle it with dice' }) + btn('defGo', 'Command the defense', { cls: 'gold big', sub: 'About a minute' }) + '</div>', 'defend'); }
@@ -400,6 +406,7 @@ function drain() { if (!S) return; const ev = S.ev.splice(0); for (const e of ev
     if (e.k === 'toast') toast(e.msg, e.kind); else if (e.k === 'pause') setSpeed(0);
     else if (e.k === 'defend') setTimeout(defendModal, 50);
     else if (e.k === 'colStop') setTimeout(colModal, 60);
+    else if (e.k === 'report') { reports.push(e); setTimeout(reportModal, 250); }
     else if (e.k === 'arrive') { selId = e.id; tab = 'territory'; toast('Strike team has arrived in ' + TERR[e.id].name + '.', 'info'); }
     else if (e.k === 'intel' && !asl) { const i = e.i; setTimeout(() => { if (!modal && !S.over) showModal('<div class="mhead"><small>Intel recovered · fragment ' + (i + 1) + ' of ' + INTEL.length + '</small><h1>Field report</h1></div><p class="lead quote">' + esc(INTEL[i]) + '</p><div class="row">' + btn('closeModal', 'Continue', { cls: 'gold big' }) + '</div>', 'intelm'); }, 300); }
     else if (e.k === 'over') setTimeout(overModal, 600); } }

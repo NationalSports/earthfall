@@ -265,8 +265,9 @@ L.arrive = (S, p, forced) => { const T = S.terr[p.to], name = TERR[p.to].name;
   if (r.D > 0) { const lost = Math.min(T.n + (T.arm || 0), D0 - r.D), li = Math.min(T.n, lost); T.n -= li; T.arm = Math.max(0, (T.arm || 0) - (lost - li)); if (T.n < 1) T.n = 1; S.stats.held++;
     if (teamHere) S.res.salvage++;
     L.log(S, name + ' held against ' + p.n + ' attackers' + (lost ? ', losing ' + lost + '.' : ' without loss.') + (teamHere ? ' Your strike team fought in the line.' : ''), 'good');
+    S.ev.push({ k: 'report', to: p.to, from: p.from, n: p.n, d: D0, held: true, lost, left: T.n + (T.arm || 0) }); S.ev.push({ k: 'pause' });
   } else { T.owner = 'enemy'; T.n = Math.max(1, r.A); T.fort = 0; T.radar = 0; T.battery = 0; T.works = 0; T.barracks = 0; T.post = 0; T.job = null; T.arm = 0; S.stats.lost++;
-    L.log(S, name + ' has fallen to the invasion.', 'bad'); S.ev.push({ k: 'pause' });
+    L.log(S, name + ' has fallen to the invasion.', 'bad'); S.ev.push({ k: 'report', to: p.to, from: p.from, n: p.n, d: D0, held: false, lost: D0, left: T.n }); S.ev.push({ k: 'pause' });
     if (teamHere) { S.team.pips = Math.max(0, S.team.pips - 2); L.teamRetreat(S, p.to); }
     if (rnd() < 0.6) L.spawnCommander(S, p.to);
     if (p.to === HQ) return L.end(S, 'hq'); } };
