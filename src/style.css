@@ -85,10 +85,17 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 .labels .tlabel .tn{grid-column:auto;background:none;border:0;padding:0;box-shadow:none;border-radius:0}
 .tlabel b{grid-column:auto;order:-1;min-width:19px;height:19px;font-size:11px;border-width:1px}
 .tlabel i{position:static;left:auto;bottom:auto;font-size:12px}
-.tlabel.sel{background:var(--gold);border-color:#fff6}.labels .tlabel.sel .tn{background:none;color:#1a1205;border:0}.tlabel.hq{border-color:var(--gold)}.labels .tlabel.hq .tn{border:0;color:var(--gold)}
+.tlabel.sel{background:var(--gold);border-color:#fff6}.labels .tlabel.sel .tn{background:none;color:#1a1205;border:0}.tlabel.hq{border-color:var(--gold)}.labels .tlabel.hq .tn{border:0;color:var(--gold)}.labels .tlabel.sel.hq .tn{color:#1a1205}
 .far .tlabel:not(.sel):not(.hq),.mid .tlabel.you:not(.sel):not(.hq):not(.threat){padding:2px 3px}
 .mapctl,#ptoggle{z-index:4}
 @media (prefers-reduced-motion:reduce){.tlabel.threat b{animation:none}}
 
 /* keep sub-text on gold buttons readable over their illustration */
 .btn.gold>small{color:#2a1c08;font-weight:600;text-shadow:0 1px 0 #ffe9b866}
+#view canvas,canvas{touch-action:none}
+.perk{margin:8px 0;padding:8px 10px;border:1px solid #e8be6055;border-radius:8px;background:#e8be6012;display:flex;flex-direction:column;gap:2px}.perk b{color:var(--gold);font-size:13px;letter-spacing:.04em}.perk span{font-size:12.5px;opacity:.85}.perk.on{background:#e8be6022;border-color:#e8be6099}
+.leader .lf{width:34px;height:42px;border-radius:6px;background-size:cover;background-position:center 15%;flex:none;border:1px solid #fff2}.leader.dead .lf{filter:grayscale(1) brightness(.6)}.tag.trait{background:#8a5cf033;color:#cdb4ff;border-color:#8a5cf066}
+.hand{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 8px}.ccard{display:flex;flex-direction:column;text-align:left;padding:0 0 8px;border:1px solid #e8be6066;border-radius:10px;background:#0f1a28;color:inherit;overflow:hidden;cursor:pointer;font:inherit}.ccard .art.top{display:block;height:64px;width:100%;background-size:cover;background-position:center}.ccard b{padding:6px 8px 0;color:var(--gold);font-size:13px}.ccard span{padding:2px 8px 0;font-size:12px;opacity:.85;line-height:1.3}.ccard:hover{border-color:var(--gold)}
+#modal.battle .sheet{max-width:960px;width:96vw}#bcv{width:100%;height:auto;display:block;border-radius:10px;border:1px solid #ffffff22;touch-action:none;background:#0b1420}#bui{margin-top:8px}#bui .note{margin:4px 0 8px}
+@media (max-height:520px){#modal.battle .mhead{display:none}#modal.battle .sheet{padding:8px}#bcv{max-height:62vh;width:auto;max-width:100%;margin:0 auto}}
+.mapctl button.viewbtn{grid-column:span 2}
