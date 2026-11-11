@@ -1,13 +1,13 @@
 // ---------- 3D board ----------
 const V = (() => {
-  const BW = 120, BH = 67.5, RW = 1920, RH = 1080, GW = 320, GH = 180, FLAT = 0.95;
+  const BW = 120, BH = 67.5, RW = 1920, RH = 1080, GW = 320, GH = 180, FLAT = 0.6;
   const MERC = d => Math.log(Math.tan(Math.PI / 4 + d * Math.PI / 360)), MT = MERC(78), MB = MERC(-60), fy = lat => (MT - MERC(clamp(lat, -89, 89))) / (MT - MB), latOf = f => (2 * Math.atan(Math.exp(MT - f * (MT - MB))) - Math.PI / 2) * 180 / Math.PI;
   const px = lon => (lon + 180) / 360 * RW, py = lat => fy(lat) * RH;
   const wx = lon => (lon + 180) / 360 * BW - BW / 2, wz = lat => fy(lat) * BH - BH / 2, AW = 1920, AH = 1080;
   const curve = (x, z) => -(z * z) / 1500; let worldRoot = null;
-  let bd, cd, landF, idx2, idx2G; let renderer, scene, camera, el, labelsEl, tex, texCtx, img, idx, landA, heights, boardMesh, hp, shade, texE, ctxE, imgE, trees, treeT = [], seaTex, clouds = [], glowTex;
+  let bd, cd, landF, idx2, idx2G; let renderer, scene, camera, el, labelsEl, tex, texCtx, img, idx, landA, heights, boardMesh, hp, shade, texE, ctxE, imgE, texT, ctxT, imgT, trees, treeT = [], seaTex, clouds = [], glowTex;
   let tokens, arcs, fxGroup, labels = {}, partyLabels = [], sigTok = '', sigTex = '', sel = null, onPick = () => {};
-  const cam = { tx: 20, tz: 0, dist: 70, yaw: 0, pitch: 1.02 };
+  const cam = { tx: -28, tz: -8, dist: 70, yaw: 0, pitch: 1.02 };
   const fx = []; let teamTok, time = 0, S0 = null, artData = null, INF = null;
   function setArt(image) { const c = document.createElement('canvas'); c.width = RW; c.height = RH; const g = c.getContext('2d'); g.drawImage(image, 0, 0, RW, RH); artData = g.getImageData(0, 0, RW, RH).data; if (trees) trees.visible = false; sigTex = ''; if (S0) sync(S0, sel); }
   let mode = 'board', boardRoot, globeRoot = null, globeImg = null, idxG, landG, bdG, texG, ctxG, imgG, artG, sigTexG = '', GWp = 0, GHp = 0;
@@ -48,7 +48,7 @@ const V = (() => {
     for (let y = 0; y < RH; y++) for (let x = 0; x < RW; x++) hp[y * RW + x] = hb(x, y);
     for (let y = 0; y < RH; y++) for (let x = 0; x < RW; x++) { const a = hp[Math.max(0, y - 3) * RW + Math.max(0, x - 3)], b = hp[Math.min(RH - 1, y + 3) * RW + Math.min(RW - 1, x + 3)]; shade[y * RW + x] = clamp(1 + (a - b) * 2.4, 0.5, 1.6); }
   }
-  const COL = { you: [38, 178, 176], enemy: [206, 62, 40], waste: [58, 52, 48] };
+  const COL = { you: [34, 138, 150], enemy: [206, 62, 40], waste: [58, 52, 48] };
   function paint(S) {
     const A = artData; const d = img.data, de = imgE.data, own = TIDS.map(id => S.terr[id].owner), obs = TIDS.map(id => S.obs[id] ? 1 : 0), si = sel ? TIDS.indexOf(sel) : -1;
     for (let y = 0; y < RH; y++) { const lat = 45;
@@ -58,13 +58,16 @@ const V = (() => {
           const near = (x > 2 && landA[i - 3]) || (x < RW - 3 && landA[i + 3]) || (y > 2 && landA[i - 3 * RW]) || (y < RH - 3 && landA[i + 3 * RW]);
           if (near) { r += 18; g += 46; b += 56; }
           if (A) { r = A[o]; g = A[o + 1]; b = A[o + 2]; }
-          if (x % 133 === 0 || y % 150 === 0) { r += 8; g += 12; b += 18; }
+          
         } else { const k = idx[i], c = COL[own[k]], n = fbm(x * 0.03 + 11, y * 0.03 + 5), al = Math.abs(lat);
           let tr = 74, tg = 104, tb = 58; if (al > 60) { tr = 190; tg = 198; tb = 200; } else if (al > 14 && al < 33 && n > 0.42) { tr = 168; tg = 140; tb = 92; } else if (n > 0.6) { tr = 96; tg = 92; tb = 74; }
           const m = own[k] === 'waste' ? 0.85 : 0.5, sh = (0.74 + n * 0.4) * shade[i], hh = hp[i];
           if (hh > 0.95) { const t = Math.min(0.7, (hh - 0.95) / 0.4); tr += (128 - tr) * t; tg += (122 - tg) * t; tb += (114 - tb) * t; } const snow = hh > 1.22 ? Math.min(0.8, (hh - 1.22) / 0.25) : 0;
           r = (c[0] * m + tr * (1 - m)) * sh; g = (c[1] * m + tg * (1 - m)) * sh; b = (c[2] * m + tb * (1 - m)) * sh;
-          if (A) { const am = own[k] === 'waste' ? 0.8 : own[k] === 'enemy' ? (obs[k] ? 0.62 : 0.5) : 0.46, lum = (A[o] + A[o + 1] + A[o + 2]) / 3 / 112; r = A[o] * (1 - am) + c[0] * lum * am; g = A[o + 1] * (1 - am) + c[1] * lum * am; b = A[o + 2] * (1 - am) + c[2] * lum * am; }
+          if (A) { // Calm the terrain so ownership reads first: mute its color, flatten its light and dark, then lay the owner's color over it.
+            const am = own[k] === 'waste' ? 0.82 : own[k] === 'enemy' ? (obs[k] ? 0.72 : 0.62) : 0.66, av = (A[o] + A[o + 1] + A[o + 2]) / 3, l0 = av / 112, lum = clamp(0.86 + (l0 - 1) * 0.3, 0.6, 1.12), f = l0 > 0.05 ? lum / l0 : 1;
+            const br = (A[o] * 0.4 + av * 0.6) * f, bgn = (A[o + 1] * 0.4 + av * 0.6) * f, bb = (A[o + 2] * 0.4 + av * 0.6) * f; r = br * (1 - am) + c[0] * lum * am; g = bgn * (1 - am) + c[1] * lum * am; b = bb * (1 - am) + c[2] * lum * am;
+            if (imgT) { const q = imgT.data; q[o] = c[0]; q[o + 1] = c[1]; q[o + 2] = c[2]; q[o + 3] = am * 255; } }
           if (snow && !A) { r += (236 * shade[i] - r) * snow; g += (240 * shade[i] - g) * snow; b += (246 * shade[i] - b) * snow; }
           if (own[k] === 'enemy') { const v = Math.abs(fbm(x * 0.08, y * 0.08) - 0.5); const bl = fbm(x * 0.018 + 50, y * 0.018 + 20); if (INF) { const io = ((y % INF.h) * INF.w + (x % INF.w)) * 4, m2 = 0.55; r = r * (1 - m2) + INF.d[io] * m2; g = g * (1 - m2) + INF.d[io + 1] * m2; b = b * (1 - m2) + INF.d[io + 2] * m2; } else { if (bl > 0.56) { const q = Math.min(1, (bl - 0.56) * 6) * 0.45; r = r * (1 - q) + 70 * q; g = g * (1 - q) + 12 * q; b = b * (1 - q) + 40 * q; } const v2 = Math.abs(fbm(x * 0.035 + 9, y * 0.035 + 4) - 0.5); if (v < 0.03 || v2 < 0.022) { const q = v2 < 0.022 ? 1 : 0.7; r += 62 * q; g += 16 * q; b += 6 * q; er = 190 * q; eg = 44 * q; eb = 14 * q; } }
             if (!obs[k]) { r *= 0.8; g *= 0.8; b *= 0.84; } }
@@ -75,7 +78,7 @@ const V = (() => {
         }
         if (A && lf > 0 && lf < 1) { r = A[o] * (1 - lf) + r * lf; g = A[o + 1] * (1 - lf) + g * lf; b = A[o + 2] * (1 - lf) + b * lf; er *= lf; eg *= lf; eb *= lf; }
         d[o] = r; d[o + 1] = g; d[o + 2] = b; d[o + 3] = 255; de[o] = er; de[o + 1] = eg; de[o + 2] = eb; de[o + 3] = 255; } }
-    texCtx.putImageData(img, 0, 0); tex.needsUpdate = true; ctxE.putImageData(imgE, 0, 0); texE.needsUpdate = true;
+    texCtx.putImageData(img, 0, 0); tex.needsUpdate = true; ctxE.putImageData(imgE, 0, 0); texE.needsUpdate = true; if (ctxT) { ctxT.putImageData(imgT, 0, 0); texT.needsUpdate = true; }
     if (trees) { const col = new THREE.Color(); treeT.forEach((k, n) => { const o = own[k], v = 0.75 + (n * 7919 % 100) / 200; if (o === 'you') col.setRGB(0.06 * v, 0.26 * v, 0.17 * v); else if (o === 'enemy') col.setRGB(0.19 * v, 0.04 * v, 0.035 * v); else col.setRGB(0.09, 0.08, 0.07); trees.setColorAt(n, col); }); trees.instanceColor.needsUpdate = true; }
   }
   // shared geometry and materials
@@ -106,7 +109,7 @@ const V = (() => {
     g.scale.setScalar(s * 0.75); return g; }
   function buildTokens(S) {
     while (tokens.children.length) tokens.remove(tokens.children[0]);
-    for (const id of TIDS) { const T = S.terr[id], p = P(id), g = new THREE.Group(); g.position.copy(p); g.userData.grp = 1; if (mode === 'globe') g.quaternion.setFromUnitVectors(UP, p.clone().normalize()); tokens.add(g);
+    for (const id of TIDS) { const T = S.terr[id], p = P(id), g = new THREE.Group(); g.position.copy(p); g.userData.grp = 1; g.userData.id = id; if (mode === 'globe') g.quaternion.setFromUnitVectors(UP, p.clone().normalize()); tokens.add(g);
       { const nr = new THREE.Mesh(G.nring, M.node), nd = new THREE.Mesh(G.ndot, T.owner === 'you' ? M.nodeYou : T.owner === 'enemy' ? M.nodeEnemy : M.nodeWaste); nr.rotation.x = nd.rotation.x = -Math.PI / 2; nr.position.y = nd.position.y = 0.14; nr.renderOrder = nd.renderOrder = 3; g.add(nr, nd); }
       const put = (name, x, z, size, dim) => { g.add(blob(x, z, size * 0.36), piece(name, x, z, size, dim)); };
       if (T.owner !== 'waste') g.add(glow(T.owner === 'you' ? 0x2fd0cc : 0xff3a1c, T.owner === 'you' ? 2.2 : 2.8));
@@ -140,6 +143,10 @@ const V = (() => {
       { const e = c.at(1), e0 = c.at(0.93), ah = new THREE.Mesh(G.cone, M.arc); ah.position.copy(e); ah.quaternion.setFromUnitVectors(UP, e.clone().sub(e0).normalize()); ah.scale.set(2.2, 1.1, 2.2); arcs.add(ah); }
       const head = piece('swarm', 0, 0, 2.2); head.userData = { party: p, curve: c }; arcs.add(head);
       const d = document.createElement('div'); d.className = 'plabel'; labelsEl.appendChild(d); d._p = p; d._head = head; partyLabels.push(d); }
+    // Your own columns: a thin teal route and a marching piece (a transport for airlifts).
+    for (const p of S.cols || []) { const c = curveFor(p.from, p.to); for (const s of c.segs) { const t = new THREE.Mesh(new THREE.TubeGeometry(s, 24, 0.07, 5), M.arcTeam); t.userData.own = 1; arcs.add(t); }
+      const head = piece(p.air && pieceImgs.tiltrotor ? 'tiltrotor' : 'infantry', 0, 0, 1.9); head.userData = { party: p, curve: c }; arcs.add(head);
+      const d = document.createElement('div'); d.className = 'plabel you'; labelsEl.appendChild(d); d._p = p; d._head = head; partyLabels.push(d); }
     const tm = S.team; if (tm.dest) { const c = curveFor(tm.from, tm.dest); for (const s of c.segs) { const t = new THREE.Mesh(new THREE.TubeGeometry(s, 24, 0.05, 5), M.arcTeam); t.userData.own = 1; arcs.add(t); } teamTok.userData.curve = c; } else teamTok.userData.curve = null; }
 
   function init(container, pick, art) { el = container; onPick = pick;
@@ -147,14 +154,22 @@ const V = (() => {
     renderer.outputEncoding = THREE.sRGBEncoding; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.18; renderer.setClearColor(0x070c15); el.appendChild(renderer.domElement);
     labelsEl = document.createElement('div'); labelsEl.className = 'labels'; el.appendChild(labelsEl);
     scene = new THREE.Scene(); scene.fog = new THREE.Fog(0x070c15, 120, 260); camera = new THREE.PerspectiveCamera(34, 1, 0.5, 500);
-    pieceImgs = art.pieces; globeImg = art.globe; if (art.infest) { const ci = document.createElement('canvas'); ci.width = art.infest.width; ci.height = art.infest.height; const gi = ci.getContext('2d'); gi.drawImage(art.infest, 0, 0); INF = { w: ci.width, h: ci.height, d: gi.getImageData(0, 0, ci.width, ci.height).data }; } assets(); { const c0 = document.createElement('canvas'); c0.width = RW; c0.height = RH; const g0 = c0.getContext('2d'); g0.drawImage(art.map, 0, 0, RW, RH); artData = g0.getImageData(0, 0, RW, RH).data; const w = 110, src = new Uint8ClampedArray(artData); for (let y = 0; y < RH; y++) for (let x = 0; x < w; x++) { const a = 0.5 * (1 - x / w), l = (y * RW + x) * 4, r = (y * RW + RW - 1 - x) * 4; for (let c = 0; c < 3; c++) { artData[l + c] = src[l + c] * (1 - a) + src[r + c] * a; artData[r + c] = src[r + c] * (1 - a) + src[l + c] * a; } }
-      const s2 = new Uint8ClampedArray(artData), am = 0.4, W4 = RW * 4; for (let y = 1; y < RH - 1; y++) for (let x = 1; x < RW - 1; x++) { const o = (y * RW + x) * 4; for (let c = 0; c < 3; c++) artData[o + c] = s2[o + c] * (1 + 4 * am) - am * (s2[o + c - 4] + s2[o + c + 4] + s2[o + c - W4] + s2[o + c + W4]); } }
+    pieceImgs = art.pieces; globeImg = art.globe; if (art.infest) { const ci = document.createElement('canvas'); ci.width = art.infest.width; ci.height = art.infest.height; const gi = ci.getContext('2d'); gi.drawImage(art.infest, 0, 0); INF = { w: ci.width, h: ci.height, d: gi.getImageData(0, 0, ci.width, ci.height).data }; } assets(); { const c0 = document.createElement('canvas'); c0.width = RW; c0.height = RH; const g0 = c0.getContext('2d'); g0.drawImage(art.map, 0, 0, RW, RH); artData = g0.getImageData(0, 0, RW, RH).data; }
     buildRaster(art.mask);
     const c = document.createElement('canvas'); c.width = RW; c.height = RH; texCtx = c.getContext('2d'); img = texCtx.createImageData(RW, RH); tex = new THREE.CanvasTexture(c); tex.encoding = THREE.sRGBEncoding; tex.anisotropy = 8;
+    { const ct = document.createElement('canvas'); ct.width = RW; ct.height = RH; ctxT = ct.getContext('2d'); imgT = ctxT.createImageData(RW, RH); texT = new THREE.CanvasTexture(ct); texT.encoding = THREE.LinearEncoding; }
     const ce = document.createElement('canvas'); ce.width = RW; ce.height = RH; ctxE = ce.getContext('2d'); imgE = ctxE.createImageData(RW, RH); texE = new THREE.CanvasTexture(ce); texE.encoding = THREE.sRGBEncoding;
     const gc = document.createElement('canvas'); gc.width = gc.height = 128; const gg = gc.getContext('2d'), gr = gg.createRadialGradient(64, 64, 2, 64, 64, 64); gr.addColorStop(0, 'rgba(255,255,255,0.9)'); gr.addColorStop(0.35, 'rgba(255,255,255,0.3)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); gg.fillStyle = gr; gg.fillRect(0, 0, 128, 128); glowTex = new THREE.CanvasTexture(gc);
+    // Soften the raised land: without this the coastline follows the coarse height grid and looks like stair-steps.
+    { const w = GW + 1, h = GH + 1, t = new Float32Array(w * h); for (let pass = 0; pass < 4; pass++) { for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { let a = 0; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) a += heights[clamp(y + dy, 0, h - 1) * w + ((x + dx) % w + w) % w] || 0; t[y * w + x] = a / 9; } for (let i = 0; i < t.length; i++) heights[i] = t[i]; } }
     const geo = new THREE.PlaneGeometry(BW, BH, GW, GH); geo.rotateX(-Math.PI / 2); const pos = geo.attributes.position; for (let i = 0; i < pos.count; i++) pos.setY(i, heights[i] * FLAT + curve(pos.getX(i), pos.getZ(i))); geo.computeVertexNormals();
     boardMesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.86, metalness: 0.02, emissive: 0xffffff, emissiveMap: texE, emissiveIntensity: 0.45 })); { const uv = geo.attributes.uv, u2 = new Float32Array(uv.count * 2); for (let i = 0; i < uv.count; i++) { u2[i * 2] = uv.getX(i) * 64; u2[i * 2 + 1] = uv.getY(i) * 36; } geo.setAttribute('uv2', new THREE.BufferAttribute(u2, 2));
+      // Extra sharpness: the ownership paint runs at 1920 wide; the fine detail of a larger painting is added back on the graphics card.
+      if (art.map.width > RW && renderer.capabilities.maxTextureSize >= art.map.width) { const hi = new THREE.Texture(art.map), cl = document.createElement('canvas'); cl.width = RW; cl.height = RH; cl.getContext('2d').drawImage(art.map, 0, 0, RW, RH); const lo = new THREE.CanvasTexture(cl);
+        for (const t of [hi, lo]) { t.anisotropy = 8; if (!renderer.capabilities.isWebGL2) { t.minFilter = THREE.LinearFilter; t.generateMipmaps = false; } t.needsUpdate = true; }
+        // The paint canvas carries ownership at 1920 wide. The 4K painting's fine detail is put through the same tint on the graphics card and added back, so land stays sharp close up.
+        boardMesh.material.onBeforeCompile = sh => { sh.uniforms.hiTex = { value: hi }; sh.uniforms.loTex = { value: lo }; sh.uniforms.tintTex = { value: texT };
+          sh.fragmentShader = 'uniform sampler2D hiTex;\nuniform sampler2D loTex;\nuniform sampler2D tintTex;\n' + sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n vec3 dH = texture2D(hiTex, vUv).rgb, dL = texture2D(loTex, vUv).rgb; vec4 tn = texture2D(tintTex, vUv); float aH = (dH.r + dH.g + dH.b) / 3.0, aL = (dL.r + dL.g + dL.b) / 3.0;\n vec3 dd = mix(dH - dL, ((dH - dL) * 0.4 + vec3(aH - aL) * 0.6) * (1.0 - tn.a) + tn.rgb * (aH - aL) * 2.28 * tn.a, step(0.02, tn.a));\n vec2 gq = floor(vUv * vec2(7680.0, 4320.0)); float gn = fract(sin(dot(gq, vec2(12.9898, 78.233))) * 43758.5453) - 0.5; vec2 gq2 = floor(vUv * vec2(1920.0, 1080.0) * 1.7); float gn2 = fract(sin(dot(gq2, vec2(39.346, 11.135))) * 24634.6345) - 0.5; dd += vec3(gn * 0.035 + gn2 * 0.02) * (0.5 + step(0.02, tn.a) * 0.5);\n diffuseColor.rgb = max(vec3(0.0), diffuseColor.rgb + dd * 2.0 * sqrt(max(diffuseColor.rgb, vec3(0.0004))));'); }; }
       const gc2 = document.createElement('canvas'); gc2.width = gc2.height = 256; const gg2 = gc2.getContext('2d'), gd = gg2.createImageData(256, 256); for (let i = 0; i < 65536; i++) { const a = Math.sin(i * 12.9898) * 43758.5453, n = (a - Math.floor(a)) * 0.5 + fbm((i % 256) * 0.2, (i >> 8) * 0.2) * 0.5, v = 150 + n * 105; gd.data[i * 4] = gd.data[i * 4 + 1] = gd.data[i * 4 + 2] = v; gd.data[i * 4 + 3] = 255; } gg2.putImageData(gd, 0, 0);
       const gt = new THREE.CanvasTexture(gc2); gt.wrapS = gt.wrapT = THREE.RepeatWrapping; boardMesh.material.aoMap = gt; boardMesh.material.aoMapIntensity = 1.6; boardMesh.material.needsUpdate = true; }
     boardMesh.receiveShadow = true; boardMesh.castShadow = true; scene.add(boardMesh);
@@ -170,7 +185,7 @@ const V = (() => {
     sun.shadow.mapSize.set(2048, 2048); sun.shadow.mapSize.set(4096, 4096); const sc = sun.shadow.camera; sc.left = -72; sc.right = 72; sc.top = 48; sc.bottom = -48; sc.far = 220; sun.shadow.bias = -0.0008; sun.shadow.normalBias = 0.06; scene.add(sun);
     tokens = new THREE.Group(); arcs = new THREE.Group(); fxGroup = new THREE.Group(); scene.add(tokens, arcs, fxGroup); buildLinks();
     teamTok = new THREE.Group(); const tc = piece('tiltrotor', 0, 0, 2.3); const tr = mesh(G.ring, M.team, 0, 0.5, 0, 0.9); tr.rotation.x = Math.PI / 2; teamTok.add(tc, tr); scene.add(teamTok);
-    for (const id of TIDS) { const d = document.createElement('div'); d.className = 'tlabel'; d.innerHTML = '<span class="tn"></span><b></b><i></i>'; labelsEl.appendChild(d); labels[id] = d; }
+    for (const id of TIDS) { const d = document.createElement('div'); d.className = 'tlabel' + (L.isStrong(id) ? ' strong' : ''); d.innerHTML = '<span class="tn"></span><b></b><i></i>'; labelsEl.appendChild(d); labels[id] = d; }
     buildBoardBorders();
     boardRoot = new THREE.Group(); for (const c of scene.children.slice()) if (c !== tokens && c !== arcs && c !== fxGroup && c !== teamTok && !c.isLight) boardRoot.add(c); worldRoot = new THREE.Group(); worldRoot.add(boardRoot, tokens, arcs, fxGroup, teamTok); scene.add(worldRoot); renderer.autoClear = false;
     controls(); resize(); window.addEventListener('resize', resize);
@@ -217,7 +232,7 @@ const V = (() => {
     const lg = new THREE.Group(); for (const l of LINKS) { const cv = curveFor(l[0], l[1], 0.01).segs[0], pts = cv.getPoints(24).map(v => v.normalize().multiplyScalar(GR + 0.08)); const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), l[2] ? M.sea : M.link); if (l[2]) line.computeLineDistances(); lg.add(line); } globeRoot.add(lg); scene.add(globeRoot); buildGlobeBorders(); }
   function paintGlobe(S) { const d = imgG.data, A = artG, own = TIDS.map(id => S.terr[id].owner), obs = TIDS.map(id => S.obs[id] ? 1 : 0), si = sel ? TIDS.indexOf(sel) : -1, n = GWp * GHp;
     for (let i = 0; i < n; i++) { const o = i * 4; let r = A[o], g = A[o + 1], b = A[o + 2];
-      if (landG[i]) { const k = idxG[i], c = COL[own[k]], am = own[k] === 'waste' ? 0.8 : own[k] === 'enemy' ? (obs[k] ? 0.62 : 0.5) : 0.46, lum = (r + g + b) / 3 / 112; r = r * (1 - am) + c[0] * lum * am; g = g * (1 - am) + c[1] * lum * am; b = b * (1 - am) + c[2] * lum * am;
+      if (landG[i]) { const k = idxG[i], c = COL[own[k]], am = own[k] === 'waste' ? 0.82 : own[k] === 'enemy' ? (obs[k] ? 0.72 : 0.62) : 0.66, av = (r + g + b) / 3, l0 = av / 112, lum = clamp(0.86 + (l0 - 1) * 0.3, 0.6, 1.12), f = l0 > 0.05 ? lum / l0 : 1; r = (r * 0.4 + av * 0.6) * f * (1 - am) + c[0] * lum * am; g = (g * 0.4 + av * 0.6) * f * (1 - am) + c[1] * lum * am; b = (b * 0.4 + av * 0.6) * f * (1 - am) + c[2] * lum * am;
         const fr = own[idx2G[i]] !== own[k] || k === si, line = 0, gw = Math.max(0, 1 - bdG[i] / (fr ? 9 : 4)) * (fr ? 1 : 0.35);
         if (k === si) { const t = Math.max(line, gw * 0.75); r = r * 1.12 + 8; g = g * 1.12 + 8; b = b * 1.12 + 4; r += (236 - r) * t; g += (190 - g) * t; b += (90 - b) * t; }
         else { const q = gw * gw * 0.62; r += (c[0] * 1.15 - r) * q; g += (c[1] * 1.15 - g) * q; b += (c[2] * 1.15 - b) * q; } }
@@ -230,30 +245,95 @@ const V = (() => {
   function controls() { const dom = renderer.domElement, pts = new Map(); let moved = 0, pinch = 0, down = null; dom.style.touchAction = 'none';
     dom.addEventListener('pointerdown', e => { pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); moved = 0; down = { x: e.clientX, y: e.clientY, btn: e.button }; try { dom.setPointerCapture(e.pointerId); } catch (_) {} if (pts.size === 2) { const a = [...pts.values()]; pinch = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); } });
     dom.addEventListener('pointermove', e => { const p = pts.get(e.pointerId); if (!p) return; const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
-      if (pts.size === 2) { const a = [...pts.values()], d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); if (pinch) { if (mode === 'globe') gl.dist = clamp(gl.dist * pinch / d, 40, 150); else cam.dist = clamp(cam.dist * pinch / d, 34, 190); } pinch = d; return; }
+      if (pts.size === 2) { const a = [...pts.values()], d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); if (pinch) { if (mode === 'globe') gl.dist = clamp(gl.dist * pinch / d, 40, 150); else cam.dist = clamp(cam.dist * pinch / d, CITY_MIN, 190); } pinch = d; return; }
       if (mode === 'globe') { const k = (gl.dist - GR) * 0.0029 * (700 / Math.max(300, el.clientHeight)); gl.lon -= dx * k; gl.lat = clamp(gl.lat + dy * k, -75, 80); return; }
       if (down && (down.btn === 2 || e.shiftKey)) { cam.yaw -= dx * 0.005; cam.pitch = clamp(cam.pitch + dy * 0.004, 0.45, 1.45); return; }
       const k = cam.dist * 0.00105 * (900 / Math.max(300, el.clientHeight)), c = Math.cos(cam.yaw), s = Math.sin(cam.yaw); cam.tx -= (dx * c + dy * s) * k; cam.tz -= (-dx * s + dy * c) * k; });
-    let lastPick = 0; const up = e => { pts.delete(e.pointerId); pinch = 0; if (moved < 8 && down && down.btn !== 2) { lastPick = performance.now(); pickAt(e.clientX, e.clientY); } down = null; };
+    let lastPick = 0, tapT = 0, tapX = 0, tapY = 0; const up = e => { pts.delete(e.pointerId); pinch = 0; if (moved < 8 && down && down.btn !== 2) { const now = e.timeStamp; lastPick = performance.now();
+      // Second tap on the same spot within a third of a second: zoom in 40% toward it. At full zoom it steps back out.
+      if (now - tapT < 380 && Math.hypot(e.clientX - tapX, e.clientY - tapY) < 34) { tapT = 0; dblZoom(e.clientX, e.clientY); } else { tapT = now; tapX = e.clientX; tapY = e.clientY; pickAt(e.clientX, e.clientY); } } down = null; };
     dom.addEventListener('click', e => { if (performance.now() - lastPick > 400 && moved < 8) { lastPick = performance.now(); pickAt(e.clientX, e.clientY); } });
     dom.addEventListener('pointerup', up); dom.addEventListener('pointercancel', e => { pts.delete(e.pointerId); pinch = 0; });
-    dom.addEventListener('wheel', e => { e.preventDefault(); const f = e.deltaY > 0 ? 1.07 : 0.935; if (mode === 'globe') gl.dist = clamp(gl.dist * f, 40, 150); else cam.dist = clamp(cam.dist * f, 34, 190); }, { passive: false }); dom.addEventListener('contextmenu', e => e.preventDefault()); }
+    dom.addEventListener('wheel', e => { e.preventDefault(); const f = e.deltaY > 0 ? 1.07 : 0.935; if (mode === 'globe') gl.dist = clamp(gl.dist * f, 40, 150); else cam.dist = clamp(cam.dist * f, CITY_MIN, 190); }, { passive: false }); dom.addEventListener('contextmenu', e => e.preventDefault()); }
   const ray = new THREE.Raycaster(), plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.5);
   const gsph = new THREE.Sphere(new THREE.Vector3(), GR);
+  function dblZoom(cx, cy) { const r = renderer.domElement.getBoundingClientRect(); ray.setFromCamera({ x: (cx - r.left) / r.width * 2 - 1, y: -(cy - r.top) / r.height * 2 + 1 }, camera); const h = new THREE.Vector3();
+    if (mode === 'globe') { if (gl.dist <= 44) { gl.dist = 90; return; } if (ray.ray.intersectSphere(gsph, h)) { const lat = Math.asin(clamp(h.y / GR, -1, 1)) * 57.2958; let lon = Math.atan2(h.z, -h.x) * 57.2958 - 180; if (lon < -180) lon += 360; const dl = ((lon - gl.lon) % 360 + 540) % 360 - 180; gl.lon += dl * 0.7; gl.lat = clamp(gl.lat + (lat - gl.lat) * 0.7, -75, 80); } gl.dist = clamp(gl.dist * 0.6, 40, 150); return; }
+    if (cam.dist <= zmin() + 8) { cam.dist = 80; return; } plane.constant = -0.5; const deep = cam.dist <= 60, k = deep ? 1 : 0.7; if (ray.ray.intersectPlane(plane, h)) { cam.tx += (h.x - cam.tx) * k; cam.tz += (h.z - cam.tz) * k; } cam.dist = deep ? zmin() + 2 : 40; } // three steps: region, city, back out
   function pickAt(cx, cy) { const r = renderer.domElement.getBoundingClientRect(); ray.setFromCamera({ x: (cx - r.left) / r.width * 2 - 1, y: -(cy - r.top) / r.height * 2 + 1 }, camera);
     if (mode === 'globe') { const h = new THREE.Vector3(); if (!ray.ray.intersectSphere(gsph, h)) return onPick(null); const lat = Math.asin(clamp(h.y / GR, -1, 1)) * 57.2958; let lon = Math.atan2(h.z, -h.x) * 57.2958 - 180; if (lon < -180) lon += 360;
       const X = clamp(Math.floor((lon + 180) / 360 * GWp), 0, GWp - 1), Y = clamp(Math.floor((90 - lat) / 180 * GHp), 0, GHp - 1), i = Y * GWp + X; if (landG[i]) return onPick(TIDS[idxG[i]]);
       let best = null, ba = 0.14; const hd = h.clone().normalize(); for (const id of TIDS) { const a = hd.angleTo(gdir(TERR[id].lat, TERR[id].lon)); if (a < ba) { ba = a; best = id; } } return onPick(best); }
-    const hit = new THREE.Vector3(); if (!ray.ray.intersectPlane(plane, hit)) return; for (let n = 0; n < 3; n++) { plane.constant = -(0.55 * FLAT + curve(hit.x, hit.z)); if (!ray.ray.intersectPlane(plane, hit)) break; } plane.constant = -0.5; hit.x = ((hit.x + BW / 2) % BW + BW) % BW - BW / 2; let best = null, bd = 1e9; for (const id of TIDS) { const p = P(id), d = Math.hypot(p.x - hit.x, p.z - hit.z); if (d < bd) { bd = d; best = id; } }
+    const hit = new THREE.Vector3(); if (!ray.ray.intersectPlane(plane, hit)) return; for (let n = 0; n < 3; n++) { plane.constant = -(0.55 * FLAT + curve(hit.x, hit.z)); if (!ray.ray.intersectPlane(plane, hit)) break; } plane.constant = -0.5; hit.x = ((hit.x + BW / 2) % BW + BW) % BW - BW / 2; if (cityPick(hit)) return; let best = null, bd = 1e9; for (const id of TIDS) { const p = P(id), d = Math.hypot(p.x - hit.x, p.z - hit.z); if (d < bd) { bd = d; best = id; } }
     const X = Math.round((hit.x + BW / 2) / BW * RW), Y = Math.round((hit.z + BH / 2) / BH * RH);
     if (X >= 0 && Y >= 0 && X < RW && Y < RH && landA[Y * RW + X]) return onPick(TIDS[idx[Y * RW + X]]); if (bd < 4.5) onPick(best); else onPick(null); }
+  // ---------- City close-up ----------
+  // Zooming past the closest board level keeps descending into the nearest city: streets, garrison, what is built there, and pads for what is not.
+  const CITY_IN = 30, CITY_MIN = 11, CITY_R = 3.3; let cityGrp = null, cityId = null, citySig = '', cityPads = [], cityF = 0, onCity = () => {}; const cityTex = {}, padTex = {};
+  const CELL = 0.44, cityCells = (th, fn) => { const c = Math.cos(th), sn = Math.sin(th); for (let u = -7; u <= 7; u++) for (let v = -7; v <= 7; v++) { const x = (u * c - v * sn) * CELL, z = (u * sn + v * c) * CELL, d = Math.hypot(x, z); if (d < 2.85) fn(x, z, d, u, v); } };
+  // The city's base plate: a bronze-rimmed disc with a street grid, lit avenues and a central plaza, drawn to line up with the 3D buildings.
+  function cityGround(owner, id, th) { const key = owner + id; if (cityTex[key]) return cityTex[key];
+    const N = 1024, c = document.createElement('canvas'); c.width = c.height = N; const g = c.getContext('2d'), k = N / 2 / (CITY_R + 0.5), col = owner === 'you' ? '86,224,216' : owner === 'enemy' ? '240,96,62' : '120,112,104';
+    g.fillStyle = 'rgba(0,0,0,0)'; g.clearRect(0, 0, N, N); const sh = g.createRadialGradient(N / 2, N / 2, N * 0.40, N / 2, N / 2, N * 0.5); sh.addColorStop(0, 'rgba(0,0,0,0.55)'); sh.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = sh; g.fillRect(0, 0, N, N);
+    g.beginPath(); g.arc(N / 2, N / 2, N * 0.445, 0, 6.3); g.fillStyle = owner === 'waste' ? '#14110f' : owner === 'enemy' ? '#160d10' : '#0b1420'; g.fill();
+    g.save(); g.beginPath(); g.arc(N / 2, N / 2, N * 0.44, 0, 6.3); g.clip(); g.translate(N / 2, N / 2); g.rotate(th); const cs = CELL * k;
+    if (owner !== 'waste') { for (let u = -9; u <= 9; u++) for (let v = -9; v <= 9; v++) { const h = ((u * 73856093) ^ (v * 19349663)) >>> 0; g.fillStyle = owner === 'enemy' ? ['#231318', '#2a1519', '#1c1014'][h % 3] : ['#152233', '#18283b', '#12202f', '#1b2d42'][h % 4]; g.fillRect(u * cs - cs * 0.41, v * cs - cs * 0.41, cs * 0.82, cs * 0.82);
+        if (h % 11 === 0) { g.fillStyle = 'rgba(' + col + ',0.20)'; g.fillRect(u * cs - cs * 0.41, v * cs - cs * 0.41, cs * 0.82, cs * 0.82); } }
+      g.strokeStyle = 'rgba(' + col + ',0.75)'; g.lineWidth = 5; g.shadowColor = 'rgba(' + col + ',0.9)'; g.shadowBlur = 14; for (const o of [-0.5, 3.5, -4.5]) { g.beginPath(); g.moveTo(-N, o * cs); g.lineTo(N, o * cs); g.stroke(); g.beginPath(); g.moveTo(o * cs, -N); g.lineTo(o * cs, N); g.stroke(); } g.shadowBlur = 0; }
+    g.restore();
+    if (owner === 'waste') { const cr = g.createRadialGradient(N / 2, N / 2, 20, N / 2, N / 2, N * 0.4); cr.addColorStop(0, 'rgba(255,120,40,0.35)'); cr.addColorStop(0.4, 'rgba(60,30,20,0.6)'); cr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = cr; g.beginPath(); g.arc(N / 2, N / 2, N * 0.44, 0, 6.3); g.fill(); }
+    const vg = g.createRadialGradient(N / 2, N / 2, N * 0.2, N / 2, N / 2, N * 0.445); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.5)'); g.fillStyle = vg; g.beginPath(); g.arc(N / 2, N / 2, N * 0.445, 0, 6.3); g.fill();
+    g.lineWidth = 12; g.strokeStyle = '#8a6a34'; g.beginPath(); g.arc(N / 2, N / 2, N * 0.445, 0, 6.3); g.stroke(); g.lineWidth = 3; g.strokeStyle = '#e8c878'; g.beginPath(); g.arc(N / 2, N / 2, N * 0.452, 0, 6.3); g.stroke(); g.strokeStyle = 'rgba(' + col + ',0.8)'; g.beginPath(); g.arc(N / 2, N / 2, N * 0.432, 0, 6.3); g.stroke();
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; return cityTex[key] = t; }
+  // Building faces: a dark tower with a scatter of lit windows.
+  const winTexC = {}; function winTex(owner, v) { const key = owner + v; if (winTexC[key]) return winTexC[key]; const c = document.createElement('canvas'); c.width = 64; c.height = 128; const g = c.getContext('2d'); let s = v * 977 + 5; const r = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+    g.fillStyle = owner === 'enemy' ? '#1a0e12' : owner === 'waste' ? '#14110f' : '#0f1926'; g.fillRect(0, 0, 64, 128); const lit = owner === 'you' ? 0.5 : owner === 'enemy' ? 0.1 : 0;
+    for (let y = 0; y < 15; y++) for (let x = 0; x < 6; x++) { const on = r() < lit; g.fillStyle = on ? (owner === 'enemy' ? '#ff5a36' : r() < 0.3 ? '#8ff0ea' : '#ffd890') : (owner === 'enemy' ? '#2a151a' : '#182536'); g.fillRect(5 + x * 9.5, 6 + y * 8, 6, 5); }
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return winTexC[key] = t; }
+  // A dark pool around the open city, so the low-detail map near it recedes.
+  let haloT = null; function haloTex() { if (haloT) return haloT; const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d'), rg = g.createRadialGradient(128, 128, 20, 128, 128, 128); rg.addColorStop(0, 'rgba(4,8,14,0.94)'); rg.addColorStop(0.45, 'rgba(4,8,14,0.88)'); rg.addColorStop(1, 'rgba(4,8,14,0)'); g.fillStyle = rg; g.fillRect(0, 0, 256, 256); return haloT = new THREE.CanvasTexture(c); }
+  function padMark(label, built) { const key = label + built; if (padTex[key]) return padTex[key]; const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
+    g.strokeStyle = built ? 'rgba(70,214,208,0.95)' : 'rgba(232,190,96,0.95)'; g.lineWidth = 6; g.setLineDash(built ? [] : [14, 9]); g.beginPath(); g.arc(64, 64, 54, 0, 6.3); g.stroke(); g.fillStyle = built ? 'rgba(20,60,66,0.55)' : 'rgba(60,46,16,0.55)'; g.fill();
+    if (!built) { g.fillStyle = 'rgba(244,214,140,1)'; g.font = '700 54px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('+', 64, 50); g.font = '700 17px sans-serif'; g.fillText(label, 64, 94); }
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return padTex[key] = t; }
+  function buildCity(S, id) { if (cityGrp) cityGrp.parent.remove(cityGrp); cityPads = []; const T = S.terr[id], p = P(id), g = new THREE.Group(); g.position.set(p.x, Math.max(p.y, 0.62 * FLAT + curve(p.x, p.z)) + 0.12, p.z); cityGrp = g; cityId = id; tokens.parent.add(g);
+    const seed = TIDS.indexOf(id) + 1; let s = seed * 104729; const r = () => (s = (s * 9301 + 49297) % 233280) / 233280, known = T.owner !== 'enemy' || S.obs[id], th = (seed * 0.37) % 1.2 - 0.6;
+    const gm = new THREE.Mesh(new THREE.CircleGeometry(CITY_R + 0.5, 48), new THREE.MeshBasicMaterial({ map: cityGround(T.owner, id, th), transparent: true, depthWrite: false, depthTest: false, toneMapped: false })); gm.rotation.x = -Math.PI / 2; gm.position.y = 0.13; gm.renderOrder = 4; g.add(gm);
+    { const hm = new THREE.Mesh(new THREE.CircleGeometry(15, 40), new THREE.MeshBasicMaterial({ map: haloTex(), transparent: true, depthWrite: false, depthTest: false, toneMapped: false, opacity: 0 })); hm.rotation.x = -Math.PI / 2; hm.position.y = 0.1; hm.renderOrder = 3; g.add(hm); g.userData.halo = hm; }
+    const put = (name, x, z, size, dim) => { if (!pieceImgs[name]) return; g.add(blob(x, z, size * 0.34), piece(name, x, z, size, dim)); };
+    const pads = { fort: [-2.15, 1.25], radar: [2.25, -1.2], battery: [2.05, 1.45], works: [-1.75, -1.35], barracks: [0.2, -2.35] }, keep = (x, z) => Object.values(pads).every(q => Math.hypot(q[0] - x, q[1] - z) > 0.75) && Math.hypot(x, z - 2.3) > 1.2;
+    if (T.owner !== 'waste') { const roof = new THREE.MeshStandardMaterial({ color: T.owner === 'enemy' ? 0x08040a : 0x060b12, roughness: 0.9 }), bg = new THREE.BoxGeometry(1, 1, 1), mats = [0, 1, 2].map(v => { const t = winTex(T.owner, v), m = new THREE.MeshStandardMaterial({ map: t, emissiveMap: t, emissive: 0xffffff, emissiveIntensity: T.owner === 'you' ? 0.9 : 0.7, color: 0x556070, roughness: 0.6, metalness: 0.25 }); return [m, m, roof, roof, m, m]; });
+      cityCells(th, (x, z, d) => { if (!keep(x, z) || d < 0.3 || r() < (T.owner === 'you' ? 0.14 : 0.45)) return; const core = Math.max(0, 1 - d / 1.9), tall = (0.16 + r() * 0.3 + core * core * (0.5 + r() * 1.1)) * (T.owner === 'you' ? 1 : 0.5), w = CELL * (0.5 + r() * 0.22), b = new THREE.Mesh(bg, mats[Math.floor(r() * 3)]);
+        b.scale.set(w, tall, CELL * (0.5 + r() * 0.22)); b.position.set(x, 0.14 + tall / 2, z); b.rotation.y = -th; if (T.owner === 'enemy') b.rotation.z = (r() - 0.5) * 0.25; g.add(b); }); }
+    if (T.owner === 'you') { const PAD = { fort: ['FORT', 'barricade', 1.25], radar: ['RADAR', 'radar-dish', 1.35], battery: ['BATTERY', S.up.railgun ? 'railgun' : 'launcher', 1.3], works: ['INDUSTRY', { metal: 'foundry', fuel: 'missile-truck', research: 'drone-bay' }[TERR[id].res] || 'foundry', 1.0], barracks: ['BARRACKS', 'shield-dome', 0.9] }, LV = { works: L.maxLevel(id, 'works'), barracks: L.maxLevel(id, 'barracks'), fort: L.maxLevel(id, 'fort') };
+      for (const k in pads) { const lv = T[k] || 0, built = LV[k] > 1 ? lv >= LV[k] : !!lv, q = pads[k], m = new THREE.Mesh(new THREE.CircleGeometry(0.62, 32), new THREE.MeshBasicMaterial({ map: padMark(PAD[k][0] + (LV[k] > 1 && lv ? ' ' + (lv + 1) : ''), built), transparent: true, depthWrite: false, toneMapped: false })); m.rotation.x = -Math.PI / 2; m.position.set(q[0], 0.17, q[1]); m.renderOrder = 5; g.add(m); if (T.job && T.job.key === k) put('barricade', q[0] + 0.35, q[1] + 0.3, 0.55); if (lv) put(PAD[k][1], q[0] + (built ? 0 : -0.2), q[1] + (built ? 0.1 : -0.45), PAD[k][2] + (LV[k] > 1 ? Math.min(lv, 4) * 0.22 : 0)); cityPads.push({ key: k, x: q[0], z: q[1], built }); }
+      if (T.fort) { const wm = new THREE.MeshStandardMaterial({ color: 0x161d28, roughness: 0.7, metalness: 0.3, emissive: 0x0a2c33, emissiveIntensity: 0.5 }), R = CITY_R - 0.05, n = 16;
+        for (let i = 0; i < n; i++) { const a = i / n * 6.283, a2 = (i + 0.5) / n * 6.283, tw = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 0.42, 8), wm); tw.scale.y = 1 + (T.fort - 1) * 0.6; tw.position.set(Math.cos(a) * R, 0.12 + 0.21 * tw.scale.y, Math.sin(a) * R); g.add(tw);
+          if (i === 4) continue; const seg = new THREE.Mesh(new THREE.BoxGeometry(2 * R * Math.sin(Math.PI / n) - 0.12, 0.24, 0.07), wm); seg.scale.y = 1 + (T.fort - 1) * 0.6; seg.position.set(Math.cos(a2) * R, 0.13 + 0.12 * seg.scale.y, Math.sin(a2) * R); seg.rotation.y = -a2 + Math.PI / 2; g.add(seg); } }
+      if (id === HQ) { if (S.nuke.building || S.nuke.stage || S.nuke.ready) put('silo', 0.6, -2.1, 1.3); if (S.emp.building || S.emp.n) put('emp-tower', -2.3, -0.6, 1.3); }
+      const n = Math.min(12, T.n); for (let i = 0; i < n; i++) put(i % 4 === 3 ? 'rover' : 'infantry', (i % 6 - 2.5) * 0.52, 2.0 + Math.floor(i / 6) * 0.55, 0.8);
+      if (L.teamAt(S) === id) put('tiltrotor', -1.9, -1.9, 1.3);
+    } else if (T.owner === 'enemy') { if (!known) { for (let i = 0; i < 4; i++) put('spore', Math.cos(i * 1.7) * 1.3, Math.sin(i * 1.7) * 1.3, 1.1, true); }
+      else { const ls = L.leadersAt(S, id); put(ls.some(l => l.rank === 'overlord') ? 'hive' : 'hive-spire', 0, -0.6, 2.0); const n = Math.min(12, T.n); for (let i = 0; i < n; i++) { const a = i / n * 6.283; put(i % 3 ? 'swarm' : 'infestation-stack', Math.cos(a) * 2.1, Math.sin(a) * 1.9 + 0.2, 0.85); }
+        ls.forEach((l, k) => put(l.rank, 1.1 + k * 0.9, 0.9, l.rank === 'overlord' ? 1.6 : 1.3)); } }
+    else { const e = mesh(G.ring, M.ember, 0, 0.2, 0, 2.2); e.rotation.x = Math.PI / 2; e.castShadow = false; g.add(e); } }
+  // Called every frame: decides whether a city is close enough to open, and keeps it in step with the game.
+  const zmin = () => CITY_MIN * (camera.aspect < 1 ? Math.min(2.6, 1.15 / camera.aspect) : 1);
+  function cityFrame(dt) { cam.dist = Math.max(cam.dist, zmin()); const raw = mode === 'globe' || !S0 ? 0 : clamp((zmin() + 15 - camS.dist) / 11, 0, 1), f = raw * raw * (3 - 2 * raw); cityF = f; if (f <= 0) { if (cityGrp) cityGrp.visible = false; return null; }
+    let best = null, bd = 6.5; for (const id of TIDS) { const p = P(id), dx = ((p.x - camS.tx) % BW + BW * 1.5) % BW - BW / 2, d = Math.hypot(dx, p.z - camS.tz - 1); if (d < bd) { bd = d; best = id; } }
+    if (!best) { if (cityGrp) cityGrp.visible = false; return null; }
+    const T = S0.terr[best], sg = sigTok + T.n + (L.teamAt(S0) === best) + (T.works || 0) + (T.barracks || 0) + (T.fort || 0) + (T.job ? T.job.key : ''); if (best !== cityId || citySig !== sg) { buildCity(S0, best); citySig = sg; }
+    cityGrp.visible = true; cityGrp.scale.set(0.3 + 0.7 * f, Math.max(0.02, f), 0.3 + 0.7 * f); if (cityGrp.userData.halo) cityGrp.userData.halo.material.opacity = f;
+    if (f > 0.75) { const p = P(best), dx = ((p.x - cam.tx) % BW + BW * 1.5) % BW - BW / 2, dz = p.z - 0.4 - cam.tz; if (Math.hypot(dx, dz) < 2.6) { cam.tx += dx * Math.min(1, dt * 1.6); cam.tz += dz * Math.min(1, dt * 1.6); } } // settle on the city once you are in it
+    return f > 0.03 ? best : null; }
+  function cityPick(hit) { if (!cityGrp || !cityGrp.visible || cityF < 0.6) return false; for (const q of cityPads) if (Math.hypot(cityGrp.position.x + q.x - hit.x, cityGrp.position.z + q.z - hit.z) < 0.7) { onCity(cityId, q.key, q.built); return true; } return false; }
   function sync(S, selected) { S0 = S; sel = selected;
     const st = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (S.obs[id] ? 1 : 0); }).join('') + sel; if (mode === 'globe') { if (st !== sigTexG) { sigTexG = st; paintGlobe(S); colorBorders(bordG, S); } } else if (st !== sigTex) { sigTex = st; paint(S); colorBorders(bordB, S); }
     const sk = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (T.owner === 'you' ? (T.n >= 7 ? 3 : T.n >= 4 ? 2 : 1) : (S.obs[id] ? T.n : 'u' + T.seenN)) + (T.fort | 0) + (T.radar | 0) + (T.battery | 0); }).join('') + [S.nuke.building, S.nuke.stage, S.nuke.ready, S.emp.building, S.emp.n, S.up.bombers, S.up.railgun].map(x => +!!x).join('') + S.leaders.map(l => l.alive && L.leaderKnown(S, l) ? l.at + l.rank[0] : '-').join('');
     if (sk !== sigTok) { sigTok = sk; buildTokens(S); }
-    const sa = S.parties.map(p => p.id + (L.partyVisible(S, p) ? 'v' : 'h')).join(',') + '|' + (S.team.dest || ''); if (sa !== sync.sa) { sync.sa = sa; buildArcs(S); }
+    const sa = S.parties.map(p => p.id + (L.partyVisible(S, p) ? 'v' : 'h')).join(',') + '|' + (S.team.dest || '') + '|' + (S.cols || []).map(c => c.id).join(','); if (sa !== sync.sa) { sync.sa = sa; buildArcs(S); }
     const threat = {}; for (const p of S.parties) if (L.partyVisible(S, p)) threat[p.to] = 1;
-    for (const id of TIDS) { const T = S.terr[id], d = labels[id], known = S.obs[id]; d.className = 'tlabel ' + T.owner + (id === sel ? ' sel' : '') + (threat[id] ? ' threat' : '') + (id === HQ ? ' hq' : '');
+    for (const id of TIDS) { const T = S.terr[id], d = labels[id], known = S.obs[id]; d.className = 'tlabel ' + T.owner + (id === sel ? ' sel' : '') + (threat[id] ? ' threat' : '') + (id === HQ ? ' hq' : '') + (L.isStrong(id) ? ' strong' : '');
       d.children[0].textContent = TERR[id].name; d.children[1].textContent = T.owner === 'waste' ? '☢' : T.owner === 'enemy' ? (known ? L.enemyDefense(S, id) : '?') : T.n;
       const ls = S.leaders.filter(l => l.alive && l.at === id && L.leaderKnown(S, l)); d.children[2].textContent = ls.map(l => l.rank === 'overlord' ? '♛' : l.rank === 'warlord' ? '★' : '▲').join(''); } }
   const v3 = new THREE.Vector3();
@@ -270,7 +350,7 @@ const V = (() => {
       const tm = S0.team; if (tm.dest && teamTok.userData.curve) teamTok.position.copy(teamTok.userData.curve.at((S0.t + (V.frac || 0) - tm.t0) / Math.max(1, tm.eta - tm.t0))); else { const p = P(tm.at); if (G3) teamTok.position.copy(p).multiplyScalar(1.03); else teamTok.position.set(p.x - 1.5, p.y + 0.2, p.z - 0.6); }
       if (G3) { teamTok.quaternion.setFromUnitVectors(UP, teamTok.position.clone().normalize()); teamTok.visible = teamTok.position.dot(camera.position) > GR * GR; } else teamTok.visible = true;
       teamTok.children[1].rotation.z = time * 1.5; teamTok.children[0].position.y = 0.9 + Math.sin(time * 2.4) * 0.1; }
-    const zf = clamp(vd / 44, 1, 2.9); for (const t of tokens.children) { if (t.userData.grp) t.scale.setScalar(1.12 * zf); t.visible = !G3 || t.position.dot(camera.position) > GR * GR * 1.0; } for (const c of arcs.children) if (c.userData.party) c.visible = !G3 || c.position.dot(camera.position) > GR * GR; teamTok.scale.setScalar(zf); V.zf = zf;
+    const zf = clamp(vd / 44, 1, 2.9); for (const t of tokens.children) { if (t.userData.grp) t.scale.setScalar(1.12 * zf); t.visible = !G3 || t.position.dot(camera.position) > GR * GR * 1.0; } for (const c of arcs.children) if (c.userData.party) c.visible = !G3 || c.position.dot(camera.position) > GR * GR; teamTok.scale.setScalar(zf); V.zf = zf; { const open = cityFrame(dt); if (open) for (const t of tokens.children) if (t.userData.id === open) t.visible = false; V.city = open; }
     for (const t of tokens.children) { if (t.userData.pulse) t.material.opacity = 0.32 + Math.sin(time * 2.2) * 0.12; else for (const c of t.children) if (c.userData.pulse) c.material.opacity = 0.24 + Math.sin(time * 1.8 + t.position.x) * 0.1; }
     if (seaTex) { seaTex.offset.x = time * 0.006; seaTex.offset.y = time * 0.004; } for (const c of clouds) { c.position.x += dt * 0.5; if (c.position.x > BW / 2 + 16) c.position.x = -BW / 2 - 16; }
     if (boardMesh) boardMesh.material.emissiveIntensity = 0.42 + Math.sin(time * 1.4) * 0.14;
@@ -282,5 +362,5 @@ const V = (() => {
     const m = new THREE.Mesh(G.sph, new THREE.MeshBasicMaterial({ color: kind === 'emp' ? 0x8fd8ff : big ? 0xffe9a0 : 0xffb060 })); m.scale.setScalar(big ? 0.45 : 0.25); fxGroup.add(m); const dur = big ? 2.2 : 1.1;
     fx.push({ obj: m, t: 0, update(t) { if (t >= dur) { flash(B, big ? 9 : kind === 'emp' ? 5 : 2.6, kind === 'emp' ? 0x7fd0ff : 0xffa040, big ? 2.4 : 0.8); if (big) flash(B, 4, 0xffffff, 1.2); return false; } m.position.copy(c.getPoint(t / dur)); } }); }
   function focus(id, lift) { if (mode === 'globe') { gl.lon = TERR[id].lon; gl.lat = clamp(TERR[id].lat - (lift ? 18 : 0), -60, 70); return; } const p = P(id); if (cam.dist > 70) cam.dist = 60; cam.tx = p.x + Math.round((cam.tx - p.x) / BW) * BW; cam.tz = p.z + 2 + (lift ? cam.dist * 0.3 : 0); }
-  return { init, sync, frame, setArt, missile, flash: id => flash(P(id), 2.5, 0xff5030, 0.7), focus, fit, cam, resize, zoom: k => { if (mode === 'globe') gl.dist = clamp(gl.dist * k, 40, 150); else cam.dist = clamp(cam.dist * k, 34, 190); }, toggleMode: () => setMode(mode === 'board' ? 'globe' : 'board'), getMode: () => mode, rotate: a => { if (mode === 'globe') gl.lon += a * 60; else cam.yaw += a; }, tilt: () => { cam.pitch = cam.pitch > 1.2 ? 1.02 : cam.pitch > 0.9 ? 0.7 : 1.45; } };
+  return { init, sync, frame, set onCity(f) { onCity = f; }, setArt, missile, flash: id => flash(P(id), 2.5, 0xff5030, 0.7), focus, fit, cam, resize, zoom: k => { if (mode === 'globe') gl.dist = clamp(gl.dist * k, 40, 150); else cam.dist = clamp(cam.dist * k, CITY_MIN, 190); }, toggleMode: () => setMode(mode === 'board' ? 'globe' : 'board'), getMode: () => mode, rotate: a => { if (mode === 'globe') gl.lon += a * 60; else cam.yaw += a; }, tilt: () => { cam.pitch = cam.pitch > 1.2 ? 1.02 : cam.pitch > 0.9 ? 0.7 : 1.45; } };
 })();
