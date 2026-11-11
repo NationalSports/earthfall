@@ -450,7 +450,7 @@ L.assaultPlan = (S, id, troops, o) => { o = o || {}; const av = L.assaultAvail(S
   let from = null, sides = 0; if (av.supplied) { from = {}; let left = troops; for (const b of av.by) { const want = o.from && o.from[b.id] != null ? clamp(o.from[b.id], 0, b.max) : Math.min(b.max, left); from[b.id] = want; left -= want; if (want > 0) sides++; } troops = Object.values(from).reduce((a, b) => a + b, 0); }
   // Armor goes in first from each territory and counts double on the attack.
   let arm = 0; const armFrom = {}; if (from) for (const b of av.by) { armFrom[b.id] = Math.min(b.arm, from[b.id]); arm += armFrom[b.id]; } const inf = troops - arm; troops = inf + 2 * arm;
-  const flank = !!o.flank && sides >= 2; // a flank needs troops committed from two sides of the target
+  const flank = sides >= 2; // attacking from two sides is always a flank: it is earned by position, not chosen
   const can = { flank: sides >= 2, missile: L.batteriesInRange(S, id).length > 0, air: !!S.up.bombers && (S.bombT || 0) <= S.t && S.terr[HQ].owner === 'you' };
   let D = L.enemyDefense(S, id) - (o.missile && can.missile ? 2 : 0) - (o.air && can.air ? 3 : 0); D = Math.max(1, D);
   const n = (teamHere && S.spec === 'assault' ? 1 : 0) + (flank ? 1 : 0) - (av.supplied ? 0 : 1); const aB = clamp(n, 0, 2), dB = n < 0 ? 1 : 0, A = troops + teamN;
