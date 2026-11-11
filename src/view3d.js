@@ -7,7 +7,7 @@ const V = (() => {
   const curve = (x, z) => -(z * z) / 1500; let worldRoot = null;
   let bd, cd, landF, idx2, idx2G; let renderer, scene, camera, el, labelsEl, tex, texCtx, img, idx, landA, heights, boardMesh, hp, shade, texE, ctxE, imgE, trees, treeT = [], seaTex, clouds = [], glowTex;
   let tokens, arcs, fxGroup, labels = {}, partyLabels = [], sigTok = '', sigTex = '', sel = null, onPick = () => {};
-  const cam = { tx: 20, tz: 0, dist: 70, yaw: 0, pitch: 1.02 };
+  const cam = { tx: -28, tz: -8, dist: 70, yaw: 0, pitch: 1.02 };
   const fx = []; let teamTok, time = 0, S0 = null, artData = null, INF = null;
   function setArt(image) { const c = document.createElement('canvas'); c.width = RW; c.height = RH; const g = c.getContext('2d'); g.drawImage(image, 0, 0, RW, RH); artData = g.getImageData(0, 0, RW, RH).data; if (trees) trees.visible = false; sigTex = ''; if (S0) sync(S0, sel); }
   let mode = 'board', boardRoot, globeRoot = null, globeImg = null, idxG, landG, bdG, texG, ctxG, imgG, artG, sigTexG = '', GWp = 0, GHp = 0;
@@ -58,7 +58,7 @@ const V = (() => {
           const near = (x > 2 && landA[i - 3]) || (x < RW - 3 && landA[i + 3]) || (y > 2 && landA[i - 3 * RW]) || (y < RH - 3 && landA[i + 3 * RW]);
           if (near) { r += 18; g += 46; b += 56; }
           if (A) { r = A[o]; g = A[o + 1]; b = A[o + 2]; }
-          if (x % 133 === 0 || y % 150 === 0) { r += 8; g += 12; b += 18; }
+          
         } else { const k = idx[i], c = COL[own[k]], n = fbm(x * 0.03 + 11, y * 0.03 + 5), al = Math.abs(lat);
           let tr = 74, tg = 104, tb = 58; if (al > 60) { tr = 190; tg = 198; tb = 200; } else if (al > 14 && al < 33 && n > 0.42) { tr = 168; tg = 140; tb = 92; } else if (n > 0.6) { tr = 96; tg = 92; tb = 74; }
           const m = own[k] === 'waste' ? 0.85 : 0.5, sh = (0.74 + n * 0.4) * shade[i], hh = hp[i];
@@ -147,14 +147,17 @@ const V = (() => {
     renderer.outputEncoding = THREE.sRGBEncoding; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.18; renderer.setClearColor(0x070c15); el.appendChild(renderer.domElement);
     labelsEl = document.createElement('div'); labelsEl.className = 'labels'; el.appendChild(labelsEl);
     scene = new THREE.Scene(); scene.fog = new THREE.Fog(0x070c15, 120, 260); camera = new THREE.PerspectiveCamera(34, 1, 0.5, 500);
-    pieceImgs = art.pieces; globeImg = art.globe; if (art.infest) { const ci = document.createElement('canvas'); ci.width = art.infest.width; ci.height = art.infest.height; const gi = ci.getContext('2d'); gi.drawImage(art.infest, 0, 0); INF = { w: ci.width, h: ci.height, d: gi.getImageData(0, 0, ci.width, ci.height).data }; } assets(); { const c0 = document.createElement('canvas'); c0.width = RW; c0.height = RH; const g0 = c0.getContext('2d'); g0.drawImage(art.map, 0, 0, RW, RH); artData = g0.getImageData(0, 0, RW, RH).data; const w = 110, src = new Uint8ClampedArray(artData); for (let y = 0; y < RH; y++) for (let x = 0; x < w; x++) { const a = 0.5 * (1 - x / w), l = (y * RW + x) * 4, r = (y * RW + RW - 1 - x) * 4; for (let c = 0; c < 3; c++) { artData[l + c] = src[l + c] * (1 - a) + src[r + c] * a; artData[r + c] = src[r + c] * (1 - a) + src[l + c] * a; } }
-      const s2 = new Uint8ClampedArray(artData), am = 0.4, W4 = RW * 4; for (let y = 1; y < RH - 1; y++) for (let x = 1; x < RW - 1; x++) { const o = (y * RW + x) * 4; for (let c = 0; c < 3; c++) artData[o + c] = s2[o + c] * (1 + 4 * am) - am * (s2[o + c - 4] + s2[o + c + 4] + s2[o + c - W4] + s2[o + c + W4]); } }
+    pieceImgs = art.pieces; globeImg = art.globe; if (art.infest) { const ci = document.createElement('canvas'); ci.width = art.infest.width; ci.height = art.infest.height; const gi = ci.getContext('2d'); gi.drawImage(art.infest, 0, 0); INF = { w: ci.width, h: ci.height, d: gi.getImageData(0, 0, ci.width, ci.height).data }; } assets(); { const c0 = document.createElement('canvas'); c0.width = RW; c0.height = RH; const g0 = c0.getContext('2d'); g0.drawImage(art.map, 0, 0, RW, RH); artData = g0.getImageData(0, 0, RW, RH).data; }
     buildRaster(art.mask);
     const c = document.createElement('canvas'); c.width = RW; c.height = RH; texCtx = c.getContext('2d'); img = texCtx.createImageData(RW, RH); tex = new THREE.CanvasTexture(c); tex.encoding = THREE.sRGBEncoding; tex.anisotropy = 8;
     const ce = document.createElement('canvas'); ce.width = RW; ce.height = RH; ctxE = ce.getContext('2d'); imgE = ctxE.createImageData(RW, RH); texE = new THREE.CanvasTexture(ce); texE.encoding = THREE.sRGBEncoding;
     const gc = document.createElement('canvas'); gc.width = gc.height = 128; const gg = gc.getContext('2d'), gr = gg.createRadialGradient(64, 64, 2, 64, 64, 64); gr.addColorStop(0, 'rgba(255,255,255,0.9)'); gr.addColorStop(0.35, 'rgba(255,255,255,0.3)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); gg.fillStyle = gr; gg.fillRect(0, 0, 128, 128); glowTex = new THREE.CanvasTexture(gc);
     const geo = new THREE.PlaneGeometry(BW, BH, GW, GH); geo.rotateX(-Math.PI / 2); const pos = geo.attributes.position; for (let i = 0; i < pos.count; i++) pos.setY(i, heights[i] * FLAT + curve(pos.getX(i), pos.getZ(i))); geo.computeVertexNormals();
     boardMesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.86, metalness: 0.02, emissive: 0xffffff, emissiveMap: texE, emissiveIntensity: 0.45 })); { const uv = geo.attributes.uv, u2 = new Float32Array(uv.count * 2); for (let i = 0; i < uv.count; i++) { u2[i * 2] = uv.getX(i) * 64; u2[i * 2 + 1] = uv.getY(i) * 36; } geo.setAttribute('uv2', new THREE.BufferAttribute(u2, 2));
+      // Extra sharpness: the ownership paint runs at 1920 wide; the fine detail of a larger painting is added back on the graphics card.
+      if (art.map.width > RW && renderer.capabilities.maxTextureSize >= art.map.width) { const hi = new THREE.Texture(art.map), cl = document.createElement('canvas'); cl.width = RW; cl.height = RH; cl.getContext('2d').drawImage(art.map, 0, 0, RW, RH); const lo = new THREE.CanvasTexture(cl);
+        for (const t of [hi, lo]) { t.anisotropy = 8; if (!renderer.capabilities.isWebGL2) { t.minFilter = THREE.LinearFilter; t.generateMipmaps = false; } t.needsUpdate = true; }
+        boardMesh.material.onBeforeCompile = sh => { sh.uniforms.hiTex = { value: hi }; sh.uniforms.loTex = { value: lo }; sh.fragmentShader = 'uniform sampler2D hiTex;\nuniform sampler2D loTex;\n' + sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n vec3 dH = texture2D(hiTex, vUv).rgb, dL = texture2D(loTex, vUv).rgb; diffuseColor.rgb = max(vec3(0.0), diffuseColor.rgb + (dH * dH - dL * dL) * 0.9);'); }; }
       const gc2 = document.createElement('canvas'); gc2.width = gc2.height = 256; const gg2 = gc2.getContext('2d'), gd = gg2.createImageData(256, 256); for (let i = 0; i < 65536; i++) { const a = Math.sin(i * 12.9898) * 43758.5453, n = (a - Math.floor(a)) * 0.5 + fbm((i % 256) * 0.2, (i >> 8) * 0.2) * 0.5, v = 150 + n * 105; gd.data[i * 4] = gd.data[i * 4 + 1] = gd.data[i * 4 + 2] = v; gd.data[i * 4 + 3] = 255; } gg2.putImageData(gd, 0, 0);
       const gt = new THREE.CanvasTexture(gc2); gt.wrapS = gt.wrapT = THREE.RepeatWrapping; boardMesh.material.aoMap = gt; boardMesh.material.aoMapIntensity = 1.6; boardMesh.material.needsUpdate = true; }
     boardMesh.receiveShadow = true; boardMesh.castShadow = true; scene.add(boardMesh);

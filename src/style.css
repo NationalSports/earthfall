@@ -85,7 +85,7 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 .labels .tlabel .tn{grid-column:auto;background:none;border:0;padding:0;box-shadow:none;border-radius:0}
 .tlabel b{grid-column:auto;order:-1;min-width:19px;height:19px;font-size:11px;border-width:1px}
 .tlabel i{position:static;left:auto;bottom:auto;font-size:12px}
-.tlabel.sel{background:var(--gold);border-color:#fff6}.labels .tlabel.sel .tn{background:none;color:#1a1205;border:0}.tlabel.hq{border-color:var(--gold)}.labels .tlabel.hq .tn{border:0;color:var(--gold)}
+.tlabel.sel{background:var(--gold);border-color:#fff6}.labels .tlabel.sel .tn{background:none;color:#1a1205;border:0}.tlabel.hq{border-color:var(--gold)}.labels .tlabel.hq .tn{border:0;color:var(--gold)}.labels .tlabel.sel.hq .tn{color:#1a1205}
 .far .tlabel:not(.sel):not(.hq),.mid .tlabel.you:not(.sel):not(.hq):not(.threat){padding:2px 3px}
 .mapctl,#ptoggle{z-index:4}
 @media (prefers-reduced-motion:reduce){.tlabel.threat b{animation:none}}
