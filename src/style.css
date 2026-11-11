@@ -11,6 +11,7 @@ small{color:var(--muted)}p{margin:6px 0}
 .clock{display:flex;align-items:center;gap:8px}.day{font-family:var(--display);font-size:14px;font-variant-numeric:tabular-nums;min-width:108px}
 .speed{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}.speed button{background:var(--panel2);border:0;padding:6px 11px;font-size:12px;min-width:38px}.speed button.on{background:var(--gold);color:#1a1205}
 .res{display:flex;gap:6px;flex-wrap:wrap}.chip{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:3px 9px;font-variant-numeric:tabular-nums;white-space:nowrap}.chip small{margin-left:5px;font-size:11px}
+.ic{width:1.15em;height:1.15em;vertical-align:-.2em;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
 .chip.uranium,.c.uranium{color:#b6e05a}.chip.intel,.c.intel{color:#c9a2ff}.chip.salvage,.c.salvage{color:#ff9d7a}.chip.metal{color:#cbd3df}.chip.fuel{color:#f0c95a}.chip.research{color:#7fd6e8}.chip.troops{color:var(--teal)}
 .meters{display:flex;gap:14px;margin-left:auto}.meter label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .boxes{display:flex;gap:2px}.boxes i{width:11px;height:11px;background:#1c2a42;border:1px solid var(--line)}.boxes i.on{background:var(--red);border-color:#ff8a6a;box-shadow:0 0 6px #d8553c}

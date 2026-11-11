@@ -2,7 +2,10 @@
 const $ = s => document.querySelector(s);
 const SAVE = 'earthfall-stage1';
 let diff = 'normal', S = null, selId = null, tab = 'territory', modal = null, acc = 0, lastSave = 0, hold = false;
-const ICON = { metal: '⬢', fuel: '⚡\uFE0E', research: '✦', uranium: '☢\uFE0E', intel: '◎', salvage: '⬖' };
+const ICON = { metal: '⬢', fuel: '⚡\uFE0E', research: '✦', uranium: '☢\uFE0E', intel: '◎', salvage: '⬖', troops: '◉', held: '⚑' };
+// Drawn icons from assets/ui/icons.svg replace the glyphs above when the sprite is in the build.
+if (typeof UI_ICONS === 'string' && UI_ICONS) { const ic = n => '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-' + n + '"/></svg>'; for (const k of Object.keys(ICON)) { const n = k === 'troops' ? 'reserve-troops' : k === 'held' ? 'territories-held' : k; if (UI_ICONS.includes('id="ic-' + n + '"')) ICON[k] = ic(n); }
+  document.body.insertAdjacentHTML('afterbegin', UI_ICONS); }
 let panelOpen = false; const compact = () => window.matchMedia('(max-width:860px),(max-height:520px)').matches;
 function setPanel(v) { panelOpen = v; document.body.classList.toggle('pclosed', !v); }
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -20,7 +23,7 @@ function renderTop() {
   const h = '<div class="brand"><b>EARTHFALL</b><small>Earth Defense Coalition</small></div>' +
     '<div class="clock"><span class="day">' + L.stamp(S) + '</span><div class="speed">' + [[0, '❚❚'], [1, '▶'], [3, '▶▶']].map(s => '<button data-a="speed" data-id="' + s[0] + '" class="' + (S.speed === s[0] ? 'on' : '') + '" aria-label="speed ' + s[0] + '">' + s[1] + '</button>').join('') + '</div></div>' +
     '<div class="res">' + ['metal', 'fuel', 'research', 'uranium', 'intel', 'salvage'].map(k => '<span class="chip ' + k + '" title="' + k + '">' + ICON[k] + ' <b>' + Math.floor(S.res[k]) + '</b><small>' + k + '</small></span>').join('') +
-    '<span class="chip orders" title="Orders left today. Every action spends them; they refill at midnight.">❖ <b>' + (S.orders == null ? '∞' : S.orders) + '</b><small>orders</small></span><span class="chip troops" title="Reserve troops">◉ <b>' + S.pool + '</b><small>reserve</small></span><span class="chip" title="Territories held">⚑ <b>' + own + '</b><small>held</small></span></div>' +
+    '<span class="chip orders" title="Orders left today. Every action spends them; they refill at midnight.">❖ <b>' + (S.orders == null ? '∞' : S.orders) + '</b><small>orders</small></span><span class="chip troops" title="Reserve troops">' + ICON.troops + ' <b>' + S.pool + '</b><small>reserve</small></span><span class="chip" title="Territories held">' + ICON.held + ' <b>' + own + '</b><small>held</small></span></div>' +
     '<div class="meters"><div class="meter"><label>Threat</label><div class="boxes">' + boxes + '</div></div><div class="meter"><label>Harvest ' + Math.floor(S.harvest) + '%</label><div class="bar"><i style="width:' + S.harvest + '%"></i></div></div></div>';
   if (renderTop.h !== h) { renderTop.h = h; $('#top').innerHTML = h; }
 }
