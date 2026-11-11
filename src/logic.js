@@ -411,6 +411,9 @@ L.build = (S, id, key) => { const T = S.terr[id]; if (T.owner !== 'you') return 
 const ARMOR_COST = { metal: 30, fuel: 20 };
 L.trainArmor = (S, id, n) => { const T = S.terr[id]; if (T.owner !== 'you') return fail('Not your territory.'); if (!T.barracks) return fail('Armor is trained at a Barracks. Build one here first.'); n = clamp(n || 1, 1, 3);
   const c = { metal: ARMOR_COST.metal * n, fuel: ARMOR_COST.fuel * n }; if (!L.canPay(S, c)) return fail('Not enough metal or fuel.'); L.pay(S, c); T.arm = (T.arm || 0) + n; L.log(S, n + ' armor trained in ' + TERR[id].name + '.', 'info'); return { ok: true }; };
+// While mobilizing, anything you built can be taken down again for a full refund, so you can rearrange freely.
+L.unbuild = (S, id, key) => { const T = S.terr[id]; if (!S.mob) return fail('Buildings can only be removed before the war begins.'); if (!T || T.owner !== 'you' || !T[key]) return fail('Nothing to remove.'); if (id === HQ && (key === 'fort' || key === 'radar') && T[key] <= 1) return fail('Headquarters keeps its original defenses.');
+  T[key]--; const c = L.costOf(S, key, T[key]); for (const k in c) S.res[k] += c[k]; if (key === 'barracks' && !T.barracks && T.arm) { S.res.metal += ARMOR_COST.metal * T.arm; S.res.fuel += ARMOR_COST.fuel * T.arm; T.arm = 0; } L.refreshIntel(S); return { ok: true }; };
 L.buildHours = S => Math.round((S.spec === 'engineer' ? 16 : 24) * (S.doc === 'economy' ? 0.67 : 1));
 L.buy = (S, key) => { if (S.up[key]) return fail('Already owned.'); const c = UPGRADES[key].cost; if (!L.canPay(S, c)) return fail('Not enough resources.');
   L.pay(S, c); S.up[key] = 1; L.log(S, UPGRADES[key].name + ' is now in service.', 'info'); L.refreshIntel(S); return { ok: true }; };
