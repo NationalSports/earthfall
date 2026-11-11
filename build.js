@@ -10,8 +10,8 @@ const assets = 'const ART = { map: ' + JSON.stringify(uri('assets/board/map-worl
   'const CARDS = ' + JSON.stringify(dir('assets/cards', 'image/webp')) + ';\n';
 // Delivered, reviewed scripts and the icon sprite. Files are listed by name on purpose: nothing in assets/ is embedded without a review.
 const has = f => fs.existsSync(path.join(__dirname, f));
-// assets/fx/infestation.js is wired (src/view3d.js) but left out for now: reviewed in #16, it covers the painting with a flat color. Add it to this list once a revision passes.
-const fxJs = ['assets/fx/combat.js'].filter(has).map(r).join('\n');
+// assets/fx/infestation.js: the revision from #25 passed review in #16 (painting stays visible), so it is switched on.
+const fxJs = ['assets/fx/infestation.js', 'assets/fx/combat.js'].filter(has).map(r).join('\n');
 const defs = has('assets/ui/icons.svg') ? (r('assets/ui/icons.svg').match(/<defs>[\s\S]*<\/defs>/) || [''])[0].replace(/\bid="/g, 'id="ic-') : '';
 const icons = 'const UI_ICONS = ' + JSON.stringify(defs ? '<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true">' + defs + '</svg>' : '') + ';\n';
 const js = [assets, icons, fxJs, r('src/logic.js').replace(/if \(typeof module[^\n]*\n?/, ''), r('src/battle.js').replace(/if \(typeof module[^\n]*\n?/, ''), r('src/view3d.js'), r('src/ui.js')].join('\n');
