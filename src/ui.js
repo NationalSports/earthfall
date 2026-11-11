@@ -20,7 +20,7 @@ function renderTop() {
   const h = '<div class="brand"><b>EARTHFALL</b><small>Earth Defense Coalition</small></div>' +
     '<div class="clock"><span class="day">' + (S.mob ? 'Mobilization' : L.stamp(S)) + '</span><div class="speed">' + [[0, '❚❚'], [1, '▶'], [3, '▶▶']].map(s => '<button data-a="speed" data-id="' + s[0] + '" class="' + (S.speed === s[0] ? 'on' : '') + '" aria-label="speed ' + s[0] + '">' + s[1] + '</button>').join('') + '</div><button class="newg" data-a="newAsk" title="Start a new game">New game</button></div>' +
     '<div class="res">' + ['metal', 'fuel', 'research', 'uranium', 'intel', 'salvage'].map(k => '<span class="chip ' + k + '" title="' + k + '">' + ICON[k] + ' <b>' + Math.floor(S.res[k]) + '</b><small>' + k + '</small></span>').join('') +
-    '<span class="chip orders" title="Orders left today. Every action spends them; they refill at midnight.">❖ <b>' + (S.mob ? '–' : S.orders == null ? '∞' : S.orders) + '</b><small>orders</small></span><span class="chip troops" title="Reserve troops">◉ <b>' + S.pool + '</b><small>reserve</small></span><span class="chip" title="Territories held">⚑ <b>' + own + '</b><small>held</small></span></div>' +
+    '<span class="chip orders" title="Orders left today. Every action spends them; they refill at midnight.">❖ <b>' + (S.mob ? '–' : S.orders == null ? '∞' : S.orders) + '</b><small>orders</small></span><button class="chip troops tap" data-a="strongList" title="Reserve troops. Tap to see your strongholds, where you place them.">◉ <b>' + S.pool + '</b><small>reserve</small></button><button class="chip tap gold" data-a="strongList" title="Your strongholds">✦ <b>' + STRONG.filter(id => S.terr[id].owner === 'you').length + '</b><small>strongholds</small></button><span class="chip" title="Territories held">⚑ <b>' + own + '</b><small>held</small></span></div>' +
     '<div class="meters"><div class="meter"><label>Threat</label><div class="boxes">' + boxes + '</div></div><div class="meter"><label>Harvest ' + Math.floor(S.harvest) + '%</label><div class="bar"><i style="width:' + S.harvest + '%"></i></div></div></div>';
   if (renderTop.h !== h) { renderTop.h = h; $('#top').innerHTML = h; }
 }
@@ -313,6 +313,9 @@ function teamHelp() { const tm = S.team, at = L.teamAt(S), T = at && S.terr[at],
   if (enemy) { h += '<h4>Right now in ' + TERR[at].name + '</h4><p class="lead">Sabotage</p>' + why(L.sabWhy(S, at), L.sabOdds(S, at)); if (ldr) h += '<p class="lead">Covert strike on ' + ldr.name + '</p>' + why(L.covertWhy(S, ldr), L.covertOdds(S, ldr));
     h += '<p class="note">To raise these: wait out the alert, thin the garrison with missiles or bombers first, build Radar nearby, or research Ghost Suits.</p>'; }
   showModal(h + '<div class="row">' + btn('closeModal', 'Got it', { cls: 'gold big' }) + '</div>', 'intel'); }
+function strongList() { const mine = STRONG.filter(id => S.terr[id].owner === 'you'), theirs = STRONG.filter(id => S.terr[id].owner === 'enemy');
+  const row = (id, yours) => { const T = S.terr[id], pk = PERKS[id]; return '<div class="opt"><span><b>✦ ' + TERR[id].name + '</b> ' + (id === HQ ? 'headquarters · ' : '') + (yours ? T.n + ' troops' + (T.arm ? ', ' + T.arm + ' armor' : '') : 'occupied') + (pk && pk.name ? ' · ' + pk.name : '') + '</span><button data-a="' + (yours && S.pool > 0 ? 'strongPlace' : 'strongGo') + '" data-id="' + id + '">' + (yours && S.pool > 0 ? 'Place troops' : 'Show') + '</button></div>'; };
+  showModal('<div class="mhead"><small>Marked ✦ in gold on the map</small><h1>Strongholds</h1></div><p class="lead">The 10 major cities. They produce double resources, can be built up further, and are the only places new reserve troops can be placed. You have <b>' + S.pool + '</b> in reserve.</p><h4>Yours (' + mine.length + ')</h4><div class="mk">' + (mine.map(id => row(id, true)).join('') || '<p class="note">None. Liberate one to place reserves.</p>') + '</div>' + (theirs.length ? '<h4>Occupied (' + theirs.length + ')</h4><div class="mk">' + theirs.map(id => row(id, false)).join('') + '</div>' : '') + '<div class="row">' + btn('closeModal', 'Close', {}) + '</div>', 'intel'); }
 let dayRep = null;
 function dayModal() { if (!dayRep || !S || S.over) return; if (modal) { setTimeout(dayModal, 700); return; } const d = dayRep; dayRep = null; SFX.play('good');
   const R = (cls, t, body) => '<div class="ritem ' + cls + '"><b>' + t + '</b><span>' + body + '</span></div>', names = a => a.map(id => TERR[id].name).join(', ');
@@ -325,7 +328,7 @@ function dayModal() { if (!dayRep || !S || S.over) return; if (modal) { setTimeo
   if (d.lost.length) h += R('bad', 'Lost yesterday', names(d.lost) + '.');
   h += R('bad', 'The enemy', 'Harvest +' + d.harvest.toFixed(1) + '%, now ' + Math.floor(d.harvestNow) + '%. At 100% you lose. Their total strength is ' + d.enemy + (d.enemy !== d.enemyWas ? ' (' + (d.enemy > d.enemyWas ? '+' : '') + (d.enemy - d.enemyWas) + ' since yesterday).' : ', unchanged.'));
   h += '</div><h4>What you can create today</h4><div class="mk">'; { const own = L.owned(S), fr = id => L.enemyNeighborsN(S, id), mk = (t, sub, a, id, lab) => '<div class="opt"><span><b>' + t + '</b> ' + sub + '</span><button data-a="' + a + '" data-id="' + id + '">' + lab + '</button></div>'; let any = 0;
-    if (S.pool > 0) { const st = own.filter(id => L.isStrong(id)).sort((a, b) => fr(b) - fr(a))[0]; if (st) { any++; h += mk('Place ' + S.pool + ' reserve troops', 'at a stronghold · free', 'sel', st, 'Show'); } }
+    if (S.pool > 0) { const st = own.filter(id => L.isStrong(id)).sort((a, b) => fr(b) - fr(a))[0]; if (st) { any++; h += mk('Place ' + S.pool + ' reserve troops', 'at a stronghold · free', 'strongList', '', 'Choose'); } }
     for (const k of ['works', 'barracks', 'fort', 'battery', 'radar', 'post']) { const sites = own.filter(id => !S.terr[id].job && (S.terr[id][k] || 0) < L.maxLevel(id, k) && L.canPay(S, L.costOf(S, k, S.terr[id][k] || 0))); if (!sites.length) continue;
       const best = sites.sort((a, b) => k === 'works' || k === 'barracks' ? L.isStrong(b) - L.isStrong(a) || fr(a) - fr(b) : fr(b) - fr(a))[0]; any++; h += mk(BUILD[k].name, cost(L.costOf(S, k, S.terr[best][k] || 0)) + ' · ' + sites.length + ' possible site' + (sites.length > 1 ? 's' : '') + ' · best: ' + TERR[best].name, 'dayBuild', best, 'Build'); }
     const bar = own.filter(id => S.terr[id].barracks).sort((a, b) => fr(b) - fr(a))[0]; if (bar && L.canPay(S, ARMOR_COST)) { any++; h += mk('Armor', cost(ARMOR_COST) + ' each · counts double in attack · ' + TERR[bar].name, 'dayArm', bar, 'Train'); }
@@ -407,6 +410,9 @@ function act(a, id) { if (!S && a !== 'start' && a !== 'diff' && a !== 'doc') re
     case 'tutSkip': S.tut = 9; break;
     case 'help': helpModal(); return;
     case 'newAsk': showModal('<div class="mhead"><small>Day ' + L.day(S) + '</small><h1>Start over?</h1></div><p class="lead">This ends the current war and sets up a fresh one. It cannot be undone.</p><div class="row">' + btn('closeModal', 'Keep playing') + btn('new', 'New game', { cls: 'gold big' }) + '</div>', 'confirm'); return;
+    case 'strongList': strongList(); return;
+    case 'strongGo': closeModal(); selId = id; tab = 'territory'; V.focus(id); break;
+    case 'strongPlace': closeModal(); selId = id; V.focus(id); renderAll(true); act('reinAsk', id); return;
     case 'teamHelp': teamHelp(); return;
     case 'dayGo': closeModal(); setSpeed(1); break;
     case 'cmd': S.cmd = !S.cmd; break;
