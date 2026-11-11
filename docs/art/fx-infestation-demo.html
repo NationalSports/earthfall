@@ -1,9 +1,26 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Earthfall infestation shader demo</title><style>body{margin:0;background:#08121f;color:#e9dfcd;font:15px system-ui}header{padding:12px}#view{width:100vw;height:75vh}button{min-height:44px;background:#24384a;color:white;border:1px solid #bd9862;border-radius:5px;padding:8px 14px}</style></head><body><header><b>Infestation FX — WebGL1 preview</b> <button id="toggle">Pause</button><span id="status"></span></header><div id="view"></div><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script src="../../assets/fx/infestation.js"></script><script>
-const el=document.getElementById('view'),scene=new THREE.Scene(),camera=new THREE.OrthographicCamera(-1,1,1,-1,0.1,10);camera.position.z=2;
-const canvas=document.createElement('canvas');canvas.width=canvas.height=128;const ctx=canvas.getContext('2d');const im=ctx.createImageData(128,128);
-for(let y=0;y<128;y++)for(let x=0;x<128;x++){const i=(y*128+x)*4;const n=Math.sin(x*.33+Math.sin(y*.17))*Math.cos(y*.24);im.data[i]=95+45*n;im.data[i+1]=14+10*n;im.data[i+2]=18+8*n;im.data[i+3]=255}ctx.putImageData(im,0,0);
-const tex=new THREE.CanvasTexture(canvas);tex.wrapS=tex.wrapT=THREE.RepeatWrapping;
-const glsl=window.EARTHFALL_FX.infestation.glsl;
-const mat=new THREE.ShaderMaterial({uniforms:{time:{value:0},tex:{value:tex}},vertexShader:'varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'precision mediump float; varying vec2 vUv; uniform float time; uniform sampler2D tex;'+glsl+'void main(){vec2 d=vUv-vec2(.52,.52);float dist=length(d*vec2(1.3,1.0));float inside=1.0-smoothstep(.31,.34,dist);float edge=(1.0-smoothstep(.0,.045,abs(dist-.32)))*inside;vec3 base=vec3(.16,.27,.27)+.05*sin(vUv.x*30.0)*sin(vUv.y*20.0);gl_FragColor=vec4(efInfest(base,vUv,time,inside,edge,tex),1.0);}'});
-scene.add(new THREE.Mesh(new THREE.PlaneBufferGeometry(2,2),mat));const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));el.appendChild(renderer.domElement);function resize(){renderer.setSize(el.clientWidth,el.clientHeight)}window.addEventListener('resize',resize);resize();let paused=false,last=performance.now();document.getElementById('toggle').onclick=()=>{paused=!paused;document.getElementById('toggle').textContent=paused?'Play':'Pause'};function frame(now){const dt=Math.min((now-last)/1000,.05);last=now;if(!paused)mat.uniforms.time.value+=dt;renderer.render(scene,camera);requestAnimationFrame(frame)}requestAnimationFrame(frame);
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Earthfall infestation v2</title><style>body{margin:0;background:#08121d;color:#f0e4d2;font:14px system-ui}header{padding:12px;display:flex;gap:15px;align-items:center;flex-wrap:wrap}button{min-height:44px;padding:9px 16px;background:#163241;color:white;border:1px solid #c0a06a;border-radius:6px}#view{height:80vh;min-height:320px}</style></head><body><header><strong>Infestation — detailed terrain preservation test</strong><button id="toggle">Pause</button><span>Painted-style forests and ridges remain visible inside infested land.</span></header><div id="view"></div><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script src="../../assets/fx/infestation.js"></script><script>
+(function(){
+const el=document.getElementById('view'),scene=new THREE.Scene(),cam=new THREE.OrthographicCamera(-1.8,1.8,1,-1,.01,10);cam.position.z=2;
+const canvas=document.createElement('canvas');canvas.width=canvas.height=256;const ctx=canvas.getContext('2d'),im=ctx.createImageData(256,256);
+for(let y=0;y<256;y++)for(let x=0;x<256;x++){let i=(y*256+x)*4,n=Math.sin(x*.083+Math.sin(y*.032)*3.5)*.5+Math.cos(y*.12+x*.025)*.22;im.data[i]=78+n*24;im.data[i+1]=24+n*17;im.data[i+2]=22+n*15;im.data[i+3]=255}ctx.putImageData(im,0,0);
+const growth=new THREE.CanvasTexture(canvas);growth.wrapS=growth.wrapT=THREE.RepeatWrapping;
+const frag=`precision mediump float;varying vec2 vUv;uniform float time;uniform sampler2D growth;`+EARTHFALL_FX.infestation.glsl+`
+float h(vec2 p){return fract(sin(dot(p,vec2(14.71,71.17)))*37413.73);}
+float n(vec2 p){vec2 i=floor(p),a=fract(p);a=a*a*(3.0-2.0*a);return mix(mix(h(i),h(i+vec2(1,0)),a.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),a.x),a.y);}
+void main(){
+ vec2 p=vUv*vec2(1.7777778,1.)*36.;
+ float s=n(p*1.3)*.48+n(p*.48)*.52+sin(p.x*.62+p.y*.43+n(p*.2)*3.4)*.075;
+ vec3 base=mix(vec3(.065,.136,.081),vec3(.19,.153,.105),smoothstep(.26,.72,s));
+ base*=.72+.49*n(p*.95+vec2(2.,8.));
+ float dist=length((vUv-vec2(.55,.5))*vec2(1.6,1.0));
+ float inside=1.-smoothstep(.31,.33,dist),edge=(1.-smoothstep(0.,.055,abs(dist-.32)))*inside;
+ gl_FragColor=vec4(efInfest(base,vUv,time,inside,edge,growth),1.);
+}`;
+const mat=new THREE.ShaderMaterial({uniforms:{time:{value:0},growth:{value:growth}},vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:frag});
+scene.add(new THREE.Mesh(new THREE.PlaneBufferGeometry(3.5556,2),mat));
+const ren=new THREE.WebGLRenderer({antialias:true});ren.setPixelRatio(Math.min(devicePixelRatio||1,2));el.appendChild(ren.domElement);
+function size(){ren.setSize(el.clientWidth,el.clientHeight);let r=el.clientWidth/el.clientHeight;cam.left=-r;cam.right=r;cam.updateProjectionMatrix()}window.addEventListener('resize',size);size();
+let pause=false,prev=performance.now();document.getElementById('toggle').onclick=function(){pause=!pause;this.textContent=pause?'Play':'Pause'};
+function frame(now){if(!pause)mat.uniforms.time.value+=Math.min(.06,(now-prev)/1000);prev=now;ren.render(scene,cam);requestAnimationFrame(frame)}requestAnimationFrame(frame);
+})();
 </script></body></html>
