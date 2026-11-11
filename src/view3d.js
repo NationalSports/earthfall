@@ -5,7 +5,7 @@ const V = (() => {
   const px = lon => (lon + 180) / 360 * RW, py = lat => fy(lat) * RH;
   const wx = lon => (lon + 180) / 360 * BW - BW / 2, wz = lat => fy(lat) * BH - BH / 2, AW = 1920, AH = 1080;
   const curve = (x, z) => -(z * z) / 1500; let worldRoot = null;
-  let bd, cd; let renderer, scene, camera, el, labelsEl, tex, texCtx, img, idx, landA, heights, boardMesh, hp, shade, texE, ctxE, imgE, trees, treeT = [], seaTex, clouds = [], glowTex;
+  let bd, cd, landF; let renderer, scene, camera, el, labelsEl, tex, texCtx, img, idx, landA, heights, boardMesh, hp, shade, texE, ctxE, imgE, trees, treeT = [], seaTex, clouds = [], glowTex;
   let tokens, arcs, fxGroup, labels = {}, partyLabels = [], sigTok = '', sigTex = '', sel = null, onPick = () => {};
   const cam = { tx: 20, tz: 0, dist: 70, yaw: 0, pitch: 1.02 };
   const fx = []; let teamTok, time = 0, S0 = null, artData = null, INF = null;
@@ -26,7 +26,11 @@ const V = (() => {
     const c = document.createElement('canvas'); c.width = RW; c.height = RH; const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.drawImage(maskImg, 0, 0, RW, RH);
     const d = g.getImageData(0, 0, RW, RH).data; landA = new Uint8Array(RW * RH); idx = new Int8Array(RW * RH); bd = new Float32Array(RW * RH);
     const an = TIDS.map(id => [TERR[id].ax / AW * RW, TERR[id].ay / AH * RH]);
-    for (let y = 0; y < RH; y++) for (let x = 0; x < RW; x++) { const i = y * RW + x; landA[i] = d[i * 4] > 100 ? 1 : 0; let best = 1e12, sec = 1e12, bi = 0;
+    { const N = RW * RH, din = new Float32Array(N), dout = new Float32Array(N), ch = D => { for (let y = 1; y < RH; y++) for (let x = 1; x < RW - 1; x++) { const i = y * RW + x; if (D[i]) D[i] = Math.min(D[i], D[i - 1] + 1, D[i - RW] + 1, D[i - RW - 1] + 1.414, D[i - RW + 1] + 1.414); } for (let y = RH - 2; y >= 0; y--) for (let x = RW - 2; x > 0; x--) { const i = y * RW + x; if (D[i]) D[i] = Math.min(D[i], D[i + 1] + 1, D[i + RW] + 1, D[i + RW + 1] + 1.414, D[i + RW - 1] + 1.414); } };
+      for (let i = 0; i < N; i++) { const m = d[i * 4] > 100; din[i] = m ? 99 : 0; dout[i] = m ? 0 : 99; } ch(din); ch(dout);
+      for (let i = 0; i < N; i++) { const o = i * 4, col = artData[o] > artData[o + 2] * 1.04; landA[i] = (din[i] > 7 || (col && dout[i] < 12)) ? 1 : 0; }
+      landF = new Float32Array(N); for (let y = 2; y < RH - 2; y++) for (let x = 2; x < RW - 2; x++) { const i = y * RW + x; let sm = 0; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) sm += landA[i + dy * RW + dx]; landF[i] = sm / 25; } }
+    for (let y = 0; y < RH; y++) for (let x = 0; x < RW; x++) { const i = y * RW + x; let best = 1e12, sec = 1e12, bi = 0;
       for (let k = 0; k < an.length; k++) { const dx = x - an[k][0], dy = y - an[k][1], q = dx * dx + dy * dy; if (q < best) { sec = best; best = q; bi = k; } else if (q < sec) sec = q; } idx[i] = bi; bd[i] = (Math.sqrt(sec) - Math.sqrt(best)) * 0.5; }
     cd = new Float32Array(RW * RH); for (let i = 0; i < RW * RH; i++) cd[i] = landA[i] ? 99 : 0;
     for (let y = 1; y < RH; y++) for (let x = 1; x < RW - 1; x++) { const i = y * RW + x; if (cd[i]) cd[i] = Math.min(cd[i], cd[i - 1] + 1, cd[i - RW] + 1, cd[i - RW - 1] + 1.414, cd[i - RW + 1] + 1.414); }
@@ -49,8 +53,8 @@ const V = (() => {
     const A = artData; const d = img.data, de = imgE.data, own = TIDS.map(id => S.terr[id].owner), obs = TIDS.map(id => S.obs[id] ? 1 : 0), si = sel ? TIDS.indexOf(sel) : -1;
     for (let y = 0; y < RH; y++) { const lat = 45;
       for (let x = 0; x < RW; x++) { const i = y * RW + x, o = i * 4; let r, g, b;
-        let er = 0, eg = 0, eb = 0;
-        if (!landA[i]) { const n = fbm(x * 0.012, y * 0.012); r = 7 + n * 9; g = 18 + n * 18; b = 38 + n * 32;
+        let er = 0, eg = 0, eb = 0, lf = 0;
+        if (landF[i] < 0.05) { const n = fbm(x * 0.012, y * 0.012); r = 7 + n * 9; g = 18 + n * 18; b = 38 + n * 32;
           const near = (x > 2 && landA[i - 3]) || (x < RW - 3 && landA[i + 3]) || (y > 2 && landA[i - 3 * RW]) || (y < RH - 3 && landA[i + 3 * RW]);
           if (near) { r += 18; g += 46; b += 56; }
           if (A) { r = A[o]; g = A[o + 1]; b = A[o + 2]; }
@@ -64,11 +68,12 @@ const V = (() => {
           if (snow && !A) { r += (236 * shade[i] - r) * snow; g += (240 * shade[i] - g) * snow; b += (246 * shade[i] - b) * snow; }
           if (own[k] === 'enemy') { const v = Math.abs(fbm(x * 0.08, y * 0.08) - 0.5); const bl = fbm(x * 0.018 + 50, y * 0.018 + 20); if (INF) { const io = ((y % INF.h) * INF.w + (x % INF.w)) * 4, m2 = 0.55; r = r * (1 - m2) + INF.d[io] * m2; g = g * (1 - m2) + INF.d[io + 1] * m2; b = b * (1 - m2) + INF.d[io + 2] * m2; } else { if (bl > 0.56) { const q = Math.min(1, (bl - 0.56) * 6) * 0.45; r = r * (1 - q) + 70 * q; g = g * (1 - q) + 12 * q; b = b * (1 - q) + 40 * q; } const v2 = Math.abs(fbm(x * 0.035 + 9, y * 0.035 + 4) - 0.5); if (v < 0.03 || v2 < 0.022) { const q = v2 < 0.022 ? 1 : 0.7; r += 62 * q; g += 16 * q; b += 6 * q; er = 190 * q; eg = 44 * q; eb = 14 * q; } }
             if (!obs[k]) { r *= 0.8; g *= 0.8; b *= 0.84; } }
-          const line = 0, gl = Math.max(Math.max(0, 1 - bd[i] / 13), Math.max(0, 1 - cd[i] / 9) * 0.9); if (cd[i] < 1.6) { r *= 0.55; g *= 0.55; b *= 0.55; }
+          const line = 0, gl = Math.max(Math.max(0, 1 - bd[i] / 13), Math.max(0, 1 - cd[i] / 9) * 0.9); lf = landF[i];
           if (k === si) { r = r * 1.12 + 8; g = g * 1.12 + 8; b = b * 1.12 + 4; const t = Math.max(line, gl * 0.75); r += (236 - r) * t; g += (190 - g) * t; b += (90 - b) * t; er = 200 * t; eg = 150 * t; eb = 50 * t; }
           else { const q = gl * gl * 0.62; r += (c[0] * 1.15 - r) * q; g += (c[1] * 1.15 - g) * q; b += (c[2] * 1.15 - b) * q;
             if (own[k] === 'you') { er = Math.max(er, 20 * gl * gl); eg = Math.max(eg, 150 * gl * gl); eb = Math.max(eb, 150 * gl * gl); } else if (own[k] === 'enemy') { er = Math.max(er, 200 * gl * gl); eg = Math.max(eg, 40 * gl * gl); eb = Math.max(eb, 16 * gl * gl); } }
         }
+        if (A && lf > 0 && lf < 1) { r = A[o] * (1 - lf) + r * lf; g = A[o + 1] * (1 - lf) + g * lf; b = A[o + 2] * (1 - lf) + b * lf; er *= lf; eg *= lf; eb *= lf; }
         d[o] = r; d[o + 1] = g; d[o + 2] = b; d[o + 3] = 255; de[o] = er; de[o + 1] = eg; de[o + 2] = eb; de[o + 3] = 255; } }
     texCtx.putImageData(img, 0, 0); tex.needsUpdate = true; ctxE.putImageData(imgE, 0, 0); texE.needsUpdate = true;
     if (trees) { const col = new THREE.Color(); treeT.forEach((k, n) => { const o = own[k], v = 0.75 + (n * 7919 % 100) / 200; if (o === 'you') col.setRGB(0.06 * v, 0.26 * v, 0.17 * v); else if (o === 'enemy') col.setRGB(0.19 * v, 0.04 * v, 0.035 * v); else col.setRGB(0.09, 0.08, 0.07); trees.setColorAt(n, col); }); trees.instanceColor.needsUpdate = true; }
@@ -142,12 +147,17 @@ const V = (() => {
     renderer.outputEncoding = THREE.sRGBEncoding; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.18; renderer.setClearColor(0x070c15); el.appendChild(renderer.domElement);
     labelsEl = document.createElement('div'); labelsEl.className = 'labels'; el.appendChild(labelsEl);
     scene = new THREE.Scene(); scene.fog = new THREE.Fog(0x070c15, 120, 260); camera = new THREE.PerspectiveCamera(34, 1, 0.5, 500);
-    pieceImgs = art.pieces; globeImg = art.globe; if (art.infest) { const ci = document.createElement('canvas'); ci.width = art.infest.width; ci.height = art.infest.height; const gi = ci.getContext('2d'); gi.drawImage(art.infest, 0, 0); INF = { w: ci.width, h: ci.height, d: gi.getImageData(0, 0, ci.width, ci.height).data }; } assets(); buildRaster(art.mask); { const c0 = document.createElement('canvas'); c0.width = RW; c0.height = RH; const g0 = c0.getContext('2d'); g0.drawImage(art.map, 0, 0, RW, RH); artData = g0.getImageData(0, 0, RW, RH).data; const w = 110, src = new Uint8ClampedArray(artData); for (let y = 0; y < RH; y++) for (let x = 0; x < w; x++) { const a = 0.5 * (1 - x / w), l = (y * RW + x) * 4, r = (y * RW + RW - 1 - x) * 4; for (let c = 0; c < 3; c++) { artData[l + c] = src[l + c] * (1 - a) + src[r + c] * a; artData[r + c] = src[r + c] * (1 - a) + src[l + c] * a; } } }
+    pieceImgs = art.pieces; globeImg = art.globe; if (art.infest) { const ci = document.createElement('canvas'); ci.width = art.infest.width; ci.height = art.infest.height; const gi = ci.getContext('2d'); gi.drawImage(art.infest, 0, 0); INF = { w: ci.width, h: ci.height, d: gi.getImageData(0, 0, ci.width, ci.height).data }; } assets(); { const c0 = document.createElement('canvas'); c0.width = RW; c0.height = RH; const g0 = c0.getContext('2d'); g0.drawImage(art.map, 0, 0, RW, RH); artData = g0.getImageData(0, 0, RW, RH).data; const w = 110, src = new Uint8ClampedArray(artData); for (let y = 0; y < RH; y++) for (let x = 0; x < w; x++) { const a = 0.5 * (1 - x / w), l = (y * RW + x) * 4, r = (y * RW + RW - 1 - x) * 4; for (let c = 0; c < 3; c++) { artData[l + c] = src[l + c] * (1 - a) + src[r + c] * a; artData[r + c] = src[r + c] * (1 - a) + src[l + c] * a; } }
+      const s2 = new Uint8ClampedArray(artData), am = 0.4, W4 = RW * 4; for (let y = 1; y < RH - 1; y++) for (let x = 1; x < RW - 1; x++) { const o = (y * RW + x) * 4; for (let c = 0; c < 3; c++) artData[o + c] = s2[o + c] * (1 + 4 * am) - am * (s2[o + c - 4] + s2[o + c + 4] + s2[o + c - W4] + s2[o + c + W4]); } }
+    buildRaster(art.mask);
     const c = document.createElement('canvas'); c.width = RW; c.height = RH; texCtx = c.getContext('2d'); img = texCtx.createImageData(RW, RH); tex = new THREE.CanvasTexture(c); tex.encoding = THREE.sRGBEncoding; tex.anisotropy = 8;
     const ce = document.createElement('canvas'); ce.width = RW; ce.height = RH; ctxE = ce.getContext('2d'); imgE = ctxE.createImageData(RW, RH); texE = new THREE.CanvasTexture(ce); texE.encoding = THREE.sRGBEncoding;
     const gc = document.createElement('canvas'); gc.width = gc.height = 128; const gg = gc.getContext('2d'), gr = gg.createRadialGradient(64, 64, 2, 64, 64, 64); gr.addColorStop(0, 'rgba(255,255,255,0.9)'); gr.addColorStop(0.35, 'rgba(255,255,255,0.3)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); gg.fillStyle = gr; gg.fillRect(0, 0, 128, 128); glowTex = new THREE.CanvasTexture(gc);
     const geo = new THREE.PlaneGeometry(BW, BH, GW, GH); geo.rotateX(-Math.PI / 2); const pos = geo.attributes.position; for (let i = 0; i < pos.count; i++) pos.setY(i, heights[i] * FLAT + curve(pos.getX(i), pos.getZ(i))); geo.computeVertexNormals();
-    boardMesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.86, metalness: 0.02, emissive: 0xffffff, emissiveMap: texE, emissiveIntensity: 0.45 })); boardMesh.receiveShadow = true; boardMesh.castShadow = true; scene.add(boardMesh);
+    boardMesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.86, metalness: 0.02, emissive: 0xffffff, emissiveMap: texE, emissiveIntensity: 0.45 })); { const uv = geo.attributes.uv, u2 = new Float32Array(uv.count * 2); for (let i = 0; i < uv.count; i++) { u2[i * 2] = uv.getX(i) * 64; u2[i * 2 + 1] = uv.getY(i) * 36; } geo.setAttribute('uv2', new THREE.BufferAttribute(u2, 2));
+      const gc2 = document.createElement('canvas'); gc2.width = gc2.height = 256; const gg2 = gc2.getContext('2d'), gd = gg2.createImageData(256, 256); for (let i = 0; i < 65536; i++) { const a = Math.sin(i * 12.9898) * 43758.5453, n = (a - Math.floor(a)) * 0.5 + fbm((i % 256) * 0.2, (i >> 8) * 0.2) * 0.5, v = 150 + n * 105; gd.data[i * 4] = gd.data[i * 4 + 1] = gd.data[i * 4 + 2] = v; gd.data[i * 4 + 3] = 255; } gg2.putImageData(gd, 0, 0);
+      const gt = new THREE.CanvasTexture(gc2); gt.wrapS = gt.wrapT = THREE.RepeatWrapping; boardMesh.material.aoMap = gt; boardMesh.material.aoMapIntensity = 1.6; boardMesh.material.needsUpdate = true; }
+    boardMesh.receiveShadow = true; boardMesh.castShadow = true; scene.add(boardMesh);
     // moving water shimmer and drifting clouds
     { const wc = document.createElement('canvas'); wc.width = wc.height = 256; const w = wc.getContext('2d'), id2 = w.createImageData(256, 256); for (let i = 0; i < 65536; i++) { const v = Math.pow(fbm((i % 256) * 0.06, (i >> 8) * 0.06), 3) * 255; id2.data[i * 4] = v * 0.5; id2.data[i * 4 + 1] = v * 0.85; id2.data[i * 4 + 2] = v; id2.data[i * 4 + 3] = 255; } w.putImageData(id2, 0, 0);
       seaTex = new THREE.CanvasTexture(wc); seaTex.wrapS = seaTex.wrapT = THREE.RepeatWrapping; seaTex.repeat.set(9, 3.5); const sg = new THREE.PlaneGeometry(BW, BH, 48, 28); sg.rotateX(-Math.PI / 2); for (let i = 0; i < sg.attributes.position.count; i++) sg.attributes.position.setY(i, 0.07 + curve(sg.attributes.position.getX(i), sg.attributes.position.getZ(i))); const sea = new THREE.Mesh(sg, new THREE.MeshBasicMaterial({ map: seaTex, transparent: true, opacity: 0.14, blending: THREE.AdditiveBlending, depthWrite: false })); scene.add(sea);
@@ -220,14 +230,14 @@ const V = (() => {
   function controls() { const dom = renderer.domElement, pts = new Map(); let moved = 0, pinch = 0, down = null; dom.style.touchAction = 'none';
     dom.addEventListener('pointerdown', e => { pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); moved = 0; down = { x: e.clientX, y: e.clientY, btn: e.button }; try { dom.setPointerCapture(e.pointerId); } catch (_) {} if (pts.size === 2) { const a = [...pts.values()]; pinch = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); } });
     dom.addEventListener('pointermove', e => { const p = pts.get(e.pointerId); if (!p) return; const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
-      if (pts.size === 2) { const a = [...pts.values()], d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); if (pinch) { if (mode === 'globe') gl.dist = clamp(gl.dist * pinch / d, 40, 150); else cam.dist = clamp(cam.dist * pinch / d, 24, 190); } pinch = d; return; }
+      if (pts.size === 2) { const a = [...pts.values()], d = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); if (pinch) { if (mode === 'globe') gl.dist = clamp(gl.dist * pinch / d, 40, 150); else cam.dist = clamp(cam.dist * pinch / d, 34, 190); } pinch = d; return; }
       if (mode === 'globe') { const k = (gl.dist - GR) * 0.0029 * (700 / Math.max(300, el.clientHeight)); gl.lon -= dx * k; gl.lat = clamp(gl.lat + dy * k, -75, 80); return; }
       if (down && (down.btn === 2 || e.shiftKey)) { cam.yaw -= dx * 0.005; cam.pitch = clamp(cam.pitch + dy * 0.004, 0.45, 1.45); return; }
       const k = cam.dist * 0.00105 * (900 / Math.max(300, el.clientHeight)), c = Math.cos(cam.yaw), s = Math.sin(cam.yaw); cam.tx -= (dx * c + dy * s) * k; cam.tz -= (-dx * s + dy * c) * k; });
     let lastPick = 0; const up = e => { pts.delete(e.pointerId); pinch = 0; if (moved < 8 && down && down.btn !== 2) { lastPick = performance.now(); pickAt(e.clientX, e.clientY); } down = null; };
     dom.addEventListener('click', e => { if (performance.now() - lastPick > 400 && moved < 8) { lastPick = performance.now(); pickAt(e.clientX, e.clientY); } });
     dom.addEventListener('pointerup', up); dom.addEventListener('pointercancel', e => { pts.delete(e.pointerId); pinch = 0; });
-    dom.addEventListener('wheel', e => { e.preventDefault(); const f = e.deltaY > 0 ? 1.07 : 0.935; if (mode === 'globe') gl.dist = clamp(gl.dist * f, 40, 150); else cam.dist = clamp(cam.dist * f, 24, 190); }, { passive: false }); dom.addEventListener('contextmenu', e => e.preventDefault()); }
+    dom.addEventListener('wheel', e => { e.preventDefault(); const f = e.deltaY > 0 ? 1.07 : 0.935; if (mode === 'globe') gl.dist = clamp(gl.dist * f, 40, 150); else cam.dist = clamp(cam.dist * f, 34, 190); }, { passive: false }); dom.addEventListener('contextmenu', e => e.preventDefault()); }
   const ray = new THREE.Raycaster(), plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.5);
   const gsph = new THREE.Sphere(new THREE.Vector3(), GR);
   function pickAt(cx, cy) { const r = renderer.domElement.getBoundingClientRect(); ray.setFromCamera({ x: (cx - r.left) / r.width * 2 - 1, y: -(cy - r.top) / r.height * 2 + 1 }, camera);
@@ -271,5 +281,5 @@ const V = (() => {
     const m = new THREE.Mesh(G.sph, new THREE.MeshBasicMaterial({ color: kind === 'emp' ? 0x8fd8ff : big ? 0xffe9a0 : 0xffb060 })); m.scale.setScalar(big ? 0.45 : 0.25); fxGroup.add(m); const dur = big ? 2.2 : 1.1;
     fx.push({ obj: m, t: 0, update(t) { if (t >= dur) { flash(B, big ? 9 : kind === 'emp' ? 5 : 2.6, kind === 'emp' ? 0x7fd0ff : 0xffa040, big ? 2.4 : 0.8); if (big) flash(B, 4, 0xffffff, 1.2); return false; } m.position.copy(c.getPoint(t / dur)); } }); }
   function focus(id, lift) { if (mode === 'globe') { gl.lon = TERR[id].lon; gl.lat = clamp(TERR[id].lat - (lift ? 18 : 0), -60, 70); return; } const p = P(id); if (cam.dist > 70) cam.dist = 60; cam.tx = p.x + Math.round((cam.tx - p.x) / BW) * BW; cam.tz = p.z + 2 + (lift ? cam.dist * 0.3 : 0); }
-  return { init, sync, frame, setArt, missile, flash: id => flash(P(id), 2.5, 0xff5030, 0.7), focus, fit, cam, resize, zoom: k => { if (mode === 'globe') gl.dist = clamp(gl.dist * k, 40, 150); else cam.dist = clamp(cam.dist * k, 24, 190); }, toggleMode: () => setMode(mode === 'board' ? 'globe' : 'board'), getMode: () => mode, rotate: a => { if (mode === 'globe') gl.lon += a * 60; else cam.yaw += a; }, tilt: () => { cam.pitch = cam.pitch > 1.2 ? 1.02 : cam.pitch > 0.9 ? 0.7 : 1.45; } };
+  return { init, sync, frame, setArt, missile, flash: id => flash(P(id), 2.5, 0xff5030, 0.7), focus, fit, cam, resize, zoom: k => { if (mode === 'globe') gl.dist = clamp(gl.dist * k, 40, 150); else cam.dist = clamp(cam.dist * k, 34, 190); }, toggleMode: () => setMode(mode === 'board' ? 'globe' : 'board'), getMode: () => mode, rotate: a => { if (mode === 'globe') gl.lon += a * 60; else cam.yaw += a; }, tilt: () => { cam.pitch = cam.pitch > 1.2 ? 1.02 : cam.pitch > 0.9 ? 0.7 : 1.45; } };
 })();
