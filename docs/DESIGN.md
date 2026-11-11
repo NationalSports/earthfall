@@ -189,3 +189,5 @@ Earthfall is turn-based. One day is one turn.
 The top bar's gold **Next** button always names the one thing still waiting (place troops, choose research, defend, use Orders), then End day. Research is a project: pick one and it is bought automatically the morning it becomes affordable.
 
 Under the hood the engine still counts hours (24 per night), so cooldowns and leader movement are unchanged.
+
+Radar twist: declared attacks are only visible a day ahead where a Radar Station (or headquarters) is within 2 territories of the target or source. Elsewhere the swarm strikes by surprise, and the morning report lists your blind spots.
