@@ -48,7 +48,7 @@ const V = (() => {
     for (let y = 0; y < RH; y++) for (let x = 0; x < RW; x++) hp[y * RW + x] = hb(x, y);
     for (let y = 0; y < RH; y++) for (let x = 0; x < RW; x++) { const a = hp[Math.max(0, y - 3) * RW + Math.max(0, x - 3)], b = hp[Math.min(RH - 1, y + 3) * RW + Math.min(RW - 1, x + 3)]; shade[y * RW + x] = clamp(1 + (a - b) * 2.4, 0.5, 1.6); }
   }
-  const COL = { you: [38, 178, 176], enemy: [206, 62, 40], waste: [58, 52, 48] };
+  const COL = { you: [34, 138, 150], enemy: [206, 62, 40], waste: [58, 52, 48] };
   function paint(S) {
     const A = artData; const d = img.data, de = imgE.data, own = TIDS.map(id => S.terr[id].owner), obs = TIDS.map(id => S.obs[id] ? 1 : 0), si = sel ? TIDS.indexOf(sel) : -1;
     for (let y = 0; y < RH; y++) { const lat = 45;
@@ -64,7 +64,9 @@ const V = (() => {
           const m = own[k] === 'waste' ? 0.85 : 0.5, sh = (0.74 + n * 0.4) * shade[i], hh = hp[i];
           if (hh > 0.95) { const t = Math.min(0.7, (hh - 0.95) / 0.4); tr += (128 - tr) * t; tg += (122 - tg) * t; tb += (114 - tb) * t; } const snow = hh > 1.22 ? Math.min(0.8, (hh - 1.22) / 0.25) : 0;
           r = (c[0] * m + tr * (1 - m)) * sh; g = (c[1] * m + tg * (1 - m)) * sh; b = (c[2] * m + tb * (1 - m)) * sh;
-          if (A) { const am = own[k] === 'waste' ? 0.8 : own[k] === 'enemy' ? (obs[k] ? 0.62 : 0.5) : 0.46, lum = (A[o] + A[o + 1] + A[o + 2]) / 3 / 112; r = A[o] * (1 - am) + c[0] * lum * am; g = A[o + 1] * (1 - am) + c[1] * lum * am; b = A[o + 2] * (1 - am) + c[2] * lum * am; }
+          if (A) { // Calm the terrain so ownership reads first: mute its color, flatten its light and dark, then lay the owner's color over it.
+            const am = own[k] === 'waste' ? 0.82 : own[k] === 'enemy' ? (obs[k] ? 0.72 : 0.62) : 0.66, av = (A[o] + A[o + 1] + A[o + 2]) / 3, l0 = av / 112, lum = clamp(0.86 + (l0 - 1) * 0.3, 0.6, 1.12), f = l0 > 0.05 ? lum / l0 : 1;
+            const br = (A[o] * 0.4 + av * 0.6) * f, bgn = (A[o + 1] * 0.4 + av * 0.6) * f, bb = (A[o + 2] * 0.4 + av * 0.6) * f; r = br * (1 - am) + c[0] * lum * am; g = bgn * (1 - am) + c[1] * lum * am; b = bb * (1 - am) + c[2] * lum * am; }
           if (snow && !A) { r += (236 * shade[i] - r) * snow; g += (240 * shade[i] - g) * snow; b += (246 * shade[i] - b) * snow; }
           if (own[k] === 'enemy') { const v = Math.abs(fbm(x * 0.08, y * 0.08) - 0.5); const bl = fbm(x * 0.018 + 50, y * 0.018 + 20); if (INF) { const io = ((y % INF.h) * INF.w + (x % INF.w)) * 4, m2 = 0.55; r = r * (1 - m2) + INF.d[io] * m2; g = g * (1 - m2) + INF.d[io + 1] * m2; b = b * (1 - m2) + INF.d[io + 2] * m2; } else { if (bl > 0.56) { const q = Math.min(1, (bl - 0.56) * 6) * 0.45; r = r * (1 - q) + 70 * q; g = g * (1 - q) + 12 * q; b = b * (1 - q) + 40 * q; } const v2 = Math.abs(fbm(x * 0.035 + 9, y * 0.035 + 4) - 0.5); if (v < 0.03 || v2 < 0.022) { const q = v2 < 0.022 ? 1 : 0.7; r += 62 * q; g += 16 * q; b += 6 * q; er = 190 * q; eg = 44 * q; eb = 14 * q; } }
             if (!obs[k]) { r *= 0.8; g *= 0.8; b *= 0.84; } }
@@ -157,7 +159,7 @@ const V = (() => {
       // Extra sharpness: the ownership paint runs at 1920 wide; the fine detail of a larger painting is added back on the graphics card.
       if (art.map.width > RW && renderer.capabilities.maxTextureSize >= art.map.width) { const hi = new THREE.Texture(art.map), cl = document.createElement('canvas'); cl.width = RW; cl.height = RH; cl.getContext('2d').drawImage(art.map, 0, 0, RW, RH); const lo = new THREE.CanvasTexture(cl);
         for (const t of [hi, lo]) { t.anisotropy = 8; if (!renderer.capabilities.isWebGL2) { t.minFilter = THREE.LinearFilter; t.generateMipmaps = false; } t.needsUpdate = true; }
-        boardMesh.material.onBeforeCompile = sh => { sh.uniforms.hiTex = { value: hi }; sh.uniforms.loTex = { value: lo }; sh.fragmentShader = 'uniform sampler2D hiTex;\nuniform sampler2D loTex;\n' + sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n vec3 dH = texture2D(hiTex, vUv).rgb, dL = texture2D(loTex, vUv).rgb; diffuseColor.rgb = max(vec3(0.0), diffuseColor.rgb + (dH * dH - dL * dL) * 0.9);'); }; }
+        boardMesh.material.onBeforeCompile = sh => { sh.uniforms.hiTex = { value: hi }; sh.uniforms.loTex = { value: lo }; sh.fragmentShader = 'uniform sampler2D hiTex;\nuniform sampler2D loTex;\n' + sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n vec3 dH = texture2D(hiTex, vUv).rgb, dL = texture2D(loTex, vUv).rgb; diffuseColor.rgb = max(vec3(0.0), diffuseColor.rgb + (dH * dH - dL * dL) * 0.45);'); }; }
       const gc2 = document.createElement('canvas'); gc2.width = gc2.height = 256; const gg2 = gc2.getContext('2d'), gd = gg2.createImageData(256, 256); for (let i = 0; i < 65536; i++) { const a = Math.sin(i * 12.9898) * 43758.5453, n = (a - Math.floor(a)) * 0.5 + fbm((i % 256) * 0.2, (i >> 8) * 0.2) * 0.5, v = 150 + n * 105; gd.data[i * 4] = gd.data[i * 4 + 1] = gd.data[i * 4 + 2] = v; gd.data[i * 4 + 3] = 255; } gg2.putImageData(gd, 0, 0);
       const gt = new THREE.CanvasTexture(gc2); gt.wrapS = gt.wrapT = THREE.RepeatWrapping; boardMesh.material.aoMap = gt; boardMesh.material.aoMapIntensity = 1.6; boardMesh.material.needsUpdate = true; }
     boardMesh.receiveShadow = true; boardMesh.castShadow = true; scene.add(boardMesh);
@@ -220,7 +222,7 @@ const V = (() => {
     const lg = new THREE.Group(); for (const l of LINKS) { const cv = curveFor(l[0], l[1], 0.01).segs[0], pts = cv.getPoints(24).map(v => v.normalize().multiplyScalar(GR + 0.08)); const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), l[2] ? M.sea : M.link); if (l[2]) line.computeLineDistances(); lg.add(line); } globeRoot.add(lg); scene.add(globeRoot); buildGlobeBorders(); }
   function paintGlobe(S) { const d = imgG.data, A = artG, own = TIDS.map(id => S.terr[id].owner), obs = TIDS.map(id => S.obs[id] ? 1 : 0), si = sel ? TIDS.indexOf(sel) : -1, n = GWp * GHp;
     for (let i = 0; i < n; i++) { const o = i * 4; let r = A[o], g = A[o + 1], b = A[o + 2];
-      if (landG[i]) { const k = idxG[i], c = COL[own[k]], am = own[k] === 'waste' ? 0.8 : own[k] === 'enemy' ? (obs[k] ? 0.62 : 0.5) : 0.46, lum = (r + g + b) / 3 / 112; r = r * (1 - am) + c[0] * lum * am; g = g * (1 - am) + c[1] * lum * am; b = b * (1 - am) + c[2] * lum * am;
+      if (landG[i]) { const k = idxG[i], c = COL[own[k]], am = own[k] === 'waste' ? 0.82 : own[k] === 'enemy' ? (obs[k] ? 0.72 : 0.62) : 0.66, av = (r + g + b) / 3, l0 = av / 112, lum = clamp(0.86 + (l0 - 1) * 0.3, 0.6, 1.12), f = l0 > 0.05 ? lum / l0 : 1; r = (r * 0.4 + av * 0.6) * f * (1 - am) + c[0] * lum * am; g = (g * 0.4 + av * 0.6) * f * (1 - am) + c[1] * lum * am; b = (b * 0.4 + av * 0.6) * f * (1 - am) + c[2] * lum * am;
         const fr = own[idx2G[i]] !== own[k] || k === si, line = 0, gw = Math.max(0, 1 - bdG[i] / (fr ? 9 : 4)) * (fr ? 1 : 0.35);
         if (k === si) { const t = Math.max(line, gw * 0.75); r = r * 1.12 + 8; g = g * 1.12 + 8; b = b * 1.12 + 4; r += (236 - r) * t; g += (190 - g) * t; b += (90 - b) * t; }
         else { const q = gw * gw * 0.62; r += (c[0] * 1.15 - r) * q; g += (c[1] * 1.15 - g) * q; b += (c[2] * 1.15 - b) * q; } }
