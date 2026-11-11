@@ -101,8 +101,8 @@ function renderPanel(force) { if (hold && !force) return;
   if (renderPanel.h !== h) { renderPanel.h = h; const p = $('#panel'), b = p.querySelector('.pbody'), sc = b ? b.scrollTop : 0; p.innerHTML = h; const nb = p.querySelector('.pbody'); if (nb && renderPanel.tab === tab + selId) nb.scrollTop = sc; renderPanel.tab = tab + selId; } }
 
 // ---------- Modals ----------
-function showModal(html, cls) { modal = true; const m = $('#modal'); m.className = 'show ' + (cls || ''); m.innerHTML = '<div class="sheet">' + html + '</div>'; S && setSpeed(0); }
-function closeModal() { modal = null; $('#modal').className = ''; $('#modal').innerHTML = ''; asl = null; renderAll(true); }
+function showModal(html, cls) { modal = true; setTimeout(() => { actionBar(); coach(); }, 0); const m = $('#modal'); m.className = 'show ' + (cls || ''); m.innerHTML = '<div class="sheet">' + html + '</div>'; S && setSpeed(0); }
+function closeModal() { modal = null; $('#modal').className = ''; $('#modal').innerHTML = ''; if (asl && S && S.tut === 1) S.tut = 2; asl = null; renderAll(true); }
 function introModal() { let h = '<div class="mhead"><small>Earth Defense Coalition</small><h1>EARTHFALL</h1></div><p class="lead">They took East Asia in three weeks. You command what is left. Hold the line, break their chain of command, and stop the Harvest before it completes.</p>' +
   '<ul class="how"><li><b>The clock runs</b> while you play. Pause any time; orders work while paused.</li><li><b>Occupied regions grow</b> every day and break out into their neighbors when overfull.</li><li><b>Nothing is locked.</b> You can strike the Overlord in Tokyo today. The odds are shown before you commit.</li><li><b>Territories produce</b> metal, fuel or research. Four also yield uranium for the warhead. Radar earns intel for covert work, and battles your strike team wins yield salvage for the best gear.</li></ul><h4>Difficulty</h4><div class="specs">' + Object.keys(DIFFS).map(k => '<button class="spec tac' + (diff === k ? ' on' : '') + '" data-a="diff" data-id="' + k + '"><b>' + DIFFS[k].name + '</b><span>' + DIFFS[k].desc + '</span></button>').join('') + '</div><h4>Choose your strike team to begin</h4><div class="specs">';
   for (const k in SPECS) h += '<button class="spec" data-a="start" data-id="' + k + '"><i class="art face art-' + ({ assault: 'vanguard', shadow: 'cipher', engineer: 'engineer' }[k]) + '"></i><b>' + SPECS[k].name + '</b><span>' + SPECS[k].desc + '</span></button>';
@@ -135,6 +135,51 @@ function assaultModal() { const a = asl, D = TERR[a.id]; let h = '<div class="mh
   showModal(h, 'assault'); const sl = $('#troops'); if (sl) sl.addEventListener('input', () => { asl.troops = +sl.value; assaultModal(); const n = $('#troops'); if (n) n.focus(); }); }
 function confirmModal(title, text, act, id, label) { showModal('<div class="mhead"><small>Confirm</small><h1>' + title + '</h1></div><p class="lead">' + text + '</p><div class="row">' + btn('closeModal', 'Cancel') + btn(act, label, { id, cls: 'danger big' }) + '</div>', 'confirm'); }
 
+// ---------- Action bar ----------
+// The few things you can do with the selected territory, as large buttons on the map itself.
+function actionBar() { const el = $('#abar'); if (!el) return; let h = '';
+  if (S && moveFrom && !S.over && !modal) h = '<div class="abh you"><b>Move troops</b><span>from ' + TERR[moveFrom].name + ' · tap your destination</span><button data-a="moveCancel" aria-label="Cancel">✕</button></div>';
+  else if (S && selId && !S.over && !modal) { const T = S.terr[selId], D = TERR[selId], tm = S.team, teamHere = L.teamAt(S) === selId, a = [];
+    const A = (act, icon, label, sub, o) => a.push('<button class="ab ' + ((o && o.cls) || '') + '" data-a="' + act + '" data-id="' + selId + '"' + (o && o.dis ? ' disabled' : '') + '><i>' + icon + '</i><b>' + label + '</b><small>' + sub + '</small></button>');
+    let who;
+    if (T.owner === 'you') { who = (selId === HQ ? 'Your headquarters' : 'Yours') + ' · ' + T.n + ' troops'; const built = ['works', 'barracks', 'fort', 'radar', 'battery'].filter(k => T[k]).length;
+      A('reinforce', '✚', 'Reinforce', S.pool + ' in reserve', { cls: 'teal', dis: S.pool < 1 }); A('moveFrom', '⇄', 'Move', T.n > 1 ? (T.n - 1) + ' can go' : 'Only 1 here', { dis: T.n < 2 }); A('buildMenu', '⚒', 'Build', built + ' of 5 started');
+      if (!teamHere && !tm.dest) A('deploy', '◆', 'Strike team', L.travelHours(S, tm.at, selId) + 'h away', { dis: tm.pips < 1 }); }
+    else if (T.owner === 'enemy') { const av = L.assaultAvail(S, selId), known = S.obs[selId]; who = 'Occupied · ' + (known ? 'defense ' + (T.n + L.guards(S, selId)) : 'strength unknown');
+      A('assault', '⚔', 'Attack', av.n ? av.n + ' troops ready' : 'No troops in reach', { cls: 'gold', dis: av.n < 1 });
+      if (L.batteriesInRange(S, selId).length) A('salvo', '➶', 'Missiles', 'Strength −1 to −2');
+      if (teamHere) A('sabotage', '✸', 'Sabotage', pct(L.sabOdds(S, selId)) + ' success'); else if (!tm.dest) A('deploy', '◆', 'Strike team', L.travelHours(S, tm.at, selId) + 'h away', { dis: tm.pips < 1 });
+      if (S.up.bombers) A('bomb', '✈', 'Bombers', (S.bombT || 0) > S.t ? 'Rearming' : 'Strength −1 to −3', { dis: (S.bombT || 0) > S.t }); }
+    else who = 'Wasteland · nothing lives here';
+    A('more', '☰', 'Details', 'Everything');
+    h = '<div class="abh ' + T.owner + '"><b>' + D.name + '</b><span>' + who + '</span><button data-a="desel" aria-label="Close">✕</button></div><div class="abr">' + a.join('') + '</div>'; }
+  if (actionBar.h !== h) { actionBar.h = h; el.innerHTML = h; el.className = h ? 'show' : ''; $('#map').classList.toggle('hasbar', !!h); } }
+function buildMenu() { const T = S.terr[selId]; let h = '<div class="mhead"><small>' + TERR[selId].name + '</small><h1>Build</h1></div><div class="acts">';
+  for (const k of ['works', 'barracks', 'fort', 'radar', 'battery']) { const lv = T[k] || 0, max = BUILD[k].levels || 1, done = lv >= max, c = L.costOf(S, k, lv);
+    h += btn('buildGo', BUILD[k].name + (BUILD[k].levels ? ' · level ' + lv + ' of ' + max : done ? ' · built' : ''), { id: selId + ':' + k, art: { works: 'research', barracks: 'deploy', fort: 'fortify', radar: 'radar', battery: 'missile-battery' }[k], sub: done ? 'Complete' : BUILD[k].desc + ' ' + cost(c), dis: done || !L.canPay(S, c) }); }
+  showModal(h + '</div><div class="row">' + btn('closeModal', 'Close') + '</div>', 'confirm'); }
+// ---------- First steps ----------
+function coach() { const el = $('#coach'); if (!el) return; let h = '';
+  if (S && !S.over && !modal) { let st = S.tut == null ? 9 : S.tut; const T = selId && S.terr[selId];
+    if (st === 0 && T && T.owner === 'enemy') st = S.tut = 1; else if (st === 1 && !(T && T.owner === 'enemy')) st = S.tut = 0;
+    if (st === 3 && S.speed > 0) { st = S.tut = 9; toast('That is the loop: attack, reinforce, build, run the clock. Kill the Overlord before the Harvest completes.', 'good'); }
+    if (st < 9) { let msg; if (st === 0) { const tg = L.enemyT(S).filter(id => L.playerNeighbors(S, id).length).sort((a, b) => S.terr[a].n - S.terr[b].n)[0]; msg = '<b>1 of 4</b> Teal is yours, red is the swarm. Tap a red territory that touches yours' + (tg ? ', such as <b>' + TERR[tg].name + '</b>' : '') + '.'; }
+      else if (st === 1) msg = '<b>2 of 4</b> Press <b>⚔ Attack</b>. Troops from your neighboring territories and your reserve join in, then you roll the dice.';
+      else if (st === 2) msg = '<b>3 of 4</b> Now tap one of your own territories and press <b>✚ Reinforce</b> or <b>⚒ Build</b>.';
+      else msg = '<b>4 of 4</b> Press <b>▶</b> at the top to run the clock. The swarm only moves while it runs, and you can pause any time.';
+      h = '<span>' + msg + '</span><button data-a="tutSkip">Skip</button>'; }
+    else h = '<button class="helpb" data-a="help">? How to play</button>'; }
+  if (coach.h !== h) { coach.h = h; el.innerHTML = h; el.className = h.indexOf('helpb') > 0 ? 'mini' : h ? 'show' : ''; } }
+function helpModal() { const li = (t, d) => '<div class="obj"><span>' + t + '</span><div>' + d + '</div></div>';
+  showModal('<div class="mhead"><small>Field manual</small><h1>How to play</h1></div><div class="objs">' +
+    li('♛', '<b>Win</b><small>Kill the Overlord before the Harvest reaches 100%. Do not lose Los Angeles.</small>') +
+    li('⚔', '<b>Attack</b><small>Tap a red territory next to one of yours, press Attack, choose how many troops, roll the dice.</small>') +
+    li('✚', '<b>Grow</b><small>Tap your own territory to Reinforce from reserve or Build. Industry gives resources, Barracks give troops, Fortress, Radar and Battery defend.</small>') +
+    li('▶', '<b>Time</b><small>The clock runs only while ▶ is on. One hour takes about 3 seconds, or under a second on ▶▶. The swarm grows and attacks as time passes.</small>') +
+    li('◆', '<b>Strike team</b><small>Send it into enemy land to sabotage or to kill leaders. Each Warlord you kill weakens the Overlord.</small>') +
+    li('⌕', '<b>Look closer</b><small>Double tap or pinch to zoom into a city and see what is built there.</small>') +
+    '</div><div class="row">' + btn('closeModal', 'Got it', { cls: 'gold big' }) + '</div>', 'intel'); }
+
 // ---------- Sound ----------
 // Small synthesized effects, no audio files. Starts on the first tap, as browsers require.
 const SFX = { muted: false, ctx: null, last: {},
@@ -148,7 +193,7 @@ const SFX = { muted: false, ctx: null, last: {},
     } catch (e) {} } };
 
 // ---------- Command the defense ----------
-let bat = null, PIMG = {};
+let bat = null, PIMG = {}, moveFrom = null;
 function defendModal() { const p = S && S.pending; if (!p || modal) return; const su = L.defenseSetup(S, p), ex = [su.fort && 'fortress wall', su.battery && (su.railgun ? '3 railgun strikes' : '2 missile strikes'), su.radar && 'radar (longer range)', su.team && 'your strike team'].filter(Boolean);
   SFX.play('alert'); selId = su.to; V.focus(su.to);
   showModal('<div class="mhead"><small>War party arriving from ' + TERR[p.from].name + '</small><h1>Defend ' + su.name + '</h1></div><p class="lead"><b>' + su.A + '</b> attackers against <b>' + su.D + '</b> defenders' + (ex.length ? ', with ' + ex.join(', ') : '') + '.' + (su.aB ? ' They are veterans and hit harder.' : '') + '</p><div class="row">' + btn('defAuto', 'Auto-resolve', { sub: 'Settle it with dice' }) + btn('defGo', 'Command the defense', { cls: 'gold big', sub: 'About a minute' }) + '</div>', 'defend'); }
@@ -184,21 +229,29 @@ function report(r) { if (r && !r.ok && r.msg) toast(r.msg, 'bad'); return r && r
 function act(a, id) { if (!S && a !== 'start' && a !== 'diff') return;
   switch (a) {
     case 'diff': diff = id; introModal(); return;
-    case 'start': S = L.newGame(id, diff); S.cmd = true; selId = HQ; closeModal(); V.focus('tokyo'); toast('The clock is paused. Look around, then press ▶ to begin.', 'info'); break;
+    case 'start': S = L.newGame(id, diff); S.cmd = true; S.tut = 0; selId = HQ; closeModal(); V.focus('tokyo'); toast('The clock is paused. Look around, then press ▶ to begin.', 'info'); break;
     case 'new': introModal(); break;
     case 'speed': setSpeed(+id); break;
     case 'tab': tab = id; setPanel(true); break;
     case 'ptoggle': setPanel(!panelOpen); break;
     case 'sel': selId = id; tab = 'territory'; V.focus(id, compact() && window.innerHeight > window.innerWidth); setPanel(true); break;
-    case 'reinforce': report(L.reinforce(S, id)); break;
+    case 'reinforce': if (report(L.reinforce(S, id)) && S.tut === 2) S.tut = 3; break;
     case 'airlift': report(L.airlift(S, id)); break;
     case 'build': { const p = id.split(':'); report(L.build(S, p[0], p[1])); break; }
     case 'buy': report(L.buy(S, id)); break;
     case 'card': if (report(L.playCard(S, +id))) SFX.play('good'); break;
     case 'trade': report(L.tradeCards(S)); break;
+    case 'buildMenu': buildMenu(); return;
+    case 'moveFrom': moveFrom = id; break;
+    case 'moveCancel': moveFrom = null; break;
+    case 'moveGo': { const q = id.split(':'); closeModal(); if (report(L.move(S, q[0], q[1], +q[2]))) SFX.play('build'); break; }
+    case 'more': tab = 'territory'; setPanel(true); break;
+    case 'desel': selId = null; break;
+    case 'tutSkip': S.tut = 9; break;
+    case 'help': helpModal(); return;
     case 'cmd': S.cmd = !S.cmd; break;
     case 'mute': SFX.muted = !SFX.muted; { const b = document.querySelector('[data-a="mute"]'); if (b) b.textContent = SFX.muted ? '🔇' : '🔊'; } return;
-    case 'buildGo': { closeModal(); const q = id.split(':'); if (report(L.build(S, q[0], q[1]))) SFX.play('build'); break; }
+    case 'buildGo': { closeModal(); const q = id.split(':'); if (report(L.build(S, q[0], q[1]))) { SFX.play('build'); if (S.tut === 2) S.tut = 3; } break; }
     case 'defAuto': closeModal(); L.resolveDefense(S); break;
     case 'defGo': battleModal(); return;
     case 'defStart': B.start(bat.st); battleUI(); return;
@@ -234,7 +287,7 @@ function drain() { if (!S) return; const ev = S.ev.splice(0); for (const e of ev
     else if (e.k === 'arrive') { selId = e.id; tab = 'territory'; toast('Strike team has arrived in ' + TERR[e.id].name + '.', 'info'); }
     else if (e.k === 'intel' && !asl) { const i = e.i; setTimeout(() => { if (!modal && !S.over) showModal('<div class="mhead"><small>Intel recovered · fragment ' + (i + 1) + ' of ' + INTEL.length + '</small><h1>Field report</h1></div><p class="lead quote">' + esc(INTEL[i]) + '</p><div class="row">' + btn('closeModal', 'Continue', { cls: 'gold big' }) + '</div>', 'intelm'); }, 300); }
     else if (e.k === 'over') setTimeout(overModal, 600); } }
-function renderAll(force) { if (!S) return; renderTop(); renderPanel(force); V.sync(S, selId); }
+function renderAll(force) { if (!S) return; renderTop(); renderPanel(force); actionBar(); coach(); V.sync(S, selId); }
 
 // ---------- Boot ----------
 async function boot() {
@@ -242,7 +295,10 @@ async function boot() {
   const ld = src => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = src; });
   const art = { map: await ld(ART.map), mask: await ld(ART.mask), globe: await ld(ART.globe), infest: ART.infest ? await ld(ART.infest) : null, pieces: {} }; await Promise.all(Object.keys(PIECES).map(async k => { art.pieces[k] = await ld(PIECES[k]); }));
   { const st = document.createElement('style'); st.textContent = Object.keys(CARDS).map(k => '.art-' + k + '{background-image:url(' + CARDS[k] + ')}').join(''); document.head.appendChild(st); }
-  PIMG = art.pieces; V.init($('#map'), id => { if (!S) return; SFX.play('tap'); selId = id; if (id) { tab = 'territory'; setPanel(true); } else if (compact()) setPanel(false); renderAll(true); }, art);
+  PIMG = art.pieces; V.init($('#map'), id => { if (!S) return; SFX.play('tap');
+    if (moveFrom) { const from = moveFrom; moveFrom = null; if (id && id !== from) { if (S.terr[id].owner !== 'you' || !L.reachable(S, from).includes(id)) toast(S.terr[id].owner !== 'you' ? 'You can only move into your own territory. To take this one, select it and press Attack.' : 'No friendly route from ' + TERR[from].name + ' to ' + TERR[id].name + '.', 'info');
+        else { const max = S.terr[from].n - 1, opts = [...new Set([1, Math.ceil(max / 2), max])]; showModal('<div class="mhead"><small>' + TERR[from].name + ' → ' + TERR[id].name + '</small><h1>Move how many?</h1></div><p class="lead">One troop stays behind to hold ' + TERR[from].name + '.</p><div class="row">' + opts.map(n => btn('moveGo', n === max && max > 1 ? 'All ' + n : String(n), { id: from + ':' + id + ':' + n, cls: n === max ? 'gold big' : '' })).join('') + btn('closeModal', 'Cancel') + '</div>', 'confirm'); return; } } renderAll(true); return; }
+    selId = id; if (id) { tab = 'territory'; setPanel(!compact()); } else if (compact()) setPanel(false); renderAll(true); }, art);
   V.onCity = (id, key, built) => { if (!S) return; if (built) return toast(BUILD[key].name + (BUILD[key].levels ? ' is fully upgraded here.' : ' is already in place here.'), 'info'); const lv = S.terr[id][key] || 0, c = L.costOf(S, key, lv), can = L.canPay(S, c);
     showModal('<div class="mhead"><small>' + TERR[id].name + '</small><h1>' + (lv ? 'Upgrade ' + BUILD[key].name + ' to level ' + (lv + 1) : 'Build ' + BUILD[key].name) + '?</h1></div><p class="lead">' + BUILD[key].desc + '</p><p class="lead">' + cost(c) + (can ? '' : ' · not enough resources yet') + '</p><div class="row">' + btn('closeModal', 'Cancel') + btn('buildGo', 'Build', { id: id + ':' + key, cls: 'gold big', dis: !can }) + '</div>', 'confirm'); };
   document.addEventListener('click', e => { const b = e.target.closest('[data-a]'); if (!b || b.disabled) return; act(b.dataset.a, b.dataset.id); });
@@ -251,8 +307,8 @@ async function boot() {
   S = load(); if (S && S.pending) L.resolveDefense(S); if (S) { selId = HQ; renderAll(true); toast('Campaign resumed on ' + L.stamp(S) + '. Paused.', 'info'); } else introModal();
   let last = performance.now(), rT = 0;
   function loop(now) { const dt = Math.min(0.1, (now - last) / 1000); last = now;
-    if (S && S.speed > 0 && !modal && !S.over) { acc += dt * (S.speed === 1 ? 1 : 4); let n = 0; while (acc >= 1 && n++ < 6) { acc -= 1; L.step(S); if (S.ev.length) drain(); if (S.speed === 0) { acc = 0; break; } } }
-    V.frac = S && S.speed > 0 ? acc : 0; rT += dt; if (rT > 0.25) { rT = 0; if (S && V.city && V.city !== selId && !modal) { selId = V.city; tab = 'territory'; renderPanel(true); } renderAll(); if (S && now - lastSave > 8000) { lastSave = now; save(); } }
+    if (S && S.speed > 0 && !modal && !S.over) { acc += dt * (S.speed === 1 ? 0.33 : 1.4); /* game hours per second */ let n = 0; while (acc >= 1 && n++ < 6) { acc -= 1; L.step(S); if (S.ev.length) drain(); if (S.speed === 0) { acc = 0; break; } } }
+    V.frac = S && S.speed > 0 ? acc : 0; rT += dt; if (rT > 0.25) { rT = 0; actionBar(); coach(); if (S && V.city && V.city !== selId && !modal) { selId = V.city; tab = 'territory'; renderPanel(true); } renderAll(); if (S && now - lastSave > 8000) { lastSave = now; save(); } }
     if (bat) battleFrame(dt); V.frame(dt); requestAnimationFrame(loop); }
   requestAnimationFrame(loop);
   window.__g = { get S() { return S; }, L, V, act };

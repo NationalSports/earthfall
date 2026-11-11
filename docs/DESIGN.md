@@ -81,6 +81,9 @@ A simple test bot that never uses the strike team, cards or defense battles wins
 
 Planned: orbital interceptor (shoots down one war party per week), naval landing for assaults without a land border, shield dome (blocks one breakout).
 
+## Moving troops (Built)
+Select one of your territories, press Move, tap another of yours. Troops can go anywhere a chain of your territories connects, instantly, and one always stays behind. Airlift (2 troops from your largest garrison, costs fuel) reaches cut-off territories.
+
 ## Battles
 
 ### When you attack (Built)
