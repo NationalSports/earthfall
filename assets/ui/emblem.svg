@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+<title>Earth Defense Coalition emblem</title>
+<defs><linearGradient id="brass" x2="0" y2="1"><stop stop-color="#ffe7ac"/><stop offset=".55" stop-color="#ba8746"/><stop offset="1" stop-color="#785228"/></linearGradient><radialGradient id="enamel"><stop stop-color="#285368"/><stop offset=".7" stop-color="#112735"/><stop offset="1" stop-color="#081624"/></radialGradient></defs>
+<circle cx="48" cy="48" r="44" fill="url(#enamel)" stroke="url(#brass)" stroke-width="3"/>
+<circle cx="48" cy="48" r="37.5" fill="none" stroke="#d7b374" stroke-width=".8" opacity=".8"/>
+<path d="M48 16L76 29V49C76 65 66 78 48 84C30 78 20 65 20 49V29Z" fill="#122e3a" stroke="url(#brass)" stroke-width="2.5"/>
+<circle cx="48" cy="48" r="18" fill="none" stroke="#44c3c5" stroke-width="2.3"/>
+<ellipse cx="48" cy="48" rx="8" ry="18" fill="none" stroke="#62c9c8" stroke-width="1.4"/>
+<path d="M30 48H66 M35 38H61 M35 58H61" fill="none" stroke="#62c9c8" stroke-width="1.2"/>
+<path d="M16 58Q8 42 14 29 M80 58Q88 42 82 29" fill="none" stroke="#c59d5e" stroke-width="2.8" stroke-linecap="round"/>
+<path d="M16 58L10 56 M15 50L8 46 M14 41L7 36 M80 58L86 56 M81 50L88 46 M82 41L89 36" stroke="#ba9457" stroke-width="2"/>
+<path d="M48 9L51 15H58L53 19L55 26L48 22L41 26L43 19L38 15H45Z" fill="#e8bb73"/>
+</svg>
