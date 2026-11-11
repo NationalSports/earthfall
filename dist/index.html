@@ -620,7 +620,7 @@ L.grow = S => { const en = L.enemyT(S); if (!en.length) return;
     if (T.n >= L.cap(S)) { // breakout, Pandemic style
       const nb = L.playerNeighbors(S, id); if (!nb.length) continue;
       T.n -= 2; for (const to of nb) L.launchParty(S, id, to, 2, true);
-      L.log(S, 'Breakout from ' + TERR[id].name + ': war parties are heading for ' + nb.map(x => TERR[x].name).join(', ') + '.', 'bad');
+      { const rs = L.radarSet(S); if (rs[id] || nb.some(x => rs[x])) L.log(S, 'Breakout from ' + TERR[id].name + ': war parties are heading for ' + nb.map(x => TERR[x].name).join(', ') + '.', 'bad'); }
     } else T.n++; }
   for (const l of S.leaders) if (l.alive && l.trait === 'breeder' && S.terr[l.at].owner === 'enemy' && S.terr[l.at].n < L.cap(S)) S.terr[l.at].n++; };
 // ---------- Enemy strategy ----------
