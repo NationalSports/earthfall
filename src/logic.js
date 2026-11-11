@@ -81,9 +81,9 @@ const UPGRADES = {
   hardened:{ name:'Hardened Garrisons', cost:{research:90,metal:80}, desc:'Every garrison rolls +1 on its best defense die.' },
   deepscan:{ name:'Deep Scan', cost:{research:130}, desc:'Radar reaches one territory further and always tracks every leader.' },
   bombers:{ name:'Strategic Bombers', cost:{research:120,metal:90}, desc:'Unlocks bomber raids from HQ against any territory on the map.' },
-  exo:{ name:'Exo Armor', cost:{research:60,salvage:3}, desc:'Built from recovered enemy plating. The strike team counts as one more troop in every battle.' },
-  railgun:{ name:'Railgun Batteries', cost:{research:80,salvage:4}, desc:'Missile batteries hit harder (up to −3 strength) and reload in 12 hours.' },
-  disruptor:{ name:'Hive Disruptor', cost:{research:120,salvage:6}, desc:'Jams the swarm signal. One fewer occupied territory grows each day.' }
+  exo:{ name:'Exo Armor', cost:{research:60,metal:30}, desc:'Built from recovered enemy plating. The strike team counts as one more troop in every battle.' },
+  railgun:{ name:'Railgun Batteries', cost:{research:80,metal:40}, desc:'Missile batteries hit harder (up to −3 strength) and reload in 12 hours.' },
+  disruptor:{ name:'Hive Disruptor', cost:{research:120,metal:60}, desc:'Jams the swarm signal. One fewer occupied territory grows each day.' }
 };
 const BUILD = {
   fort:{ name:'Fortress', cost:{metal:50}, desc:'Defenders roll +1 on their best die, per level.' },
@@ -287,10 +287,10 @@ L.moveLeaders = S => { for (const l of S.leaders) { if (!l.alive) continue;
     const threatened = L.playerNeighbors(S, l.at).length > 0 || L.teamAt(S) === l.at;
     let p = l.rank === 'overlord' ? (threatened && S.kills >= 2 ? 0.5 : 0.05) : l.rank === 'warlord' ? 0.3 : 0.35;
     if (rnd() < p) { const to = pick(opts); l.from = l.at; l.at = to; l.moveT0 = S.t; l.exposed = S.t + 36;
-      if (L.leaderKnown(S, l) || S.obs[l.from]) L.log(S, RANKN[l.rank] + ' ' + l.name + ' is relocating to ' + TERR[to].name + '. Security will be thin for 36 hours.', 'intel'); } } };
+      if (L.leaderKnown(S, l) || S.obs[l.from]) L.log(S, RANKN[l.rank] + ' ' + l.name + ' is relocating to ' + TERR[to].name + '. Security there will be thin for a day and a half.', 'intel'); } } };
 L.killLeader = (S, l, how) => { l.alive = false; S.kills++; L.drawCard(S, 'for the kill'); S.res.intel = Math.min(30, S.res.intel + 3);
   L.log(S, RANKN[l.rank] + ' ' + l.name + ' is dead' + (how ? ' (' + how + ').' : '.'), 'good');
-  if (S.intel < INTEL.length) { S.ev.push({ k: 'intel', i: S.intel }); S.res.intel = Math.min(30, S.res.intel + 3); S.log.unshift({ t: S.t, msg: 'Intel recovered: ' + INTEL[S.intel], kind: 'story' }); S.intel++; }
+  if (S.intel < INTEL.length) { S.ev.push({ k: 'intel', i: S.intel }); S.res.research += 20; S.log.unshift({ t: S.t, msg: 'Intel recovered: ' + INTEL[S.intel], kind: 'story' }); S.intel++; }
   if (l.rank === 'warlord') { S.next.promote.push({ t: S.t + 72, boss: l.id });
     for (const id of L.enemyT(S)) if (L.leadersAt(S, id).some(c => c.boss === l.id) || id === l.at) { S.terr[id].disarray = S.t + 96; S.terr[id].n = Math.max(1, S.terr[id].n - 1); }
     L.log(S, 'His theater is in disarray. The Overlord has lost two guards.', 'good'); }
@@ -365,7 +365,7 @@ const CARDS_DEF = {
   rally: { name: 'Rally', art: 'elite-training', desc: 'Strike team back to full readiness.' },
   dig: { name: 'Dig In', art: 'fortify', desc: '+2 troops in every territory with a war party inbound.' },
   double: { name: 'Double Time', art: 'elite-training', desc: '+2 Orders, now.' } };
-L.drawCard = (S, why) => { S.cards = S.cards || []; if (S.cards.length >= 6) return; const k = pick(Object.keys(CARDS_DEF)); S.cards.push(k);
+L.drawCard = (S, why) => { return; /* command cards were cut to keep the rules small */ S.cards = S.cards || []; if (S.cards.length >= 6) return; const k = pick(Object.keys(CARDS_DEF)); S.cards.push(k);
   L.log(S, 'Command card earned ' + why + ': ' + CARDS_DEF[k].name + '.', 'good'); S.ev.push({ k: 'toast', msg: 'Command card: ' + CARDS_DEF[k].name, kind: 'good' }); };
 L.tradeValue = S => 4 + 2 * (S.trades || 0);
 L.tradeCards = S => { if (!S.cards || S.cards.length < 3) return fail('You need three cards.'); S.cards.splice(0, 3); const n = L.tradeValue(S); S.trades = (S.trades || 0) + 1; S.pool = Math.min(30, S.pool + n);
@@ -438,7 +438,7 @@ L.unbuild = (S, id, key) => { const T = S.terr[id]; if (!S.mob) return fail('Bui
   T[key]--; const c = L.costOf(S, key, T[key]); for (const k in c) S.res[k] += c[k]; if (key === 'barracks' && !T.barracks && T.arm) { S.res.metal += ARMOR_COST.metal * T.arm; S.res.fuel += ARMOR_COST.fuel * T.arm; T.arm = 0; } L.refreshIntel(S); return { ok: true }; };
 L.buildHours = S => Math.round((S.spec === 'engineer' ? 16 : 24) * (S.doc === 'economy' ? 0.67 : 1));
 L.setProject = (S, key) => { if (!UPGRADES[key] || S.up[key]) return fail('Already researched.'); S.proj = key; return { ok: true }; };
-L.projDays = S => { if (!S.proj) return null; const c = UPGRADES[S.proj].cost; if (c.salvage && S.res.salvage < c.salvage) return Infinity; const own = L.owned(S); let d = 0; for (const k of ['research', 'metal', 'fuel']) if (c[k] && S.res[k] < c[k]) { const per = own.reduce((a, id) => a + (TERR[id].res === k ? (L.isStrong(id) ? 12 : 6) + L.worksYield(S) * (S.terr[id].works || 0) : 0), 0) || 1; d = Math.max(d, Math.ceil((c[k] - S.res[k]) / per)); } return Math.max(1, d); };
+L.projDays = S => { if (!S.proj) return null; const c = UPGRADES[S.proj].cost; const own = L.owned(S); let d = 0; for (const k of ['research', 'metal', 'fuel']) if (c[k] && S.res[k] < c[k]) { const per = own.reduce((a, id) => a + (TERR[id].res === k ? (L.isStrong(id) ? 12 : 6) + L.worksYield(S) * (S.terr[id].works || 0) : 0), 0) || 1; d = Math.max(d, Math.ceil((c[k] - S.res[k]) / per)); } return Math.max(1, d); };
 L.buy = (S, key) => { if (S.up[key]) return fail('Already owned.'); const c = UPGRADES[key].cost; if (!L.canPay(S, c)) return fail('Not enough resources.');
   L.pay(S, c); S.up[key] = 1; if (S.proj === key) S.proj = null; L.log(S, 'Research complete: ' + UPGRADES[key].name + ' is now in service.', 'good'); L.refreshIntel(S); return { ok: true }; };
 L.deploy = (S, id) => { const tm = S.team; if (tm.dest) return fail('The team is already in transit.'); if (tm.at === id) return fail('The team is already there.');
@@ -459,14 +459,14 @@ L.sabWhy = (S, id) => { const T = S.terr[id], f = [['Base chance', 72]]; const A
 L.teamFail = S => { const loss = (rnd() < 0.3 && !S.up.elite) ? 2 : 1; S.team.pips = Math.max(0, S.team.pips - loss); return loss; };
 L.covert = (S, lid) => { const l = S.leaders.find(x => x.id === lid); if (!l || !l.alive) return fail('No such target.');
   if (L.teamAt(S) !== l.at) return fail('The strike team must be in the same territory.'); if (S.team.pips < 1) return fail('The team is out of action.');
-  if (S.res.fuel < 10) return fail('Not enough fuel (10).'); if (S.res.intel < 2) return fail('Not enough intel (2). Radar stations and leader kills produce it.'); S.res.fuel -= 10; S.res.intel -= 2;
+  if (S.res.fuel < 10) return fail('Not enough fuel (10).'); S.res.fuel -= 10;
   const p = L.covertOdds(S, l), at = l.at;
   if (rnd() < p) { S.res.salvage++; L.killLeader(S, l, 'covert strike in ' + TERR[at].name); return { ok: true, win: true, p }; }
   const loss = L.teamFail(S); S.terr[at].alert = S.t + 72; L.log(S, 'The strike on ' + l.name + ' failed. The team was detected and pulled out, losing ' + loss + ' readiness.', 'bad'); L.teamRetreat(S, at);
   return { ok: true, win: false, p }; };
 L.sabOdds = (S, id) => { const T = S.terr[id]; let p = 0.72 + (S.doc === 'shadow' ? 0.1 : 0) + (S.spec === 'shadow' ? 0.15 : 0) + (S.up.ghost ? 0.15 : 0) - 0.04 * T.n - (T.alert > S.t ? 0.2 : 0) - 0.07 * (4 - S.team.pips); return clamp(p, 0.05, 0.95); };
 L.sabotage = (S, id) => { const T = S.terr[id]; if (L.teamAt(S) !== id || T.owner !== 'enemy') return fail('The strike team must be inside that enemy territory.');
-  if (S.team.pips < 1) return fail('The team is out of action.'); if (S.res.fuel < 10) return fail('Not enough fuel (10).'); if (S.res.intel < 1) return fail('Not enough intel (1).'); S.res.fuel -= 10; S.res.intel -= 1; const p = L.sabOdds(S, id);
+  if (S.team.pips < 1) return fail('The team is out of action.'); if (S.res.fuel < 10) return fail('Not enough fuel (10).'); S.res.fuel -= 10; const p = L.sabOdds(S, id);
   if (rnd() < p) { T.n = Math.max(1, T.n - 2); S.harvest = Math.max(0, S.harvest - 2); const before = S.parties.length; S.parties = S.parties.filter(x => !(x.from === id && S.t - x.t0 < 12));
     T.alert = S.t + 36; L.log(S, 'Sabotage in ' + TERR[id].name + ': depots destroyed, strength down by 2, the Harvest set back.' + (S.parties.length < before ? ' A staging war party was wiped out.' : ''), 'good'); return { ok: true, win: true, p }; }
   const loss = L.teamFail(S); T.alert = S.t + 72; L.log(S, 'Sabotage in ' + TERR[id].name + ' failed. The team pulled out, losing ' + loss + ' readiness.', 'bad'); L.teamRetreat(S, id); return { ok: true, win: false, p }; };
@@ -532,7 +532,7 @@ L.batteriesInRange = (S, id) => { const out = []; for (const x of L.owned(S)) { 
 L.strikeEffect = (S, id, power, label) => { const T = S.terr[id]; if (T.owner !== 'enemy') return fail('Not an enemy territory.');
   const hit = ri(1, power); T.n = Math.max(1, T.n - hit); T.soft = S.t + 24; let extra = '';
   for (const l of L.leadersAt(S, id)) if (rnd() < 0.15) { l.exposed = S.t + 36; extra = ' ' + RANKN[l.rank] + ' ' + l.name + ' was wounded and is exposed.'; }
-  L.log(S, label + ' hit ' + TERR[id].name + ': strength down by ' + hit + ', defenses shaken for 24 hours.' + extra, 'good'); L.refreshIntel(S); return { ok: true, hit }; };
+  L.log(S, label + ' hit ' + TERR[id].name + ': strength down by ' + hit + ', defenses shaken for a day.' + extra, 'good'); L.refreshIntel(S); return { ok: true, hit }; };
 L.salvo = (S, id) => { const bs = L.batteriesInRange(S, id); if (!bs.length) return fail('No loaded missile battery within 2 territories.'); if (!L.canPay(S, SALVO_COST)) return fail('Not enough resources.');
   L.pay(S, SALVO_COST); S.terr[bs[0]].reload = S.t + (S.up.railgun ? 12 : 24); return L.strikeEffect(S, id, S.up.railgun ? 3 : 2, 'Missile salvo from ' + TERR[bs[0]].name); };
 L.salvoParty = (S, pid) => { const p = S.parties.find(x => x.id === pid); if (!p) return fail('That war party is gone.'); const bs = L.batteriesInRange(S, p.to).concat(L.batteriesInRange(S, p.from));
@@ -544,7 +544,7 @@ L.ambush = (S, pid) => { const p = S.parties.find(x => x.id === pid); if (!p) re
   if (p.hit) return fail('Already ambushed.'); if (S.team.pips < 1) return fail('The team is out of action.'); p.hit = 1; const hit = ri(1, 2) + (S.spec === 'shadow' ? 1 : 0); p.n -= hit;
   S.res.salvage++; let m = 'Your team ambushed the war party bound for ' + TERR[p.to].name + ', destroying ' + hit + '.'; if (rnd() < 0.2) { S.team.pips = Math.max(0, S.team.pips - 1); m += ' The team took casualties.'; }
   L.log(S, m, 'good'); if (p.n <= 0) S.parties.splice(S.parties.indexOf(p), 1); return { ok: true }; };
-L.deepRecon = S => { if (S.res.intel < 5) return fail('Not enough intel (5).'); S.res.intel -= 5; S.scanUntil = S.t + 72; L.refreshIntel(S); L.log(S, 'Deep recon: every territory, leader and war party is visible for 3 days.', 'intel'); return { ok: true }; };
+L.deepRecon = S => { if (S.res.research < 40) return fail('Not enough research (40).'); S.res.research -= 40; S.scanUntil = S.t + 72; L.refreshIntel(S); L.log(S, 'Deep recon: every territory, leader and war party is visible for 3 days.', 'intel'); return { ok: true }; };
 // EMP and airlift
 const EMP_COST = { metal: 60, fuel: 50, research: 40 };
 L.empBuild = S => { if (S.emp.building) return fail('An EMP is already being assembled.'); if (!L.canPay(S, EMP_COST)) return fail('Not enough resources.'); L.pay(S, EMP_COST); S.emp.building = true; S.emp.doneAt = S.t + 30; return { ok: true }; };

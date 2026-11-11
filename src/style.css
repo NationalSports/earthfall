@@ -183,3 +183,7 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 
 .basetop{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;padding:12px 14px;margin:8px 0 12px;border-radius:10px;background:#ffffff08;border:1px solid #ffffff1c}.basetop label{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.6}.basetop b{font-size:15px}.basetop .bbtns{display:flex;gap:8px;margin-left:auto}
 .mk .opt button+button{margin-left:6px}#lab{margin-top:14px;padding-top:6px;border-top:1px solid var(--line)}
+
+main{grid-template-columns:1fr!important}#panel,#ptoggle{display:none!important}
+#modal.psheet .sheet{max-width:600px}.sheetb{max-height:62vh;overflow:auto;padding-right:4px;margin-bottom:10px}
+.opt.nl{font-size:13px;opacity:.92}.newg+.newg{margin-left:6px}

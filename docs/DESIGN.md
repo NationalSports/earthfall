@@ -195,3 +195,10 @@ Radar twist: declared attacks are only visible a day ahead where a Radar Station
 ## Bases
 
 Strongholds are bases: Industry, Barracks, Radar, Missile Battery and Command Post are built only there, from a base page that also shows the garrison, income, Reinforce and Train armor. Ordinary territories hold troops, produce their resource and can only be fortified (2 levels). Research is one project at a time in the Lab on the Los Angeles base page.
+
+## Simplification pass
+
+- Three resources only: metal, fuel, research. Intel, salvage and uranium are gone from the interface and from every cost; superweapons (warhead, EMP) and command cards are cut.
+- No side panel. The map fills the screen; a selected territory shows its actions in the bar, Details opens a sheet, and the top bar has Enemy and Story buttons.
+- The night shows itself: the camera flies to each attack radar detects, battles stop with a report, and the morning report has a "Last night" list.
+- Regions are visible: each territory shows its region and how much of it you hold; the Strongholds list shows every region's bonus and what is missing.
