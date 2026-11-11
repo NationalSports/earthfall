@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
+<title>Thin brass card frame; 10px nine-slice inset, transparent center</title>
+<defs><linearGradient id="brass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f6dba1"/><stop offset=".2" stop-color="#b38a49"/><stop offset=".55" stop-color="#765124"/><stop offset="1" stop-color="#d4ad66"/></linearGradient></defs>
+<rect x="2" y="2" width="156" height="156" rx="5" fill="none" stroke="#362716" stroke-width="4"/>
+<rect x="2" y="2" width="156" height="156" rx="5" fill="none" stroke="url(#brass)" stroke-width="2"/>
+<rect x="6.5" y="6.5" width="147" height="147" rx="2" fill="none" stroke="#b59358" stroke-opacity=".65"/>
+<g fill="#e3bd76" stroke="#4b351b" stroke-width=".5"><path d="m6 3 3 3-3 3-3-3Z"/><path d="m154 3 3 3-3 3-3-3Z"/><path d="m6 151 3 3-3 3-3-3Z"/><path d="m154 151 3 3-3 3-3-3Z"/></g>
+</svg>

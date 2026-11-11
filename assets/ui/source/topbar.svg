@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="64" viewBox="0 0 512 64">
+<title>Navy enamel top bar, divider-free with a gold lower edge</title>
+<defs><linearGradient id="enamel" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#1b2d3b"/><stop offset=".48" stop-color="#112130"/><stop offset="1" stop-color="#08131f"/></linearGradient></defs>
+<path fill="url(#enamel)" d="M0 0H512V64H0Z"/><path stroke="#68808c" stroke-opacity=".3" d="M0 .5H512"/><path stroke="#e3ba72" d="M0 62.5H512"/><path stroke="#62431f" d="M0 63.5H512"/>
+</svg>

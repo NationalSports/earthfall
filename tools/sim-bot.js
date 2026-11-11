@@ -5,8 +5,11 @@ function run(policy,maxDays=120){const S=L.newGame(policy.spec||'assault');
 const passive={act(){}};
 const basic={act(S){ // place pool on most threatened, assault when strong
   const own=L.owned(S);
-  while(S.pool>0){let best=null,bs=-1;for(const id of own){let th=0;for(const p of S.parties)if(p.to===id)th+=p.n*2;for(const n of TERR[id].adj)if(S.terr[n].owner==='enemy')th+=S.terr[n].n*0.5;if(id===HQ)th+=1;const sc=th-S.terr[id].n;if(th>0&&sc>bs){bs=sc;best=id;}}
-   if(!best||bs<-2)break;if(!L.reinforce(S,best).ok)break;}
+  const threat=id=>{let th=0;for(const p of S.parties)if(p.to===id)th+=p.n*2;for(const n of TERR[id].adj)if(S.terr[n].owner==='enemy')th+=S.terr[n].n*0.5;if(id===HQ)th+=1;return th;};
+  const strong=own.filter(id=>L.isStrong(id));
+  while(S.pool>0&&strong.length){let best=strong[0],bs=-1e9;for(const id of strong){let sc=threat(id)-S.terr[id].n;for(const n of TERR[id].adj)if(S.terr[n].owner==='you')sc+=threat(n)*0.5;if(sc>bs){bs=sc;best=id;}}if(!L.reinforce(S,best).ok)break;}
+  if(S.orders>2){let tgt=null,ts=0.5;for(const id of own){const sc=threat(id)-S.terr[id].n;if(sc>ts){ts=sc;tgt=id;}}
+   if(tgt){let src=null,sp=1;for(const id of own){if(id===tgt)continue;const spare=S.terr[id].n-2-Math.ceil(threat(id)/2);if(spare>sp&&L.marchHops(S,id,tgt)<=3){sp=spare;src=id;}}if(src)L.move(S,src,tgt,sp);}}
   if(S.res.metal>120){const id=own.find(i=>!S.terr[i].fort&&TERR[i].adj.some(n=>S.terr[n].owner==='enemy'));if(id)L.build(S,id,'fort');}
   // assault weakest reachable
   let tgt=null,ts=99;for(const id of L.enemyT(S)){const av=L.assaultAvail(S,id);if(!av.supplied)continue;const d=L.enemyDefense(S,id);if(av.n>=d*1.6+2&&d<ts){ts=d;tgt=id;}}

@@ -8,12 +8,24 @@ const assets = 'const ART = { map: ' + JSON.stringify(uri('assets/board/map-worl
   'const ANCHORS = ' + r('assets/board/anchors.json') + ';\n' +
   'const PIECES = ' + JSON.stringify(dir('assets/pieces', 'image/webp')) + ';\n' +
   'const CARDS = ' + JSON.stringify(dir('assets/cards', 'image/webp')) + ';\n';
-const js = [assets, r('src/logic.js').replace(/if \(typeof module[^\n]*\n?/, ''), r('src/view3d.js'), r('src/ui.js')].join('\n');
+// Delivered, reviewed scripts and the icon sprite. Files are listed by name on purpose: nothing in assets/ is embedded without a review.
+const has = f => fs.existsSync(path.join(__dirname, f));
+// assets/fx/infestation.js: the revision from #25 passed review in #16 (painting stays visible), so it is switched on.
+const fxJs = ['assets/fx/infestation.js', 'assets/fx/combat.js'].filter(has).map(r).join('\n');
+const defs = has('assets/ui/icons.svg') ? (r('assets/ui/icons.svg').match(/<defs>[\s\S]*<\/defs>/) || [''])[0].replace(/\bid="/g, 'id="ic-') : '';
+const icons = 'const UI_ICONS = ' + JSON.stringify(defs ? '<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true">' + defs + '</svg>' : '') + ';\n';
+const js = [assets, icons, fxJs, r('src/logic.js').replace(/if \(typeof module[^\n]*\n?/, ''), r('src/battle.js').replace(/if \(typeof module[^\n]*\n?/, ''), r('src/view3d.js'), r('src/ui.js')].join('\n');
 // The theme is layered over the base stylesheet. If theme.css still carries a copy of the base rules,
 // only the part after its "replacement theme" marker is used, so newer base rules are not overridden by a stale copy.
 let theme = fs.existsSync(path.join(__dirname, 'theme/theme.css')) ? r('theme/theme.css') : '';
 { const m = theme.indexOf('/* Earthfall concept HUD'); if (m > 0) theme = theme.slice(m); }
-const page = r('src/index.tpl.html').replace('/*CSS*/', () => r('src/style.css') + '\n' + theme).replace('/*JS*/', () => js);
+// Painted frames and button plates from assets/ui/ (art request #11). Listed by name on purpose: only reviewed files are embedded.
+// Each becomes a CSS variable (--ui-dialog-frame and so on) that src/frames.css uses; frames.css comes after the theme so it wins.
+const { UI_PNG, validatePng } = require('./tools/check-ui-assets.js');
+const uiPng = Object.keys(UI_PNG).filter(n => has('assets/ui/' + n + '.png'));
+for (const n of uiPng) validatePng(fs.readFileSync(path.join(__dirname, 'assets/ui/' + n + '.png')), UI_PNG[n], n);
+const frames = uiPng.length ? ':root{' + uiPng.map(n => '--ui-' + n + ':url("' + uri('assets/ui/' + n + '.png', 'image/png') + '")').join(';') + '}\n' + r('src/frames.css') : '';
+const page = r('src/index.tpl.html').replace('/*CSS*/', () => r('src/style.css') + '\n' + theme + '\n' + frames).replace('/*JS*/', () => js);
 const cdn = '<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>';
 fs.mkdirSync(path.join(__dirname, 'dist'), { recursive: true });
 fs.writeFileSync(path.join(__dirname, 'dist/index.html'), page.replace('<!--THREE-->', cdn));

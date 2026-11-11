@@ -25,6 +25,7 @@ The build has no bundler. It concatenates the source files and embeds the art as
 | `src/view3d.js` | The 3D board: painted map texture, ownership tint, borders, miniatures, camera, picking. |
 | `src/ui.js` | Top bar, side panel, dialogs, input, save and load. |
 | `src/style.css` | The whole stylesheet. A replacement theme must keep every class name. |
+| `src/frames.css` | Applies the painted dialog frame, panel frame and button rims from `assets/ui/`. The build adds it after the theme. |
 | `src/index.tpl.html` | Page shell the build fills in. |
 | `assets/board/` | `map-world.jpg` (board painting), `land-mask.png` (land vs sea), `anchors.json` (pixel position of each city on the 1920 x 1080 painting), and the original PNG. |
 | `assets/pieces/` | Transparent miniatures, 256 x 256 WebP, base at the bottom edge. |
@@ -56,3 +57,11 @@ A simple attacking bot plays 30 campaigns per difficulty and prints how each end
 Stage 1: the strategic map game. Planned next: a rotating globe view, overhead tactical boards for attack and defense, a smarter enemy, and multiplayer.
 
 "Earthfall" is a working title; a published game already uses the name.
+
+## HUD asset checks
+
+`npm run check:assets` validates the 11 HUD PNGs, including dimensions, chunk checksums and decompressed payloads. The build performs the same validation before embedding those files once as CSS variables.
+
+`npm run check:browser` checks the game at 1280, 820, 390 and 780 pixels wide, including a forced WebGL1 run. It exercises city zoom, board/globe effects, panel tabs, Orders and timing, and checks image decoding, seamless enamel edges, transparent card centers, button sizes and overflow. Run `npm run build` first. On macOS it uses installed Google Chrome; elsewhere install Playwright Chromium or set `CHROME_BIN`. Screenshots go to ignored `dist/qa/`, or `REVIEW_SCREENSHOTS` when set.
+
+The three repaired HUD assets have editable SVG sources in `assets/ui/source/`. `npm run art:export` renders them to production PNG dimensions. Nine-slice insets are documented in `theme/theme.css`, with layout rules in `src/frames.css`. Review captures are under `docs/art/qa/hud-repair/`.
