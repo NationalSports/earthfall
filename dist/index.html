@@ -1159,12 +1159,11 @@ const V = (() => {
       { const nr = new THREE.Mesh(G.nring, M.node), nd = new THREE.Mesh(G.ndot, T.owner === 'you' ? M.nodeYou : T.owner === 'enemy' ? M.nodeEnemy : M.nodeWaste); nr.rotation.x = nd.rotation.x = -Math.PI / 2; nr.position.y = nd.position.y = 0.14; nr.renderOrder = nd.renderOrder = 3; g.add(nr, nd); }
       const put = (name, x, z, size, dim) => { g.add(blob(x, z, size * 0.36), piece(name, x, z, size, dim)); };
       if (T.owner !== 'waste') g.add(glow(T.owner === 'you' ? 0x2fd0cc : 0xff3a1c, T.owner === 'you' ? 2.2 : 2.8));
-      if (T.owner === 'you') { if (id === HQ) { put('foundry', 0, -1.1, 2.5); if (S.nuke.building || S.nuke.stage || S.nuke.ready) put('silo', -2.2, -1.3, 2.3); if (S.emp.building || S.emp.n) put('emp-tower', 2.3, -1.6, 2.2); if (S.up.bombers) put('drone-bay', -2.6, 0.4, 2.0); }
-        if (T.radar) put('radar-dish', 1.6, -0.7, 2.0); if (T.fort) put('barricade', -1.5, 0.1, 1.5); if (T.battery) put(S.up.railgun ? 'railgun' : 'launcher', 1.6, 0.6, 1.8);
-        const c = T.n >= 7 ? 3 : T.n >= 4 ? 2 : 1; for (let i = 0; i < c; i++) put(i === 2 ? 'rover' : 'infantry', (i - (c - 1) / 2) * 1.25, 0.35 + (i % 2) * 0.25, 1.9);
+      // Only special things get a figure. Troop counts are the number on the label.
+      if (T.owner === 'you') { if (id === HQ) put('laboratory', 0, -1.3, 2.4);
+        if (T.works) put('foundry', -1.7, -0.9, 1.9); if (T.barracks) put('depot', 1.7, -0.9, 1.9); if (T.radar) put('radar-dish', 0.2, id === HQ ? 0.5 : -0.9, 1.9); if (T.fort) put('barricade', -1.5, 0.5, 1.5); if (T.battery) put(S.up.railgun ? 'railgun' : 'launcher', 1.6, 0.6, 1.8); if (T.post) put('turret', 0, 0.9, 1.6); if (T.arm) put('rover', -0.2, 1.3, 1.6);
       } else if (T.owner === 'enemy') { const known = S.obs[id];
-        if (!known) put('spore', 0, 0.2, 1.8, true); else { const ls = L.leadersAt(S, id); if (ls.some(l => l.rank === 'overlord')) put('hive', -0.2, -1.1, 2.8); else if (ls.some(l => l.rank === 'warlord')) put('hive-spire', -0.4, -1.0, 2.3);
-          if (T.n >= 7) { put('infestation-cube', -0.8, 0.2, 1.9); put('swarm', 0.7, 0.5, 1.8); } else put(T.n >= 4 ? 'infestation-cube' : 'infestation-stack', 0, 0.3, 1.9);
+        if (!known) { } else { const ls = L.leadersAt(S, id); if (ls.some(l => l.rank === 'overlord')) put('hive', -0.2, -1.1, 2.8); else if (ls.some(l => l.rank === 'warlord')) put('hive-spire', -0.4, -1.0, 2.3);
           ls.forEach((l, k) => put(l.rank, 1.5 + k * 1.2, -0.2 + k * 0.2, l.rank === 'overlord' ? 2.9 : l.rank === 'warlord' ? 2.5 : 2.1)); }
       } else { const cr = mesh(G.cyl, M.dark, 0, 0.03, 0, 1.5, 0.06, 1.5); cr.castShadow = false; g.add(cr); const e = mesh(G.ring, M.ember, 0, 0.08, 0, 1.6); e.rotation.x = Math.PI / 2; e.castShadow = false; g.add(e); }
     }
