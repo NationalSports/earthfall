@@ -25,6 +25,7 @@ The build has no bundler. It concatenates the source files and embeds the art as
 | `src/view3d.js` | The 3D board: painted map texture, ownership tint, borders, miniatures, camera, picking. |
 | `src/ui.js` | Top bar, side panel, dialogs, input, save and load. |
 | `src/style.css` | The whole stylesheet. A replacement theme must keep every class name. |
+| `src/frames.css` | Applies the painted dialog frame, panel frame and button rims from `assets/ui/`. The build adds it after the theme. |
 | `src/index.tpl.html` | Page shell the build fills in. |
 | `assets/board/` | `map-world.jpg` (board painting), `land-mask.png` (land vs sea), `anchors.json` (pixel position of each city on the 1920 x 1080 painting), and the original PNG. |
 | `assets/pieces/` | Transparent miniatures, 256 x 256 WebP, base at the bottom edge. |
