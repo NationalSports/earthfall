@@ -77,12 +77,13 @@ const SPECS = {
 const UPGRADES = {
   elite:{ name:'Elite Training', cost:{research:90,metal:40}, desc:'Strike team recovers readiness twice as fast and loses less on a failed operation.' },
   ghost:{ name:'Ghost Suits', cost:{research:110}, desc:'+15% on covert strikes and sabotage.' },
-  transport:{ name:'Rapid Transport', cost:{research:70,fuel:60}, desc:'Strike team travels 40% faster.' },
+  transport:{ name:'Rapid Transport', cost:{research:70,fuel:60}, desc:'5 free moves next door each day instead of 3.' },
   hardened:{ name:'Hardened Garrisons', cost:{research:90,metal:80}, desc:'Every garrison rolls +1 on its best defense die.' },
   deepscan:{ name:'Deep Scan', cost:{research:130}, desc:'Radar reaches one territory further and always tracks every leader.' },
   bombers:{ name:'Strategic Bombers', cost:{research:120,metal:90}, desc:'Unlocks bomber raids from HQ against any territory on the map.' },
   exo:{ name:'Exo Armor', cost:{research:60,metal:30}, desc:'Built from recovered enemy plating. The strike team counts as one more troop in every battle.' },
   railgun:{ name:'Railgun Batteries', cost:{research:80,metal:40}, desc:'Missile batteries hit harder (up to −3 strength) and reload in 12 hours.' },
+  warhead:{ name:'Warhead', cost:{research:220,metal:120,fuel:120}, desc:'The answer to their orbital drops. One launch erases any territory on the map, and everything in it, for the rest of the war. Can be built again. Each launch raises the threat level.' },
   disruptor:{ name:'Hive Disruptor', cost:{research:120,metal:60}, desc:'Jams the swarm signal. One fewer occupied territory grows each day.' }
 };
 const BUILD = {
@@ -316,7 +317,7 @@ L.daily = S => { const o0 = S.orders || 0, i0 = S.res.intel, u0 = S.res.uranium,
   S.orders = Math.min(L.ordersMax(S) + 3, o0 + L.ordersMax(S)); const own = L.owned(S); const inc = { metal: 0, fuel: 0, research: 0 };
   for (const id of own) { const T = S.terr[id]; inc[TERR[id].res] += (L.isStrong(id) ? 12 : 6) + L.worksYield(S) * (T.works || 0); if (T.barracks && L.day(S) % 3 === 0) { T.n += T.barracks; bar.push({ id, n: T.barracks }); } const pk = PERKS[id]; if (pk) { for (const k in pk.inc || {}) inc[k] += pk.inc[k]; if (pk.intel) S.res.intel = Math.min(30, S.res.intel + pk.intel); if (pk.pool && L.day(S) % 2 === 0) S.pool = Math.min(30, S.pool + 1); } }
   for (const k in inc) S.res[k] += inc[k];
-  S.night = false; S.redeploy = L.REDEPLOY; for (const p of S.parties) p.seen = L.partyVisible(S, p); let done = null; if (S.proj && !S.up[S.proj] && L.canPay(S, UPGRADES[S.proj].cost)) { done = S.proj; L.buy(S, done); }
+  S.night = false; S.redeploy = L.REDEPLOY + (S.up.transport ? 2 : 0); for (const p of S.parties) p.seen = L.partyVisible(S, p); let done = null; if (S.proj && !S.up[S.proj] && L.canPay(S, UPGRADES[S.proj].cost)) { done = S.proj; L.buy(S, done); }
   if (S.doc === 'shadow') S.res.intel = Math.min(30, S.res.intel + 2);
   S.res.uranium += own.filter(id => URANIUM.includes(id)).length; S.res.intel = Math.min(30, S.res.intel + 1 + own.filter(id => S.terr[id].radar).length);
   let r = Math.max(1, Math.floor(own.length / L.P.div));
@@ -427,7 +428,7 @@ L.marchHops = (S, from, to) => { const d = { [from]: 0 }, q = [from]; while (q.l
 L.airMax = S => S.up.transport ? 5 : 3;
 // Orders: the daily budget every action draws on. Unused Orders carry over, up to 3 above the daily amount.
 // Mobilization ends here: the war chest is spent or kept, and the clock can run.
-L.begin = S => { S.mob = false; S.orders = L.ordersMax(S); S.redeploy = L.REDEPLOY; L.log(S, 'Mobilization complete. The war begins.', 'story'); };
+L.begin = S => { S.mob = false; S.orders = L.ordersMax(S); S.redeploy = L.REDEPLOY + (S.up.transport ? 2 : 0); L.log(S, 'Mobilization complete. The war begins.', 'story'); };
 L.worksYield = S => S.doc === 'economy' ? 4 : 3;
 L.ordersMax = S => 6 + (S.doc === 'blitz' ? 1 : 0) + L.owned(S).filter(id => S.terr[id].post).length;
 // What a territory yields each day to whoever on the player side holds it.
@@ -450,9 +451,10 @@ L.trainArmor = (S, id, n) => { const T = S.terr[id]; if (T.owner !== 'you') retu
 L.unbuild = (S, id, key) => { const T = S.terr[id]; if (!S.mob) return fail('Buildings can only be removed before the war begins.'); if (!T || T.owner !== 'you' || !T[key]) return fail('Nothing to remove.'); if (id === HQ && (key === 'fort' || key === 'radar') && T[key] <= 1) return fail('Headquarters keeps its original defenses.');
   T[key]--; const c = L.costOf(S, key, T[key]); for (const k in c) S.res[k] += c[k]; if (key === 'barracks' && !T.barracks && T.arm) { S.res.metal += ARMOR_COST.metal * T.arm; S.res.fuel += ARMOR_COST.fuel * T.arm; T.arm = 0; } L.refreshIntel(S); return { ok: true }; };
 L.buildHours = S => Math.round((S.spec === 'engineer' ? 16 : 24) * (S.doc === 'economy' ? 0.67 : 1));
-L.setProject = (S, key) => { if (!UPGRADES[key] || S.up[key]) return fail('Already researched.'); S.proj = key; return { ok: true }; };
+L.setProject = (S, key) => { if (!UPGRADES[key] || S.up[key]) return fail('Already researched.'); if (key === 'warhead' && S.esc < 1) return fail('Locked until the swarm starts dropping from orbit (threat level 1).'); S.proj = key; return { ok: true }; };
 L.projDays = S => { if (!S.proj) return null; const c = UPGRADES[S.proj].cost; const own = L.owned(S); let d = 0; for (const k of ['research', 'metal', 'fuel']) if (c[k] && S.res[k] < c[k]) { const per = own.reduce((a, id) => a + (TERR[id].res === k ? (L.isStrong(id) ? 12 : 6) + L.worksYield(S) * (S.terr[id].works || 0) : 0), 0) || 1; d = Math.max(d, Math.ceil((c[k] - S.res[k]) / per)); } return Math.max(1, d); };
-L.buy = (S, key) => { if (S.up[key]) return fail('Already owned.'); const c = UPGRADES[key].cost; if (!L.canPay(S, c)) return fail('Not enough resources.');
+L.buy = (S, key) => { if (key === 'warhead') { if (S.esc < 1) return fail('Locked until the swarm starts dropping from orbit (threat level 1).'); const c = UPGRADES.warhead.cost; if (!L.canPay(S, c)) return fail('Not enough resources.'); L.pay(S, c); S.nuke.ready++; if (S.proj === key) S.proj = null; L.log(S, 'A warhead is armed and ready at headquarters.', 'good'); return { ok: true }; }
+  if (S.up[key]) return fail('Already owned.'); const c = UPGRADES[key].cost; if (!L.canPay(S, c)) return fail('Not enough resources.');
   L.pay(S, c); S.up[key] = 1; if (S.proj === key) S.proj = null; L.log(S, 'Research complete: ' + UPGRADES[key].name + ' is now in service.', 'good'); L.refreshIntel(S); return { ok: true }; };
 L.deploy = (S, id) => { const tm = S.team; if (tm.dest) return fail('The team is already in transit.'); if (tm.at === id) return fail('The team is already there.');
   if (S.terr[id].owner === 'waste') return fail('Nothing survives there.'); if (tm.pips < 1) return fail('The team is out of action until it rests.');
