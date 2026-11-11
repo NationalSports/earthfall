@@ -314,7 +314,7 @@ const V = (() => {
         for (let i = 0; i < n; i++) { const a = i / n * 6.283, a2 = (i + 0.5) / n * 6.283, tw = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 0.42, 8), wm); tw.scale.y = 1 + (T.fort - 1) * 0.6; tw.position.set(Math.cos(a) * R, 0.12 + 0.21 * tw.scale.y, Math.sin(a) * R); g.add(tw);
           if (i === 4) continue; const seg = new THREE.Mesh(new THREE.BoxGeometry(2 * R * Math.sin(Math.PI / n) - 0.12, 0.24, 0.07), wm); seg.scale.y = 1 + (T.fort - 1) * 0.6; seg.position.set(Math.cos(a2) * R, 0.13 + 0.12 * seg.scale.y, Math.sin(a2) * R); seg.rotation.y = -a2 + Math.PI / 2; g.add(seg); } }
       if (id === HQ) { if (S.nuke.building || S.nuke.stage || S.nuke.ready) put('silo', 0.6, -2.1, 1.3); if (S.emp.building || S.emp.n) put('emp-tower', -2.3, -0.6, 1.3); }
-      const n = Math.min(12, T.n); for (let i = 0; i < n; i++) put(i % 4 === 3 ? 'rover' : 'infantry', (i % 6 - 2.5) * 0.52, 2.0 + Math.floor(i / 6) * 0.55, 0.8);
+      const n = Math.min(12, T.n + (T.arm || 0)); for (let i = 0; i < n; i++) put(i < (T.arm || 0) ? 'rover' : 'infantry', (i % 6 - 2.5) * 0.52, 2.0 + Math.floor(i / 6) * 0.55, 0.8);
       if (L.teamAt(S) === id) put('tiltrotor', -1.9, -1.9, 1.3);
     } else if (T.owner === 'enemy') { if (!known) { for (let i = 0; i < 4; i++) put('spore', Math.cos(i * 1.7) * 1.3, Math.sin(i * 1.7) * 1.3, 1.1, true); }
       else { const ls = L.leadersAt(S, id); put(ls.some(l => l.rank === 'overlord') ? 'hive' : 'hive-spire', 0, -0.6, 2.0); const n = Math.min(12, T.n); for (let i = 0; i < n; i++) { const a = i / n * 6.283; put(i % 3 ? 'swarm' : 'infestation-stack', Math.cos(a) * 2.1, Math.sin(a) * 1.9 + 0.2, 0.85); }
@@ -325,7 +325,7 @@ const V = (() => {
   function cityFrame(dt) { cam.dist = Math.max(cam.dist, zmin()); const raw = mode === 'globe' || !S0 ? 0 : clamp((zmin() + 15 - camS.dist) / 11, 0, 1), f = raw * raw * (3 - 2 * raw); cityF = f; if (f <= 0) { if (cityGrp) cityGrp.visible = false; return null; }
     let best = null, bd = 6.5; for (const id of TIDS) { const p = P(id), dx = ((p.x - camS.tx) % BW + BW * 1.5) % BW - BW / 2, d = Math.hypot(dx, p.z - camS.tz - 1); if (d < bd) { bd = d; best = id; } }
     if (!best) { if (cityGrp) cityGrp.visible = false; return null; }
-    const T = S0.terr[best], sg = sigTok + T.n + (L.teamAt(S0) === best) + (T.works || 0) + (T.barracks || 0) + (T.fort || 0) + (T.job ? T.job.key : ''); if (best !== cityId || citySig !== sg) { buildCity(S0, best); citySig = sg; }
+    const T = S0.terr[best], sg = sigTok + T.n + (L.teamAt(S0) === best) + (T.works || 0) + (T.barracks || 0) + (T.fort || 0) + (T.job ? T.job.key : '') + 'a' + (T.arm || 0); if (best !== cityId || citySig !== sg) { buildCity(S0, best); citySig = sg; }
     cityGrp.visible = true; cityGrp.scale.set(0.3 + 0.7 * f, Math.max(0.02, f), 0.3 + 0.7 * f); if (cityGrp.userData.halo) cityGrp.userData.halo.material.opacity = f;
     if (f > 0.75) { const p = P(best), dx = ((p.x - cam.tx) % BW + BW * 1.5) % BW - BW / 2, dz = p.z - 0.4 - cam.tz; if (Math.hypot(dx, dz) < 2.6) { cam.tx += dx * Math.min(1, dt * 1.6); cam.tz += dz * Math.min(1, dt * 1.6); } } // settle on the city once you are in it
     return f > 0.03 ? best : null; }
@@ -337,8 +337,8 @@ const V = (() => {
     const sa = S.parties.map(p => p.id + (L.partyVisible(S, p) ? 'v' : 'h')).join(',') + '|' + (S.team.dest || '') + '|' + (S.cols || []).map(c => c.id).join(',') + '|' + (sel && S.terr[sel] && S.terr[sel].owner === 'enemy' ? sel + L.assaultAvail(S, sel).by.map(b => b.id + b.max).join('') : ''); if (sa !== sync.sa) { sync.sa = sa; buildArcs(S); }
     const threat = {}; for (const p of S.parties) if (L.partyVisible(S, p)) threat[p.to] = 1;
     for (const id of TIDS) { const T = S.terr[id], d = labels[id], known = S.obs[id]; d.className = 'tlabel ' + T.owner + (id === sel ? ' sel' : '') + (threat[id] ? ' threat' : '') + (id === HQ ? ' hq' : '') + (L.isStrong(id) ? ' strong' : '');
-      d.children[0].textContent = TERR[id].name; d.children[1].textContent = T.owner === 'waste' ? '☢' : T.owner === 'enemy' ? (known ? L.enemyDefense(S, id) : '?') : T.n;
-      const ls = S.leaders.filter(l => l.alive && l.at === id && L.leaderKnown(S, l)); d.children[2].textContent = ls.map(l => l.rank === 'overlord' ? '♛' : l.rank === 'warlord' ? '★' : '▲').join(''); } }
+      d.children[0].textContent = TERR[id].name; d.children[1].textContent = T.owner === 'waste' ? '☢' : T.owner === 'enemy' ? (known ? L.enemyDefense(S, id) : '?') : T.n + (T.arm || 0);
+      const ls = S.leaders.filter(l => l.alive && l.at === id && L.leaderKnown(S, l)); d.children[2].textContent = (T.owner === 'you' && T.arm ? '▰' + T.arm : '') + ls.map(l => l.rank === 'overlord' ? '♛' : l.rank === 'warlord' ? '★' : '▲').join(''); } }
   const v3 = new THREE.Vector3();
   function place(d, p, dy, below) { if (mode === 'globe' && p.dot(camera.position) < GR * GR * 1.02) { d.style.display = 'none'; return; } v3.copy(p); if (mode === 'globe') v3.multiplyScalar(1 + dy / GR); else { v3.y += dy; if (camS) v3.x += Math.round((camS.tx - p.x) / BW) * BW; } v3.project(camera); if (v3.z > 1) { d.style.display = 'none'; return; } d.style.display = ''; d.style.transform = (below ? 'translate(-50%,17px) translate(' : 'translate(-50%,-50%) translate(') + ((v3.x + 1) / 2 * el.clientWidth).toFixed(1) + 'px,' + ((1 - v3.y) / 2 * el.clientHeight).toFixed(1) + 'px)'; }
   function frame(dt) { time += dt; cam.tz = clamp(cam.tz, -BH / 2 + 10, BH / 2 - 8); if (camS) { if (cam.tx > BW / 2) { cam.tx -= BW; camS.tx -= BW; } else if (cam.tx < -BW / 2) { cam.tx += BW; camS.tx += BW; } }

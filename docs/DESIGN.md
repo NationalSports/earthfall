@@ -78,7 +78,8 @@ Your own garrisons follow population: great cities start with 3, remote outposts
 ### Reserves
 About 7 new troops a day at the start: one per 11 territories held plus region bonuses. For comparison, Risk gives one per 3 territories (minimum 3) plus continent bonuses and card sets.
 
-Planned: Armor, a second unit type trained at a Barracks, counting double on the attack.
+### Armor (Built)
+A second unit type. Trained at any city with a Barracks: 30 metal and 20 fuel each, up to 3 per Order. Armor counts **double when attacking** and single when defending. Infantry take losses first, so armor is the last to fall. It marches with your troops and goes in first. On the map a garrison shows as its total with an armor mark (▰2).
 
 ## Difficulty (Built)
 | Level | Invasion growth | Escalation | Harvest speed | AI planning |
@@ -148,6 +149,9 @@ War parties of 3 or more can be fought in person, or auto-resolved with dice.
 - A battery gives 2 strikes (3 with railgun): tap the field. Tap a creature to focus fire.
 - Every creature that gets through hurts your rearmost squad. Lose every squad and the city falls.
 - On autopilot the battle gives close to the same odds as the dice; good play does better.
+
+### Knowing what to do (Built)
+A panel on the map titled "What you can do now" lists up to four concrete options for the current moment, each with a Show button: defend a threatened city, place reserves, the best available attack with its odds, train armor, build Industry, or run the clock. During mobilization the same panel lists what the war chest can still buy and ends with Begin the war.
 
 ### The city view (Built)
 Zoom past the closest board level and the camera keeps descending into the nearest city: its streets, garrison, structures, and gold pads where a fortress, radar or battery can still be built. Tap a pad to build.

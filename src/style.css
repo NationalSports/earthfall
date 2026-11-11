@@ -131,3 +131,9 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 @media (max-width:860px){.newg{padding:4px 6px;font-size:10px}}
 
 #coach button.go{background:linear-gradient(#c9973a,#8a6218);border-color:#f0cd7a;color:#1a1205;font-weight:700;opacity:1;white-space:nowrap}
+
+#coach.show.list{display:block;padding:8px 10px;max-width:560px}.opth{display:flex;align-items:center;gap:8px;margin-bottom:4px}.opth b{font-family:var(--display);letter-spacing:.06em;color:var(--gold);font-size:13.5px;text-transform:uppercase;white-space:nowrap}.opth span{flex:1;font-size:12px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.opt{display:flex;align-items:center;gap:8px;padding:5px 0;border-top:1px solid #ffffff14;font-size:13px;line-height:1.3}.opt span{flex:1}.opt span b{color:#f4e6c4}#coach.show.list .opt span b:first-child{color:#f4e6c4;margin-right:0;white-space:normal}.opt button{min-width:54px}
+.stats small{display:block;font-size:11px;opacity:.7;font-weight:400}
+@media (max-width:860px){.opt{font-size:12px;padding:4px 0}#coach.show.list{max-height:34vh;overflow:auto}}
+@media (max-height:520px){#coach.show.list .opt:nth-of-type(n+4){display:none}}
