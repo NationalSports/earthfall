@@ -3,6 +3,15 @@
   "private": true,
   "version": "0.1.0",
   "description": "Earthfall: a browser strategy game. Risk-style territory control crossed with Pandemic-style spread.",
-  "scripts": { "build": "node build.js", "simulate": "node tools/simulate.js" },
-  "devDependencies": { "three": "0.128.0" }
+  "scripts": {
+    "build": "node build.js",
+    "simulate": "node tools/simulate.js",
+    "check:assets": "node tools/check-ui-assets.js",
+    "check:browser": "node tools/check-browser.cjs",
+    "art:export": "node tools/export-ui-assets.cjs"
+  },
+  "devDependencies": {
+    "three": "0.128.0",
+    "playwright": "1.65.0"
+  }
 }

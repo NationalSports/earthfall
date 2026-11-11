@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<title>Seamless navy enamel, 64px repeating grain</title>
+<defs><pattern id="grain" width="64" height="64" patternUnits="userSpaceOnUse"><rect width="64" height="64" fill="#0c1925"/><g fill="#547187" opacity=".10"><circle cx="9" cy="13" r=".7"/><circle cx="37" cy="8" r=".6"/><circle cx="51" cy="35" r=".8"/><circle cx="22" cy="47" r=".6"/><circle cx="43" cy="56" r=".6"/></g><g fill="#000" opacity=".12"><circle cx="16" cy="30" r=".8"/><circle cx="43" cy="21" r=".6"/><circle cx="8" cy="55" r=".6"/><circle cx="58" cy="49" r=".7"/></g></pattern></defs>
+<rect width="512" height="512" fill="url(#grain)"/>
+</svg>

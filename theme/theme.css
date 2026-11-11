@@ -27,3 +27,10 @@ body{background:radial-gradient(ellipse at 45% 40%,#11283a,#050b13 80%);color:va
 .brand b{position:relative}
 @media(max-width:860px),(max-height:520px){.brand{padding-left:29px;min-height:28px}.brand::before{width:26px;height:26px}}
 @media(prefers-reduced-motion:reduce){.brand::before{transition:none}}
+
+/* HUD bitmap contract (#11): build.js embeds each image once as --ui-<name>.
+   Layout rules live in src/frames.css, after this theme. Source slice insets:
+   dialog-frame 40px (rendered 20px desktop / 10px compact); panel-frame 32px (16px);
+   card-frame 10px (5px); all button plates 6px (3px).
+   Source ornament stays within each slice; padding clears the rendered border.
+   topbar and texture-enamel are backgrounds, not nine-slice frames. */

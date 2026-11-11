@@ -60,7 +60,7 @@ const V = (() => {
           const near = (x > 2 && landA[i - 3]) || (x < RW - 3 && landA[i + 3]) || (y > 2 && landA[i - 3 * RW]) || (y < RH - 3 && landA[i + 3 * RW]);
           if (near) { r += 18; g += 46; b += 56; }
           if (A) { r = A[o]; g = A[o + 1]; b = A[o + 2]; }
-          
+
         } else { const k = idx[i], c = COL[own[k]], n = fbm(x * 0.03 + 11, y * 0.03 + 5), al = Math.abs(lat);
           let tr = 74, tg = 104, tb = 58; if (al > 60) { tr = 190; tg = 198; tb = 200; } else if (al > 14 && al < 33 && n > 0.42) { tr = 168; tg = 140; tb = 92; } else if (n > 0.6) { tr = 96; tg = 92; tb = 74; }
           const m = own[k] === 'waste' ? 0.85 : 0.5, sh = (0.74 + n * 0.4) * shade[i], hh = hp[i];
@@ -380,7 +380,7 @@ const V = (() => {
     if (kind === 'emp') return play('empRing', B, { radius: 7 * g }); return play('explosion', B, { size: 2.8 * g }); }
   function flash(p, size, color, dur) { const m = new THREE.Mesh(G.sph, new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.9 })); m.position.copy(p); fxGroup.add(m);
     fx.push({ obj: m, t: 0, update(t) { const k = t / dur; if (k >= 1) return false; m.scale.setScalar(0.2 + size * Math.sqrt(k)); m.material.opacity = 0.9 * (1 - k); } }); }
-  function missile(from, to, kind) { const A = P(from), B = P(to), big = kind === 'nuke'; 
+  function missile(from, to, kind) { const A = P(from), B = P(to), big = kind === 'nuke';
     // Flat board: the delivered missile flies the arc (its flight is 1.35 s of its own clock, stretched to match the sound), then the delivered impact plays.
     if (mode !== 'globe') { const fl = big ? 2.2 : 1.1; if (play('missileTrail', null, { from: A.clone().setY(A.y + 0.6), to: B.clone().setY(B.y + 0.3) }, 1.35 / fl)) { fx.push({ obj: new THREE.Object3D(), t: 0, update(t) { if (t >= fl) { if (!impact(B, kind)) flash(B, big ? 9 : kind === 'emp' ? 5 : 2.6, kind === 'emp' ? 0x7fd0ff : 0xffa040, big ? 2.4 : 0.8); return false; } } }); return; } }
     const c = mode === 'globe' ? { getPoint: t => curveFor(from, to, 3).at(t) } : new THREE.QuadraticBezierCurve3(A.clone().setY(A.y + 0.6), A.clone().lerp(B, 0.5).setY(8 + A.distanceTo(B) * 0.2), B.clone().setY(B.y + 0.3));
