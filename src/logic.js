@@ -31,11 +31,13 @@ const LINKS = [
   ['bogota','lima'],['bogota','manaus'],['lima','manaus'],['manaus','saopaulo'],['saopaulo','buenosaires'],['lima','buenosaires'],['saopaulo','lagos',1],['lima','sydney',1],
   ['london','paris',1],['london','stockholm',1],['paris','madrid'],['paris','berlin'],['paris','rome'],['madrid','algiers',1],['berlin','stockholm',1],['berlin','rome'],
   ['berlin','kyiv'],['rome','kyiv'],['rome','algiers',1],['kyiv','moscow'],['kyiv','istanbul',1],['stockholm','moscow'],['moscow','astana'],['moscow','novosibirsk'],
-  ['algiers','cairo'],['algiers','lagos'],['cairo','nairobi'],['cairo','riyadh'],['cairo','istanbul'],['lagos','kinshasa'],['lagos','nairobi'],['nairobi','kinshasa'],
+  ['algiers','cairo'],['algiers','lagos'],['cairo','nairobi'],['cairo','riyadh'],['cairo','istanbul'],['lagos','kinshasa'],['nairobi','kinshasa'],
   ['kinshasa','joburg'],['nairobi','joburg'],['nairobi','delhi',1],
-  ['istanbul','tehran'],['istanbul','riyadh'],['riyadh','tehran'],['tehran','astana'],['tehran','delhi'],['astana','novosibirsk'],['astana','delhi'],['astana','beijing'],
+  ['istanbul','tehran'],['istanbul','riyadh'],['riyadh','tehran'],['tehran','astana'],['tehran','delhi'],['astana','novosibirsk'],['astana','delhi'],
   ['novosibirsk','yakutsk'],['novosibirsk','beijing'],['yakutsk','beijing'],['yakutsk','tokyo',1],['delhi','beijing'],['delhi','bangkok'],['beijing','hongkong'],['beijing','seoul'],
-  ['hongkong','bangkok'],['hongkong','manila',1],['seoul','tokyo',1],['tokyo','manila',1],['bangkok','jakarta',1],['jakarta','manila',1],['jakarta','perth',1],['perth','sydney']
+  ['hongkong','bangkok'],['hongkong','manila',1],['seoul','tokyo',1],['tokyo','manila',1],['bangkok','jakarta',1],['jakarta','manila',1],['jakarta','perth',1],['perth','sydney'],
+  // Added so the rules match the borders drawn on the board: if two territories touch on the map, they connect.
+  ['seoul','yakutsk'], ['nairobi','riyadh'], ['kyiv','stockholm'], ['cairo','lagos'], ['moscow','tehran'], ['istanbul','moscow'], ['hongkong','seoul'], ['mexico','ny'], ['delhi','novosibirsk'], ['istanbul','rome'], ['cairo','kinshasa'], ['lima','saopaulo']
 ];
 if (typeof ANCHORS !== 'undefined') for (const id of TIDS) { TERR[id].ax = ANCHORS[id][0]; TERR[id].ay = ANCHORS[id][1]; }
 LINKS.forEach(l => { TERR[l[0]].adj.push(l[1]); TERR[l[1]].adj.push(l[0]); });
@@ -411,23 +413,24 @@ L.sabotage = (S, id) => { const T = S.terr[id]; if (L.teamAt(S) !== id || T.owne
   const loss = L.teamFail(S); T.alert = S.t + 72; L.log(S, 'Sabotage in ' + TERR[id].name + ' failed. The team pulled out, losing ' + loss + ' readiness.', 'bad'); L.teamRetreat(S, id); return { ok: true, win: false, p }; };
 // Assault: troops come from the pool first, then neighboring garrisons (each keeps 1)
 // Who can attack: the spare troops in your territories next door. With no land border, your reserve lands from the sea instead, at a disadvantage.
-L.assaultAvail = (S, id) => { const nb = L.playerNeighbors(S, id); let n = 0; for (const x of nb) n += Math.max(0, S.terr[x].n - 1); return { n: nb.length ? n : S.pool, supplied: nb.length > 0, sides: nb.filter(x => S.terr[x].n > 1).length }; };
+L.assaultAvail = (S, id) => { const nb = L.playerNeighbors(S, id); let n = 0; for (const x of nb) n += Math.max(0, S.terr[x].n - 1); return { n: nb.length ? n : S.pool, supplied: nb.length > 0, sides: nb.filter(x => S.terr[x].n > 1).length, by: nb.filter(x => S.terr[x].n > 1).map(x => ({ id: x, max: S.terr[x].n - 1 })).sort((a, b) => b.max - a.max) }; };
 L.estimate = (A, D, aB, dB) => { if (A < 1) return 0; let w = 0; for (let i = 0; i < 300; i++) if (L.fight(A, D, aB, dB).D <= 0) w++; return w / 300; };
 L.assaultPlan = (S, id, troops, o) => { o = o || {}; const av = L.assaultAvail(S, id); troops = clamp(troops, 0, av.n); const teamHere = L.teamAt(S) === id && S.team.pips > 0;
   const teamN = teamHere ? L.teamN(S) : 0; const cost = { fuel: (o.air ? BOMB_COST.fuel : 0) + (o.missile ? SALVO_COST.fuel : 0), metal: o.missile ? SALVO_COST.metal : 0 };
-  if (av.sides < 2) o.flank = false; // a flank needs troops on two sides of the target
-  const can = { flank: av.sides >= 2, missile: L.batteriesInRange(S, id).length > 0, air: !!S.up.bombers && (S.bombT || 0) <= S.t && S.terr[HQ].owner === 'you' };
+  // Each bordering territory sends its own share. o.from says how many from each; without it the largest garrisons go first.
+  let from = null, sides = 0; if (av.supplied) { from = {}; let left = troops; for (const b of av.by) { const want = o.from && o.from[b.id] != null ? clamp(o.from[b.id], 0, b.max) : Math.min(b.max, left); from[b.id] = want; left -= want; if (want > 0) sides++; } troops = Object.values(from).reduce((a, b) => a + b, 0); }
+  const flank = !!o.flank && sides >= 2; // a flank needs troops committed from two sides of the target
+  const can = { flank: sides >= 2, missile: L.batteriesInRange(S, id).length > 0, air: !!S.up.bombers && (S.bombT || 0) <= S.t && S.terr[HQ].owner === 'you' };
   let D = L.enemyDefense(S, id) - (o.missile && can.missile ? 2 : 0) - (o.air && can.air ? 3 : 0); D = Math.max(1, D);
-  const n = (teamHere && S.spec === 'assault' ? 1 : 0) + (o.flank ? 1 : 0) - (av.supplied ? 0 : 1); const aB = clamp(n, 0, 2), dB = n < 0 ? 1 : 0, A = troops + teamN;
-  return { A, D, aB, dB, troops, teamN, teamHere, cost, can, avail: av.n, supplied: av.supplied, guards: L.guards(S, id), p: L.estimate(A, D, aB, dB) }; };
+  const n = (teamHere && S.spec === 'assault' ? 1 : 0) + (flank ? 1 : 0) - (av.supplied ? 0 : 1); const aB = clamp(n, 0, 2), dB = n < 0 ? 1 : 0, A = troops + teamN;
+  return { A, D, aB, dB, troops, teamN, teamHere, cost, can, from, by: av.by, flank, avail: av.n, supplied: av.supplied, guards: L.guards(S, id), p: L.estimate(A, D, aB, dB) }; };
 L.assaultStart = (S, id, troops, o) => { o = o || {}; const T = S.terr[id]; if (T.owner !== 'enemy') return fail('Not an enemy territory.');
   const pl = L.assaultPlan(S, id, troops, o); if (pl.A < 1) return fail('No troops to commit.'); if (!L.canPay(S, pl.cost)) return fail('Not enough fuel or metal for this plan.');
   L.pay(S, pl.cost);
   if (o.missile && pl.can.missile) { S.terr[L.batteriesInRange(S, id)[0]].reload = S.t + 24; T.n = Math.max(1, T.n - 2); }
   if (o.air && pl.can.air) { S.bombT = S.t + 48; T.n = Math.max(1, T.n - 3); }
   let need = pl.troops; if (!pl.supplied) { const fromPool = Math.min(S.pool, need); S.pool -= fromPool; need -= fromPool; }
-  const nb = L.playerNeighbors(S, id).sort((a, b) => S.terr[b].n - S.terr[a].n);
-  while (need > 0) { let took = false; for (const x of nb) if (need > 0 && S.terr[x].n > 1) { S.terr[x].n--; need--; took = true; } if (!took) break; }
+  if (pl.supplied) for (const x in pl.from) S.terr[x].n -= pl.from[x];
   const D = Math.max(1, L.enemyDefense(S, id));
   const b = { id, A: pl.A, A0: pl.A, teamN: pl.teamN, troops: pl.troops, D, D0: D, guards: L.guards(S, id), aB: pl.aB, dB: pl.dB, rounds: [], done: false, supplied: pl.supplied, teamHere: pl.teamHere };
   return { ok: true, b }; };

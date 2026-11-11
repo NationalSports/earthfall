@@ -113,6 +113,8 @@ One daily budget that every action draws on. You get 6 at midnight; unused Order
 | Reinforce from reserve, play a card, defend | Free |
 
 ## Who fights in an attack (Built)
+Rule of thumb: if two territories touch on the map, they connect. The attack screen lists every bordering territory with its own slider, and gold arrows on the map show who can join.
+
 The spare troops in your territories bordering the target (each keeps one behind). Your reserve is for reinforcing, except when you have no land border: then the reserve lands from the sea and the defenders roll +1. **Flank** is free but positional: it needs spare troops in two bordering territories. Missile and air support cost resources.
 
 ## Battles

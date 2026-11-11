@@ -134,6 +134,10 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 .plabel.you{background:#14606a;border-color:#6fe0da}.labels .tlabel.strong .tn::before{content:'✦ ';color:var(--gold)}
 #coach.show .helpb{padding:4px 9px;border-radius:50%}.note.job{color:var(--gold)}
 
+.srcs h4{margin:8px 0 2px}.srcs .slider{margin:4px 0}.srcs small{opacity:.6}
+.newg{margin-left:10px;background:none;border:1px solid #ffffff33;border-radius:6px;color:inherit;opacity:.75;padding:5px 9px;font:inherit;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}.newg:hover{opacity:1;border-color:var(--gold)}
+@media (max-width:860px){.newg{padding:4px 6px;font-size:10px}}
+
 /* Earthfall concept HUD — replacement theme, Issue #11. Original selectors and responsive behavior retained. */
 :root{--ink:#050e18;--panel:#0a1724;--panel2:#112435;--line:#40516a;--gold:#e5b765;--gold2:#956a30;--text:#f5ead6;--muted:#b4c0cb;--teal:#4ad8d7;--red:#f06a55;--violet:#ba88fa;--good:#91d9a3;--warn:#f3c16e}
 body{background:radial-gradient(ellipse at 45% 40%,#11283a,#050b13 80%);color:var(--text)}
@@ -380,11 +384,13 @@ const LINKS = [
   ['bogota','lima'],['bogota','manaus'],['lima','manaus'],['manaus','saopaulo'],['saopaulo','buenosaires'],['lima','buenosaires'],['saopaulo','lagos',1],['lima','sydney',1],
   ['london','paris',1],['london','stockholm',1],['paris','madrid'],['paris','berlin'],['paris','rome'],['madrid','algiers',1],['berlin','stockholm',1],['berlin','rome'],
   ['berlin','kyiv'],['rome','kyiv'],['rome','algiers',1],['kyiv','moscow'],['kyiv','istanbul',1],['stockholm','moscow'],['moscow','astana'],['moscow','novosibirsk'],
-  ['algiers','cairo'],['algiers','lagos'],['cairo','nairobi'],['cairo','riyadh'],['cairo','istanbul'],['lagos','kinshasa'],['lagos','nairobi'],['nairobi','kinshasa'],
+  ['algiers','cairo'],['algiers','lagos'],['cairo','nairobi'],['cairo','riyadh'],['cairo','istanbul'],['lagos','kinshasa'],['nairobi','kinshasa'],
   ['kinshasa','joburg'],['nairobi','joburg'],['nairobi','delhi',1],
-  ['istanbul','tehran'],['istanbul','riyadh'],['riyadh','tehran'],['tehran','astana'],['tehran','delhi'],['astana','novosibirsk'],['astana','delhi'],['astana','beijing'],
+  ['istanbul','tehran'],['istanbul','riyadh'],['riyadh','tehran'],['tehran','astana'],['tehran','delhi'],['astana','novosibirsk'],['astana','delhi'],
   ['novosibirsk','yakutsk'],['novosibirsk','beijing'],['yakutsk','beijing'],['yakutsk','tokyo',1],['delhi','beijing'],['delhi','bangkok'],['beijing','hongkong'],['beijing','seoul'],
-  ['hongkong','bangkok'],['hongkong','manila',1],['seoul','tokyo',1],['tokyo','manila',1],['bangkok','jakarta',1],['jakarta','manila',1],['jakarta','perth',1],['perth','sydney']
+  ['hongkong','bangkok'],['hongkong','manila',1],['seoul','tokyo',1],['tokyo','manila',1],['bangkok','jakarta',1],['jakarta','manila',1],['jakarta','perth',1],['perth','sydney'],
+  // Added so the rules match the borders drawn on the board: if two territories touch on the map, they connect.
+  ['seoul','yakutsk'], ['nairobi','riyadh'], ['kyiv','stockholm'], ['cairo','lagos'], ['moscow','tehran'], ['istanbul','moscow'], ['hongkong','seoul'], ['mexico','ny'], ['delhi','novosibirsk'], ['istanbul','rome'], ['cairo','kinshasa'], ['lima','saopaulo']
 ];
 if (typeof ANCHORS !== 'undefined') for (const id of TIDS) { TERR[id].ax = ANCHORS[id][0]; TERR[id].ay = ANCHORS[id][1]; }
 LINKS.forEach(l => { TERR[l[0]].adj.push(l[1]); TERR[l[1]].adj.push(l[0]); });
@@ -760,23 +766,24 @@ L.sabotage = (S, id) => { const T = S.terr[id]; if (L.teamAt(S) !== id || T.owne
   const loss = L.teamFail(S); T.alert = S.t + 72; L.log(S, 'Sabotage in ' + TERR[id].name + ' failed. The team pulled out, losing ' + loss + ' readiness.', 'bad'); L.teamRetreat(S, id); return { ok: true, win: false, p }; };
 // Assault: troops come from the pool first, then neighboring garrisons (each keeps 1)
 // Who can attack: the spare troops in your territories next door. With no land border, your reserve lands from the sea instead, at a disadvantage.
-L.assaultAvail = (S, id) => { const nb = L.playerNeighbors(S, id); let n = 0; for (const x of nb) n += Math.max(0, S.terr[x].n - 1); return { n: nb.length ? n : S.pool, supplied: nb.length > 0, sides: nb.filter(x => S.terr[x].n > 1).length }; };
+L.assaultAvail = (S, id) => { const nb = L.playerNeighbors(S, id); let n = 0; for (const x of nb) n += Math.max(0, S.terr[x].n - 1); return { n: nb.length ? n : S.pool, supplied: nb.length > 0, sides: nb.filter(x => S.terr[x].n > 1).length, by: nb.filter(x => S.terr[x].n > 1).map(x => ({ id: x, max: S.terr[x].n - 1 })).sort((a, b) => b.max - a.max) }; };
 L.estimate = (A, D, aB, dB) => { if (A < 1) return 0; let w = 0; for (let i = 0; i < 300; i++) if (L.fight(A, D, aB, dB).D <= 0) w++; return w / 300; };
 L.assaultPlan = (S, id, troops, o) => { o = o || {}; const av = L.assaultAvail(S, id); troops = clamp(troops, 0, av.n); const teamHere = L.teamAt(S) === id && S.team.pips > 0;
   const teamN = teamHere ? L.teamN(S) : 0; const cost = { fuel: (o.air ? BOMB_COST.fuel : 0) + (o.missile ? SALVO_COST.fuel : 0), metal: o.missile ? SALVO_COST.metal : 0 };
-  if (av.sides < 2) o.flank = false; // a flank needs troops on two sides of the target
-  const can = { flank: av.sides >= 2, missile: L.batteriesInRange(S, id).length > 0, air: !!S.up.bombers && (S.bombT || 0) <= S.t && S.terr[HQ].owner === 'you' };
+  // Each bordering territory sends its own share. o.from says how many from each; without it the largest garrisons go first.
+  let from = null, sides = 0; if (av.supplied) { from = {}; let left = troops; for (const b of av.by) { const want = o.from && o.from[b.id] != null ? clamp(o.from[b.id], 0, b.max) : Math.min(b.max, left); from[b.id] = want; left -= want; if (want > 0) sides++; } troops = Object.values(from).reduce((a, b) => a + b, 0); }
+  const flank = !!o.flank && sides >= 2; // a flank needs troops committed from two sides of the target
+  const can = { flank: sides >= 2, missile: L.batteriesInRange(S, id).length > 0, air: !!S.up.bombers && (S.bombT || 0) <= S.t && S.terr[HQ].owner === 'you' };
   let D = L.enemyDefense(S, id) - (o.missile && can.missile ? 2 : 0) - (o.air && can.air ? 3 : 0); D = Math.max(1, D);
-  const n = (teamHere && S.spec === 'assault' ? 1 : 0) + (o.flank ? 1 : 0) - (av.supplied ? 0 : 1); const aB = clamp(n, 0, 2), dB = n < 0 ? 1 : 0, A = troops + teamN;
-  return { A, D, aB, dB, troops, teamN, teamHere, cost, can, avail: av.n, supplied: av.supplied, guards: L.guards(S, id), p: L.estimate(A, D, aB, dB) }; };
+  const n = (teamHere && S.spec === 'assault' ? 1 : 0) + (flank ? 1 : 0) - (av.supplied ? 0 : 1); const aB = clamp(n, 0, 2), dB = n < 0 ? 1 : 0, A = troops + teamN;
+  return { A, D, aB, dB, troops, teamN, teamHere, cost, can, from, by: av.by, flank, avail: av.n, supplied: av.supplied, guards: L.guards(S, id), p: L.estimate(A, D, aB, dB) }; };
 L.assaultStart = (S, id, troops, o) => { o = o || {}; const T = S.terr[id]; if (T.owner !== 'enemy') return fail('Not an enemy territory.');
   const pl = L.assaultPlan(S, id, troops, o); if (pl.A < 1) return fail('No troops to commit.'); if (!L.canPay(S, pl.cost)) return fail('Not enough fuel or metal for this plan.');
   L.pay(S, pl.cost);
   if (o.missile && pl.can.missile) { S.terr[L.batteriesInRange(S, id)[0]].reload = S.t + 24; T.n = Math.max(1, T.n - 2); }
   if (o.air && pl.can.air) { S.bombT = S.t + 48; T.n = Math.max(1, T.n - 3); }
   let need = pl.troops; if (!pl.supplied) { const fromPool = Math.min(S.pool, need); S.pool -= fromPool; need -= fromPool; }
-  const nb = L.playerNeighbors(S, id).sort((a, b) => S.terr[b].n - S.terr[a].n);
-  while (need > 0) { let took = false; for (const x of nb) if (need > 0 && S.terr[x].n > 1) { S.terr[x].n--; need--; took = true; } if (!took) break; }
+  if (pl.supplied) for (const x in pl.from) S.terr[x].n -= pl.from[x];
   const D = Math.max(1, L.enemyDefense(S, id));
   const b = { id, A: pl.A, A0: pl.A, teamN: pl.teamN, troops: pl.troops, D, D0: D, guards: L.guards(S, id), aB: pl.aB, dB: pl.dB, rounds: [], done: false, supplied: pl.supplied, teamHere: pl.teamHere };
   return { ok: true, b }; };
@@ -980,7 +987,7 @@ const V = (() => {
     M = { you: std(0x3fc4c0), youBase: std(0x1c5f66), enemy: std(0xa8281c, { emissive: 0x2a0502 }), unknown: std(0x5a2a26, { transparent: true, opacity: 0.75 }),
       leader: std(0x9a62e0, { emissive: 0x3b1470, roughness: 0.3 }), gold: std(0xd9ae52, { metalness: 0.6, roughness: 0.3 }), stone: std(0x8b93a0), dark: std(0x1b1714, { roughness: 1 }),
       ember: new THREE.MeshBasicMaterial({ color: 0xff6a2a }), team: std(0xf2f6ff, { emissive: 0x2aa6c8 }), arc: new THREE.MeshBasicMaterial({ color: 0xff5c3c, transparent: true, opacity: 0.9, toneMapped: false }),
-      arcTeam: new THREE.MeshBasicMaterial({ color: 0x7fe6ff, transparent: true, opacity: 0.8 }), link: new THREE.LineBasicMaterial({ color: 0xf4ead0, transparent: true, opacity: 0.6 }), node: new THREE.MeshBasicMaterial({ color: 0xfaf3df, toneMapped: false }), nodeYou: new THREE.MeshBasicMaterial({ color: 0x3fd8d2, toneMapped: false }), nodeEnemy: new THREE.MeshBasicMaterial({ color: 0xff6a4a, toneMapped: false }), nodeWaste: new THREE.MeshBasicMaterial({ color: 0x55504a, toneMapped: false }),
+      arcAtk: new THREE.MeshBasicMaterial({ color: 0xf0c868, transparent: true, opacity: 0.9 }), arcTeam: new THREE.MeshBasicMaterial({ color: 0x7fe6ff, transparent: true, opacity: 0.8 }), link: new THREE.LineBasicMaterial({ color: 0xf4ead0, transparent: true, opacity: 0.6 }), node: new THREE.MeshBasicMaterial({ color: 0xfaf3df, toneMapped: false }), nodeYou: new THREE.MeshBasicMaterial({ color: 0x3fd8d2, toneMapped: false }), nodeEnemy: new THREE.MeshBasicMaterial({ color: 0xff6a4a, toneMapped: false }), nodeWaste: new THREE.MeshBasicMaterial({ color: 0x55504a, toneMapped: false }),
       bldYou: std(0x93a3b8, { emissive: 0x6b4a16, emissiveIntensity: 0.55, roughness: 0.7 }), bldEnemy: std(0x3b2422, { emissive: 0x7a1408, emissiveIntensity: 0.6 }), rifle: std(0x10161f), blob: new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.38, depthWrite: false, map: null }),
       sea: new THREE.LineDashedMaterial({ color: 0xf4ead0, transparent: true, opacity: 0.55, dashSize: 0.8, gapSize: 0.55 }) };
     G = { base: new THREE.CylinderGeometry(0.34, 0.38, 0.1, 16), body: new THREE.CylinderGeometry(0.15, 0.24, 0.62, 10), head: new THREE.SphereGeometry(0.17, 12, 10),
@@ -1035,6 +1042,9 @@ const V = (() => {
       { const e = c.at(1), e0 = c.at(0.93), ah = new THREE.Mesh(G.cone, M.arc); ah.position.copy(e); ah.quaternion.setFromUnitVectors(UP, e.clone().sub(e0).normalize()); ah.scale.set(2.2, 1.1, 2.2); arcs.add(ah); }
       const head = piece('swarm', 0, 0, 2.2); head.userData = { party: p, curve: c }; arcs.add(head);
       const d = document.createElement('div'); d.className = 'plabel'; labelsEl.appendChild(d); d._p = p; d._head = head; partyLabels.push(d); }
+    // Who can attack the selected enemy territory: a gold arrow from each bordering territory with troops to spare.
+    if (sel && S.terr[sel] && S.terr[sel].owner === 'enemy') for (const b of L.assaultAvail(S, sel).by) { const c = curveFor(b.id, sel, 0.12); for (const s of c.segs) { const t = new THREE.Mesh(new THREE.TubeGeometry(s, 20, 0.13, 6), M.arcAtk); t.userData.own = 1; arcs.add(t); }
+      const e = c.at(0.8), e0 = c.at(0.72), ah = new THREE.Mesh(G.cone, M.arcAtk); ah.position.copy(e); ah.quaternion.setFromUnitVectors(UP, e.clone().sub(e0).normalize()); ah.scale.set(1.8, 1.0, 1.8); arcs.add(ah); }
     // Your own columns: a thin teal route and a marching piece (a transport for airlifts).
     for (const p of S.cols || []) { const c = curveFor(p.from, p.to); for (const s of c.segs) { const t = new THREE.Mesh(new THREE.TubeGeometry(s, 24, 0.07, 5), M.arcTeam); t.userData.own = 1; arcs.add(t); }
       const head = piece(p.air && pieceImgs.tiltrotor ? 'tiltrotor' : 'infantry', 0, 0, 1.9); head.userData = { party: p, curve: c }; arcs.add(head);
@@ -1223,7 +1233,7 @@ const V = (() => {
     const st = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (S.obs[id] ? 1 : 0); }).join('') + sel; if (mode === 'globe') { if (st !== sigTexG) { sigTexG = st; paintGlobe(S); colorBorders(bordG, S); } } else if (st !== sigTex) { sigTex = st; paint(S); colorBorders(bordB, S); }
     const sk = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (T.owner === 'you' ? (T.n >= 7 ? 3 : T.n >= 4 ? 2 : 1) : (S.obs[id] ? T.n : 'u' + T.seenN)) + (T.fort | 0) + (T.radar | 0) + (T.battery | 0); }).join('') + [S.nuke.building, S.nuke.stage, S.nuke.ready, S.emp.building, S.emp.n, S.up.bombers, S.up.railgun].map(x => +!!x).join('') + S.leaders.map(l => l.alive && L.leaderKnown(S, l) ? l.at + l.rank[0] : '-').join('');
     if (sk !== sigTok) { sigTok = sk; buildTokens(S); }
-    const sa = S.parties.map(p => p.id + (L.partyVisible(S, p) ? 'v' : 'h')).join(',') + '|' + (S.team.dest || '') + '|' + (S.cols || []).map(c => c.id).join(','); if (sa !== sync.sa) { sync.sa = sa; buildArcs(S); }
+    const sa = S.parties.map(p => p.id + (L.partyVisible(S, p) ? 'v' : 'h')).join(',') + '|' + (S.team.dest || '') + '|' + (S.cols || []).map(c => c.id).join(',') + '|' + (sel && S.terr[sel] && S.terr[sel].owner === 'enemy' ? sel + L.assaultAvail(S, sel).by.map(b => b.id + b.max).join('') : ''); if (sa !== sync.sa) { sync.sa = sa; buildArcs(S); }
     const threat = {}; for (const p of S.parties) if (L.partyVisible(S, p)) threat[p.to] = 1;
     for (const id of TIDS) { const T = S.terr[id], d = labels[id], known = S.obs[id]; d.className = 'tlabel ' + T.owner + (id === sel ? ' sel' : '') + (threat[id] ? ' threat' : '') + (id === HQ ? ' hq' : '') + (L.isStrong(id) ? ' strong' : '');
       d.children[0].textContent = TERR[id].name; d.children[1].textContent = T.owner === 'waste' ? '☢' : T.owner === 'enemy' ? (known ? L.enemyDefense(S, id) : '?') : T.n;
@@ -1277,7 +1287,7 @@ function setSpeed(v) { if (S.over) v = 0; S.speed = v; }
 function renderTop() {
   const own = L.owned(S).length; let boxes = ''; for (let i = 0; i < 10; i++) boxes += '<i class="' + (i < S.esc ? 'on' : '') + '"></i>';
   const h = '<div class="brand"><b>EARTHFALL</b><small>Earth Defense Coalition</small></div>' +
-    '<div class="clock"><span class="day">' + L.stamp(S) + '</span><div class="speed">' + [[0, '❚❚'], [1, '▶'], [3, '▶▶']].map(s => '<button data-a="speed" data-id="' + s[0] + '" class="' + (S.speed === s[0] ? 'on' : '') + '" aria-label="speed ' + s[0] + '">' + s[1] + '</button>').join('') + '</div></div>' +
+    '<div class="clock"><span class="day">' + L.stamp(S) + '</span><div class="speed">' + [[0, '❚❚'], [1, '▶'], [3, '▶▶']].map(s => '<button data-a="speed" data-id="' + s[0] + '" class="' + (S.speed === s[0] ? 'on' : '') + '" aria-label="speed ' + s[0] + '">' + s[1] + '</button>').join('') + '</div><button class="newg" data-a="newAsk" title="Start a new game">New game</button></div>' +
     '<div class="res">' + ['metal', 'fuel', 'research', 'uranium', 'intel', 'salvage'].map(k => '<span class="chip ' + k + '" title="' + k + '">' + ICON[k] + ' <b>' + Math.floor(S.res[k]) + '</b><small>' + k + '</small></span>').join('') +
     '<span class="chip orders" title="Orders left today. Every action spends them; they refill at midnight.">❖ <b>' + (S.orders == null ? '∞' : S.orders) + '</b><small>orders</small></span><span class="chip troops" title="Reserve troops">◉ <b>' + S.pool + '</b><small>reserve</small></span><span class="chip" title="Territories held">⚑ <b>' + own + '</b><small>held</small></span></div>' +
     '<div class="meters"><div class="meter"><label>Threat</label><div class="boxes">' + boxes + '</div></div><div class="meter"><label>Harvest ' + Math.floor(S.harvest) + '%</label><div class="bar"><i style="width:' + S.harvest + '%"></i></div></div></div>';
@@ -1383,11 +1393,11 @@ function overModal() { const o = S.over, own = o.own; let t, p;
 let asl = null;
 const die = (v, cls, bonus) => '<i class="die ' + cls + '">' + v + (bonus ? '<sup>+' + bonus + '</sup>' : '') + '</i>';
 function assaultModal() { const a = asl, D = TERR[a.id]; let h = '<div class="mhead"><small>Launch assault</small><h1>' + D.name + '</h1></div>';
-  if (!a.b) { const pl = L.assaultPlan(S, a.id, a.troops, a.o); a.troops = pl.troops;
+  if (!a.b) { const pl = L.assaultPlan(S, a.id, a.troops, a.o); a.troops = pl.troops; if (pl.from) a.o.from = Object.assign({}, pl.from);
     h += '<div class="vs"><div class="side you"><label>Coalition force</label><b>' + pl.A + '</b><small>' + pl.troops + ' troops' + (pl.teamN ? ' + strike team (' + pl.teamN + ')' : '') + '</small></div><span>VS</span><div class="side enemy"><label>Defense</label><b>' + pl.D + '</b><small>' + S.terr[a.id].n + ' strength + ' + pl.guards + ' guards</small></div></div>' +
-      '<div class="slider"><label for="troops">Troops to commit: <b>' + pl.troops + '</b> of ' + pl.avail + '</label><input id="troops" type="range" min="0" max="' + pl.avail + '" value="' + pl.troops + '"></div>' +
+      (pl.supplied ? '<div class="srcs"><h4>Attacking from</h4>' + pl.by.map(b => '<div class="slider"><label><b>' + TERR[b.id].name + '</b> sends <b>' + pl.from[b.id] + '</b> of ' + b.max + ' <small>(1 stays behind)</small></label><input type="range" data-src="' + b.id + '" min="0" max="' + b.max + '" value="' + pl.from[b.id] + '"></div>').join('') + '</div>' : '<div class="slider"><label for="troops">Reserve troops to land: <b>' + pl.troops + '</b> of ' + pl.avail + '</label><input id="troops" type="range" min="0" max="' + pl.avail + '" value="' + pl.troops + '"></div>') +
       '<div class="est"><label>Estimated success</label><b class="' + (pl.p > 0.65 ? 'good' : pl.p > 0.35 ? 'warn' : 'bad') + '">' + pct(pl.p) + '</b><div class="bar"><i style="width:' + pl.p * 100 + '%"></i></div>' + (pl.supplied ? '' : '<small>No land border: your reserve lands from the sea, and defenders roll +1 on their best die.</small>') + '</div><div class="tactics">' +
-      '<button class="tac' + (a.o.flank && pl.can.flank ? ' on' : '') + '" data-a="tac" data-id="flank"' + (pl.can.flank ? '' : ' disabled') + '><i class="art top art-flank"></i><b>Flank</b><span>' + (pl.can.flank ? 'You attack from two sides: +1 on your best die.' : 'Needs spare troops in two of your territories bordering the target.') + '</span><small>Free</small></button>' +
+      '<button class="tac' + (pl.flank ? ' on' : '') + '" data-a="tac" data-id="flank"' + (pl.can.flank ? '' : ' disabled') + '><i class="art top art-flank"></i><b>Flank</b><span>' + (pl.can.flank ? 'You attack from two sides: +1 on your best die.' : 'Needs troops committed from two of your territories bordering the target.') + '</span><small>Free</small></button>' +
       '<button class="tac' + (a.o.missile ? ' on' : '') + '" data-a="tac" data-id="missile"' + (pl.can.missile ? '' : ' disabled') + '><i class="art top art-missile"></i><b>Missile support</b><span>' + (pl.can.missile ? 'Defense −2 before the first roll.' : 'Needs a loaded battery within 2 territories.') + '</span><small>' + cost(SALVO_COST) + '</small></button>' +
       '<button class="tac' + (a.o.air ? ' on' : '') + '" data-a="tac" data-id="air"' + (pl.can.air ? '' : ' disabled') + '><i class="art top art-strike"></i><b>Air support</b><span>' + (pl.can.air ? 'Defense −3 before the first roll.' : 'Needs Strategic Bombers, rearmed.') + '</span><small>' + cost(BOMB_COST) + '</small></button></div>' +
       '<div class="row">' + btn('closeModal', 'Cancel') + btn('commit', 'Commit attack', { cls: 'gold big', sub: pl.A < 1 ? 'No troops committed' : S.orders < 2 ? 'Not enough Orders (2 needed, ' + S.orders + ' left)' : !L.canPay(S, pl.cost) ? 'Not enough resources: needs ' + cost(pl.cost) : 'Costs 2 Orders' + (pl.cost.fuel || pl.cost.metal ? ' and ' + cost(pl.cost) : ''), dis: pl.A < 1 || S.orders < 2 || !L.canPay(S, pl.cost) }) + '</div>';
@@ -1396,7 +1406,8 @@ function assaultModal() { const a = asl, D = TERR[a.id]; let h = '<div class="mh
     h += '<p class="blow">' + (b.rounds.length ? 'Round ' + b.rounds.length + ': ' + ([last.dL ? 'they lose ' + last.dL : '', last.aL ? 'you lose ' + last.aL : ''].filter(Boolean).join(', ') || 'no losses') : 'Your troops are moving in…') + '</p>';
     if (b.done) h += '<div class="result ' + (b.won ? 'good' : 'bad') + '"><h3>' + (b.won ? D.name + ' is liberated' : b.A <= 0 ? 'The assault failed' : 'Withdrawn') + '</h3>' + (b.notes || []).map(n => '<p>' + esc(n) + '</p>').join('') + '</div><div class="row">' + btn('closeModal', 'Continue', { cls: 'gold big' }) + '</div>';
     else h += '<div class="row">' + btn('withdraw', 'Withdraw') + btn('rollAll', 'Skip to the end') + '</div>'; }
-  showModal(h, 'assault'); const sl = $('#troops'); if (sl) sl.addEventListener('input', () => { asl.troops = +sl.value; assaultModal(); const n = $('#troops'); if (n) n.focus(); }); }
+  showModal(h, 'assault'); const sl = $('#troops'); if (sl) sl.addEventListener('input', () => { asl.troops = +sl.value; assaultModal(); const n = $('#troops'); if (n) n.focus(); });
+  document.querySelectorAll('.srcs input').forEach(inp => inp.addEventListener('input', () => { asl.o.from[inp.dataset.src] = +inp.value; assaultModal(); const n = document.querySelector('.srcs input[data-src="' + inp.dataset.src + '"]'); if (n) n.focus(); })); }
 function confirmModal(title, text, act, id, label) { showModal('<div class="mhead"><small>Confirm</small><h1>' + title + '</h1></div><p class="lead">' + text + '</p><div class="row">' + btn('closeModal', 'Cancel') + btn(act, label, { id, cls: 'danger big' }) + '</div>', 'confirm'); }
 
 // ---------- Action bar ----------
