@@ -176,3 +176,16 @@ Planned: an enemy deck (Pandemic-style) that reveals the swarm's next move a day
 1. Should a lost defense battle you commanded cost more than dice would (higher stakes), or stay equal?
 2. Do special cities need a downside when the swarm holds them (for example the Refineries speeding the Harvest)?
 3. Should cards have suits, so matched sets trade for more, as in Risk?
+
+## Turn structure (replaces the running clock)
+
+Earthfall is turn-based. One day is one turn.
+
+1. **Morning.** Income arrives, new troops join the reserve, finished buildings and research are announced, and the attacks the swarm declared last night are listed.
+2. **Your turn.** Any order: place reserves at strongholds, attack (fought at once), build (ready next morning; tonight for Engineers and the Economy doctrine), train, strike team (lands tonight), research project.
+3. **Moves.** Next door is instant; the first 3 a day are free, then 1 Order. Two or three territories away costs 1 Order and arrives tonight, before the swarm moves. Airlift reaches anywhere, once a day.
+4. **End day.** The swarm's turn plays on the map: it grows, yesterday's declared attacks land, and it declares tomorrow's. Capturing the city an attack comes from cancels it.
+
+The top bar's gold **Next** button always names the one thing still waiting (place troops, choose research, defend, use Orders), then End day. Research is a project: pick one and it is bought automatically the morning it becomes affordable.
+
+Under the hood the engine still counts hours (24 per night), so cooldowns and leader movement are unchanged.
