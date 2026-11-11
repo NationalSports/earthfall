@@ -214,3 +214,6 @@ main{grid-template-columns:1fr!important}#panel,#ptoggle{display:none!important}
 
 #modal.build .ups{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}#modal.build .ups .card.up{margin:0;display:flex;flex-direction:column}#modal.build .ups .card.up .art.top{height:92px}#modal.build .ups .card.up p{flex:1}#modal.build .ups .card.up.has{opacity:.75;border-color:#e8be6088}
 @media (max-width:860px){#modal.build .ups{grid-template-columns:repeat(2,1fr)}}@media (max-width:540px){#modal.build .ups{grid-template-columns:1fr}}
+
+.tbar{display:block!important;height:6px;border-radius:3px;background:#ffffff1f;overflow:hidden;margin:6px 0 2px!important;opacity:1!important}.tbar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#46d6d0,#e8be60)}.tbl{display:block;font-size:11.5px;opacity:.7}.mk .opt>span{flex:1}
+.bar.thr i{background:linear-gradient(90deg,#e8be60,#e8553a)}
