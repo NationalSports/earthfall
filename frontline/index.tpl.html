@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Earthfall: Frontline</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#0b1420;color:#e8edf2;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;user-select:none}
+#game,#game canvas{position:absolute;inset:0;display:block}
+.hud{position:absolute;pointer-events:none;text-shadow:0 1px 3px #000}
+#bars{left:18px;bottom:18px;display:grid;gap:8px;width:260px}
+.bar{position:relative;height:22px;border-radius:6px;background:#0a1322cc;border:1px solid #ffffff30;overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#2e969c,#46d6d0);width:100%}
+#hp i{background:linear-gradient(90deg,#b03a2e,#e8553a)}
+.bar span{position:absolute;left:9px;top:3px;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.bar b{position:absolute;right:9px;top:2px;font-size:14px}
+#ammo{right:22px;bottom:20px;font-size:17px;opacity:.9}#ammo b{font-size:34px;color:#e8be60}
+#wave{left:50%;top:14px;transform:translateX(-50%);padding:7px 16px;border-radius:999px;background:#0a1322cc;border:1px solid #e8be6066;font-size:14px;white-space:nowrap}#wave b{color:#e8be60}
+#cross{left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px}
+#cross::before,#cross::after{content:'';position:absolute;background:#fff;opacity:.85;box-shadow:0 0 3px #000}
+#cross::before{left:10px;top:0;width:2px;height:22px;clip-path:polygon(0 0,100% 0,100% 32%,0 32%,0 68%,100% 68%,100% 100%,0 100%)}
+#cross::after{top:10px;left:0;height:2px;width:22px;clip-path:polygon(0 0,32% 0,32% 100%,0 100%,0 0,68% 0,100% 0,100% 100%,68% 100%,68% 0)}
+#ban{left:50%;top:22%;transform:translateX(-50%);text-align:center;opacity:0;transition:opacity .35s}#ban.on{opacity:1}
+#msg{font-size:34px;font-weight:700;letter-spacing:.06em;color:#f4e6c4}#sub{font-size:15px;opacity:.9;margin-top:4px}
+#hit{inset:0;box-shadow:inset 0 0 120px 30px #e8553a;opacity:0;transition:opacity .12s}#hit.on{opacity:.75}
+#keys{right:22px;top:14px;font-size:12px;opacity:.6;text-align:right;line-height:1.6}
+.panel{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:#060b13d9;z-index:5}
+.panel.on{display:flex}.card{max-width:520px;padding:28px 30px;border-radius:12px;background:linear-gradient(150deg,#1b2c3c,#0b1725 70%);border:1px solid #d6a45c;text-align:center;box-shadow:0 25px 80px #000c}
+.card small{letter-spacing:.2em;text-transform:uppercase;color:#e8be60;font-size:11px}.card h1{margin:6px 0 10px;font-size:32px;color:#f6e9c8}.card p{line-height:1.55;opacity:.92;margin:0 0 8px}
+.card table{margin:10px auto 16px;font-size:14px;text-align:left;border-spacing:10px 4px}.card td:first-child{color:#e8be60;font-weight:700;text-align:right}
+button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radius:9px;border:1px solid #e8be60;background:linear-gradient(#e8be60,#b98a2e);color:#1a1205;cursor:pointer}
+#over .card h1{font-size:36px}
+</style>
+</head>
+<body>
+<div id="game"></div>
+<div class="hud" id="hit"></div>
+<div class="hud" id="wave"></div>
+<div class="hud" id="keys">W A S D move · Shift sprint · mouse aim · click fire · R reload · Q E turn</div>
+<div class="hud" id="cross"></div>
+<div class="hud" id="ban"><div id="msg"></div><div id="sub"></div></div>
+<div class="hud" id="bars"><div class="bar" id="core"><i></i><span>City core</span><b></b></div><div class="bar" id="hp"><i></i><span>You</span><b></b></div></div>
+<div class="hud" id="ammo"></div>
+<div class="panel on" id="intro"><div class="card"><small>Earthfall · Frontline · first playable</small><h1>Defend Los Angeles</h1>
+<p>The swarm is coming down two streets from the north. Keep it off the city core for three waves. Your turrets will help.</p>
+<table><tr><td>W A S D</td><td>move</td></tr><tr><td>Mouse</td><td>aim (Q and E also turn)</td></tr><tr><td>Click, hold</td><td>fire</td></tr><tr><td>R</td><td>reload</td></tr><tr><td>Shift</td><td>sprint</td></tr></table>
+<button id="start">Start the defense</button></div></div>
+<div class="panel" id="over"></div>
+<script>/*THREE*/</script>
+<script>/*GAME*/</script>
+</body>
+</html>
