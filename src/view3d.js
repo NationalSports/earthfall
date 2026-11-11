@@ -327,8 +327,8 @@ const V = (() => {
   // Called every frame: decides whether a city is close enough to open, and keeps it in step with the game.
   const zmin = () => CITY_MIN * (camera.aspect < 1 ? Math.min(2.6, 1.15 / camera.aspect) : 1);
   function cityFrame(dt) { cam.dist = Math.max(cam.dist, zmin()); const raw = mode === 'globe' || !S0 ? 0 : clamp((zmin() + 15 - camS.dist) / 11, 0, 1), f = raw * raw * (3 - 2 * raw); cityF = f; if (f <= 0) { if (cityGrp) cityGrp.visible = false; return null; }
-    let best = null, bd = 6.5; for (const id of TIDS) { const p = P(id), dx = ((p.x - camS.tx) % BW + BW * 1.5) % BW - BW / 2, d = Math.hypot(dx, p.z - camS.tz - 1); if (d < bd) { bd = d; best = id; } }
-    if (!best) { if (cityGrp) cityGrp.visible = false; return null; }
+    let best = null, bd = 6.5; for (const id of TIDS) { const T0 = S0.terr[id]; if (!(T0.owner === 'you' && (T0.works || T0.barracks || T0.fort || T0.radar || T0.battery || T0.post))) continue; /* nothing built there: just the map */ const p = P(id), dx = ((p.x - camS.tx) % BW + BW * 1.5) % BW - BW / 2, d = Math.hypot(dx, p.z - camS.tz - 1); if (d < bd) { bd = d; best = id; } }
+    if (!best) { cityF = 0; if (cityGrp) cityGrp.visible = false; return null; }
     const T = S0.terr[best], sg = sigTok + T.n + (L.teamAt(S0) === best) + (T.works || 0) + (T.barracks || 0) + (T.fort || 0) + (T.job ? T.job.key : '') + 'a' + (T.arm || 0); if (best !== cityId || citySig !== sg) { buildCity(S0, best); citySig = sg; }
     cityGrp.visible = true; cityGrp.scale.set(0.3 + 0.7 * f, Math.max(0.02, f), 0.3 + 0.7 * f); if (cityGrp.userData.halo) cityGrp.userData.halo.material.opacity = f;
     if (f > 0.75) { const p = P(best), dx = ((p.x - cam.tx) % BW + BW * 1.5) % BW - BW / 2, dz = p.z - 0.4 - cam.tz; if (Math.hypot(dx, dz) < 2.6) { cam.tx += dx * Math.min(1, dt * 1.6); cam.tz += dz * Math.min(1, dt * 1.6); } } // settle on the city once you are in it
