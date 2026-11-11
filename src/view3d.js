@@ -5,7 +5,7 @@ const V = (() => {
   const px = lon => (lon + 180) / 360 * RW, py = lat => fy(lat) * RH;
   const wx = lon => (lon + 180) / 360 * BW - BW / 2, wz = lat => fy(lat) * BH - BH / 2, AW = 1920, AH = 1080;
   const curve = (x, z) => -(z * z) / 1500; let worldRoot = null;
-  let bd, cd, landF, idx2, idx2G; let renderer, scene, camera, el, labelsEl, tex, texCtx, img, idx, landA, heights, boardMesh, hp, shade, texE, ctxE, imgE, trees, treeT = [], seaTex, clouds = [], glowTex;
+  let bd, cd, landF, idx2, idx2G; let renderer, scene, camera, el, labelsEl, tex, texCtx, img, idx, landA, heights, boardMesh, hp, shade, texE, ctxE, imgE, texT, ctxT, imgT, trees, treeT = [], seaTex, clouds = [], glowTex;
   let tokens, arcs, fxGroup, labels = {}, partyLabels = [], sigTok = '', sigTex = '', sel = null, onPick = () => {};
   const cam = { tx: -28, tz: -8, dist: 70, yaw: 0, pitch: 1.02 };
   const fx = []; let teamTok, time = 0, S0 = null, artData = null, INF = null;
@@ -66,7 +66,8 @@ const V = (() => {
           r = (c[0] * m + tr * (1 - m)) * sh; g = (c[1] * m + tg * (1 - m)) * sh; b = (c[2] * m + tb * (1 - m)) * sh;
           if (A) { // Calm the terrain so ownership reads first: mute its color, flatten its light and dark, then lay the owner's color over it.
             const am = own[k] === 'waste' ? 0.82 : own[k] === 'enemy' ? (obs[k] ? 0.72 : 0.62) : 0.66, av = (A[o] + A[o + 1] + A[o + 2]) / 3, l0 = av / 112, lum = clamp(0.86 + (l0 - 1) * 0.3, 0.6, 1.12), f = l0 > 0.05 ? lum / l0 : 1;
-            const br = (A[o] * 0.4 + av * 0.6) * f, bgn = (A[o + 1] * 0.4 + av * 0.6) * f, bb = (A[o + 2] * 0.4 + av * 0.6) * f; r = br * (1 - am) + c[0] * lum * am; g = bgn * (1 - am) + c[1] * lum * am; b = bb * (1 - am) + c[2] * lum * am; }
+            const br = (A[o] * 0.4 + av * 0.6) * f, bgn = (A[o + 1] * 0.4 + av * 0.6) * f, bb = (A[o + 2] * 0.4 + av * 0.6) * f; r = br * (1 - am) + c[0] * lum * am; g = bgn * (1 - am) + c[1] * lum * am; b = bb * (1 - am) + c[2] * lum * am;
+            if (imgT) { const q = imgT.data; q[o] = c[0]; q[o + 1] = c[1]; q[o + 2] = c[2]; q[o + 3] = am * 255; } }
           if (snow && !A) { r += (236 * shade[i] - r) * snow; g += (240 * shade[i] - g) * snow; b += (246 * shade[i] - b) * snow; }
           if (own[k] === 'enemy') { const v = Math.abs(fbm(x * 0.08, y * 0.08) - 0.5); const bl = fbm(x * 0.018 + 50, y * 0.018 + 20); if (INF) { const io = ((y % INF.h) * INF.w + (x % INF.w)) * 4, m2 = 0.55; r = r * (1 - m2) + INF.d[io] * m2; g = g * (1 - m2) + INF.d[io + 1] * m2; b = b * (1 - m2) + INF.d[io + 2] * m2; } else { if (bl > 0.56) { const q = Math.min(1, (bl - 0.56) * 6) * 0.45; r = r * (1 - q) + 70 * q; g = g * (1 - q) + 12 * q; b = b * (1 - q) + 40 * q; } const v2 = Math.abs(fbm(x * 0.035 + 9, y * 0.035 + 4) - 0.5); if (v < 0.03 || v2 < 0.022) { const q = v2 < 0.022 ? 1 : 0.7; r += 62 * q; g += 16 * q; b += 6 * q; er = 190 * q; eg = 44 * q; eb = 14 * q; } }
             if (!obs[k]) { r *= 0.8; g *= 0.8; b *= 0.84; } }
@@ -77,7 +78,7 @@ const V = (() => {
         }
         if (A && lf > 0 && lf < 1) { r = A[o] * (1 - lf) + r * lf; g = A[o + 1] * (1 - lf) + g * lf; b = A[o + 2] * (1 - lf) + b * lf; er *= lf; eg *= lf; eb *= lf; }
         d[o] = r; d[o + 1] = g; d[o + 2] = b; d[o + 3] = 255; de[o] = er; de[o + 1] = eg; de[o + 2] = eb; de[o + 3] = 255; } }
-    texCtx.putImageData(img, 0, 0); tex.needsUpdate = true; ctxE.putImageData(imgE, 0, 0); texE.needsUpdate = true;
+    texCtx.putImageData(img, 0, 0); tex.needsUpdate = true; ctxE.putImageData(imgE, 0, 0); texE.needsUpdate = true; if (ctxT) { ctxT.putImageData(imgT, 0, 0); texT.needsUpdate = true; }
     if (trees) { const col = new THREE.Color(); treeT.forEach((k, n) => { const o = own[k], v = 0.75 + (n * 7919 % 100) / 200; if (o === 'you') col.setRGB(0.06 * v, 0.26 * v, 0.17 * v); else if (o === 'enemy') col.setRGB(0.19 * v, 0.04 * v, 0.035 * v); else col.setRGB(0.09, 0.08, 0.07); trees.setColorAt(n, col); }); trees.instanceColor.needsUpdate = true; }
   }
   // shared geometry and materials
@@ -152,6 +153,7 @@ const V = (() => {
     pieceImgs = art.pieces; globeImg = art.globe; if (art.infest) { const ci = document.createElement('canvas'); ci.width = art.infest.width; ci.height = art.infest.height; const gi = ci.getContext('2d'); gi.drawImage(art.infest, 0, 0); INF = { w: ci.width, h: ci.height, d: gi.getImageData(0, 0, ci.width, ci.height).data }; } assets(); { const c0 = document.createElement('canvas'); c0.width = RW; c0.height = RH; const g0 = c0.getContext('2d'); g0.drawImage(art.map, 0, 0, RW, RH); artData = g0.getImageData(0, 0, RW, RH).data; }
     buildRaster(art.mask);
     const c = document.createElement('canvas'); c.width = RW; c.height = RH; texCtx = c.getContext('2d'); img = texCtx.createImageData(RW, RH); tex = new THREE.CanvasTexture(c); tex.encoding = THREE.sRGBEncoding; tex.anisotropy = 8;
+    { const ct = document.createElement('canvas'); ct.width = RW; ct.height = RH; ctxT = ct.getContext('2d'); imgT = ctxT.createImageData(RW, RH); texT = new THREE.CanvasTexture(ct); texT.encoding = THREE.LinearEncoding; }
     const ce = document.createElement('canvas'); ce.width = RW; ce.height = RH; ctxE = ce.getContext('2d'); imgE = ctxE.createImageData(RW, RH); texE = new THREE.CanvasTexture(ce); texE.encoding = THREE.sRGBEncoding;
     const gc = document.createElement('canvas'); gc.width = gc.height = 128; const gg = gc.getContext('2d'), gr = gg.createRadialGradient(64, 64, 2, 64, 64, 64); gr.addColorStop(0, 'rgba(255,255,255,0.9)'); gr.addColorStop(0.35, 'rgba(255,255,255,0.3)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); gg.fillStyle = gr; gg.fillRect(0, 0, 128, 128); glowTex = new THREE.CanvasTexture(gc);
     // Soften the raised land: without this the coastline follows the coarse height grid and looks like stair-steps.
@@ -161,7 +163,9 @@ const V = (() => {
       // Extra sharpness: the ownership paint runs at 1920 wide; the fine detail of a larger painting is added back on the graphics card.
       if (art.map.width > RW && renderer.capabilities.maxTextureSize >= art.map.width) { const hi = new THREE.Texture(art.map), cl = document.createElement('canvas'); cl.width = RW; cl.height = RH; cl.getContext('2d').drawImage(art.map, 0, 0, RW, RH); const lo = new THREE.CanvasTexture(cl);
         for (const t of [hi, lo]) { t.anisotropy = 8; if (!renderer.capabilities.isWebGL2) { t.minFilter = THREE.LinearFilter; t.generateMipmaps = false; } t.needsUpdate = true; }
-        boardMesh.material.onBeforeCompile = sh => { sh.uniforms.hiTex = { value: hi }; sh.uniforms.loTex = { value: lo }; sh.fragmentShader = 'uniform sampler2D hiTex;\nuniform sampler2D loTex;\n' + sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n vec3 dH = texture2D(hiTex, vUv).rgb, dL = texture2D(loTex, vUv).rgb; diffuseColor.rgb = max(vec3(0.0), diffuseColor.rgb + (dH * dH - dL * dL) * 0.45);'); }; }
+        // The paint canvas carries ownership at 1920 wide. The 4K painting's fine detail is put through the same tint on the graphics card and added back, so land stays sharp close up.
+        boardMesh.material.onBeforeCompile = sh => { sh.uniforms.hiTex = { value: hi }; sh.uniforms.loTex = { value: lo }; sh.uniforms.tintTex = { value: texT };
+          sh.fragmentShader = 'uniform sampler2D hiTex;\nuniform sampler2D loTex;\nuniform sampler2D tintTex;\n' + sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n vec3 dH = texture2D(hiTex, vUv).rgb, dL = texture2D(loTex, vUv).rgb; vec4 tn = texture2D(tintTex, vUv); float aH = (dH.r + dH.g + dH.b) / 3.0, aL = (dL.r + dL.g + dL.b) / 3.0;\n vec3 dd = mix(dH - dL, ((dH - dL) * 0.4 + vec3(aH - aL) * 0.6) * (1.0 - tn.a) + tn.rgb * (aH - aL) * 2.28 * tn.a, step(0.02, tn.a));\n diffuseColor.rgb = max(vec3(0.0), diffuseColor.rgb + dd * 2.0 * sqrt(max(diffuseColor.rgb, vec3(0.0004))));'); }; }
       const gc2 = document.createElement('canvas'); gc2.width = gc2.height = 256; const gg2 = gc2.getContext('2d'), gd = gg2.createImageData(256, 256); for (let i = 0; i < 65536; i++) { const a = Math.sin(i * 12.9898) * 43758.5453, n = (a - Math.floor(a)) * 0.5 + fbm((i % 256) * 0.2, (i >> 8) * 0.2) * 0.5, v = 150 + n * 105; gd.data[i * 4] = gd.data[i * 4 + 1] = gd.data[i * 4 + 2] = v; gd.data[i * 4 + 3] = 255; } gg2.putImageData(gd, 0, 0);
       const gt = new THREE.CanvasTexture(gc2); gt.wrapS = gt.wrapT = THREE.RepeatWrapping; boardMesh.material.aoMap = gt; boardMesh.material.aoMapIntensity = 1.6; boardMesh.material.needsUpdate = true; }
     boardMesh.receiveShadow = true; boardMesh.castShadow = true; scene.add(boardMesh);
