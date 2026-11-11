@@ -206,7 +206,7 @@ L.newGame = (spec, diff, opt) => { L.setDiff(diff); opt = opt || {};
 
 // ---------- Enemy behavior ----------
 L.cap = S => 7 + Math.min(3, S.esc);
-L.launchParty = (S, from, to, n, breakout, eta) => { const ls = L.leadersAt(S, from), dur = (eta || S.t + (breakout ? 18 : ri(22, 34))) - S.t;
+L.launchParty = (S, from, to, n, breakout, eta) => { const ls = L.leadersAt(S, from), dur = (eta || S.t + (breakout ? 6 : ri(6, 9))) - S.t;
   S.parties.push({ id: S.pid++, from, to, n, t0: S.t, eta: S.t + Math.round(dur * (ls.some(l => l.trait === 'raider') ? 0.7 : 1)), breakout: !!breakout, hit: 0, aB: ls.some(l => l.trait === 'butcher') ? 1 : 0 }); };
 L.playerNeighbors = (S, id) => TERR[id].adj.filter(n => S.terr[n].owner === 'you');
 L.grow = S => { const en = L.enemyT(S); if (!en.length) return;
@@ -239,7 +239,7 @@ L.smartAttack = S => { const fronts = [];
     const rear = L.enemyT(S).filter(id => !L.playerNeighbors(S, id).length && S.terr[id].n >= 3 && !L.leadersAt(S, id).length).sort((a, b) => L.dist(a, main) - L.dist(b, main))[0];
     if (rear) { const k = Math.min(2, S.terr[rear].n - 1); S.terr[rear].n -= k; S.terr[main].n = Math.min(L.cap(S) + 2, S.terr[main].n + k);
       if (S.obs[main]) L.log(S, 'The swarm is massing in ' + TERR[main].name + ', facing ' + TERR[to].name + '.', 'intel'); return; } }
-  ai.massed = 0; const eta = S.t + ri(22, 34); let sent = 0;
+  ai.massed = 0; const eta = S.t + ri(6, 9); let sent = 0;
   for (const id of srcs.slice(0, S.esc >= 2 ? 2 : 1)) { const T = S.terr[id]; if (T.n < (sent ? 4 : 2)) continue;
     const n = Math.max(2, Math.floor(T.n / 2) + (!sent && S.esc > 2 ? 1 : 0)); T.n -= Math.floor(T.n / 2); L.launchParty(S, id, to, n, false, eta); sent++; }
   if (sent) ai.until = Math.min(ai.until, S.t + 60); };
@@ -253,7 +253,7 @@ L.planAttack = S => { if (rnd() < (L.P.iq == null ? 0.7 : L.P.iq)) return L.smar
   for (const o of opts) { r -= o.w; if (r <= 0) { c = o; break; } }
   const T = S.terr[c.id], n = Math.max(2, Math.floor(T.n / 2) + (S.esc > 2 ? 1 : 0)); T.n -= Math.floor(T.n / 2);
   L.launchParty(S, c.id, c.to, n, false); };
-L.partyVisible = (S, p) => !!(S.obs[p.from] || p.eta - S.t <= 14 || (S.scanUntil || 0) > S.t);
+L.partyVisible = (S, p) => !!(S.obs[p.from] || p.eta - S.t <= 4 || (S.scanUntil || 0) > S.t);
 L.spawnCommander = (S, at) => { if (S.leaders.filter(l => l.alive).length >= 14) return; const ws = S.leaders.filter(l => l.alive && l.rank === 'warlord'); if (!ws.length) return;
   S.leaders.push({ id: 'L' + S.lid++, rank: 'commander', trait: pick(Object.keys(TRAITS)), at, alive: true, boss: pick(ws).id, seenAt: at, seenT: S.t, exposed: S.t + 36, name: pick(FIRST) + ' ' + pick(SUR) + '-' + ri(31, 47) }); };
 L.arrive = (S, p, forced) => { const T = S.terr[p.to], name = TERR[p.to].name;
@@ -315,8 +315,10 @@ L.end = (S, why) => { if (S.over) return; S.over = { why, t: S.t, own: L.owned(S
 
 // ---------- Clock ----------
 L.step = S => { // advance one hour
-  if (S.over || S.pending || S.pendingCol || S.mob) return; S.t++;
+  if (S.over || S.pending || S.pendingCol || S.pendingAtk || S.mob) return; S.t++;
   const N = S.next, tm = S.team;
+  for (const a of (S.atks || []).slice()) if (S.t >= a.eta) { if (S.cmd) { S.pendingAtk = a; S.ev.push({ k: 'atk' }); S.ev.push({ k: 'pause' }); return; }
+    const b = L.atkBegin(S, a); if (b) while (!b.done) { if (b.A < b.D * 0.6 && b.A < 4) { L.assaultEnd(S, b, false); break; } L.assaultRound(S, b); } if (S.over) return; }
   // Your columns on the road, and construction sites.
   for (const c of (S.cols || []).slice()) { const fell = S.terr[c.to].owner !== 'you'; if (!fell && S.t < c.eta) continue; S.cols.splice(S.cols.indexOf(c), 1);
     if (!fell) { S.terr[c.to].n += c.n; S.terr[c.to].arm = (S.terr[c.to].arm || 0) + (c.arm || 0); L.log(S, c.n + (c.arm || 0) + ' troops arrived in ' + TERR[c.to].name + '.', 'info'); S.ev.push({ k: 'toast', msg: c.n + ' troops arrived in ' + TERR[c.to].name, kind: 'info' }); continue; }
@@ -330,7 +332,7 @@ L.step = S => { // advance one hour
     if (S.cmd && S.terr[p.to].owner === 'you' && p.n >= 3) { S.pending = p; S.ev.push({ k: 'defend' }); S.ev.push({ k: 'pause' }); return; }
     L.arrive(S, p); if (S.over) return; }
   if (S.t >= N.grow) { N.grow = S.t + 24; L.grow(S); }
-  if (S.t >= N.attack) { N.attack = S.t + Math.max(10, 22 - S.esc * 3) + ri(-4, 4); if (S.parties.length < 4 + S.esc) L.planAttack(S); }
+  if (S.t >= N.attack) { N.attack = S.t + Math.max(8, 16 - S.esc * 2) + ri(-3, 3); if (S.parties.length < 4 + S.esc) L.planAttack(S); }
   if (S.t >= N.move) { N.move = S.t + ri(40, 70); L.moveLeaders(S); }
   for (const pr of N.promote.slice()) if (S.t >= pr.t) { N.promote.splice(N.promote.indexOf(pr), 1); L.promote(S, pr); }
   if (S.nuke.building && S.t >= S.nuke.doneAt) { S.nuke.building = false; S.nuke.stage++;
@@ -481,9 +483,22 @@ L.assaultStart = (S, id, troops, o) => { o = o || {}; const T = S.terr[id]; if (
   if (o.air && pl.can.air) { S.bombT = S.t + 48; T.n = Math.max(1, T.n - 3); }
   let need = pl.troops; if (!pl.supplied) { const fromPool = Math.min(S.pool, need); S.pool -= fromPool; need -= fromPool; }
   if (pl.supplied) for (const x in pl.from) { S.terr[x].arm = (S.terr[x].arm || 0) - pl.armFrom[x]; S.terr[x].n -= pl.from[x] - pl.armFrom[x]; }
-  const D = Math.max(1, L.enemyDefense(S, id));
-  const b = { id, inf: pl.inf, arm: pl.arm, armHome: Object.keys(pl.armFrom || {}).sort((x, y) => pl.armFrom[y] - pl.armFrom[x])[0], A: pl.A, A0: pl.A, teamN: pl.teamN, troops: pl.troops, D, D0: D, guards: L.guards(S, id), aB: pl.aB, dB: pl.dB, rounds: [], done: false, supplied: pl.supplied, teamHere: pl.teamHere };
-  return { ok: true, b }; };
+  // The force is now on the road. It fights when it arrives, against whatever is there by then.
+  const hrs = pl.supplied ? L.marchHours(S) : 2 * L.marchHours(S), a = { id: S.aid = (S.aid || 0) + 1, to: id, inf: pl.inf, arm: pl.arm, from: pl.from || {}, armFrom: pl.armFrom || {}, armHome: Object.keys(pl.armFrom || {}).sort((x, y) => pl.armFrom[y] - pl.armFrom[x])[0], flank: pl.flank, supplied: pl.supplied, t0: S.t, eta: S.t + hrs };
+  (S.atks = S.atks || []).push(a); const re = L.enemyReact(S, a);
+  L.log(S, (pl.inf + pl.arm) + ' troops are marching on ' + TERR[id].name + ' and attack in ' + hrs + ' hours.' + (re && S.obs[id] ? ' The swarm rushed ' + re + ' reinforcements in.' : ''), 'info');
+  return { ok: true, march: true, hours: hrs, react: re }; };
+// The swarm sees an attack coming and pulls troops in from next door, the way you would.
+L.enemyReact = (S, a) => { if (rnd() > (L.P.iq == null ? 0.7 : L.P.iq)) return 0; let got = 0; const T = S.terr[a.to];
+  for (const x of TERR[a.to].adj.filter(x => S.terr[x].owner === 'enemy').sort((p, q) => S.terr[q].n - S.terr[p].n)) { const k = Math.min(2 - got, S.terr[x].n - 2); if (k > 0) { S.terr[x].n -= k; T.n += k; got += k; } if (got >= 2) break; } return got; };
+L.atkCols = S => (S.atks || []).flatMap(a => { const src = Object.keys(a.from).filter(x => a.from[x] > 0); return (src.length ? src : [HQ]).map(x => ({ id: 'a' + a.id + x, atk: 1, from: x, to: a.to, n: src.length ? a.from[x] : a.inf + a.arm, arm: 0, t0: a.t0, eta: a.eta })); });
+L.allCols = S => (S.cols || []).concat(L.atkCols(S));
+// Arrival: open the battle against the defense as it stands now. If the target is no longer the enemy's, the force goes home.
+L.atkBegin = (S, a) => { a = a || S.pendingAtk; if (!a) return null; S.pendingAtk = null; const i = (S.atks || []).indexOf(a); if (i >= 0) S.atks.splice(i, 1); const id = a.to, T = S.terr[id];
+  if (T.owner !== 'enemy') { const own = L.owned(S); let home = Object.keys(a.from).find(x => S.terr[x].owner === 'you') || (T.owner === 'you' ? id : own.sort((x, y) => L.dist(id, x) - L.dist(id, y))[0]); if (home) { S.terr[home].n += a.inf; S.terr[home].arm = (S.terr[home].arm || 0) + a.arm; }
+    L.log(S, 'The attack on ' + TERR[id].name + ' was called off: it is no longer held by the enemy. The troops fell back' + (home ? ' to ' + TERR[home].name : '') + '.', 'info'); return null; }
+  const teamHere = L.teamAt(S) === id && S.team.pips > 0, teamN = teamHere ? L.teamN(S) : 0, n = (teamHere && S.spec === 'assault' ? 1 : 0) + (a.flank ? 1 : 0) - (a.supplied ? 0 : 1), troops = a.inf + 2 * a.arm, A = troops + teamN, D = Math.max(1, L.enemyDefense(S, id));
+  return { id, inf: a.inf, arm: a.arm, armHome: a.armHome, A, A0: A, teamN, troops, D, D0: D, guards: L.guards(S, id), aB: clamp(n, 0, 2), dB: n < 0 ? 1 : 0, rounds: [], done: false, supplied: a.supplied, teamHere }; };
 L.assaultRound = (S, b) => { if (b.done) return; const r = L.round(b.A, b.D, Math.min(2, b.aB + (S.doc === 'blitz' && !b.rounds.length ? 1 : 0)), b.dB); b.A -= r.aL; b.D -= r.dL; b.rounds.push(r);
   if (b.A <= 0 || b.D <= 0) L.assaultEnd(S, b, b.D <= 0); return r; };
 L.assaultEnd = (S, b, won) => { if (b.done) return; b.done = true; b.won = won; const T = S.terr[b.id], name = TERR[b.id].name;

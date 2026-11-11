@@ -13,7 +13,7 @@ const basic={act(S){ // place pool on most threatened, assault when strong
   if(S.res.metal>120){const id=own.find(i=>!S.terr[i].fort&&TERR[i].adj.some(n=>S.terr[n].owner==='enemy'));if(id)L.build(S,id,'fort');}
   // assault weakest reachable
   let tgt=null,ts=99;for(const id of L.enemyT(S)){const av=L.assaultAvail(S,id);if(!av.supplied)continue;const d=L.enemyDefense(S,id);if(av.n>=d*1.6+2&&d<ts){ts=d;tgt=id;}}
-  if(tgt&&S.res.fuel>=15){const av=L.assaultAvail(S,tgt);const r=L.assaultStart(S,tgt,Math.min(av.n,Math.ceil(ts*2+3)));if(r.ok){const b=r.b;while(!b.done){if(b.A<b.D*0.6&&b.A<4){L.assaultEnd(S,b,false);break;}L.assaultRound(S,b);}}}
+  if(tgt&&S.res.fuel>=15){const av=L.assaultAvail(S,tgt);const r=L.assaultStart(S,tgt,Math.min(av.n,Math.ceil(ts*2+3)));if(r.ok&&r.b){const b=r.b;while(!b.done){if(b.A<b.D*0.6&&b.A<4){L.assaultEnd(S,b,false);break;}L.assaultRound(S,b);}}}
  }};
 for(const [name,pol] of [['passive',passive],['basic',basic]]){const out={};let days=0,own=0;const N=40;
  for(let i=0;i<N;i++){const S=run(pol);const k=S.over?S.over.why:'timeout';out[k]=(out[k]||0)+1;days+=L.day(S);own+=L.owned(S).length;}

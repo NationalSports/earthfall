@@ -601,7 +601,7 @@ L.newGame = (spec, diff, opt) => { L.setDiff(diff); opt = opt || {};
 
 // ---------- Enemy behavior ----------
 L.cap = S => 7 + Math.min(3, S.esc);
-L.launchParty = (S, from, to, n, breakout, eta) => { const ls = L.leadersAt(S, from), dur = (eta || S.t + (breakout ? 18 : ri(22, 34))) - S.t;
+L.launchParty = (S, from, to, n, breakout, eta) => { const ls = L.leadersAt(S, from), dur = (eta || S.t + (breakout ? 6 : ri(6, 9))) - S.t;
   S.parties.push({ id: S.pid++, from, to, n, t0: S.t, eta: S.t + Math.round(dur * (ls.some(l => l.trait === 'raider') ? 0.7 : 1)), breakout: !!breakout, hit: 0, aB: ls.some(l => l.trait === 'butcher') ? 1 : 0 }); };
 L.playerNeighbors = (S, id) => TERR[id].adj.filter(n => S.terr[n].owner === 'you');
 L.grow = S => { const en = L.enemyT(S); if (!en.length) return;
@@ -634,7 +634,7 @@ L.smartAttack = S => { const fronts = [];
     const rear = L.enemyT(S).filter(id => !L.playerNeighbors(S, id).length && S.terr[id].n >= 3 && !L.leadersAt(S, id).length).sort((a, b) => L.dist(a, main) - L.dist(b, main))[0];
     if (rear) { const k = Math.min(2, S.terr[rear].n - 1); S.terr[rear].n -= k; S.terr[main].n = Math.min(L.cap(S) + 2, S.terr[main].n + k);
       if (S.obs[main]) L.log(S, 'The swarm is massing in ' + TERR[main].name + ', facing ' + TERR[to].name + '.', 'intel'); return; } }
-  ai.massed = 0; const eta = S.t + ri(22, 34); let sent = 0;
+  ai.massed = 0; const eta = S.t + ri(6, 9); let sent = 0;
   for (const id of srcs.slice(0, S.esc >= 2 ? 2 : 1)) { const T = S.terr[id]; if (T.n < (sent ? 4 : 2)) continue;
     const n = Math.max(2, Math.floor(T.n / 2) + (!sent && S.esc > 2 ? 1 : 0)); T.n -= Math.floor(T.n / 2); L.launchParty(S, id, to, n, false, eta); sent++; }
   if (sent) ai.until = Math.min(ai.until, S.t + 60); };
@@ -648,7 +648,7 @@ L.planAttack = S => { if (rnd() < (L.P.iq == null ? 0.7 : L.P.iq)) return L.smar
   for (const o of opts) { r -= o.w; if (r <= 0) { c = o; break; } }
   const T = S.terr[c.id], n = Math.max(2, Math.floor(T.n / 2) + (S.esc > 2 ? 1 : 0)); T.n -= Math.floor(T.n / 2);
   L.launchParty(S, c.id, c.to, n, false); };
-L.partyVisible = (S, p) => !!(S.obs[p.from] || p.eta - S.t <= 14 || (S.scanUntil || 0) > S.t);
+L.partyVisible = (S, p) => !!(S.obs[p.from] || p.eta - S.t <= 4 || (S.scanUntil || 0) > S.t);
 L.spawnCommander = (S, at) => { if (S.leaders.filter(l => l.alive).length >= 14) return; const ws = S.leaders.filter(l => l.alive && l.rank === 'warlord'); if (!ws.length) return;
   S.leaders.push({ id: 'L' + S.lid++, rank: 'commander', trait: pick(Object.keys(TRAITS)), at, alive: true, boss: pick(ws).id, seenAt: at, seenT: S.t, exposed: S.t + 36, name: pick(FIRST) + ' ' + pick(SUR) + '-' + ri(31, 47) }); };
 L.arrive = (S, p, forced) => { const T = S.terr[p.to], name = TERR[p.to].name;
@@ -710,8 +710,10 @@ L.end = (S, why) => { if (S.over) return; S.over = { why, t: S.t, own: L.owned(S
 
 // ---------- Clock ----------
 L.step = S => { // advance one hour
-  if (S.over || S.pending || S.pendingCol || S.mob) return; S.t++;
+  if (S.over || S.pending || S.pendingCol || S.pendingAtk || S.mob) return; S.t++;
   const N = S.next, tm = S.team;
+  for (const a of (S.atks || []).slice()) if (S.t >= a.eta) { if (S.cmd) { S.pendingAtk = a; S.ev.push({ k: 'atk' }); S.ev.push({ k: 'pause' }); return; }
+    const b = L.atkBegin(S, a); if (b) while (!b.done) { if (b.A < b.D * 0.6 && b.A < 4) { L.assaultEnd(S, b, false); break; } L.assaultRound(S, b); } if (S.over) return; }
   // Your columns on the road, and construction sites.
   for (const c of (S.cols || []).slice()) { const fell = S.terr[c.to].owner !== 'you'; if (!fell && S.t < c.eta) continue; S.cols.splice(S.cols.indexOf(c), 1);
     if (!fell) { S.terr[c.to].n += c.n; S.terr[c.to].arm = (S.terr[c.to].arm || 0) + (c.arm || 0); L.log(S, c.n + (c.arm || 0) + ' troops arrived in ' + TERR[c.to].name + '.', 'info'); S.ev.push({ k: 'toast', msg: c.n + ' troops arrived in ' + TERR[c.to].name, kind: 'info' }); continue; }
@@ -725,7 +727,7 @@ L.step = S => { // advance one hour
     if (S.cmd && S.terr[p.to].owner === 'you' && p.n >= 3) { S.pending = p; S.ev.push({ k: 'defend' }); S.ev.push({ k: 'pause' }); return; }
     L.arrive(S, p); if (S.over) return; }
   if (S.t >= N.grow) { N.grow = S.t + 24; L.grow(S); }
-  if (S.t >= N.attack) { N.attack = S.t + Math.max(10, 22 - S.esc * 3) + ri(-4, 4); if (S.parties.length < 4 + S.esc) L.planAttack(S); }
+  if (S.t >= N.attack) { N.attack = S.t + Math.max(8, 16 - S.esc * 2) + ri(-3, 3); if (S.parties.length < 4 + S.esc) L.planAttack(S); }
   if (S.t >= N.move) { N.move = S.t + ri(40, 70); L.moveLeaders(S); }
   for (const pr of N.promote.slice()) if (S.t >= pr.t) { N.promote.splice(N.promote.indexOf(pr), 1); L.promote(S, pr); }
   if (S.nuke.building && S.t >= S.nuke.doneAt) { S.nuke.building = false; S.nuke.stage++;
@@ -876,9 +878,22 @@ L.assaultStart = (S, id, troops, o) => { o = o || {}; const T = S.terr[id]; if (
   if (o.air && pl.can.air) { S.bombT = S.t + 48; T.n = Math.max(1, T.n - 3); }
   let need = pl.troops; if (!pl.supplied) { const fromPool = Math.min(S.pool, need); S.pool -= fromPool; need -= fromPool; }
   if (pl.supplied) for (const x in pl.from) { S.terr[x].arm = (S.terr[x].arm || 0) - pl.armFrom[x]; S.terr[x].n -= pl.from[x] - pl.armFrom[x]; }
-  const D = Math.max(1, L.enemyDefense(S, id));
-  const b = { id, inf: pl.inf, arm: pl.arm, armHome: Object.keys(pl.armFrom || {}).sort((x, y) => pl.armFrom[y] - pl.armFrom[x])[0], A: pl.A, A0: pl.A, teamN: pl.teamN, troops: pl.troops, D, D0: D, guards: L.guards(S, id), aB: pl.aB, dB: pl.dB, rounds: [], done: false, supplied: pl.supplied, teamHere: pl.teamHere };
-  return { ok: true, b }; };
+  // The force is now on the road. It fights when it arrives, against whatever is there by then.
+  const hrs = pl.supplied ? L.marchHours(S) : 2 * L.marchHours(S), a = { id: S.aid = (S.aid || 0) + 1, to: id, inf: pl.inf, arm: pl.arm, from: pl.from || {}, armFrom: pl.armFrom || {}, armHome: Object.keys(pl.armFrom || {}).sort((x, y) => pl.armFrom[y] - pl.armFrom[x])[0], flank: pl.flank, supplied: pl.supplied, t0: S.t, eta: S.t + hrs };
+  (S.atks = S.atks || []).push(a); const re = L.enemyReact(S, a);
+  L.log(S, (pl.inf + pl.arm) + ' troops are marching on ' + TERR[id].name + ' and attack in ' + hrs + ' hours.' + (re && S.obs[id] ? ' The swarm rushed ' + re + ' reinforcements in.' : ''), 'info');
+  return { ok: true, march: true, hours: hrs, react: re }; };
+// The swarm sees an attack coming and pulls troops in from next door, the way you would.
+L.enemyReact = (S, a) => { if (rnd() > (L.P.iq == null ? 0.7 : L.P.iq)) return 0; let got = 0; const T = S.terr[a.to];
+  for (const x of TERR[a.to].adj.filter(x => S.terr[x].owner === 'enemy').sort((p, q) => S.terr[q].n - S.terr[p].n)) { const k = Math.min(2 - got, S.terr[x].n - 2); if (k > 0) { S.terr[x].n -= k; T.n += k; got += k; } if (got >= 2) break; } return got; };
+L.atkCols = S => (S.atks || []).flatMap(a => { const src = Object.keys(a.from).filter(x => a.from[x] > 0); return (src.length ? src : [HQ]).map(x => ({ id: 'a' + a.id + x, atk: 1, from: x, to: a.to, n: src.length ? a.from[x] : a.inf + a.arm, arm: 0, t0: a.t0, eta: a.eta })); });
+L.allCols = S => (S.cols || []).concat(L.atkCols(S));
+// Arrival: open the battle against the defense as it stands now. If the target is no longer the enemy's, the force goes home.
+L.atkBegin = (S, a) => { a = a || S.pendingAtk; if (!a) return null; S.pendingAtk = null; const i = (S.atks || []).indexOf(a); if (i >= 0) S.atks.splice(i, 1); const id = a.to, T = S.terr[id];
+  if (T.owner !== 'enemy') { const own = L.owned(S); let home = Object.keys(a.from).find(x => S.terr[x].owner === 'you') || (T.owner === 'you' ? id : own.sort((x, y) => L.dist(id, x) - L.dist(id, y))[0]); if (home) { S.terr[home].n += a.inf; S.terr[home].arm = (S.terr[home].arm || 0) + a.arm; }
+    L.log(S, 'The attack on ' + TERR[id].name + ' was called off: it is no longer held by the enemy. The troops fell back' + (home ? ' to ' + TERR[home].name : '') + '.', 'info'); return null; }
+  const teamHere = L.teamAt(S) === id && S.team.pips > 0, teamN = teamHere ? L.teamN(S) : 0, n = (teamHere && S.spec === 'assault' ? 1 : 0) + (a.flank ? 1 : 0) - (a.supplied ? 0 : 1), troops = a.inf + 2 * a.arm, A = troops + teamN, D = Math.max(1, L.enemyDefense(S, id));
+  return { id, inf: a.inf, arm: a.arm, armHome: a.armHome, A, A0: A, teamN, troops, D, D0: D, guards: L.guards(S, id), aB: clamp(n, 0, 2), dB: n < 0 ? 1 : 0, rounds: [], done: false, supplied: a.supplied, teamHere }; };
 L.assaultRound = (S, b) => { if (b.done) return; const r = L.round(b.A, b.D, Math.min(2, b.aB + (S.doc === 'blitz' && !b.rounds.length ? 1 : 0)), b.dB); b.A -= r.aL; b.D -= r.dL; b.rounds.push(r);
   if (b.A <= 0 || b.D <= 0) L.assaultEnd(S, b, b.D <= 0); return r; };
 L.assaultEnd = (S, b, won) => { if (b.done) return; b.done = true; b.won = won; const T = S.terr[b.id], name = TERR[b.id].name;
@@ -1153,7 +1168,7 @@ const V = (() => {
     if (V.moveArrow && S.terr[V.moveArrow.from] && S.terr[V.moveArrow.to]) { const c = curveFor(V.moveArrow.from, V.moveArrow.to, 0.12); for (const s of c.segs) { const t = new THREE.Mesh(new THREE.TubeGeometry(s, 24, 0.15, 6), M.arcTeam); t.userData.own = 1; arcs.add(t); }
       const e = c.at(0.86), e0 = c.at(0.78), ah = new THREE.Mesh(G.cone, M.arcTeam); ah.position.copy(e); ah.quaternion.setFromUnitVectors(UP, e.clone().sub(e0).normalize()); ah.scale.set(2.0, 1.1, 2.0); arcs.add(ah); }
     // Your own columns: a thin teal route and a marching piece (a transport for airlifts).
-    for (const p of S.cols || []) { const c = curveFor(p.from, p.to); for (const s of c.segs) { const t = new THREE.Mesh(new THREE.TubeGeometry(s, 24, 0.07, 5), M.arcTeam); t.userData.own = 1; arcs.add(t); }
+    for (const p of L.allCols(S)) { const c = curveFor(p.from, p.to); for (const s of c.segs) { const t = new THREE.Mesh(new THREE.TubeGeometry(s, 24, 0.07, 5), M.arcTeam); t.userData.own = 1; arcs.add(t); }
       const head = piece(p.air && pieceImgs.tiltrotor ? 'tiltrotor' : 'infantry', 0, 0, 1.9); head.userData = { party: p, curve: c }; arcs.add(head);
       const d = document.createElement('div'); d.className = 'plabel you'; labelsEl.appendChild(d); d._p = p; d._head = head; partyLabels.push(d); }
     const tm = S.team; if (tm.dest) { const c = curveFor(tm.from, tm.dest); for (const s of c.segs) { const t = new THREE.Mesh(new THREE.TubeGeometry(s, 24, 0.05, 5), M.arcTeam); t.userData.own = 1; arcs.add(t); } teamTok.userData.curve = c; } else teamTok.userData.curve = null; }
@@ -1342,7 +1357,7 @@ const V = (() => {
     const st = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (S.obs[id] ? 1 : 0); }).join('') + sel; if (mode === 'globe') { if (st !== sigTexG) { sigTexG = st; paintGlobe(S); colorBorders(bordG, S); } } else if (st !== sigTex) { sigTex = st; paint(S); colorBorders(bordB, S); }
     const sk = TIDS.map(id => { const T = S.terr[id]; return T.owner[0] + (T.owner === 'you' ? (T.n >= 7 ? 3 : T.n >= 4 ? 2 : 1) : (S.obs[id] ? T.n : 'u' + T.seenN)) + (T.fort | 0) + (T.radar | 0) + (T.battery | 0); }).join('') + [S.nuke.building, S.nuke.stage, S.nuke.ready, S.emp.building, S.emp.n, S.up.bombers, S.up.railgun].map(x => +!!x).join('') + S.leaders.map(l => l.alive && L.leaderKnown(S, l) ? l.at + l.rank[0] : '-').join('');
     if (sk !== sigTok) { sigTok = sk; buildTokens(S); }
-    const sa = S.parties.map(p => p.id + (L.partyVisible(S, p) ? 'v' : 'h')).join(',') + '|' + (S.team.dest || '') + '|' + (S.cols || []).map(c => c.id).join(',') + '|' + (V.moveArrow ? V.moveArrow.from + '>' + V.moveArrow.to : '') + '|' + (sel && S.terr[sel] && S.terr[sel].owner === 'enemy' ? sel + L.assaultAvail(S, sel).by.map(b => b.id + b.max).join('') : ''); if (sa !== sync.sa) { sync.sa = sa; buildArcs(S); }
+    const sa = S.parties.map(p => p.id + (L.partyVisible(S, p) ? 'v' : 'h')).join(',') + '|' + (S.team.dest || '') + '|' + L.allCols(S).map(c => c.id).join(',') + '|' + (V.moveArrow ? V.moveArrow.from + '>' + V.moveArrow.to : '') + '|' + (sel && S.terr[sel] && S.terr[sel].owner === 'enemy' ? sel + L.assaultAvail(S, sel).by.map(b => b.id + b.max).join('') : ''); if (sa !== sync.sa) { sync.sa = sa; buildArcs(S); }
     const threat = {}; for (const p of S.parties) if (L.partyVisible(S, p)) threat[p.to] = 1;
     for (const id of TIDS) { const T = S.terr[id], d = labels[id], known = S.obs[id]; d.className = 'tlabel ' + T.owner + (id === sel ? ' sel' : '') + (threat[id] ? ' threat' : '') + (id === HQ ? ' hq' : '') + (L.isStrong(id) ? ' strong' : '');
       d.children[0].textContent = TERR[id].name; d.children[1].textContent = T.owner === 'waste' ? '☢' : T.owner === 'enemy' ? (known ? L.enemyDefense(S, id) : '?') : T.n + (T.arm || 0);
@@ -1357,7 +1372,7 @@ const V = (() => {
     const vd = G3 ? (glS.dist - GR) * 1.15 : camS.dist, ppu = el.clientHeight / (2 * vd * 0.3057); labelsEl.classList.toggle('far', ppu < 7.5); labelsEl.classList.toggle('mid', ppu >= 7.5 && ppu < 13);
     if (S0) { for (const id of TIDS) place(labels[id], P(id), 0, true);
       for (const c of arcs.children) if (c.userData.party) { const p = c.userData.party, f = (S0.t + (V.frac || 0) - p.t0) / (p.eta - p.t0), q = c.userData.curve.at(f), q2 = c.userData.curve.at(f + 0.02); c.position.copy(q); }
-      for (const d of partyLabels) { { const mine = d.classList.contains('you'), n = d._p.n + (d._p.arm || 0), h = Math.max(0, d._p.eta - S0.t); d.textContent = mine ? '➤ ' + n + ' yours · ' + h + 'h' : '⚠ ' + n + ' enemy · hits in ' + h + 'h'; } place(d, d._head.position, 1.2); }
+      for (const d of partyLabels) { { const mine = d.classList.contains('you'), n = d._p.n + (d._p.arm || 0), h = Math.max(0, d._p.eta - S0.t); d.textContent = mine ? (d._p.atk ? '⚔ ' + n + ' attacking · ' + h + 'h' : '➤ ' + n + ' yours · ' + h + 'h') : '⚠ ' + n + ' enemy · hits in ' + h + 'h'; } place(d, d._head.position, 1.2); }
       const tm = S0.team; if (tm.dest && teamTok.userData.curve) teamTok.position.copy(teamTok.userData.curve.at((S0.t + (V.frac || 0) - tm.t0) / Math.max(1, tm.eta - tm.t0))); else { const p = P(tm.at); if (G3) teamTok.position.copy(p).multiplyScalar(1.03); else teamTok.position.set(p.x - 1.5, p.y + 0.2, p.z - 0.6); }
       if (G3) { teamTok.quaternion.setFromUnitVectors(UP, teamTok.position.clone().normalize()); teamTok.visible = teamTok.position.dot(camera.position) > GR * GR; } else teamTok.visible = true;
       teamTok.children[1].rotation.z = time * 1.5; teamTok.children[0].position.y = 0.9 + Math.sin(time * 2.4) * 0.1; }
@@ -1512,10 +1527,11 @@ function assaultModal() { const a = asl, D = TERR[a.id]; let h = '<div class="mh
       (pl.supplied ? '<div class="srcs"><h4>Attacking from</h4>' + pl.by.map(b => '<div class="slider"><label><b>' + TERR[b.id].name + '</b> sends <b>' + pl.from[b.id] + '</b> of ' + b.max + (pl.armFrom[b.id] ? ' <small>(' + pl.armFrom[b.id] + ' armor)</small>' : '') + ' <small>(1 stays behind)</small></label><input type="range" data-src="' + b.id + '" min="0" max="' + b.max + '" value="' + pl.from[b.id] + '"></div>').join('') + '</div>' : '<div class="slider"><label for="troops">Reserve troops to land: <b>' + pl.troops + '</b> of ' + pl.avail + '</label><input id="troops" type="range" min="0" max="' + pl.avail + '" value="' + pl.troops + '"></div>') +
       '<div class="est"><label>Estimated success</label><b class="' + (pl.p > 0.65 ? 'good' : pl.p > 0.35 ? 'warn' : 'bad') + '">' + pct(pl.p) + '</b><div class="bar"><i style="width:' + pl.p * 100 + '%"></i></div>' + (pl.supplied ? '' : '<small>No land border: your reserve lands from the sea, and defenders roll +1 on their best die.</small>') + '</div>' +
       (pl.supplied ? '<div class="flankline ' + (pl.flank ? 'on' : '') + '"><b>' + (pl.flank ? '✓ Flanking' : 'No flank') + '</b><span>' + (pl.flank ? 'You are attacking from ' + Object.values(pl.from).filter(n => n > 0).length + ' sides, so your best die gets +1. This is automatic.' : pl.by.length > 1 ? 'Send troops from a second territory above and your best die gets +1.' : 'Only one of your territories borders this one. Hold a second bordering territory and attacks here get +1 on your best die.') + '</span></div>' : '') +
+      '<p class="note">Your troops take ' + (pl.supplied ? L.marchHours(S) : 2 * L.marchHours(S)) + ' hours to reach ' + D.name + ', the same as the swarm takes to reach you. It can see you coming and may pull in up to 2 reinforcements from next door, so the odds above can drop.</p>' +
       '<h4 class="suph">Optional support</h4><div class="tactics two">' +
       '<button class="tac' + (a.o.missile ? ' on' : '') + '" data-a="tac" data-id="missile"' + (pl.can.missile && payM ? '' : ' disabled') + '><i class="art top art-missile"></i><b>Missile support</b><span>' + (!pl.can.missile ? 'Needs a loaded battery within 2 territories.' : !payM ? 'You cannot afford it: you have ' + cost({ fuel: Math.floor(S.res.fuel), metal: Math.floor(S.res.metal) }) + '.' : 'Defense −2 before the first roll.') + '</span><small>' + cost(SALVO_COST) + '</small></button>' +
       '<button class="tac' + (a.o.air ? ' on' : '') + '" data-a="tac" data-id="air"' + (pl.can.air && payA ? '' : ' disabled') + '><i class="art top art-strike"></i><b>Air support</b><span>' + (!pl.can.air ? 'Needs Strategic Bombers, rearmed.' : !payA ? 'You cannot afford it: you have ' + cost({ fuel: Math.floor(S.res.fuel) }) + '.' : 'Defense −3 before the first roll.') + '</span><small>' + cost(BOMB_COST) + '</small></button></div>' +
-      '<div class="row">' + btn('closeModal', 'Cancel') + btn('commit', 'Commit attack', { cls: 'gold big', sub: pl.A < 1 ? 'No troops committed' : S.orders < 2 ? 'Not enough Orders (2 needed, ' + S.orders + ' left)' : !L.canPay(S, pl.cost) ? 'Not enough resources: needs ' + cost(pl.cost) : 'Costs 2 Orders' + (pl.cost.fuel || pl.cost.metal ? ' and ' + cost(pl.cost) : ''), dis: pl.A < 1 || S.orders < 2 || !L.canPay(S, pl.cost) }) + '</div>';
+      '<div class="row">' + btn('closeModal', 'Cancel') + btn('commit', 'Commit attack', { cls: 'gold big', sub: pl.A < 1 ? 'No troops committed' : S.orders < 2 ? 'Not enough Orders (2 needed, ' + S.orders + ' left)' : !L.canPay(S, pl.cost) ? 'Not enough resources: needs ' + cost(pl.cost) : 'Costs 2 Orders' + (pl.cost.fuel || pl.cost.metal ? ' and ' + cost(pl.cost) : '') + ' · they march ' + (pl.supplied ? L.marchHours(S) : 2 * L.marchHours(S)) + 'h, then fight', dis: pl.A < 1 || S.orders < 2 || !L.canPay(S, pl.cost) }) + '</div>';
   } else { const b = a.b, last = b.rounds[b.rounds.length - 1] || { aL: 0, dL: 0 }, row = (side, alive, lost, total) => { const cap = 16, k = total > cap ? cap / total : 1, al = Math.round(Math.max(0, alive) * k), lo = Math.max(lost ? 1 : 0, Math.round(lost * k)); let u = ''; for (let i = 0; i < al; i++) u += '<i class="u ' + side + (b.done ? '' : ' fire') + '" style="animation-delay:' + (i % 5) * 70 + 'ms"></i>'; for (let i = 0; i < lo; i++) u += '<i class="u ' + side + ' dead"></i>'; return u; };
     h += '<div class="field"><div class="fside you"><div class="fcount"><b>' + Math.max(0, b.A) + '</b><small>of ' + b.A0 + ' troops</small></div><div class="units">' + row('you', b.A, last.aL, b.A0) + '</div></div><div class="fmid">' + (b.done ? '' : '<span class="tracer"></span><span class="tracer t2"></span>') + '</div><div class="fside enemy"><div class="fcount"><b>' + Math.max(0, b.D) + '</b><small>of ' + b.D0 + ' defense</small></div><div class="units">' + row('enemy', b.D, last.dL, b.D0) + '</div></div></div>';
     h += '<p class="blow">' + (b.rounds.length ? 'Round ' + b.rounds.length + ': ' + ([last.dL ? 'they lose ' + last.dL : '', last.aL ? 'you lose ' + last.aL : ''].filter(Boolean).join(', ') || 'no losses') : 'Your troops are moving in…') + '</p>';
@@ -1604,7 +1620,7 @@ function mobGuide() { const m = S.land.main, b = S.land.beach, front = L.owned(S
     { h: 'When you are ready', art: 'strike', body: '<p>The panel at the bottom left of the map lists what you can still do, with a <b>Show</b> button for each. When you are happy, press <b>Begin the war</b> there.</p><p>Not sure what to buy? <b>Mobilize for me</b> spends everything in a sensible way for your doctrine. You can look at what it did and change it before you begin.</p>' }] }; guideModal(); }
 function dayGuide() { guide = { title: 'The war', i: 0, end: btn('closeModal', 'Start playing', { cls: 'gold big' }), pages: [
     { h: 'Orders', art: 'covert-strike', body: '<p>From now on, every action spends <b>Orders</b> (❖ in the top bar). You get ' + L.ordersMax(S) + ' each day at midnight and can bank up to 3 unused.</p>' + gl([['2 Orders', 'attack, airlift.'], ['1 Order', 'march, build, train armor, missiles, strike team.'], ['Free', 'placing reserve troops, playing cards, defending.']]) },
-    { h: 'Attacking', art: 'flank', body: '<p>Tap a red territory that touches one of yours, then press <b>⚔ Attack</b>.</p>' + gl([['Who fights', 'the spare troops in your territories next to it. Gold arrows show them.'], ['The odds', 'are shown before you commit.'], ['Two sides', 'attacking from two territories at once unlocks Flank, a free bonus.']]) },
+    { h: 'Attacking', art: 'flank', body: '<p>Tap a red territory that touches one of yours, then press <b>⚔ Attack</b>.</p>' + gl([['Who fights', 'the spare troops in your territories next to it. Gold arrows show them.'], ['It takes time', 'your troops march about 6 hours, then the battle plays out. The swarm moves at the same speed, and can reinforce while you march.'], ['The odds', 'are shown before you commit.'], ['Two sides', 'attacking from two territories at once unlocks Flank, a free bonus.']]) },
     { h: 'Time', art: 'rapid-transport', body: '<p>Press <b>▶</b> at the top to run the clock. A day takes about two minutes. It pauses itself when something needs you.</p>' + gl([['Marching', 'takes 6 hours per territory. Buildings take a day.'], ['New troops', 'arrive every midnight and can only be placed at strongholds (✦). March them to the front.'], ['The swarm', 'grows and attacks only while the clock runs.'], ['Lost?', 'The panel at the bottom left always lists what you can do now.']]) }] }; guideModal(); }
 // ---------- Briefing ----------
 function briefModal() { const m = S.land.main, b = S.land.beach, en = L.enemyT(S), front = L.owned(S).filter(id => L.enemyNeighborsN(S, id) > 0), sf = front.filter(id => L.isStrong(id));
@@ -1694,6 +1710,9 @@ function teamHelp() { const tm = S.team, at = L.teamAt(S), T = at && S.terr[at],
 function strongList() { const mine = STRONG.filter(id => S.terr[id].owner === 'you'), theirs = STRONG.filter(id => S.terr[id].owner === 'enemy');
   const row = (id, yours) => { const T = S.terr[id], pk = PERKS[id]; return '<div class="opt"><span><b>✦ ' + TERR[id].name + '</b> ' + (id === HQ ? 'headquarters · ' : '') + (yours ? T.n + ' troops' + (T.arm ? ', ' + T.arm + ' armor' : '') : 'occupied') + (pk && pk.name ? ' · ' + pk.name : '') + '</span><button data-a="' + (yours && S.pool > 0 ? 'strongPlace' : 'strongGo') + '" data-id="' + id + '">' + (yours && S.pool > 0 ? 'Place troops' : 'Show') + '</button></div>'; };
   showModal('<div class="mhead"><small>Marked ✦ in gold on the map</small><h1>Strongholds</h1></div><p class="lead">The 10 major cities. They produce double resources, can be built up further, and are the only places new reserve troops can be placed. You have <b>' + S.pool + '</b> in reserve.</p><h4>Yours (' + mine.length + ')</h4><div class="mk">' + (mine.map(id => row(id, true)).join('') || '<p class="note">None. Liberate one to place reserves.</p>') + '</div>' + (theirs.length ? '<h4>Occupied (' + theirs.length + ')</h4><div class="mk">' + theirs.map(id => row(id, false)).join('') + '</div>' : '') + '<div class="row">' + btn('closeModal', 'Close', {}) + '</div>', 'intel'); }
+function atkArrive() { if (!S || !S.pendingAtk || S.over) return; if (modal) { setTimeout(atkArrive, 700); return; } const a = S.pendingAtk, b = L.atkBegin(S, a);
+  if (!b) { toast('The attack on ' + TERR[a.to].name + ' was called off. Your troops fell back.', 'info'); renderAll(true); return; }
+  selId = a.to; V.focus(a.to); asl = { id: a.to, troops: b.troops, o: {}, b }; SFX.play('alert'); V.flash(a.to); assaultModal(); battlePlay(); }
 let dayRep = null;
 function dayModal() { if (!dayRep || !S || S.over) return; if (modal) { setTimeout(dayModal, 700); return; } const d = dayRep; dayRep = null; SFX.play('good');
   const R = (cls, t, body) => '<div class="ritem ' + cls + '"><b>' + t + '</b><span>' + body + '</span></div>', names = a => a.map(id => TERR[id].name).join(', ');
@@ -1816,7 +1835,8 @@ function act(a, id) { if (!S && a !== 'start' && a !== 'diff' && a !== 'doc') re
     case 'nukeGo': closeModal(); if (report(L.nukeLaunch(S, id))) { V.missile(HQ, id, 'nuke'); SFX.play('missile'); setTimeout(() => SFX.play('boom'), 2200); } break;
     case 'assault': asl = { id, troops: Math.min(L.assaultAvail(S, id).n, L.enemyDefense(S, id) + 3), o: {} }; assaultModal(); return;
     case 'tac': asl.o[id] = !asl.o[id]; assaultModal(); return;
-    case 'commit': { const r = L.assaultStart(S, asl.id, asl.troops, asl.o); if (report(r)) { asl.b = r.b; V.flash(asl.id); battlePlay(); } assaultModal(); return; }
+    case 'commit': { const tid = asl.id, r = L.assaultStart(S, asl.id, asl.troops, asl.o); if (!report(r)) { assaultModal(); return; } SFX.play('build'); closeModal(); selId = tid;
+      toast('Your troops are marching on ' + TERR[tid].name + ' and attack in ' + r.hours + ' hours.' + (r.react ? ' The swarm is rushing reinforcements in.' : ''), 'info'); if (S.speed === 0) setSpeed(1); break; }
     case 'roll': L.assaultRound(S, asl.b); SFX.play('dice'); assaultModal(); return;
     case 'rollAll': clearInterval(asTimer); while (!asl.b.done) L.assaultRound(S, asl.b); SFX.play(asl.b.won ? 'good' : 'alert'); assaultModal(); return;
     case 'withdraw': clearInterval(asTimer); L.assaultEnd(S, asl.b, false); assaultModal(); return;
@@ -1831,6 +1851,7 @@ function drain() { if (!S) return; const ev = S.ev.splice(0); for (const e of ev
     else if (e.k === 'colStop') setTimeout(colModal, 60);
     else if (e.k === 'report') { reports.push(e); setTimeout(reportModal, 250); }
     else if (e.k === 'arrive') { selId = e.id; tab = 'territory'; V.focus(e.id); toast(S.terr[e.id].owner === 'enemy' ? 'Strike team has landed in ' + TERR[e.id].name + ', undetected. It has not fought yet: choose Sabotage or a strike on the leader.' : 'Strike team has arrived in ' + TERR[e.id].name + ' and joins its defense.', 'info'); }
+    else if (e.k === 'atk') setTimeout(atkArrive, 80);
     else if (e.k === 'day') { dayRep = e; setTimeout(dayModal, 300); }
     else if (e.k === 'intel' && !asl) { const i = e.i; setTimeout(() => { if (!modal && !S.over) showModal('<div class="mhead"><small>Intel recovered · fragment ' + (i + 1) + ' of ' + INTEL.length + '</small><h1>Intelligence brief</h1></div><p class="lead quote">' + esc(INTEL[i]) + '</p><p class="note">Recovered from the dead leader\'s command post. +3 intel, which pays for covert strikes and sabotage.</p><div class="row">' + btn('closeModal', 'Continue', { cls: 'gold big' }) + '</div>', 'intelm'); }, 300); }
     else if (e.k === 'over') setTimeout(overModal, 600); } }
@@ -1852,7 +1873,7 @@ async function boot() {
   document.addEventListener('click', e => { const b = e.target.closest('[data-a]'); if (!b || b.disabled) return; act(b.dataset.a, b.dataset.id); });
   const p = $('#panel'); p.addEventListener('pointerdown', () => { hold = true; }); window.addEventListener('pointerup', () => { setTimeout(() => { hold = false; }, 60); });
   document.addEventListener('keydown', e => { if (!S || modal || e.target.tagName === 'INPUT') return; if (e.code === 'Space') { e.preventDefault(); setSpeed(S.speed ? 0 : 1); renderTop(); } });
-  S = load(); if (S && S.pending) L.resolveDefense(S); if (S && S.pendingCol) L.colResolve(S, null); if (S) { selId = HQ; renderAll(true); toast('Campaign resumed on ' + L.stamp(S) + '. Paused.', 'info'); } else introModal();
+  S = load(); if (S && S.pending) L.resolveDefense(S); if (S && S.pendingCol) L.colResolve(S, null); if (S && S.pendingAtk) setTimeout(atkArrive, 1200); if (S) { selId = HQ; renderAll(true); toast('Campaign resumed on ' + L.stamp(S) + '. Paused.', 'info'); } else introModal();
   let last = performance.now(), rT = 0;
   function loop(now) { const dt = Math.min(0.1, (now - last) / 1000); last = now;
     if (S && S.speed > 0 && !modal && !S.over) { acc += dt * (S.speed === 1 ? 0.2 : 1); /* game hours per second */ let n = 0; while (acc >= 1 && n++ < 6) { acc -= 1; L.step(S); if (S.ev.length) drain(); if (S.speed === 0) { acc = 0; break; } } }
