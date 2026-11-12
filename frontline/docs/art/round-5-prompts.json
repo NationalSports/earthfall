@@ -1,0 +1,1989 @@
+{
+  "round": 5,
+  "generator": "built-in ImageGen",
+  "note": "Requested export dimensions exceed native generation dimensions; see native_size on each record. Square padding preserves model proportions. Scene crops preserve 16:9. No generated pixels are claimed to be native 2K/4K.",
+  "records": [
+    {
+      "id": "buildings/art-deco-office/damaged-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Change only DAMAGE STATE, keeping the same front-three-quarter camera, footprint, overall height, floor count, window rhythm, facade materials and roof equipment. Battlefield damage: one front-right corner is fractured across the lower two floors, windows shattered in irregular clusters, scorched wall patches, some exposed floor edges and bent rebar, small attached rubble at building foot. Structural silhouette remains mostly standing and recognizable. No fire, smoke, people, extra buildings or ground slab. Damage must be physically plausible. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-3bde9f90-1886-4631-837b-7dfedbd3a73f.png"
+      ],
+      "source_file": "exec-44df6224-d497-40af-8819-41d195597b9a.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/art-deco-office/damaged-front-3q.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/art-deco-office/damaged-roof",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Attached image is the selected DAMAGED building identity. Render exactly the SAME structure with same footprint, storey count, colors and damage pattern. Strict vertical top-down orthographic roof plan, camera pointing directly downward. Front is bottom of image. Show entire roof footprint and service equipment. The damage is on the lower two storeys at front-right corner; do not invent a huge roof crater or demolish roof if roof is intact in reference. Preserve its roof silhouette and equipment positions. No side walls visible. All edges fully visible. One building only; no floor slab, surroundings, smoke, flame, labels or text. Camera change only.",
+      "references": [
+        "exec-44df6224-d497-40af-8819-41d195597b9a.png"
+      ],
+      "source_file": "exec-e111200b-d015-4099-9d19-d699e127a194.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/art-deco-office/damaged-roof.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/art-deco-office/damaged-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Attached image is the selected DAMAGED building identity. Render exactly the SAME structure with same footprint, storey count, colors and damage pattern. Strict straight RIGHT SIDE orthographic elevation. Front points LEFT. Camera level at middle height. Show the right side wall only, no front face and no roof surface. Preserve the visible fractured front-right corner now at the LEFT edge of the side wall, with attached small rubble. All edges fully visible. One building only; no floor slab, surroundings, smoke, flame, labels or text. Camera change only.",
+      "references": [
+        "exec-44df6224-d497-40af-8819-41d195597b9a.png"
+      ],
+      "source_file": "exec-7e5238b3-aa92-47f6-9a17-dd20d2b778f1.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/art-deco-office/damaged-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/art-deco-office/intact-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. A complete four-storey Los Angeles art-deco office building, warm weathered limestone, stepped vertical pilasters, four window bays across front and three bays along side, recessed brass double entrance doors, stepped flat parapet, complete flat roof with one small access hut. Intact but worn. FRONT THREE QUARTER VIEW, front and right side visible, modest elevated camera reveals entire roof. Whole building only. Reference image is MATERIAL AND ARCHITECTURAL VOCABULARY only; create the complete building, not a flat wall texture. Target footprint 18 by 12 meters, height 18 meters; no dimension annotations. No ground slab, sidewalk, street furniture or surrounding buildings.",
+      "references": [
+        "facade-la-art-deco.jpg"
+      ],
+      "source_file": "exec-3bde9f90-1886-4631-837b-7dfedbd3a73f.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/art-deco-office/intact-front-3q.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/art-deco-office/intact-roof",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Rotate camera only to STRICT TOP-DOWN ORTHOGRAPHIC ROOF PLAN. Camera directly vertically above, looking straight down. Show entire footprint, all roof edges, access hut, vents and rooftop equipment at their exact design positions. No side walls or front facade visible. Preserve exact building footprint and roof arrangement. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-3bde9f90-1886-4631-837b-7dfedbd3a73f.png"
+      ],
+      "source_file": "exec-97404e69-b235-4c8b-bda9-8fa410166ebd.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/art-deco-office/intact-roof.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/art-deco-office/intact-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Rotate camera only to STRICT STRAIGHT RIGHT-SIDE ELEVATION, orthographic projection, camera horizontal at middle height. The building front faces LEFT in image; show only its right facade, zero perspective, no front facade and no roof top visible. Preserve exact floor count, windows, dimensions, material wear and all roof structures. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-3bde9f90-1886-4631-837b-7dfedbd3a73f.png"
+      ],
+      "source_file": "exec-4a7c0029-1c08-49d6-bcb8-f805282f26a9.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/art-deco-office/intact-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/brick-warehouse/damaged-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Change only DAMAGE STATE, keeping the same front-three-quarter camera, footprint, overall height, floor count, window rhythm, facade materials and roof equipment. Battlefield damage: one front-right corner is fractured across the lower two floors, windows shattered in irregular clusters, scorched wall patches, some exposed floor edges and bent rebar, small attached rubble at building foot. Structural silhouette remains mostly standing and recognizable. No fire, smoke, people, extra buildings or ground slab. Damage must be physically plausible. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-a99f03dd-27d9-4a3b-b2f1-47ffa0d75881.png"
+      ],
+      "source_file": "exec-bdc34c1e-27e1-403d-a825-6ce4ef81d1cb.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/brick-warehouse/damaged-front-3q.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/brick-warehouse/damaged-roof",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Attached image is the selected DAMAGED building identity. Render exactly the SAME structure with same footprint, storey count, colors and damage pattern. Strict vertical top-down orthographic roof plan, camera pointing directly downward. Front is bottom of image. Show entire roof footprint and service equipment. The damage is on the lower two storeys at front-right corner; do not invent a huge roof crater or demolish roof if roof is intact in reference. Preserve its roof silhouette and equipment positions. No side walls visible. All edges fully visible. One building only; no floor slab, surroundings, smoke, flame, labels or text. Camera change only.",
+      "references": [
+        "exec-bdc34c1e-27e1-403d-a825-6ce4ef81d1cb.png"
+      ],
+      "source_file": "exec-c52f4d60-a1d1-4192-b662-f98fdc2696f9.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/brick-warehouse/damaged-roof.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/brick-warehouse/damaged-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Attached image is the selected DAMAGED building identity. Render exactly the SAME structure with same footprint, storey count, colors and damage pattern. Strict straight RIGHT SIDE orthographic elevation. Front points LEFT. Camera level at middle height. Show the right side wall only, no front face and no roof surface. Preserve the visible fractured front-right corner now at the LEFT edge of the side wall, with attached small rubble. All edges fully visible. One building only; no floor slab, surroundings, smoke, flame, labels or text. Camera change only.",
+      "references": [
+        "exec-bdc34c1e-27e1-403d-a825-6ce4ef81d1cb.png"
+      ],
+      "source_file": "exec-26b7e8b0-7f74-47b2-a27c-5add9403ffa1.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/brick-warehouse/damaged-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/brick-warehouse/intact-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. A complete two-storey Los Angeles brick warehouse with tall lower industrial floor, aged red brick and grey mortar, steel-framed factory windows, broad closed corrugated loading shutter and a small service door, plain flat roof with brick parapet, complete side walls. Intact but worn. FRONT THREE QUARTER VIEW, front and right side visible, modest elevated camera reveals entire roof. Whole building only. Reference image is MATERIAL AND ARCHITECTURAL VOCABULARY only; create the complete building, not a flat wall texture. Target footprint 24 by 18 meters, height 10 meters; no dimension annotations. No ground slab, sidewalk, street furniture or surrounding buildings.",
+      "references": [
+        "facade-la-brick.jpg"
+      ],
+      "source_file": "exec-a99f03dd-27d9-4a3b-b2f1-47ffa0d75881.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/brick-warehouse/intact-front-3q.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/brick-warehouse/intact-roof",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Rotate camera only to STRICT TOP-DOWN ORTHOGRAPHIC ROOF PLAN. Camera directly vertically above, looking straight down. Show entire footprint, all roof edges, access hut, vents and rooftop equipment at their exact design positions. No side walls or front facade visible. Preserve exact building footprint and roof arrangement. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-a99f03dd-27d9-4a3b-b2f1-47ffa0d75881.png"
+      ],
+      "source_file": "exec-6920a4dd-1709-415c-9294-79c6768989f3.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/brick-warehouse/intact-roof.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/brick-warehouse/intact-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Rotate camera only to STRICT STRAIGHT RIGHT-SIDE ELEVATION, orthographic projection, camera horizontal at middle height. The building front faces LEFT in image; show only its right facade, zero perspective, no front facade and no roof top visible. Preserve exact floor count, windows, dimensions, material wear and all roof structures. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-a99f03dd-27d9-4a3b-b2f1-47ffa0d75881.png"
+      ],
+      "source_file": "exec-f1965a34-12b5-4abc-a127-b6184460d918.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/brick-warehouse/intact-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/corner-diner/damaged-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Change only DAMAGE STATE, keeping the same front-three-quarter camera, footprint, overall height, floor count, window rhythm, facade materials and roof equipment. Battlefield damage: one front-right corner is fractured across the lower two floors, windows shattered in irregular clusters, scorched wall patches, some exposed floor edges and bent rebar, small attached rubble at building foot. Structural silhouette remains mostly standing and recognizable. No fire, smoke, people, extra buildings or ground slab. Damage must be physically plausible. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-f7c1b3a3-11d1-4f67-b3a9-390afdda7f75.png"
+      ],
+      "source_file": "exec-260ba403-47d0-4aa0-846f-c71b185b0309.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/corner-diner/damaged-front-3q.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/corner-diner/damaged-roof",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Reference is selected damaged SINGLE STOREY sage tiled diner. Render SAME building identity, proportions, footprint and damage. Strict vertical TOP DOWN orthographic roof plan. Front is bottom of image. Show entire roof footprint, all roof edges, HVAC box, vents and attached parapets. Retain the slight cracked front-right roof edge only; no invented crater. No side walls visible. Preserve materials and equipment placements. Camera change only. Entire subject, generous gray margins.",
+      "references": [
+        "exec-260ba403-47d0-4aa0-846f-c71b185b0309.png"
+      ],
+      "source_file": "exec-1d4da40b-6fdd-4677-b7c1-92e851ac9581.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/corner-diner/damaged-roof.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/corner-diner/damaged-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Reference is selected damaged SINGLE STOREY sage tiled diner. Render SAME building identity, proportions, footprint and damage. Strict straight RIGHT SIDE orthographic elevation, front points LEFT. Show only right wall, no front face and no roof plane. The fractured front-right corner appears at LEFT edge of this side. Preserve materials and equipment placements. Camera change only. Entire subject, generous gray margins.",
+      "references": [
+        "exec-260ba403-47d0-4aa0-846f-c71b185b0309.png"
+      ],
+      "source_file": "exec-029f4d64-b92c-46d2-8da2-a09a1d6547c8.png",
+      "native_size": [
+        1774,
+        887
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/corner-diner/damaged-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/corner-diner/intact-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. A complete single-storey Los Angeles midcentury corner diner, L-shaped broad storefront glazing around street corner, faded sage ceramic tile piers, brushed aluminium frames, blank metal fascia with NO sign or lettering, recessed double entrance, flat roof with a low parapet and small HVAC box. Closed, empty, intact but worn. FRONT THREE QUARTER VIEW, front and right side visible, modest elevated camera reveals entire roof. Whole building only. Reference image is MATERIAL AND ARCHITECTURAL VOCABULARY only; create the complete building, not a flat wall texture. Target footprint 12 by 9 meters, height 4.5 meters; no dimension annotations. No ground slab, sidewalk, street furniture or surrounding buildings.",
+      "references": [
+        "facade-la-storefront.jpg"
+      ],
+      "source_file": "exec-f7c1b3a3-11d1-4f67-b3a9-390afdda7f75.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/corner-diner/intact-front-3q.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/corner-diner/intact-roof",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Rotate camera only to STRICT TOP-DOWN ORTHOGRAPHIC ROOF PLAN. Camera directly vertically above, looking straight down. Show entire footprint, all roof edges, access hut, vents and rooftop equipment at their exact design positions. No side walls or front facade visible. Preserve exact building footprint and roof arrangement. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-f7c1b3a3-11d1-4f67-b3a9-390afdda7f75.png"
+      ],
+      "source_file": "exec-bca0e8d5-3993-4787-bee6-87d81c3d81de.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/corner-diner/intact-roof.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/corner-diner/intact-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Rotate camera only to STRICT STRAIGHT RIGHT-SIDE ELEVATION, orthographic projection, camera horizontal at middle height. The building front faces LEFT in image; show only its right facade, zero perspective, no front facade and no roof top visible. Preserve exact floor count, windows, dimensions, material wear and all roof structures. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-f7c1b3a3-11d1-4f67-b3a9-390afdda7f75.png"
+      ],
+      "source_file": "exec-033a622b-cd4a-4e85-b36f-063196ee1295.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/corner-diner/intact-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/glass-office/damaged-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Change only DAMAGE STATE, keeping the same front-three-quarter camera, footprint, overall height, floor count, window rhythm, facade materials and roof equipment. Battlefield damage: one front-right corner is fractured across the lower two floors, windows shattered in irregular clusters, scorched wall patches, some exposed floor edges and bent rebar, small attached rubble at building foot. Structural silhouette remains mostly standing and recognizable. No fire, smoke, people, extra buildings or ground slab. Damage must be physically plausible. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-26a4275a-bae1-4388-9fca-45baeb9fe152.png"
+      ],
+      "source_file": "exec-2506ddbc-09e1-4dcc-a911-affc214ad1c7.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/glass-office/damaged-front-3q.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/glass-office/damaged-roof",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Attached image is the selected DAMAGED building identity. Render exactly the SAME structure with same footprint, storey count, colors and damage pattern. Strict vertical top-down orthographic roof plan, camera pointing directly downward. Front is bottom of image. Show entire roof footprint and service equipment. The damage is on the lower two storeys at front-right corner; do not invent a huge roof crater or demolish roof if roof is intact in reference. Preserve its roof silhouette and equipment positions. No side walls visible. All edges fully visible. One building only; no floor slab, surroundings, smoke, flame, labels or text. Camera change only.",
+      "references": [
+        "exec-2506ddbc-09e1-4dcc-a911-affc214ad1c7.png"
+      ],
+      "source_file": "exec-2d1feb2f-3ad4-41c2-8b37-baaece944627.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/glass-office/damaged-roof.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/glass-office/damaged-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Attached image is the selected DAMAGED building identity. Render exactly the SAME structure with same footprint, storey count, colors and damage pattern. Strict straight RIGHT SIDE orthographic elevation. Front points LEFT. Camera level at middle height. Show the right side wall only, no front face and no roof surface. Preserve the visible fractured front-right corner now at the LEFT edge of the side wall, with attached small rubble. All edges fully visible. One building only; no floor slab, surroundings, smoke, flame, labels or text. Camera change only.",
+      "references": [
+        "exec-2506ddbc-09e1-4dcc-a911-affc214ad1c7.png"
+      ],
+      "source_file": "exec-a613e3eb-a228-40c3-af83-7762fc18f599.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/glass-office/damaged-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/glass-office/intact-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. A complete six-storey Los Angeles modern office building, square footprint, smoked blue-grey glass curtain walls with thin brushed aluminium mullions, recessed lobby glass doors, a strong dark concrete ground-floor base, flat roof with low metal parapet and compact rooftop service block. Intact but worn. FRONT THREE QUARTER VIEW, front and right side visible, modest elevated camera reveals entire roof. Whole building only. Reference image is MATERIAL AND ARCHITECTURAL VOCABULARY only; create the complete building, not a flat wall texture. Target footprint 18 by 18 meters, height 24 meters; no dimension annotations. No ground slab, sidewalk, street furniture or surrounding buildings.",
+      "references": [
+        "facade-la-modern-glass.jpg"
+      ],
+      "source_file": "exec-26a4275a-bae1-4388-9fca-45baeb9fe152.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/glass-office/intact-front-3q.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/glass-office/intact-roof",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Rotate camera only to STRICT TOP-DOWN ORTHOGRAPHIC ROOF PLAN. Camera directly vertically above, looking straight down. Show entire footprint, all roof edges, access hut, vents and rooftop equipment at their exact design positions. No side walls or front facade visible. Preserve exact building footprint and roof arrangement. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-26a4275a-bae1-4388-9fca-45baeb9fe152.png"
+      ],
+      "source_file": "exec-7bb039a7-620b-4f8f-895c-3e786a515a47.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/glass-office/intact-roof.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/glass-office/intact-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Rotate camera only to STRICT STRAIGHT RIGHT-SIDE ELEVATION, orthographic projection, camera horizontal at middle height. The building front faces LEFT in image; show only its right facade, zero perspective, no front facade and no roof top visible. Preserve exact floor count, windows, dimensions, material wear and all roof structures. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-26a4275a-bae1-4388-9fca-45baeb9fe152.png"
+      ],
+      "source_file": "exec-2db6a8e0-8907-41c8-a761-4401840084d4.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/glass-office/intact-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/parking-garage/damaged-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Edit ONLY the glass error in this image. This is an OPEN AIR parking garage. REMOVE ALL glass, jagged shards, glazing, window frames and window reflections from every open parking bay. These openings have NEVER had glass; leave completely open dark voids showing concrete floors and columns beyond. Retain all damaged concrete, fractured slabs, rebar, chips and small attached rubble at the front-right corner. Keep the camera, exact silhouette, composition, colors, rooftop details and ALL other geometry unchanged. No text.",
+      "references": [
+        "exec-dce71d54-8074-4abc-995d-56d7382f0a24.png"
+      ],
+      "previous_source": "exec-dce71d54-8074-4abc-995d-56d7382f0a24.png",
+      "revision_reason": "Remove hallucinated glass from open garage bays",
+      "source_file": "exec-141f4d3a-346c-4708-adaf-28949477f28e.png",
+      "native_size": [
+        1774,
+        887
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/parking-garage/damaged-front-3q.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/parking-garage/damaged-roof",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Attached image is the selected DAMAGED building identity. Render exactly the SAME structure with same footprint, storey count, colors and damage pattern. Strict vertical top-down orthographic roof plan, camera pointing directly downward. Front is bottom of image. Show entire roof footprint and service equipment. The damage is on the lower two storeys at front-right corner; do not invent a huge roof crater or demolish roof if roof is intact in reference. Preserve its roof silhouette and equipment positions. No side walls visible. All edges fully visible. One building only; no floor slab, surroundings, smoke, flame, labels or text. Camera change only.",
+      "references": [
+        "exec-dce71d54-8074-4abc-995d-56d7382f0a24.png"
+      ],
+      "source_file": "exec-5ae830da-cd90-4f0c-b09e-44fdd48362a3.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/parking-garage/damaged-roof.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/parking-garage/damaged-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Edit ONLY the glass error in this image. This is an OPEN AIR parking garage. REMOVE ALL glass, jagged shards, glazing, window frames and window reflections from every open parking bay. These openings have NEVER had glass; leave completely open dark voids showing concrete floors and columns beyond. Retain all damaged concrete, fractured slabs, rebar, chips and small attached rubble at the front-right corner. Keep the camera, exact silhouette, composition, colors, rooftop details and ALL other geometry unchanged. No text.",
+      "references": [
+        "exec-93f467d5-f78a-4cb9-841b-70bb549c49d2.png"
+      ],
+      "previous_source": "exec-93f467d5-f78a-4cb9-841b-70bb549c49d2.png",
+      "revision_reason": "Remove hallucinated glass from open garage bays",
+      "source_file": "exec-4c1ccfd5-887e-4f03-99b7-196b91b97934.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/parking-garage/damaged-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/parking-garage/intact-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. A complete three-level Los Angeles parking garage, weathered precast grey concrete frame with open horizontal parking bays, heavy safety parapets, square columns, visible slab edges and an entrance ramp, flat open roof deck with guard walls and a small stair tower. NO cars. Intact but worn. FRONT THREE QUARTER VIEW, front and right side visible, modest elevated camera reveals entire roof. Whole building only. Reference image is MATERIAL AND ARCHITECTURAL VOCABULARY only; create the complete building, not a flat wall texture. Target footprint 24 by 18 meters, height 10 meters; no dimension annotations. No ground slab, sidewalk, street furniture or surrounding buildings.",
+      "references": [
+        "facade-la-concrete.jpg"
+      ],
+      "source_file": "exec-e06eb862-1bc6-4838-b790-7fcfe9e2bcd9.png",
+      "native_size": [
+        1774,
+        887
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/parking-garage/intact-front-3q.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/parking-garage/intact-roof",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Rotate camera only to STRICT TOP-DOWN ORTHOGRAPHIC ROOF PLAN. Camera directly vertically above, looking straight down. Show entire footprint, all roof edges, access hut, vents and rooftop equipment at their exact design positions. No side walls or front facade visible. Preserve exact building footprint and roof arrangement. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-e06eb862-1bc6-4838-b790-7fcfe9e2bcd9.png"
+      ],
+      "source_file": "exec-e7439cd1-7418-4355-8e7e-667675907bf1.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/parking-garage/intact-roof.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/parking-garage/intact-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Rotate camera only to STRICT STRAIGHT RIGHT-SIDE ELEVATION, orthographic projection, camera horizontal at middle height. The building front faces LEFT in image; show only its right facade, zero perspective, no front facade and no roof top visible. Preserve exact floor count, windows, dimensions, material wear and all roof structures. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-e06eb862-1bc6-4838-b790-7fcfe9e2bcd9.png"
+      ],
+      "source_file": "exec-8afdc52a-ee44-44e3-bfca-03c2847fb5bd.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/parking-garage/intact-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/stucco-apartments/damaged-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Change only DAMAGE STATE, keeping the same front-three-quarter camera, footprint, overall height, floor count, window rhythm, facade materials and roof equipment. Battlefield damage: one front-right corner is fractured across the lower two floors, windows shattered in irregular clusters, scorched wall patches, some exposed floor edges and bent rebar, small attached rubble at building foot. Structural silhouette remains mostly standing and recognizable. No fire, smoke, people, extra buildings or ground slab. Damage must be physically plausible. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-bbc07702-442b-4a88-964e-21df58d9ee2b.png"
+      ],
+      "source_file": "exec-ff56d0dd-7210-49b7-8dc2-6fb148b0de1b.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/stucco-apartments/damaged-front-3q.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/stucco-apartments/damaged-roof",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Attached image is the selected DAMAGED building identity. Render exactly the SAME structure with same footprint, storey count, colors and damage pattern. Strict vertical top-down orthographic roof plan, camera pointing directly downward. Front is bottom of image. Show entire roof footprint and service equipment. The damage is on the lower two storeys at front-right corner; do not invent a huge roof crater or demolish roof if roof is intact in reference. Preserve its roof silhouette and equipment positions. No side walls visible. All edges fully visible. One building only; no floor slab, surroundings, smoke, flame, labels or text. Camera change only.",
+      "references": [
+        "exec-ff56d0dd-7210-49b7-8dc2-6fb148b0de1b.png"
+      ],
+      "source_file": "exec-1058df39-23b6-4a58-ade5-beacffd09fa7.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/stucco-apartments/damaged-roof.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/stucco-apartments/damaged-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Attached image is the selected DAMAGED building identity. Render exactly the SAME structure with same footprint, storey count, colors and damage pattern. Strict straight RIGHT SIDE orthographic elevation. Front points LEFT. Camera level at middle height. Show the right side wall only, no front face and no roof surface. Preserve the visible fractured front-right corner now at the LEFT edge of the side wall, with attached small rubble. All edges fully visible. One building only; no floor slab, surroundings, smoke, flame, labels or text. Camera change only.",
+      "references": [
+        "exec-ff56d0dd-7210-49b7-8dc2-6fb148b0de1b.png"
+      ],
+      "source_file": "exec-49daac5d-5e23-4bd0-a2fb-9bac0577795c.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/stucco-apartments/damaged-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/stucco-apartments/intact-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. A complete four-storey Los Angeles Spanish revival apartment building, cream stucco and terracotta trim, four window bays across front, modest small iron balconies on upper floors, recessed ground entrance, low terracotta roof coping around flat roof, complete rear and side walls. Intact but worn. FRONT THREE QUARTER VIEW, front and right side visible, modest elevated camera reveals entire roof. Whole building only. Reference image is MATERIAL AND ARCHITECTURAL VOCABULARY only; create the complete building, not a flat wall texture. Target footprint 18 by 12 meters, height 14 meters; no dimension annotations. No ground slab, sidewalk, street furniture or surrounding buildings.",
+      "references": [
+        "facade-la-stucco.jpg"
+      ],
+      "source_file": "exec-bbc07702-442b-4a88-964e-21df58d9ee2b.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/stucco-apartments/intact-front-3q.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/stucco-apartments/intact-roof",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Rotate camera only to STRICT TOP-DOWN ORTHOGRAPHIC ROOF PLAN. Camera directly vertically above, looking straight down. Show entire footprint, all roof edges, access hut, vents and rooftop equipment at their exact design positions. No side walls or front facade visible. Preserve exact building footprint and roof arrangement. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-bbc07702-442b-4a88-964e-21df58d9ee2b.png"
+      ],
+      "source_file": "exec-1e2666fd-7161-4821-ad45-90c5d119996d.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/stucco-apartments/intact-roof.png",
+      "upscaled": true
+    },
+    {
+      "id": "buildings/stucco-apartments/intact-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Input is exact building IDENTITY reference, not a moodboard. Rotate camera only to STRICT STRAIGHT RIGHT-SIDE ELEVATION, orthographic projection, camera horizontal at middle height. The building front faces LEFT in image; show only its right facade, zero perspective, no front facade and no roof top visible. Preserve exact floor count, windows, dimensions, material wear and all roof structures. ONE full building, no montage or extra views. Keep subject within canvas with generous margin. Never change architecture style or substitute a different building.",
+      "references": [
+        "exec-bbc07702-442b-4a88-964e-21df58d9ee2b.png"
+      ],
+      "source_file": "exec-f634af3a-ae30-40e1-8022-463e77fd8c5c.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/buildings/stucco-apartments/intact-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "menu/la-command-backplate",
+      "section": "E",
+      "size": [
+        3840,
+        2160
+      ],
+      "transparent": false,
+      "prompt": "Use case: illustration-story. Original Earthfall Frontline realistic MAIN MENU ENVIRONMENT BACKPLATE. Wide full-bleed 16:9 cinematic scene, 3840x2160 final. View from a low rocky forward observation terrace over occupied LOS ANGELES at dusk. Wet worn terrace floor occupies bottom 20 percent, with empty standing space in RIGHT HALF for a separate squad foreground layer. Layered art-deco towers, modern downtown skyline, palms and distant mountains. Sparse amber fires and three thin smoke plumes rise among city blocks, muted teal-blue haze and warm distant sunset. Restrained small cyan orbital streak far right. LEFT 38 PERCENT must remain calm low-contrast deep blue/charcoal negative space suitable for live white menu text, formed naturally by shaded terrace wall and dark haze, no bright buildings or fire there. Grounded photorealistic game key art, nuanced realistic materials and filmic lighting, dramatic scale but not overexposed. Absolutely NO soldiers, people, weapons or foreground objects in the empty standing area. No text, title, logos, labels, interface, watermark or franchise imagery.",
+      "source_file": "exec-12929aed-8fe8-4950-8f67-4dd5329c95ca.png",
+      "native_size": [
+        1672,
+        941
+      ],
+      "export_size": [
+        3840,
+        2160
+      ],
+      "export": "frontline/public/assets/round-5/menu/la-command-backplate.jpg",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "menu/smoke-overlay",
+      "section": "E",
+      "size": [
+        2048,
+        2048
+      ],
+      "transparent": true,
+      "prompt": "Use case: product-mockup. Original Frontline menu atmospheric overlay. One isolated wispy vertical smoke plume of muted blue-grey wisps, thin semi-transparent curls rising slowly, sparse small warm orange ember dots near bottom. Mostly empty space, narrow irregular natural silhouette, soft physically believable fine edge wisps. Square 2048x2048 transparent RGBA PNG. TRUE alpha zero outside the smoke silhouette, no rectangular haze plate, no cloudy background, no floor, no sky, no fire source, no text, logos or borders. Smoke only, suitable as subtle distant parallax overlay.",
+      "source_file": "exec-88af38a8-4399-4c77-ae63-29cfbf8b90e1.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/menu/smoke-overlay.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "menu/squad-foreground",
+      "section": "E",
+      "size": [
+        2048,
+        2048
+      ],
+      "transparent": true,
+      "prompt": "Use case: identity-preserve. Original Frontline MAIN MENU FOREGROUND PARALLAX LAYER. Three realistic squad soldiers standing together, FULL BODY with all helmets, hands, weapons and boots visible, generous transparent margins. Rear three-quarter view, looking into distance toward LEFT. Reference is armor family/material identity only: muted oxidized teal ceramic plates, worn brass, charcoal fabric, cyan optics. Center heavy with broad backpack, left lighter marksman, right grenadier with cylinders on belt. Different natural relaxed ready stances with rifles held down safely, no T-pose. Ground-level viewpoint, weak cool dusk light from left, faint warm edge light on right, realistic fine worn materials, accurate anatomy and believable gear. TRUE TRANSPARENT background, no studio grey, no floor plane, no cast floor shadows, no environment, no smoke, no glowing silhouette outline. Single coherent group cutout, not separate portrait panels. Square 2048x2048 PNG, no text, logos, watermark or copied franchise armor.",
+      "references": [
+        "heavy-front-3q.png"
+      ],
+      "source_file": "exec-25b9eb28-036f-4669-beba-68e0c3cae797.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/menu/squad-foreground.png",
+      "upscaled": true
+    },
+    {
+      "id": "objectives/ammo-crate-front-3q",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        1,
+        0.65,
+        0.6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. One heavy ammunition supply crate, low wide teal metal chest with brass corner guards, closed segmented lid, robust carry handles, integrated vertical cartridge-shaped ribbing on front, subtle cyan status strip. No lettering or loose ammunition. FRONT THREE QUARTER VIEW, entire object. Distinct readable silhouette at third-person game scale. No text or user-interface numbers.",
+      "source_file": "exec-0165609c-1e4b-487f-8e93-a9f5cd192263.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/ammo-crate-front-3q.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "objectives/ammo-crate-side",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        1,
+        0.65,
+        0.6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. Use the attached selected object as exact identity reference. Render the SAME object in a strict straight RIGHT SIDE profile, orthographic elevation, camera horizontal at object mid-height; front points LEFT. No front face, no three-quarter angle, no underside. Preserve every structural component, proportions, number of feet and placement, material colors, lights, all open doors and fittings. Entire object including all extremities visible with clear margin. Camera change only.",
+      "references": [
+        "exec-0165609c-1e4b-487f-8e93-a9f5cd192263.png"
+      ],
+      "source_file": "exec-a3f6171d-7177-4faa-86a3-c3bfa4b27606.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/ammo-crate-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "objectives/city-core-generator-front-3q",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        4,
+        4,
+        4.5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. One large city-core power generator, squat armored octagonal plinth, a vertical cylindrical cyan energy chamber protected by four teal ribs, brass coolant pipes, low accessible service console integrated into front, sturdy industrial mass. No separate objects. FRONT THREE QUARTER VIEW, entire object. Distinct readable silhouette at third-person game scale. No text or user-interface numbers.",
+      "source_file": "exec-0977d43a-181d-4825-8cfa-accde937564c.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/city-core-generator-front-3q.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "objectives/city-core-generator-side",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        4,
+        4,
+        4.5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Render the same energy generator in a STRICT ORTHOGRAPHIC RIGHT SIDE elevation. Front points LEFT. The console must project from the LEFT edge in PROFILE; its screen must NOT face the camera. Camera at the middle of its height, level, no perspective convergence. No roof top surfaces or underside visible. Preserve octagonal base silhouette, four teal ribs, cyan core, brass pipes, material wear. ONE full object centered, uniform gray background, even diffuse lighting no cast shadow, no text.",
+      "references": [
+        "exec-56ee001d-8177-42b9-b8ce-a9b0eaa6bd18.png"
+      ],
+      "previous_source": "exec-56ee001d-8177-42b9-b8ce-a9b0eaa6bd18.png",
+      "revision_reason": "Correct camera to side elevation",
+      "source_file": "exec-9f04ad3b-2f1f-4e8e-8c46-744ffbb75c4a.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/city-core-generator-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "objectives/communications-relay-front-3q",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        2.5,
+        2.5,
+        6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. One deployable communications relay, broad three-foot base, telescoping tall antenna mast, compact rotating dish and two vertical panel aerials, teal equipment enclosure with small cyan status light. FRONT THREE QUARTER VIEW, entire object. Distinct readable silhouette at third-person game scale. No text or user-interface numbers.",
+      "source_file": "exec-2e5f1531-ee8e-4973-9e37-024c5b5fddab.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/communications-relay-front-3q.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "objectives/communications-relay-side",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        2.5,
+        2.5,
+        6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. Use the attached selected object as exact identity reference. Render the SAME object in a strict straight RIGHT SIDE profile, orthographic elevation, camera horizontal at object mid-height; front points LEFT. No front face, no three-quarter angle, no underside. Preserve every structural component, proportions, number of feet and placement, material colors, lights, all open doors and fittings. Entire object including all extremities visible with clear margin. Camera change only.",
+      "references": [
+        "exec-2e5f1531-ee8e-4973-9e37-024c5b5fddab.png"
+      ],
+      "source_file": "exec-05635183-c2c3-4334-9d3a-358de00cd071.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/communications-relay-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "objectives/extraction-beacon-front-3q",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        1.8,
+        1.8,
+        3
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. One deployed extraction beacon, tall slim central teal mast with cyan luminous vertical fins and a brass circular emitter head, three broad folding stabilizer feet. Beacon hardware only, no projected light beam or smoke. FRONT THREE QUARTER VIEW, entire object. Distinct readable silhouette at third-person game scale. No text or user-interface numbers.",
+      "source_file": "exec-3bb7428c-0864-4301-8869-577cee7c73c4.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/extraction-beacon-front-3q.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "objectives/extraction-beacon-side",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        1.8,
+        1.8,
+        3
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. Use the attached selected object as exact identity reference. Render the SAME object in a strict straight RIGHT SIDE profile, orthographic elevation, camera horizontal at object mid-height; front points LEFT. No front face, no three-quarter angle, no underside. Preserve every structural component, proportions, number of feet and placement, material colors, lights, all open doors and fittings. Entire object including all extremities visible with clear margin. Camera change only.",
+      "references": [
+        "exec-3bb7428c-0864-4301-8869-577cee7c73c4.png"
+      ],
+      "source_file": "exec-5155a143-85b1-4f9a-850c-a3d44cf3701d.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/extraction-beacon-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "objectives/medical-crate-front-3q",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        0.65,
+        0.4,
+        0.6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. One field medical supply crate, compact upright white-and-teal hard case with worn brass corner clips, recessed cyan medical PLUS symbol built into front casing, closed lid, molded carry handle. No text or red cross. FRONT THREE QUARTER VIEW, entire object. Distinct readable silhouette at third-person game scale. No text or user-interface numbers.",
+      "source_file": "exec-63da0cde-1a96-4046-ae9c-6894b7124efd.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/medical-crate-front-3q.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "objectives/medical-crate-side",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        0.65,
+        0.4,
+        0.6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. Use the attached selected object as exact identity reference. Render the SAME object in a strict straight RIGHT SIDE profile, orthographic elevation, camera horizontal at object mid-height; front points LEFT. No front face, no three-quarter angle, no underside. Preserve every structural component, proportions, number of feet and placement, material colors, lights, all open doors and fittings. Entire object including all extremities visible with clear margin. Camera change only.",
+      "references": [
+        "exec-63da0cde-1a96-4046-ae9c-6894b7124efd.png"
+      ],
+      "source_file": "exec-4b840d05-0bbd-4f95-87ac-c137e6ededf2.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/medical-crate-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "objectives/objective-terminal-front-3q",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        0.9,
+        0.8,
+        1.25
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. One freestanding waist-height military objective terminal, squat armored pedestal, slanted protected cyan screen with blank abstract glow and no text, heavy keyed interface shapes, brass handrail corners, functional rear housing. FRONT THREE QUARTER VIEW, entire object. Distinct readable silhouette at third-person game scale. No text or user-interface numbers.",
+      "source_file": "exec-9008a76d-a0d3-4d06-a4ea-3593b4bbe453.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/objective-terminal-front-3q.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "objectives/objective-terminal-side",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        0.9,
+        0.8,
+        1.25
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. Use the attached selected object as exact identity reference. Render the SAME object in a strict straight RIGHT SIDE profile, orthographic elevation, camera horizontal at object mid-height; front points LEFT. No front face, no three-quarter angle, no underside. Preserve every structural component, proportions, number of feet and placement, material colors, lights, all open doors and fittings. Entire object including all extremities visible with clear margin. Camera change only.",
+      "references": [
+        "exec-9008a76d-a0d3-4d06-a4ea-3593b4bbe453.png"
+      ],
+      "source_file": "exec-d2206b78-bfc2-43fd-8d30-8c002efe86c5.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/objective-terminal-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "objectives/research-cache-front-3q",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        1.1,
+        0.7,
+        0.65
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. One rugged rectangular field research cache, muted teal hard case with brass corner guards, closed reinforced lid, integral carry handles, recessed small cyan sample-viewing window. Larger than a backpack, one complete case. FRONT THREE QUARTER VIEW, entire object. Distinct readable silhouette at third-person game scale. No text or user-interface numbers.",
+      "source_file": "exec-f2aec943-b6de-4917-bc06-67c76b5decfb.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/research-cache-front-3q.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "objectives/research-cache-side",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        1.1,
+        0.7,
+        0.65
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. Use the attached selected object as exact identity reference. Render the SAME object in a strict straight RIGHT SIDE profile, orthographic elevation, camera horizontal at object mid-height; front points LEFT. No front face, no three-quarter angle, no underside. Preserve every structural component, proportions, number of feet and placement, material colors, lights, all open doors and fittings. Entire object including all extremities visible with clear margin. Camera change only.",
+      "references": [
+        "exec-f2aec943-b6de-4917-bc06-67c76b5decfb.png"
+      ],
+      "source_file": "exec-7780718c-786c-4f10-80d9-5adc761e3895.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/research-cache-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "objectives/supply-pod-open-front-3q",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        2,
+        2,
+        3
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. One OPEN orbital supply pod: upright teal armored capsule with two large front clamshell doors swung outward revealing attached shelving and supply compartments, heavy landing feet, worn brass hinges, spent nozzle beneath. No loose supplies outside pod. FRONT THREE QUARTER VIEW, entire object. Distinct readable silhouette at third-person game scale. No text or user-interface numbers.",
+      "source_file": "exec-df2a930f-3d3c-4a79-8a9a-627e4bef5241.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/supply-pod-open-front-3q.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "objectives/supply-pod-open-side",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        2,
+        2,
+        3
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. Faction style: muted oxidized teal painted armor, worn brass fixtures, dark graphite mechanical internals, restrained cyan status glass, realistic machining and fabrication seams. Use the attached selected object as exact identity reference. Render the SAME object in a strict straight RIGHT SIDE profile, orthographic elevation, camera horizontal at object mid-height; front points LEFT. No front face, no three-quarter angle, no underside. Preserve every structural component, proportions, number of feet and placement, material colors, lights, all open doors and fittings. Entire object including all extremities visible with clear margin. Camera change only.",
+      "references": [
+        "exec-df2a930f-3d3c-4a79-8a9a-627e4bef5241.png"
+      ],
+      "source_file": "exec-cfb4d77c-f922-438b-bd28-5bfcd9b74ed8.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/objectives/supply-pod-open-side.png",
+      "upscaled": true
+    },
+    {
+      "id": "props/bench",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        1.8,
+        0.65,
+        0.8
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One public street bench with weathered wooden slats and dark cast-metal curved supports, simple original design, no ground. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-1c904fe1-f597-4fff-b062-8c7bce21fb77.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/bench.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/burned-sedan",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        4.6,
+        1.8,
+        1.4
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. A complete burned-out civilian sedan shell, charred grey body, missing glass, warped hood, rusty exposed wheel rims, no flames or smoke, no occupants. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-15957cdb-206a-4544-b96a-2e9c08a5a44c.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/burned-sedan.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/bus-shelter",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        3,
+        1.4,
+        2.5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One compact complete bus shelter, brushed steel frame, transparent safety glass back and two side panels, simple flat translucent roof and attached narrow bench. Blank display panel. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-4c622239-1267-4e7a-af0c-a7399e71d23b.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/bus-shelter.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/chainlink-fence",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        3,
+        0.15,
+        2
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One standalone straight chain-link fence section, two steel end posts on small base feet, realistic galvanized diamond mesh and top rail, no barbed wire. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-4ff6094f-35bd-464d-804b-e5a2b39a9322.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/chainlink-fence.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/city-bus",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        12,
+        2.6,
+        3.3
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. A complete unbranded Los Angeles city transit bus, muted silver and teal body, dark windows, front doors closed, blank destination panel, no route numbers or logos. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-89a376a0-74bd-4e39-92ef-4d9940b665b1.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/city-bus.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/civilian-sedan",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        4.6,
+        1.8,
+        1.5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. A complete unbranded early-21st-century civilian four-door sedan, faded steel-blue paint, realistic glass and rubber tires, moderately dusty but intact. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-c57e8113-f6cb-4e81-9593-5038f457eb74.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/civilian-sedan.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/collapsed-wall",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        3,
+        0.3,
+        1.6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One short damaged concrete wall section, uneven fractured top, exposed rebar, broken one corner, attached small rubble at its own foot, no environment. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-d927b093-73c9-46a2-830b-4abc9997424b.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/collapsed-wall.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/concrete-barrier",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        3,
+        0.6,
+        0.9
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One long precast concrete road barrier, sloped Jersey profile, realistic grey aggregate, chipped corners, weathered yellow reflector squares, no writing. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-fa4bd011-03e2-4180-bd86-251fa27f2b76.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/concrete-barrier.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/dumpster",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        2,
+        1.3,
+        1.5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One closed steel commercial dumpster, faded dark green paint, two black hinged plastic lids, small wheels and worn metal pockets. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-7d3f8e9e-a04b-4091-adb8-3d68f4f83af6.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/dumpster.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/fire-hydrant",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        0.65,
+        0.55,
+        0.85
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One squat worn red municipal fire hydrant with two side caps, a top cap and small chain, realistic paint chips and metal. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-280ff6c1-40fc-4705-a607-51047cdec8ba.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/fire-hydrant.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/palm-tree",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        6,
+        6,
+        12
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One complete mature Los Angeles fan palm tree, long rough fibrous trunk, crown of realistic green and dry fronds. Entire tree including all frond tips and root base, no soil mound. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-25f0f781-c582-481b-bcc8-94dd3760e1d4.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/palm-tree.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/parking-meter",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        0.5,
+        0.3,
+        1.5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One double-head mechanical parking meter on a single thin galvanized pole, dark screens, brass-edged coin slot shapes, no readable text. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-e593f757-311e-413a-861e-dd99610f29f2.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/parking-meter.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/road-barrier",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        1.5,
+        0.6,
+        1
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One foldable roadwork barricade, steel A-frame legs and two horizontal boards with diagonal muted orange and white stripes, no text. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-654e6d6c-4b78-4aab-8624-ef8f6a24437d.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/road-barrier.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/road-cone",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        0.4,
+        0.4,
+        0.7
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One orange flexible road cone with two faded white reflective bands, square dark rubber base, scuffed finish. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-d774281b-6f58-4476-9a5b-b1d7d4b5e280.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/road-cone.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/rooftop-hvac",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        2.4,
+        1.6,
+        1.3
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One complete rectangular rooftop HVAC unit, dull grey sheet metal, broad intake louvers, two circular top fans behind grilles, copper pipe connections. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-24b9fa96-6496-4f49-bad5-53ed717a269e.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/rooftop-hvac.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/rubble-pile",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        2.5,
+        1.7,
+        0.7
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One compact low pile of broken concrete, a few red brick fragments and exposed bent reinforcing bars, physically plausible irregular debris silhouette. No floor or large ground slab. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-a869df30-c2fd-41e6-be6c-7509318402c1.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/rubble-pile.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/satellite-dish",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        1.5,
+        1.2,
+        1.8
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One modest concave rooftop satellite dish on a short steel mast and bolted footplate, support struts and small feed horn, matte weathered grey. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-fae5382d-3148-4f38-9756-a244566ffce4.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/satellite-dish.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/street-planter",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        1.5,
+        0.6,
+        0.8
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One rectangular low concrete street planter containing dry ornamental grasses and a small agave, natural realistic leaves, worn concrete sides. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-d23febe3-8672-42af-a202-169076caa2a7.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/street-planter.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/streetlight",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        1.8,
+        0.5,
+        8
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One tall Los Angeles steel streetlight pole with single curved arm and LED lamp head, bolted base, dusty galvanized finish. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-f4edeb75-5ab9-4d1e-8673-d3026fe0dde0.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/streetlight.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/traffic-signal",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        3,
+        0.6,
+        5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One complete standalone traffic signal assembly: metal vertical pole with horizontal arm supporting a three-lens signal head, dark lenses, square bolted base. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-eceeeb2a-aefb-4cb8-aa94-2da1f0fc2dc2.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/traffic-signal.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/trash-bin",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        0.6,
+        0.6,
+        1
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One cylindrical street litter bin, charcoal perforated steel sides, flared open top, plain unlettered surface, worn finish. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-de6f7da7-457e-4a07-927c-7ef0b4c55ab6.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/trash-bin.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/utility-cabinet",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        1.2,
+        0.55,
+        1.5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One weathered street electrical utility cabinet, rectangular galvanized steel box with two closed front doors, small vents, raised plinth and realistic latches. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-33797d27-0ae7-4106-b1e5-69eeea271ad7.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/utility-cabinet.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/utility-van",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        5.4,
+        2,
+        2.5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. A complete unbranded white panel delivery van, two rear doors closed, plain blank side panels, roof rack, realistic road dirt. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-2507b4d9-90f0-430d-8a5c-a5cbc2be629f.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/utility-van.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "props/water-tank",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        2.8,
+        2.8,
+        4
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic game modeling reference for Meshy. Square 2048x2048 PNG. ONE subject only, entire subject centered with generous clear margin on ALL sides, every extremity visible. Plain uniform mid-grey studio background, even neutral diffuse lighting, no cast ground shadow, no environment, no pedestal, no people, no text, signage, numbers, logos, watermarks, labels, arrows, dimensions or collage. Photorealistic physically based AAA game asset, fine realistic material wear, grounded human-scale engineering, muted natural colors. Never cartoon, low-poly or toy. One cylindrical rooftop steel water tank on a short four-leg support stand, dull weathered metal, round closed top and small side access ladder. FRONT THREE QUARTER VIEW, full object with all appendages and feet inside frame. Los Angeles urban world, natural realistic materials. Subject isolated. No weapons, soldier, symbols or additional props.",
+      "source_file": "exec-b9167636-7d96-416d-ac8b-7b08f1666b56.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-5/props/water-tank.png",
+      "upscaled": true,
+      "references": []
+    },
+    {
+      "id": "scenes/la-street-target",
+      "section": "D",
+      "size": [
+        3840,
+        2160
+      ],
+      "transparent": false,
+      "prompt": "Use case: illustration-story. Original Earthfall Frontline REALISTIC visual quality target and third-person HUD backdrop, full-bleed cinematic 16:9 landscape, 3840x2160 final. Reference image is armor material/design reference only, not pose or studio background. Ground-level third-person camera looking down a believable battle-damaged LOS ANGELES CITY BLOCK at cool overcast dusk. On bottom-left foreground one soldier seen from behind/over shoulder, in muted teal armor, worn brass, dark fabric, small cyan visor reflection, holding a rifle at low ready; head below upper quarter. Natural human proportions, grounded boots. Street flanked by warm stone art-deco office, cream stucco apartments, red brick warehouse, blue-grey glass office, precast parking garage and sage-tiled corner diner. Distinct side walls, rooftops, recessed entrances. Wet asphalt, broken curb, puddles, hydrant, streetlight, traffic signal, parked dusty civilian sedan, burned van, chainlink checkpoint, low barricades, small rubble. A cyan city-core generator sits farther down street right of center; restrained orange alien growth in a distant alley. Distant LA skyline and palms, layered smoke haze, volumetric street light, physically believable shadows and material response. Clear central aiming lane and upper-center sky area reserved for HUD; protect screen corners from strong glowing focal points. Dense but carefully composed lived-in battlefield, readable depth, realistic high-end game lighting, subdued teal/brass identity. No HUD, reticle, typography, logos, watermarks, interface, copied franchise characters or assets.",
+      "references": [
+        "heavy-front-3q.png"
+      ],
+      "source_file": "exec-2ee24a27-e4c8-43bc-b7c9-576b3b1e4f7a.png",
+      "native_size": [
+        1672,
+        941
+      ],
+      "export_size": [
+        3840,
+        2160
+      ],
+      "export": "frontline/public/assets/round-5/scenes/la-street-target.jpg",
+      "upscaled": true
+    }
+  ]
+}

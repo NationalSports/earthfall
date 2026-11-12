@@ -1,0 +1,142 @@
+{
+  "generated_reference_counts": {
+    "A": 36,
+    "E": 3,
+    "C": 16,
+    "B": 24,
+    "D": 1
+  },
+  "generated_reference_total": 80,
+  "asset_files": 109,
+  "raster_files": 94,
+  "svg_files": 13,
+  "asset_bytes": 332664045,
+  "native_sizes": {
+    "1254x1254": 75,
+    "1774x887": 3,
+    "1672x941": 2
+  },
+  "upscaled_generated_exports": 80,
+  "alpha_checks": [
+    {
+      "path": "frontline/public/assets/round-5/buildings/art-deco-office/assembly-guide.png",
+      "range": [
+        18,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/buildings/brick-warehouse/assembly-guide.png",
+      "range": [
+        18,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/buildings/corner-diner/assembly-guide.png",
+      "range": [
+        18,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/buildings/glass-office/assembly-guide.png",
+      "range": [
+        18,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/buildings/parking-garage/assembly-guide.png",
+      "range": [
+        18,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/buildings/stucco-apartments/assembly-guide.png",
+      "range": [
+        18,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/hud/components.png",
+      "range": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/hud/hud-combat.png",
+      "range": [
+        255,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/hud/hud-critical.png",
+      "range": [
+        255,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/hud/hud-extraction.png",
+      "range": [
+        255,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/hud/hud-preparation.png",
+      "range": [
+        255,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/menu/frontline-emblem.png",
+      "range": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/menu/main-menu-layout.png",
+      "range": [
+        255,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/menu/smoke-overlay.png",
+      "range": [
+        0,
+        247
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-5/menu/squad-foreground.png",
+      "range": [
+        0,
+        255
+      ]
+    }
+  ],
+  "checks": [
+    "80 selected generation records complete; 36 building views, 24 prop references, 16 objective views, 1 street target, 3 menu layers",
+    "All exported raster files decode; generated modeling references RGB 2048 square",
+    "Four HUD PNGs at 3840x2160; editable SVG counterparts render",
+    "Specified transparent assets contain real zero alpha and visible nonzero alpha; smoke remains intentionally translucent",
+    "Every SVG parses, has no scripts and resolves all local image references",
+    "CSV includes byte count, dimensions, mode and SHA-256 for every asset",
+    "Prompts record native dimensions, export dimensions, reference image provenance and any upscale"
+  ],
+  "limits": [
+    "Generated alternate views can shift exact geometry, equipment or facade divisions. Primary front views take precedence; reconcile in 3D.",
+    "These are concept/modeling references and static UI artwork; no mesh, rig, runtime HUD, destructible geometry or code integration is included.",
+    "Images are upscaled to export dimensions; source-native sizes are disclosed per record.",
+    "Visual contact-sheet review is separate from automated image-format checks."
+  ]
+}

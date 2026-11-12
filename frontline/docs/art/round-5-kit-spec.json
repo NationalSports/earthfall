@@ -1,0 +1,375 @@
+{
+  "units": "metres",
+  "coordinate_convention": "Y up; front faces -Z; origin at footprint centre on ground",
+  "dimensions": "Design targets; not measured geometry. Selected intact-front-3q is identity authority; generated side/roof views may drift.",
+  "grid_m": 3,
+  "kits": [
+    {
+      "id": "art-deco-office",
+      "facade": "art-deco",
+      "target": [
+        18,
+        12,
+        18
+      ],
+      "floorHeight": 4.5,
+      "desc": "A complete four-storey Los Angeles art-deco office building, warm weathered limestone, stepped vertical pilasters, four window bays across front and three bays along side, recessed brass double entrance doors, stepped flat parapet, complete flat roof with one small access hut. Intact but worn."
+    },
+    {
+      "id": "stucco-apartments",
+      "facade": "stucco",
+      "target": [
+        18,
+        12,
+        14
+      ],
+      "floorHeight": 3.5,
+      "desc": "A complete four-storey Los Angeles Spanish revival apartment building, cream stucco and terracotta trim, four window bays across front, modest small iron balconies on upper floors, recessed ground entrance, low terracotta roof coping around flat roof, complete rear and side walls. Intact but worn."
+    },
+    {
+      "id": "brick-warehouse",
+      "facade": "brick",
+      "target": [
+        24,
+        18,
+        10
+      ],
+      "floorHeight": 5,
+      "desc": "A complete two-storey Los Angeles brick warehouse with tall lower industrial floor, aged red brick and grey mortar, steel-framed factory windows, broad closed corrugated loading shutter and a small service door, plain flat roof with brick parapet, complete side walls. Intact but worn."
+    },
+    {
+      "id": "glass-office",
+      "facade": "modern-glass",
+      "target": [
+        18,
+        18,
+        28
+      ],
+      "floorHeight": 4,
+      "desc": "Selected design has six office floors above a ground lobby (seven levels total), smoked blue-grey curtain walls, concrete base and roof service block. Use selected front as authority."
+    },
+    {
+      "id": "parking-garage",
+      "facade": "concrete",
+      "target": [
+        24,
+        18,
+        10
+      ],
+      "floorHeight": 3.3,
+      "desc": "A complete three-level Los Angeles parking garage, weathered precast grey concrete frame with open horizontal parking bays, heavy safety parapets, square columns, visible slab edges and an entrance ramp, flat open roof deck with guard walls and a small stair tower. NO cars. Intact but worn."
+    },
+    {
+      "id": "corner-diner",
+      "facade": "storefront",
+      "target": [
+        12,
+        9,
+        4.5
+      ],
+      "floorHeight": 4.5,
+      "desc": "A complete single-storey Los Angeles midcentury corner diner, L-shaped broad storefront glazing around street corner, faded sage ceramic tile piers, brushed aluminium frames, blank metal fascia with NO sign or lettering, recessed double entrance, flat roof with a low parapet and small HVAC box. Closed, empty, intact but worn."
+    }
+  ],
+  "props": [
+    [
+      "civilian-sedan",
+      "A complete unbranded early-21st-century civilian four-door sedan, faded steel-blue paint, realistic glass and rubber tires, moderately dusty but intact.",
+      [
+        4.6,
+        1.8,
+        1.5
+      ]
+    ],
+    [
+      "utility-van",
+      "A complete unbranded white panel delivery van, two rear doors closed, plain blank side panels, roof rack, realistic road dirt.",
+      [
+        5.4,
+        2,
+        2.5
+      ]
+    ],
+    [
+      "city-bus",
+      "A complete unbranded Los Angeles city transit bus, muted silver and teal body, dark windows, front doors closed, blank destination panel, no route numbers or logos.",
+      [
+        12,
+        2.6,
+        3.3
+      ]
+    ],
+    [
+      "burned-sedan",
+      "A complete burned-out civilian sedan shell, charred grey body, missing glass, warped hood, rusty exposed wheel rims, no flames or smoke, no occupants.",
+      [
+        4.6,
+        1.8,
+        1.4
+      ]
+    ],
+    [
+      "streetlight",
+      "One tall Los Angeles steel streetlight pole with single curved arm and LED lamp head, bolted base, dusty galvanized finish.",
+      [
+        1.8,
+        0.5,
+        8
+      ]
+    ],
+    [
+      "traffic-signal",
+      "One complete standalone traffic signal assembly: metal vertical pole with horizontal arm supporting a three-lens signal head, dark lenses, square bolted base.",
+      [
+        3,
+        0.6,
+        5
+      ]
+    ],
+    [
+      "fire-hydrant",
+      "One squat worn red municipal fire hydrant with two side caps, a top cap and small chain, realistic paint chips and metal.",
+      [
+        0.65,
+        0.55,
+        0.85
+      ]
+    ],
+    [
+      "dumpster",
+      "One closed steel commercial dumpster, faded dark green paint, two black hinged plastic lids, small wheels and worn metal pockets.",
+      [
+        2,
+        1.3,
+        1.5
+      ]
+    ],
+    [
+      "bench",
+      "One public street bench with weathered wooden slats and dark cast-metal curved supports, simple original design, no ground.",
+      [
+        1.8,
+        0.65,
+        0.8
+      ]
+    ],
+    [
+      "trash-bin",
+      "One cylindrical street litter bin, charcoal perforated steel sides, flared open top, plain unlettered surface, worn finish.",
+      [
+        0.6,
+        0.6,
+        1
+      ]
+    ],
+    [
+      "parking-meter",
+      "One double-head mechanical parking meter on a single thin galvanized pole, dark screens, brass-edged coin slot shapes, no readable text.",
+      [
+        0.5,
+        0.3,
+        1.5
+      ]
+    ],
+    [
+      "bus-shelter",
+      "One compact complete bus shelter, brushed steel frame, transparent safety glass back and two side panels, simple flat translucent roof and attached narrow bench. Blank display panel.",
+      [
+        3,
+        1.4,
+        2.5
+      ]
+    ],
+    [
+      "chainlink-fence",
+      "One standalone straight chain-link fence section, two steel end posts on small base feet, realistic galvanized diamond mesh and top rail, no barbed wire.",
+      [
+        3,
+        0.15,
+        2
+      ]
+    ],
+    [
+      "concrete-barrier",
+      "One long precast concrete road barrier, sloped Jersey profile, realistic grey aggregate, chipped corners, weathered yellow reflector squares, no writing.",
+      [
+        3,
+        0.6,
+        0.9
+      ]
+    ],
+    [
+      "road-cone",
+      "One orange flexible road cone with two faded white reflective bands, square dark rubber base, scuffed finish.",
+      [
+        0.4,
+        0.4,
+        0.7
+      ]
+    ],
+    [
+      "road-barrier",
+      "One foldable roadwork barricade, steel A-frame legs and two horizontal boards with diagonal muted orange and white stripes, no text.",
+      [
+        1.5,
+        0.6,
+        1
+      ]
+    ],
+    [
+      "utility-cabinet",
+      "One weathered street electrical utility cabinet, rectangular galvanized steel box with two closed front doors, small vents, raised plinth and realistic latches.",
+      [
+        1.2,
+        0.55,
+        1.5
+      ]
+    ],
+    [
+      "rooftop-hvac",
+      "One complete rectangular rooftop HVAC unit, dull grey sheet metal, broad intake louvers, two circular top fans behind grilles, copper pipe connections.",
+      [
+        2.4,
+        1.6,
+        1.3
+      ]
+    ],
+    [
+      "water-tank",
+      "One cylindrical rooftop steel water tank on a short four-leg support stand, dull weathered metal, round closed top and small side access ladder.",
+      [
+        2.8,
+        2.8,
+        4
+      ]
+    ],
+    [
+      "satellite-dish",
+      "One modest concave rooftop satellite dish on a short steel mast and bolted footplate, support struts and small feed horn, matte weathered grey.",
+      [
+        1.5,
+        1.2,
+        1.8
+      ]
+    ],
+    [
+      "palm-tree",
+      "One complete mature Los Angeles fan palm tree, long rough fibrous trunk, crown of realistic green and dry fronds. Entire tree including all frond tips and root base, no soil mound.",
+      [
+        6,
+        6,
+        12
+      ]
+    ],
+    [
+      "street-planter",
+      "One rectangular low concrete street planter containing dry ornamental grasses and a small agave, natural realistic leaves, worn concrete sides.",
+      [
+        1.5,
+        0.6,
+        0.8
+      ]
+    ],
+    [
+      "rubble-pile",
+      "One compact low pile of broken concrete, a few red brick fragments and exposed bent reinforcing bars, physically plausible irregular debris silhouette. No floor or large ground slab.",
+      [
+        2.5,
+        1.7,
+        0.7
+      ]
+    ],
+    [
+      "collapsed-wall",
+      "One short damaged concrete wall section, uneven fractured top, exposed rebar, broken one corner, attached small rubble at its own foot, no environment.",
+      [
+        3,
+        0.3,
+        1.6
+      ]
+    ]
+  ],
+  "objectives": [
+    [
+      "city-core-generator",
+      "One large city-core power generator, squat armored octagonal plinth, a vertical cylindrical cyan energy chamber protected by four teal ribs, brass coolant pipes, low accessible service console integrated into front, sturdy industrial mass. No separate objects.",
+      [
+        4,
+        4,
+        4.5
+      ]
+    ],
+    [
+      "communications-relay",
+      "One deployable communications relay, broad three-foot base, telescoping tall antenna mast, compact rotating dish and two vertical panel aerials, teal equipment enclosure with small cyan status light.",
+      [
+        2.5,
+        2.5,
+        6
+      ]
+    ],
+    [
+      "research-cache",
+      "One rugged rectangular field research cache, muted teal hard case with brass corner guards, closed reinforced lid, integral carry handles, recessed small cyan sample-viewing window. Larger than a backpack, one complete case.",
+      [
+        1.1,
+        0.7,
+        0.65
+      ]
+    ],
+    [
+      "extraction-beacon",
+      "One deployed extraction beacon, tall slim central teal mast with cyan luminous vertical fins and a brass circular emitter head, three broad folding stabilizer feet. Beacon hardware only, no projected light beam or smoke.",
+      [
+        1.8,
+        1.8,
+        3
+      ]
+    ],
+    [
+      "objective-terminal",
+      "One freestanding waist-height military objective terminal, squat armored pedestal, slanted protected cyan screen with blank abstract glow and no text, heavy keyed interface shapes, brass handrail corners, functional rear housing.",
+      [
+        0.9,
+        0.8,
+        1.25
+      ]
+    ],
+    [
+      "supply-pod-open",
+      "One OPEN orbital supply pod: upright teal armored capsule with two large front clamshell doors swung outward revealing attached shelving and supply compartments, heavy landing feet, worn brass hinges, spent nozzle beneath. No loose supplies outside pod.",
+      [
+        2,
+        2,
+        3
+      ]
+    ],
+    [
+      "ammo-crate",
+      "One heavy ammunition supply crate, low wide teal metal chest with brass corner guards, closed segmented lid, robust carry handles, integrated vertical cartridge-shaped ribbing on front, subtle cyan status strip. No lettering or loose ammunition.",
+      [
+        1,
+        0.65,
+        0.6
+      ]
+    ],
+    [
+      "medical-crate",
+      "One field medical supply crate, compact upright white-and-teal hard case with worn brass corner clips, recessed cyan medical PLUS symbol built into front casing, closed lid, molded carry handle. No text or red cross.",
+      [
+        0.65,
+        0.4,
+        0.6
+      ]
+    ]
+  ],
+  "modeling_notes": [
+    "Build watertight shells and separate repeatable wall/window/door/corner/roof modules from the assembly guide.",
+    "Use the front view as primary Meshy input. Side and roof images are secondary modeling references; do not fuse contradictory details blindly.",
+    "Create intact and damaged variants with matching pivots, footprint and material IDs.",
+    "Doors and windows need deliberate openings or shallow recesses; generated images are not guaranteed to describe interiors.",
+    "Parking garage needs open bays; diner is one storey; office vertical divisions follow the target floor rise.",
+    "Reuse Round 4 facade materials after UV and scale matching. Separate glass, metal, masonry and emissive slots.",
+    "Foreground prop sizes are targets. Use simplified collisions; do not infer collision geometry from concept art."
+  ]
+}
