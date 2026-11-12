@@ -40,3 +40,12 @@ Everything on screen is generated in code; there are no image files yet. `src/gf
 Controls: W A S D move, mouse aim, click fire, R reload, G grenade, Q swap weapon, Shift sprint, 1 to 7 support and building, Z X C squad orders, Enter starts a wave early.
 
 Code is in `frontline/src/` (Claude). Art goes in `frontline/assets/` and `frontline/docs/art/` (ChatGPT).
+
+## Models
+
+`src/models.js` builds every figure from code, following ChatGPT's style sheet (`frontline/docs/art/style-sheet.png`): teal armour with gold pieces and a cyan visor, a purple swarm with a glowing egg cluster, a gatling turret on a tripod.
+
+- Each model is a small skeleton of named joints. The pieces on a joint are merged into one mesh per material and cached, so a large swarm stays cheap to draw.
+- Soldiers walk with bending knees, lean into a run, aim with the whole upper body, and their hands follow the rifle (two-bone reach). The rifle kicks when fired.
+- The swarm walks on jointed legs in an alternating gait, rears to strike, and rolls over and sinks when killed.
+- `build.js` also picks up the art kit in `frontline/public/assets/` (ground, facade and sky), so those plug in as soon as that folder is on the branch.

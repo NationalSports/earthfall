@@ -1,6 +1,7 @@
 // Frontline graphics: everything visual that is generated in code.
 // Renderer and post-processing, sky and image-based lighting, procedural textures, scattered scenery, particles.
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
@@ -99,8 +100,14 @@ export function scatter(group, world, H, ARENA, avoid, tex) { const r = rng(worl
   const rockG = new THREE.IcosahedronGeometry(1, 1), p = rockG.attributes.position; for (let i = 0; i < p.count; i++) { const k = 0.78 + r() * 0.44; p.setXYZ(i, p.getX(i) * k, p.getY(i) * k * 0.8, p.getZ(i) * k); } rockG.computeVertexNormals();
   const rockCol = { la: 0x6e675a, kepler: 0x7a4a78, ceres: 0x77777c }[world] || 0x6e675a;
   place(new THREE.InstancedMesh(rockG, new THREE.MeshStandardMaterial({ color: rockCol, roughness: 0.95, bumpMap: tex.groundBump, bumpScale: 0.6 }), 420), 420, 0.25, 1.7, 0.35, 0.8);
-  if (world === 'la') { const tuft = new THREE.ConeGeometry(0.34, 0.9, 5); tuft.translate(0, 0.4, 0); place(new THREE.InstancedMesh(tuft, new THREE.MeshStandardMaterial({ color: 0x7c8448, roughness: 1 }), 1800), 1800, 0.4, 1.1, 0.05, 0.5);
-    const trunk = new THREE.CylinderGeometry(0.1, 0.22, 3.4, 6); trunk.translate(0, 1.7, 0); place(new THREE.InstancedMesh(trunk, new THREE.MeshStandardMaterial({ color: 0x2c2620, roughness: 1 }), 70), 70, 0.8, 1.6, 0.05, 0.25); }
+  if (world === 'la') { // grass tufts: a few thin blades each. Palms: a curved trunk and a crown of drooping fronds.
+    const blades = []; for (let i = 0; i < 6; i++) { const h = 0.45 + r() * 0.5, g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute([-0.05, 0, 0, 0.05, 0, 0, 0.02 + r() * 0.1, h, 0], 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute([0, 1, 0, 0, 1, 0, 0, 1, 0], 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute([0, 0, 1, 0, 0.5, 1], 2)); g.rotateX((r() - 0.5) * 0.7); g.rotateY(i * 1.05 + r()); g.translate((r() - 0.5) * 0.25, 0, (r() - 0.5) * 0.25); blades.push(g); }
+    const tm = new THREE.InstancedMesh(mergeGeometries(blades), new THREE.MeshStandardMaterial({ color: 0x5d6b2c, roughness: 1, side: THREE.DoubleSide }), 2600); place(tm, 2600, 0.5, 1.3, 0.02, 0.3); tm.castShadow = false;
+    const parts = [], fronds = []; let px = 0; for (let i = 0; i < 6; i++) { const seg = new THREE.CylinderGeometry(0.2 - i * 0.012, 0.24 - i * 0.012, 1.35, 7).toNonIndexed(); seg.rotateZ(-0.06 * i); seg.translate(px, 0.65 + i * 1.3, 0); px += 0.08 * i; parts.push(seg); }
+    const top = 6 * 1.3 + 0.2, tx = px - 0.25; for (let i = 0; i < 12; i++) { const L = 3.2 + (i % 3) * 0.5, f = new THREE.PlaneGeometry(0.9, 1, 2, 7), q = f.attributes.position; for (let j = 0; j < q.count; j++) { const t = q.getY(j) + 0.5, w = q.getX(j) * (1 - t * 0.8); q.setXYZ(j, w, L * (0.3 * t - 0.62 * t * t) + (i % 2) * 0.35 * t - Math.abs(w) * 0.45, L * t * 0.85); } f.computeVertexNormals(); const g = f.toNonIndexed(); g.rotateY(i * 0.5236 + (i % 2) * 0.15); g.translate(tx, top, 0); fronds.push(g); }
+    const nut = new THREE.SphereGeometry(0.34, 7, 5).toNonIndexed(); nut.translate(tx, top - 0.1, 0); parts.push(nut);
+    const palm = mergeGeometries([mergeGeometries(parts), mergeGeometries(fronds)], true);
+    place(new THREE.InstancedMesh(palm, [new THREE.MeshStandardMaterial({ color: 0x6b5238, roughness: 1, bumpMap: tex.groundBump, bumpScale: 0.8 }), new THREE.MeshStandardMaterial({ color: 0x47702c, roughness: 0.8, side: THREE.DoubleSide })], 90), 90, 0.8, 1.35, 0.03, 0.12); }
   if (world === 'kepler') { const cr = new THREE.ConeGeometry(0.5, 2.6, 5); cr.translate(0, 1.2, 0); place(new THREE.InstancedMesh(cr, new THREE.MeshStandardMaterial({ color: 0x9a6cff, emissive: 0x5a2cd0, emissiveIntensity: 0.9, roughness: 0.15, metalness: 0.2 }), 520), 520, 0.4, 2.2, 0.1, 0.7); }
   if (world === 'ceres') { const cr = new THREE.TorusGeometry(1, 0.22, 6, 18); cr.rotateX(Math.PI / 2); place(new THREE.InstancedMesh(cr, new THREE.MeshStandardMaterial({ color: 0x5c5c62, roughness: 1 }), 90), 90, 1.2, 4.5, -0.02, 0.05); } }
 
