@@ -1,0 +1,153 @@
+{
+  "status": "Untested art/design proposal; Claude owns final gameplay and code",
+  "coordinate_convention": "Y up; model front -Z; ground vehicle pivot centered at ground, aircraft flight pivot center of mass to be set in mesh",
+  "vehicles": [
+    {
+      "id": "kestrel-tiltrotor",
+      "target_m": [
+        24,
+        17,
+        6
+      ],
+      "desc": "An original Osprey-inspired military tiltrotor transport aircraft. Broad high straight wing, exactly TWO large three-bladed proprotors on separate wingtip nacelles, nacelles vertical in HOVER configuration, rotor discs horizontal and safely clear of fuselage. Short angular armored nose with cyan two-seat cockpit, boxy troop/cargo fuselage, rear loading ramp CLOSED, twin tail fins, three extended landing-gear assemblies. One restrained belly defensive gun, NO rocket pods or bomb racks. Full front three-quarter view slightly elevated, both rotors and ALL blade tips visible, rotor blades completely still, generous margin."
+    },
+    {
+      "id": "goshawk-helicopter",
+      "target_m": [
+        14,
+        15,
+        4.5
+      ],
+      "desc": "An original single-main-rotor military attack helicopter. Slim angular tandem two-seat cyan cockpit, exactly ONE four-bladed main rotor and ONE small four-bladed tail rotor on right side of long tail boom, main blades static. Short stub wings with one compact closed rocket pod on each side, small chin cannon, twin top engine housings, two landing skids. No tiltrotors, no second main rotor, no extra aircraft. Full front three-quarter view slightly elevated; ALL rotor tips, tail rotor, skids and nose visible, generous margin."
+    },
+    {
+      "id": "bulwark-mech",
+      "target_m": [
+        3.4,
+        2.8,
+        4.8
+      ],
+      "desc": "An original pilotable 4.8m biped combat mech, heavy industrial military construction rather than oversized human armor. Enclosed central cockpit with small cyan vision slit, wide asymmetric shoulder panels, thick jointed legs with broad feet, hydraulic pistons, left arm compact rotary cannon with finite ammunition drum, right arm short twin tube launcher, exposed brass-bordered rear cooling grille partly visible. Upright neutral stance with arms angled down and feet apart. NO pilot or scale figure. Full front three-quarter view, every extremity visible."
+    }
+  ],
+  "flyers": [
+    {
+      "id": "dartwing",
+      "span": 1.5,
+      "desc": "Small fragile flying insectoid skirmisher. Thin wasp-like segmented abdomen, four narrow translucent veined wings spread fully, toothy armored head, six short tucked grasping legs. Lean elongated silhouette, orange seam along thorax, no large sacs. Horizontal flight-rest pose, front three-quarter view."
+    },
+    {
+      "id": "razorwing",
+      "span": 3.5,
+      "desc": "Medium fast alien aerial interceptor. Raptor-like narrow armored body, exactly TWO long swept leathery membranous wings fully spread with hooked tips, powerful deep chest, toothed pointed head, two forward grasping scythe claws and two small rear legs tucked under body, forked tail rudder. Clear orange exposed throat spot. Horizontal flight-rest pose, front three-quarter view."
+    },
+    {
+      "id": "blight-bomber",
+      "span": 5,
+      "desc": "Heavy slow flying insectoid acid bomber. Broad beetle body suspended beneath FOUR large ribbed translucent wings, six short tucked legs, heavy armored head. Exactly THREE bloated translucent acid-green sacs grouped along underside, clearly attached and exposed; none on back. Deep round hanging silhouette, orange abdominal seams. Full front three-quarter flight-rest view."
+    },
+    {
+      "id": "storm-moth",
+      "span": 3,
+      "desc": "Flying alien disruption creature. Broad moth-like silhouette with TWO large fan-shaped dark leathery upper wings and TWO small hind wings, antenna-like chitin horns, slender body, four tucked legs. Enlarged ribbed ORANGE throat resonance organ under head, visible weak point; no acid sacs. Biological, not electrical machinery, no beam effects. Front three-quarter horizontal flight-rest pose."
+    },
+    {
+      "id": "sky-tyrant",
+      "span": 12,
+      "desc": "Huge flying boss insectoid. Crowned armored head, long powerful dragonfly-like carapace torso, exactly FOUR enormous leathery veined wings spread fully, four hooked grasping legs tucked beneath chest, segmented tapering tail. One large orange glowing exposed keel-core on underside between chest plates, layered aubergine shoulder armor. Majestic imposing original alien, no fire breath, no acid sacs. Front three-quarter horizontal flight-rest pose; EVERY wingtip and tail tip fully inside generous margin."
+    }
+  ],
+  "availability": "Available support/vehicle options; player-piloted versus commanded support behavior is an implementation choice. Art includes cockpit/service access; no controller is supplied.",
+  "starting_playtest_targets": {
+    "shared_heavy_vehicle_budget": 1,
+    "kestrel": {
+      "infantry_seats": 4,
+      "gun_rounds": 300,
+      "loading_commitment_seconds": 8,
+      "offense": "one defensive gun; no bombing loadout"
+    },
+    "goshawk": {
+      "cannon_rounds": 300,
+      "rockets": 8,
+      "combat_service_seconds": 75
+    },
+    "bulwark": {
+      "cannon_rounds": 500,
+      "rockets": 6
+    },
+    "vehicle_service_cooldown_seconds": 180,
+    "cooldown_starts": "return or loss; shared budget must prevent chaining fresh vehicles",
+    "flyer_species_caps": {
+      "dartwing": 6,
+      "razorwing": 2,
+      "blight-bomber": 1,
+      "storm-moth": 1,
+      "sky-tyrant": 1
+    },
+    "cap_note": "Species ceilings, not simultaneous wave composition. Start with one role; total encounter budget must be lower than sum of caps. Boss replaces other heavy air pressure.",
+    "attack_telegraph_seconds": [
+      1.5,
+      2
+    ],
+    "boss_tells": "longer, with visible recovery windows"
+  },
+  "fairness": [
+    "Infantry weapons can answer every aerial enemy; no mandatory aircraft or specialized AA unlock.",
+    "Telegraph approach, attack direction and vulnerable windows using silhouette, sound, animation and limited glow.",
+    "No unseen instant kills, unavoidable tracking attacks or indefinite control disables.",
+    "Moth interference is local, bounded and interruptible; do not disable manual flight controls.",
+    "Show directional warnings, ammunition, return/service time and system damage; offer retreat/forced landing before loss where rules permit.",
+    "Ground objectives, protected interiors, weapon arcs and service commitments prevent aircraft from solving every mission.",
+    "All values are starting hypotheses, not balanced or tested rules."
+  ],
+  "mesh_separation": {
+    "kestrel": [
+      "fuselage",
+      "left/right wingtip nacelle pivot",
+      "each rotor hub and blades",
+      "landing gear",
+      "rear ramp",
+      "cockpit glass",
+      "defensive gun",
+      "engine damage panels"
+    ],
+    "goshawk": [
+      "fuselage",
+      "main rotor hub/blades",
+      "tail rotor",
+      "tail drive",
+      "chin gun",
+      "left/right rocket pod",
+      "skids",
+      "cockpit glass",
+      "engine damage panels"
+    ],
+    "bulwark": [
+      "cockpit torso",
+      "rear hatch/radiator",
+      "hip/knee/ankle joints",
+      "left rotary cannon/drum",
+      "right twin launcher",
+      "damage panels"
+    ],
+    "flyers": [
+      "head",
+      "thorax",
+      "each wing root and membrane",
+      "legs",
+      "tail where present",
+      "separate sacs/throat/core damage region"
+    ]
+  },
+  "animation_reference_files": [
+    "movement/forward-dive.png",
+    "movement/prone-aim.png",
+    "movement/recovery-kneel.png",
+    "movement/self-stim.png"
+  ],
+  "limitations": [
+    "Generated view geometry and blade/wing counts must be reconciled in 3D to primary front reference.",
+    "Design dimensions are targets, not measured CAD or flightworthy engineering.",
+    "No meshes, rigging, animation clips, game controllers, AI, physics, timed VFX, multiplayer or runtime integration included."
+  ]
+}

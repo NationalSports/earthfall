@@ -1,0 +1,1269 @@
+{
+  "round": 6,
+  "generator": "built-in ImageGen",
+  "note": "Requested 2048px model and 3840x2160 scene exports may be larger than native generation. Every record discloses native dimensions and upscaling; square padding preserves proportions and scenes use centered 16:9 crops. References are provenance, not runtime dependencies.",
+  "records": [
+    {
+      "id": "damage/brute-breached",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Edit selected Brute. Preserve exact full creature identity, pose, framing and all legs. Remove ONLY its front-right shoulder carapace panel to expose an amber-orange soft weak spot, with a fractured rim and small attached shell fragments. No detached objects, no labels, no added limbs, no environment. Full-body damage-state modeling reference.",
+      "references": [
+        "frontline/public/assets/round-4/models/brute-front-3q.png"
+      ],
+      "source_file": "exec-392932f8-2a68-4bbc-a3a7-ef5c0589c174.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/damage/brute-breached.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "damage/brute-shoulder-plate",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Use attached Brute as biological material reference. Render ONLY ONE detached thick curved shoulder armor plate from this creature, aubergine layered chitin outer shell, cracked pointed rim and dark fibrous underside. The plate alone in front three-quarter view. No creature, no gore, no other objects.",
+      "references": [
+        "frontline/public/assets/round-4/models/brute-front-3q.png"
+      ],
+      "source_file": "exec-31936c2c-4296-4cda-b463-40eac15b4bf9.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/damage/brute-shoulder-plate.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "damage/spitter-ruptured",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Edit selected Spitter. Preserve exact body, pose, framing and all legs. The largest top acid sac has ruptured and collapsed into a wrinkled translucent green membrane with a torn rim and small wet green residue clinging to shell. Other sacs remain intact. No airborne spray or puddle, no detached objects, no labels. Full-body damage-state modeling reference.",
+      "references": [
+        "frontline/public/assets/round-4/models/spitter-front-3q.png"
+      ],
+      "source_file": "exec-2d27f407-4981-4acf-8f82-b3c93ab0e1fa.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/damage/spitter-ruptured.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "damage/warlord-core-exposed",
+      "section": "C",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Edit selected Warlord. Preserve full crowned boss silhouette, pose and all extremities. Chest armor ribs are fractured and peeled back slightly, exposing a larger bright orange keel-core with dark organic frame; all parts remain attached. No energy beam, smoke, fire or loose pieces. Full-body boss damage-state modeling reference.",
+      "references": [
+        "frontline/public/assets/round-4/models/warlord-front-3q.png"
+      ],
+      "source_file": "exec-e0a81419-4a36-4818-abe9-220d51a12b67.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/damage/warlord-core-exposed.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "flyers/blight-bomber-front-3q",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "wingspan_m": 5,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Alien family matches attached swarmling's realistic biological material only: dark aubergine layered chitin, leathery muted membranes, orange internal bioluminescent seams, pale worn teeth, sinewy organic joints. No teal metal machinery. Attached creature is a MATERIAL/FAMILY reference only. New subject is a FLYING creature: Heavy slow flying insectoid acid bomber. Broad beetle body suspended beneath FOUR large ribbed translucent wings, six short tucked legs, heavy armored head. Exactly THREE bloated translucent acid-green sacs grouped along underside, clearly attached and exposed; none on back. Deep round hanging silhouette, orange abdominal seams. Full front three-quarter flight-rest view. Wings held still and fully separated for modeling; no motion blur, no detached parts, no extra creatures.",
+      "references": [
+        "frontline/public/assets/round-4/models/swarmling-front-3q.png"
+      ],
+      "source_file": "exec-d506f068-b126-4536-aa64-e64ab83345d1.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/flyers/blight-bomber-front-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "flyers/blight-bomber-side",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "wingspan_m": 5,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Attached image is selected flying creature identity. Render EXACT same creature in a STRICT RIGHT SIDE orthographic profile, head points LEFT, camera horizontal at torso height, not a three-quarter view. Keep same number and shape of wings, same tucked-leg flight-rest pose, same mandibles, tail, armor plates, membrane materials and exposed organs. Wings remain spread in SAME anatomical pose; normal side-view overlap is allowed, do not rotate or delete wings to make a diagram. Entire animal and all projected wing/tail tips inside generous margin. One animal, no motion blur, no effects.",
+      "references": [
+        "exec-d506f068-b126-4536-aa64-e64ab83345d1.png"
+      ],
+      "source_file": "exec-e0e6cf35-d262-48df-9430-85d1ffbb5d93.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/flyers/blight-bomber-side.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "flyers/dartwing-front-3q",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "wingspan_m": 1.5,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Alien family matches attached swarmling's realistic biological material only: dark aubergine layered chitin, leathery muted membranes, orange internal bioluminescent seams, pale worn teeth, sinewy organic joints. No teal metal machinery. Attached creature is a MATERIAL/FAMILY reference only. New subject is a FLYING creature: Small fragile flying insectoid skirmisher. Thin wasp-like segmented abdomen, four narrow translucent veined wings spread fully, toothy armored head, six short tucked grasping legs. Lean elongated silhouette, orange seam along thorax, no large sacs. Horizontal flight-rest pose, front three-quarter view. Wings held still and fully separated for modeling; no motion blur, no detached parts, no extra creatures.",
+      "references": [
+        "frontline/public/assets/round-4/models/swarmling-front-3q.png"
+      ],
+      "source_file": "exec-f9d8acdd-49a3-4aa9-9619-762151013e82.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/flyers/dartwing-front-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "flyers/dartwing-side",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "wingspan_m": 1.5,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Attached image is selected flying creature identity. Render EXACT same creature in a STRICT RIGHT SIDE orthographic profile, head points LEFT, camera horizontal at torso height, not a three-quarter view. Keep same number and shape of wings, same tucked-leg flight-rest pose, same mandibles, tail, armor plates, membrane materials and exposed organs. Wings remain spread in SAME anatomical pose; normal side-view overlap is allowed, do not rotate or delete wings to make a diagram. Entire animal and all projected wing/tail tips inside generous margin. One animal, no motion blur, no effects.",
+      "references": [
+        "exec-f9d8acdd-49a3-4aa9-9619-762151013e82.png"
+      ],
+      "source_file": "exec-16ac0ddb-4610-4e7c-9c78-7490b09b5a5d.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/flyers/dartwing-side.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "flyers/razorwing-front-3q",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "wingspan_m": 3.5,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Alien family matches attached swarmling's realistic biological material only: dark aubergine layered chitin, leathery muted membranes, orange internal bioluminescent seams, pale worn teeth, sinewy organic joints. No teal metal machinery. Attached creature is a MATERIAL/FAMILY reference only. New subject is a FLYING creature: Medium fast alien aerial interceptor. Raptor-like narrow armored body, exactly TWO long swept leathery membranous wings fully spread with hooked tips, powerful deep chest, toothed pointed head, two forward grasping scythe claws and two small rear legs tucked under body, forked tail rudder. Clear orange exposed throat spot. Horizontal flight-rest pose, front three-quarter view. Wings held still and fully separated for modeling; no motion blur, no detached parts, no extra creatures.",
+      "references": [
+        "frontline/public/assets/round-4/models/swarmling-front-3q.png"
+      ],
+      "source_file": "exec-6b341e69-b4a3-4b8d-8415-3b02a90060e2.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/flyers/razorwing-front-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "flyers/razorwing-side",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "wingspan_m": 3.5,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Attached image is selected flying creature identity. Render EXACT same creature in a STRICT RIGHT SIDE orthographic profile, head points LEFT, camera horizontal at torso height, not a three-quarter view. Keep same number and shape of wings, same tucked-leg flight-rest pose, same mandibles, tail, armor plates, membrane materials and exposed organs. Wings remain spread in SAME anatomical pose; normal side-view overlap is allowed, do not rotate or delete wings to make a diagram. Entire animal and all projected wing/tail tips inside generous margin. One animal, no motion blur, no effects.",
+      "references": [
+        "exec-6b341e69-b4a3-4b8d-8415-3b02a90060e2.png"
+      ],
+      "source_file": "exec-22db3bac-a05b-4ee0-a07f-e2cb1830637c.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/flyers/razorwing-side.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "flyers/sky-tyrant-front-3q",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "wingspan_m": 12,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Alien family matches attached swarmling's realistic biological material only: dark aubergine layered chitin, leathery muted membranes, orange internal bioluminescent seams, pale worn teeth, sinewy organic joints. No teal metal machinery. Attached creature is a MATERIAL/FAMILY reference only. New subject is a FLYING creature: Huge flying boss insectoid. Crowned armored head, long powerful dragonfly-like carapace torso, exactly FOUR enormous leathery veined wings spread fully, four hooked grasping legs tucked beneath chest, segmented tapering tail. One large orange glowing exposed keel-core on underside between chest plates, layered aubergine shoulder armor. Majestic imposing original alien, no fire breath, no acid sacs. Front three-quarter horizontal flight-rest pose; EVERY wingtip and tail tip fully inside generous margin. Wings held still and fully separated for modeling; no motion blur, no detached parts, no extra creatures.",
+      "references": [
+        "frontline/public/assets/round-4/models/swarmling-front-3q.png"
+      ],
+      "source_file": "exec-44ff29f7-afa9-48ba-b4c5-9139d6ada91c.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/flyers/sky-tyrant-front-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "flyers/sky-tyrant-side",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "wingspan_m": 12,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Attached image is selected flying creature identity. Render EXACT same creature in a STRICT RIGHT SIDE orthographic profile, head points LEFT, camera horizontal at torso height, not a three-quarter view. Keep same number and shape of wings, same tucked-leg flight-rest pose, same mandibles, tail, armor plates, membrane materials and exposed organs. Wings remain spread in SAME anatomical pose; normal side-view overlap is allowed, do not rotate or delete wings to make a diagram. Entire animal and all projected wing/tail tips inside generous margin. One animal, no motion blur, no effects.",
+      "references": [
+        "exec-44ff29f7-afa9-48ba-b4c5-9139d6ada91c.png"
+      ],
+      "source_file": "exec-a7f07330-200e-4148-9682-f5b49b509568.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/flyers/sky-tyrant-side.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "flyers/storm-moth-front-3q",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "wingspan_m": 3,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Alien family matches attached swarmling's realistic biological material only: dark aubergine layered chitin, leathery muted membranes, orange internal bioluminescent seams, pale worn teeth, sinewy organic joints. No teal metal machinery. Attached creature is a MATERIAL/FAMILY reference only. New subject is a FLYING creature: Flying alien disruption creature. Broad moth-like silhouette with TWO large fan-shaped dark leathery upper wings and TWO small hind wings, antenna-like chitin horns, slender body, four tucked legs. Enlarged ribbed ORANGE throat resonance organ under head, visible weak point; no acid sacs. Biological, not electrical machinery, no beam effects. Front three-quarter horizontal flight-rest pose. Wings held still and fully separated for modeling; no motion blur, no detached parts, no extra creatures.",
+      "references": [
+        "frontline/public/assets/round-4/models/swarmling-front-3q.png"
+      ],
+      "source_file": "exec-c87c7e19-9199-48c6-acc0-f19b0a261a8b.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/flyers/storm-moth-front-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "flyers/storm-moth-side",
+      "section": "B",
+      "size": [
+        2048,
+        2048
+      ],
+      "wingspan_m": 3,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Attached image is selected flying creature identity. Render EXACT same creature in a STRICT RIGHT SIDE orthographic profile, head points LEFT, camera horizontal at torso height, not a three-quarter view. Keep same number and shape of wings, same tucked-leg flight-rest pose, same mandibles, tail, armor plates, membrane materials and exposed organs. Wings remain spread in SAME anatomical pose; normal side-view overlap is allowed, do not rotate or delete wings to make a diagram. Entire animal and all projected wing/tail tips inside generous margin. One animal, no motion blur, no effects.",
+      "references": [
+        "exec-c87c7e19-9199-48c6-acc0-f19b0a261a8b.png"
+      ],
+      "source_file": "exec-a28db0f7-c428-427b-9874-fe295439f18d.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/flyers/storm-moth-side.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "mission/civilian-front-3q",
+      "section": "D",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. One adult civilian evacuee, full body centered T-pose arms straight sideways, hands empty and fingers separated. Worn charcoal practical work trousers, dusty muted tan jacket with restrained teal protective vest, brown boots, small fabric waist pouch. Realistic unarmored middle-aged woman with tied-back dark hair and neutral face, no helmet, no weapons, no heavy soldier armor. Front three-quarter view, all fingertips and boots visible.",
+      "references": [],
+      "source_file": "exec-191049cb-7f51-4004-a064-8343aa514d7a.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/mission/civilian-front-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "mission/civilian-side",
+      "section": "D",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Render EXACT same selected civilian woman in strict RIGHT SIDE orthographic profile, face points LEFT. Preserve same T-pose, arms out straight sideways, hands empty and fingers extended, same clothing, face, tied-back hair, proportions and boots. In side view arms naturally overlap in projection; do not change to arms down. Whole person fully visible, gray background, no shadow.",
+      "references": [
+        "exec-191049cb-7f51-4004-a064-8343aa514d7a.png"
+      ],
+      "source_file": "exec-5d0e436c-734e-4cdc-a0b6-2bd4590fe23c.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/mission/civilian-side.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "mission/evacuation-shelter",
+      "section": "D",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. One modular civilian evacuation shelter, 8m long 4m wide 3m high, armored teal converted container with sealed back, one OPEN recessed front door and short integral step, cyan horizontal status lamp, compact rooftop ventilation, worn brass hinges, dark narrow window slits, no sign or text. Empty interior glimpsed through door, no people, no ground slab. Full front three-quarter view.",
+      "references": [
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-b9ed7958-1312-4af6-95e2-dcc3a9343b60.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/mission/evacuation-shelter.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "mission/hive-egg-cluster",
+      "section": "D",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. One connected hive egg cluster on a single organic root base, five translucent amber-orange leathery egg pods at different heights embedded in dark aubergine chitin tendrils. Largest egg about human torso height. Clear silhouettes, closed eggs, no hatchlings, no detached objects or environmental floor. Front three-quarter view.",
+      "references": [],
+      "source_file": "exec-a91d1d66-4e8f-4b36-a960-2ac917178502.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/mission/hive-egg-cluster.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "mission/hive-tunnel-entrance",
+      "section": "D",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. One complete organic hive tunnel entrance module. A 6m-wide irregular arch of dark aubergine chitin and mineral rock, orange vent nodules, sinewy ridges, deep open hollow center large enough for a human squad. Stable flat bottom edges for snapping into terrain, no ground slab. Whole arch fully isolated in front three-quarter view, no tunnel scene or creatures.",
+      "references": [],
+      "source_file": "exec-402efc0d-399f-415d-80c8-8fc9a7f65b96.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/mission/hive-tunnel-entrance.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "mission/hive-tunnel-scene",
+      "section": "D",
+      "size": [
+        3840,
+        2160
+      ],
+      "prompt": "Use case: stylized-concept. Photorealistic AAA game environment, wide 16:9. Original Frontline underground hive corridor, broad enough for a four-person squad to fight through, same chitin arch language as reference1 and soldier materials from reference2. Interlocking dark basalt walls overgrown with aubergine sinewy ridges, occasional amber egg clusters in alcoves, orange vent illumination and cool cyan soldier optics. One rear-view teal/brass soldier bottom LEFT carries rifle, framing a clear navigable central tunnel toward an industrial pump objective seen through a broken wall at far end. Low restrained ground mist, realistic moist surfaces, believable cave scale, strong silhouette readability, no HUD, no text, no logos. Environment concept, not a studio reference.",
+      "references": [
+        "exec-402efc0d-399f-415d-80c8-8fc9a7f65b96.png",
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-fa35cf07-851d-4d37-b39c-a536f69e98e7.png",
+      "native_size": [
+        1672,
+        941
+      ],
+      "export_size": [
+        3840,
+        2160
+      ],
+      "export": "frontline/public/assets/round-6/mission/hive-tunnel-scene.jpg",
+      "content_scale": 2.2966507177033493,
+      "upscaled": true
+    },
+    {
+      "id": "mission/hive-wall-module",
+      "section": "D",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. One modular hive cave wall section, 3m wide by 3m high by 0.6m deep. Irregular dark basalt backing with sinewy aubergine organic roots and small orange breathing vent nodules, flat bottom and straight joining side edges. One wall alone front three-quarter view, no floor, no arch, no room, no characters.",
+      "references": [],
+      "source_file": "exec-077383d5-82b7-4a03-9cd8-bac4a3e70389.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/mission/hive-wall-module.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "mission/refinery-pump",
+      "section": "D",
+      "size": [
+        2048,
+        2048
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. One compact industrial mission objective: coolant/refinery pump assembly on a single integral rectangular 4m by3m steel skid. Two vertical worn teal pressure vessels joined by three brass pipes, a large closed manual wheel valve and a waist height graphite service panel with small blank cyan screen. Enclosed machinery only, no liquids, fire or instructions. Full front three-quarter view.",
+      "references": [
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-9cb54fb8-a90f-4390-8ae7-3c69d47a9aa0.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/mission/refinery-pump.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "movement/forward-dive",
+      "section": "F",
+      "size": [
+        2048,
+        2048
+      ],
+      "transparent": false,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. One soldier only, entire full body visible in an airborne forward combat dive toward LEFT, torso nearly horizontal, legs extended back with knees slightly bent, holding compact service rifle safely forward in both hands. Clear side three-quarter silhouette. This is one animation key pose, not a sequence. Preserve reference soldier armor identity.",
+      "references": [
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-f4889be1-f830-45d2-8b38-6c8c56173f9d.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/movement/forward-dive.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "movement/prone-aim",
+      "section": "F",
+      "size": [
+        2048,
+        2048
+      ],
+      "transparent": false,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. One soldier only, full body in prone firing-ready pose facing LEFT, torso low, elbows supporting rifle forward, legs extended with boots visible. Slightly elevated side three-quarter view to see both arms. No floor geometry or ground shadow. This is one animation key pose, not a sequence. Preserve reference soldier armor identity.",
+      "references": [
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-07cbebaa-4bc6-4476-92d9-c7488e7762f2.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/movement/prone-aim.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "movement/recovery-kneel",
+      "section": "F",
+      "size": [
+        2048,
+        2048
+      ],
+      "transparent": false,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. One soldier only, full body rising from ground into a half-kneeling recovery pose, left boot flat forward, right knee lowered, one hand braced near ground and other keeping rifle pointed safely down away from body. Side three-quarter view facing LEFT. No floor object. One animation key pose, not sequence. Preserve reference soldier identity.",
+      "references": [
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-5027ee26-9880-4268-bcb9-42de5190f52f.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/movement/recovery-kneel.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "movement/self-stim",
+      "section": "F",
+      "size": [
+        2048,
+        2048
+      ],
+      "transparent": false,
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. One soldier only, full body standing in a braced stance facing LEFT, left hand using one tiny cyan-tipped medical stim against upper right arm, right hand holding lowered rifle safely. No unhelmeted face, no gore, no exposed skin. Three-quarter view. One animation key pose, not sequence. Preserve reference soldier armor identity.",
+      "references": [
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-dee480c0-2c14-418f-ba57-d872a8f8cf32.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/movement/self-stim.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "scenes/kepler-aerial-boss",
+      "section": "H",
+      "size": [
+        3840,
+        2160
+      ],
+      "prompt": "Use case: stylized-concept. Cinematic photorealistic original Frontline game encounter concept, wide 16:9. Reference1 is Goshawk helicopter, reference2 enormous Sky Tyrant, reference3 Bulwark mech. Kepler ridge at alien dusk with dark rock, scattered muted teal crystals and purple low vegetation, orange horizon haze. ONE helicopter banks LEFT across upper-left foreground, skids/tail/main rotor readable. ONE crowned FOUR-wing Sky Tyrant attacks from upper-right at distance, orange underside keel-core exposed and glowing in a clearly telegraphed approach. On ridge bottom-left a small Bulwark mech looks upward and supports from ground, true scale about half helicopter length. Broad clear middle sky separates the two aircraft silhouettes; no wingtip clipping, no overfilled explosion soup. Dark aubergine membranes, human muted teal/brass, cyan optics, realistic volumetric lighting. No UI, text, labels or logos.",
+      "references": [
+        "exec-e3794fc0-4659-4623-ba98-c9edebc4636b.png",
+        "exec-44ff29f7-afa9-48ba-b4c5-9139d6ada91c.png",
+        "exec-eeb156be-ad3c-4410-8cac-e9f64a3bc120.png"
+      ],
+      "source_file": "exec-39df064c-b328-40aa-9a7f-e8c70f031dc3.png",
+      "native_size": [
+        1672,
+        941
+      ],
+      "export_size": [
+        3840,
+        2160
+      ],
+      "export": "frontline/public/assets/round-6/scenes/kepler-aerial-boss.jpg",
+      "content_scale": 2.2966507177033493,
+      "upscaled": true
+    },
+    {
+      "id": "scenes/la-contested-extraction",
+      "section": "H",
+      "size": [
+        3840,
+        2160
+      ],
+      "prompt": "Use case: stylized-concept. Cinematic photorealistic original Frontline game art, wide 16:9. Reference1 is Kestrel tiltrotor identity, reference2 Goshawk helicopter identity, reference3 Razorwing enemy identity, reference4 soldier materials. LA wet street extraction at dusk. Kestrel in foreground RIGHT landed on its wheels, BOTH wingtip nacelles vertical with rotor discs horizontal in hover configuration, rear ramp lowered toward camera and empty cabin cyan lit. A small teal/brass squad runs toward its rear ramp from lower LEFT. Above and behind the transport, ONE helicopter escorts against TWO Razorwing interceptors approaching from distant skyline; helicopter main rotor and tail rotor clearly distinct from tiltrotor. Give enemies separate silhouettes and a clear safe boarding route; only a few sparse tracers and downwash dust, no giant explosions hiding geometry. Weathered art-deco and sage storefront buildings, palms and smoky skyline. Vehicles feel strong but threatened; readable action, no HUD, no labels, no logos, no text.",
+      "references": [
+        "exec-eff96546-a98a-4efe-976f-2e9c518fc7a5.png",
+        "exec-e3794fc0-4659-4623-ba98-c9edebc4636b.png",
+        "exec-6b341e69-b4a3-4b8d-8415-3b02a90060e2.png",
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-28d8491d-a7ff-455c-95ac-6f574e2f6cb7.png",
+      "native_size": [
+        1672,
+        941
+      ],
+      "export_size": [
+        3840,
+        2160
+      ],
+      "export": "frontline/public/assets/round-6/scenes/la-contested-extraction.jpg",
+      "content_scale": 2.2966507177033493,
+      "upscaled": true
+    },
+    {
+      "id": "ship/armory",
+      "section": "E",
+      "size": [
+        3840,
+        2160
+      ],
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. Photorealistic PBR AAA game concept, not stylized illustration. Original Frontline command ship armory interior, realistic cinematic wide 16:9 environment. Same oxidized teal metal, charcoal deck plates, worn brass fittings and cyan status lighting. Eye-level along a broad aisle with recessed empty armor lockers, a central equipment workbench with one assembled service rifle and small parts trays, blank cyan inspection displays, safe enclosed weapon racks and a large deployment doorway at end. Strong visual organization and functional scale. Empty room, no people, no text, no logos, no HUD. Soldier reference is material palette only.",
+      "references": [
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-c25823a4-a5e9-4848-a3a3-99e34757028b.png",
+      "native_size": [
+        1672,
+        941
+      ],
+      "export_size": [
+        3840,
+        2160
+      ],
+      "export": "frontline/public/assets/round-6/ship/armory.jpg",
+      "content_scale": 2.2966507177033493,
+      "upscaled": true
+    },
+    {
+      "id": "ship/command-bridge",
+      "section": "E",
+      "size": [
+        3840,
+        2160
+      ],
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. Photorealistic PBR AAA game concept, not stylized illustration. Original Frontline command ship interior, realistic cinematic wide 16:9 environmental concept. Eye-level from rear doorway down broad central walkway into a spacious military bridge. A central waist-high circular holographic EARTH war table with cyan globe and fine abstract territorial lines, no labels. Tiered practical teal consoles, worn brass rails, graphite deck plates, small amber utility lights, large forward observation windows framing Earth's curved horizon. Calm disciplined composition, room for a squad to assemble. Empty room, no people, NO text or logos. Reference soldier is material palette only.",
+      "references": [
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-2877ed07-e4b6-4858-a710-20ec3d808247.png",
+      "native_size": [
+        1672,
+        941
+      ],
+      "export_size": [
+        3840,
+        2160
+      ],
+      "export": "frontline/public/assets/round-6/ship/command-bridge.jpg",
+      "content_scale": 2.2966507177033493,
+      "upscaled": true
+    },
+    {
+      "id": "ship/deployment-bay",
+      "section": "E",
+      "size": [
+        3840,
+        2160
+      ],
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. Photorealistic PBR AAA game concept, not stylized illustration. Original Frontline command ship deployment bay interior, realistic cinematic wide 16:9 environment. Same teal armor, worn brass hydraulic rails, charcoal metal deck and cyan status glass. Four upright one-person drop-pod stations recessed along one side, their protective clamshells open and empty, catwalk leading to distant large hangar shutters, practical overhead gantry machinery, amber edge strips. Earth visible through a small side observation window. Functional scale and believable engineering. Empty room, no people, no text, no logos, no HUD. Soldier reference is material palette only.",
+      "references": [
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-56ed047a-726b-4f09-853d-6c78826c9cb2.png",
+      "native_size": [
+        1672,
+        941
+      ],
+      "export_size": [
+        3840,
+        2160
+      ],
+      "export": "frontline/public/assets/round-6/ship/deployment-bay.jpg",
+      "content_scale": 2.2966507177033493,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/bulwark-mech/damaged-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        3.4,
+        2.8,
+        4.8
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached image is SELECTED IDENTITY, not a loose inspiration. Render exactly this same bulwark-mech with same structure and materials. Damage-state edit, keep EXACT same front three-quarter camera, pose, silhouette, proportions, all rotor blade counts, every major component and weapon loadout. Add local cracked/chipped armor, scorch around ONE engine/cooling panel and exposed dark internals there, with small amber warning glow. Aircraft retain ALL blades and landing gear; mech retains both legs and arms. No flames, smoke, explosions, crash scene, debris pile, people, extra objects or text. One subject, clear margin, no cast shadow.",
+      "references": [
+        "exec-eeb156be-ad3c-4410-8cac-e9f64a3bc120.png"
+      ],
+      "source_file": "exec-546e66a3-171c-4398-87f6-93359b316e41.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/bulwark-mech/damaged-front-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/bulwark-mech/front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        3.4,
+        2.8,
+        4.8
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached reference is MATERIALS ONLY; do not render the soldier. An original pilotable 4.8m biped combat mech, heavy industrial military construction rather than oversized human armor. Enclosed central cockpit with small cyan vision slit, wide asymmetric shoulder panels, thick jointed legs with broad feet, hydraulic pistons, left arm compact rotary cannon with finite ammunition drum, right arm short twin tube launcher, exposed brass-bordered rear cooling grille partly visible. Upright neutral stance with arms angled down and feet apart. NO pilot or scale figure. Full front three-quarter view, every extremity visible.",
+      "references": [
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-eeb156be-ad3c-4410-8cac-e9f64a3bc120.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/bulwark-mech/front-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/bulwark-mech/rear-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        3.4,
+        2.8,
+        4.8
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached image is SELECTED IDENTITY, not a loose inspiration. Render exactly this same bulwark-mech with same structure and materials. Full rear three-quarter view of SAME mech, showing enclosed cockpit rear hatch, brass-bordered dark cooling radiator, hydraulic legs, both weapon arms and ammo drum in exact same positions. Upright neutral stance; no pilot or detached objects. One subject, clear margin, no cast shadow.",
+      "references": [
+        "exec-eeb156be-ad3c-4410-8cac-e9f64a3bc120.png"
+      ],
+      "source_file": "exec-1dadc92b-52d3-4af3-aa83-a0629a44b330.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/bulwark-mech/rear-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/bulwark-mech/side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        3.4,
+        2.8,
+        4.8
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached image is SELECTED IDENTITY, not a loose inspiration. Render exactly this same bulwark-mech with same structure and materials. STRICT straight RIGHT SIDE orthographic elevation, nose/front points LEFT. Camera horizontal at mid-height, no perspective convergence, no front face, no roof surface. Preserve hover rotor positions and all blade counts for aircraft; retain one complete main rotor and tail rotor for helicopter, even if foreshortened. One subject, clear margin, no cast shadow.",
+      "references": [
+        "exec-eeb156be-ad3c-4410-8cac-e9f64a3bc120.png"
+      ],
+      "source_file": "exec-32965c22-4a68-4a74-8658-a361d9b79efe.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/bulwark-mech/side.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/goshawk-helicopter/damaged-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        14,
+        15,
+        4.5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached image is SELECTED IDENTITY, not a loose inspiration. Render exactly this same goshawk-helicopter with same structure and materials. Damage-state edit, keep EXACT same front three-quarter camera, pose, silhouette, proportions, all rotor blade counts, every major component and weapon loadout. Add local cracked/chipped armor, scorch around ONE engine/cooling panel and exposed dark internals there, with small amber warning glow. Aircraft retain ALL blades and landing gear; mech retains both legs and arms. No flames, smoke, explosions, crash scene, debris pile, people, extra objects or text. One subject, clear margin, no cast shadow.",
+      "references": [
+        "exec-e3794fc0-4659-4623-ba98-c9edebc4636b.png"
+      ],
+      "source_file": "exec-083f583c-efbc-4f3d-bbdb-2e29795f32db.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/goshawk-helicopter/damaged-front-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/goshawk-helicopter/front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        14,
+        15,
+        4.5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached reference is MATERIALS ONLY; do not render the soldier. An original single-main-rotor military attack helicopter. Slim angular tandem two-seat cyan cockpit, exactly ONE four-bladed main rotor and ONE small four-bladed tail rotor on right side of long tail boom, main blades static. Short stub wings with one compact closed rocket pod on each side, small chin cannon, twin top engine housings, two landing skids. No tiltrotors, no second main rotor, no extra aircraft. Full front three-quarter view slightly elevated; ALL rotor tips, tail rotor, skids and nose visible, generous margin.",
+      "references": [
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-e3794fc0-4659-4623-ba98-c9edebc4636b.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/goshawk-helicopter/front-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/goshawk-helicopter/side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        14,
+        15,
+        4.5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached image is SELECTED IDENTITY, not a loose inspiration. Render exactly this same goshawk-helicopter with same structure and materials. STRICT straight RIGHT SIDE orthographic elevation, nose/front points LEFT. Camera horizontal at mid-height, no perspective convergence, no front face, no roof surface. Preserve hover rotor positions and all blade counts for aircraft; retain one complete main rotor and tail rotor for helicopter, even if foreshortened. One subject, clear margin, no cast shadow.",
+      "references": [
+        "exec-e3794fc0-4659-4623-ba98-c9edebc4636b.png"
+      ],
+      "source_file": "exec-905fb2d4-b650-4e1d-877a-ab8539b4fb7b.png",
+      "native_size": [
+        1774,
+        887
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/goshawk-helicopter/side.png",
+      "content_scale": 1.1544532130777903,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/goshawk-helicopter/top",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        14,
+        15,
+        4.5
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached image is SELECTED IDENTITY, not a loose inspiration. Render exactly this same goshawk-helicopter with same structure and materials. STRICT TOP DOWN orthographic plan, vertical camera. Nose points BOTTOM of frame. Entire aircraft footprint including every rotor blade tip and tail is visible; no side face, no ground. Retain rotor counts and same static blade arrangement. One subject, clear margin, no cast shadow.",
+      "references": [
+        "exec-e3794fc0-4659-4623-ba98-c9edebc4636b.png"
+      ],
+      "source_file": "exec-7467bb65-6b6f-4559-a6da-ac0971d3b8a5.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/goshawk-helicopter/top.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/kestrel-tiltrotor/cruise-side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        24,
+        17,
+        6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached image is SELECTED IDENTITY, not a loose inspiration. Render exactly this same kestrel-tiltrotor with same structure and materials. STRICT straight RIGHT SIDE orthographic elevation with nose pointing LEFT. Change ONLY tiltrotor nacelles to FORWARD-FLIGHT cruise position: rotate BOTH complete nacelles 90 degrees forward; rotor SHAFTS are now horizontal parallel to fuselage and rotor DISCS vertical. Retain TWO wingtip rotors each THREE blades. NO additional rotors, no helicopter main rotor, no extra wings. Landing gear RETRACTED, rear ramp closed. Entire aircraft and all blade tips visible. One subject, clear margin, no cast shadow.",
+      "references": [
+        "exec-eff96546-a98a-4efe-976f-2e9c518fc7a5.png"
+      ],
+      "source_file": "exec-153869e1-b4f5-4ec8-b7c2-954c120e4a6b.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/kestrel-tiltrotor/cruise-side.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/kestrel-tiltrotor/damaged-front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        24,
+        17,
+        6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached image is SELECTED IDENTITY, not a loose inspiration. Render exactly this same kestrel-tiltrotor with same structure and materials. Damage-state edit, keep EXACT same front three-quarter camera, pose, silhouette, proportions, all rotor blade counts, every major component and weapon loadout. Add local cracked/chipped armor, scorch around ONE engine/cooling panel and exposed dark internals there, with small amber warning glow. Aircraft retain ALL blades and landing gear; mech retains both legs and arms. No flames, smoke, explosions, crash scene, debris pile, people, extra objects or text. One subject, clear margin, no cast shadow.",
+      "references": [
+        "exec-eff96546-a98a-4efe-976f-2e9c518fc7a5.png"
+      ],
+      "source_file": "exec-76957ff8-1369-4f4f-a341-7f081ceada76.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/kestrel-tiltrotor/damaged-front-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/kestrel-tiltrotor/front-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        24,
+        17,
+        6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached reference is MATERIALS ONLY; do not render the soldier. An original Osprey-inspired military tiltrotor transport aircraft. Broad high straight wing, exactly TWO large three-bladed proprotors on separate wingtip nacelles, nacelles vertical in HOVER configuration, rotor discs horizontal and safely clear of fuselage. Short angular armored nose with cyan two-seat cockpit, boxy troop/cargo fuselage, rear loading ramp CLOSED, twin tail fins, three extended landing-gear assemblies. One restrained belly defensive gun, NO rocket pods or bomb racks. Full front three-quarter view slightly elevated, both rotors and ALL blade tips visible, rotor blades completely still, generous margin.",
+      "references": [
+        "frontline/public/assets/round-4/models/heavy-front-3q.png"
+      ],
+      "source_file": "exec-eff96546-a98a-4efe-976f-2e9c518fc7a5.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/kestrel-tiltrotor/front-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/kestrel-tiltrotor/ramp-open-rear-3q",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        24,
+        17,
+        6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached image is SELECTED IDENTITY, not a loose inspiration. Render exactly this same kestrel-tiltrotor with same structure and materials. Rear three-quarter view of SAME tiltrotor in landed HOVER configuration with both rotor nacelles vertical, engines/rotors stopped and same THREE blades each. Lower its rear loading ramp to ground-level angle, reveal a dark EMPTY cargo cabin with simple fold-down side seats and cyan roof lamps. All doors and ramp remain attached. Keep aircraft whole, no terrain, no passengers, no detached parts. One subject, clear margin, no cast shadow.",
+      "references": [
+        "exec-eff96546-a98a-4efe-976f-2e9c518fc7a5.png"
+      ],
+      "source_file": "exec-dc77f3e8-6ffa-4e8e-8a44-c50dde5da8bd.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/kestrel-tiltrotor/ramp-open-rear-3q.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/kestrel-tiltrotor/side",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        24,
+        17,
+        6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached image is SELECTED IDENTITY, not a loose inspiration. Render exactly this same kestrel-tiltrotor with same structure and materials. STRICT straight RIGHT SIDE orthographic elevation, nose/front points LEFT. Camera horizontal at mid-height, no perspective convergence, no front face, no roof surface. Preserve hover rotor positions and all blade counts for aircraft; retain one complete main rotor and tail rotor for helicopter, even if foreshortened. One subject, clear margin, no cast shadow.",
+      "references": [
+        "exec-eff96546-a98a-4efe-976f-2e9c518fc7a5.png"
+      ],
+      "source_file": "exec-170fedf2-11b7-44ef-a56e-f87b24a043f1.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/kestrel-tiltrotor/side.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "vehicles/kestrel-tiltrotor/top",
+      "section": "A",
+      "size": [
+        2048,
+        2048
+      ],
+      "target_m": [
+        24,
+        17,
+        6
+      ],
+      "prompt": "Use case: product-mockup. Original Earthfall Frontline realistic AAA game modeling reference for Meshy. Square 2048x2048 PNG export requested. Exactly ONE whole subject, entire silhouette centered with generous margin on all sides, every tip visible. Plain uniform mid-grey background, even neutral diffuse studio lighting, no cast ground shadow, no floor slab, no environment, no people or scale figures, no text, logos, labels, numbers, dimensions or collage. Photorealistic PBR materials, functional believable fabrication or biological anatomy, fine wear. Never cartoon, toy, low-poly or illustrated. Human faction materials match reference soldier: muted oxidized teal painted panels, worn brass fasteners/edges, charcoal internals, restrained cyan cockpit/status glass. Original design, no real military insignia, no franchise logos. Attached image is SELECTED IDENTITY, not a loose inspiration. Render exactly this same kestrel-tiltrotor with same structure and materials. STRICT TOP DOWN orthographic plan, vertical camera. Nose points BOTTOM of frame. Entire aircraft footprint including every rotor blade tip and tail is visible; no side face, no ground. Retain rotor counts and same static blade arrangement. One subject, clear margin, no cast shadow.",
+      "references": [
+        "exec-eff96546-a98a-4efe-976f-2e9c518fc7a5.png"
+      ],
+      "source_file": "exec-99ee2b94-20a6-4442-b8d3-7af917943db8.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/vehicles/kestrel-tiltrotor/top.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "weather/acid-mist",
+      "section": "G",
+      "size": [
+        2048,
+        2048
+      ],
+      "transparent": true,
+      "prompt": "Use case: product-mockup. Square PNG, original realistic game VFX asset. One isolated realistic low acid-mist wisp overlay, muted sickly green semi-transparent vapour with thin organic curling tendrils and sparse tiny suspended droplets, physically soft and restrained, large fully alpha-zero margins. No container, creature, skull, ground plane, scenery, light beam, black background, checkerboard, rectangular fog plate, text or border. Actual transparent background.",
+      "references": [],
+      "source_file": "exec-74419dd2-ff06-43ac-841c-9795003462d4.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/weather/acid-mist.png",
+      "content_scale": 1.6331738437001595,
+      "upscaled": true
+    },
+    {
+      "id": "weather/blowing-dust",
+      "section": "G",
+      "size": [
+        2048,
+        2048
+      ],
+      "transparent": true,
+      "prompt": "Use case: product-mockup. Square PNG, original realistic game VFX asset. One isolated realistic horizontal blowing dust wisp overlay, muted tan-grey mineral dust curling left to right, fine turbulent strands and scattered tiny grit, soft semi-transparent edges and large alpha-zero margins on every side. NO scenery, floor, sand dune, rectangular fog plate, black background, checkerboard, text or border. Actual transparent background.",
+      "references": [],
+      "source_file": "exec-a61bb32f-3141-4945-b4ab-5f808ed5aaa7.png",
+      "native_size": [
+        2172,
+        724
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/weather/blowing-dust.png",
+      "content_scale": 0.9429097605893186,
+      "upscaled": false
+    },
+    {
+      "id": "weather/la-electrical-storm",
+      "section": "G",
+      "size": [
+        3840,
+        2160
+      ],
+      "prompt": "Use case: precise-object-edit. Change ONLY weather/lighting in this selected Frontline LA street scene. Preserve all buildings, soldier, cyan core, street layout, cover and camera composition. A sudden nighttime electrical storm: heavy cool rain, moving cloud ceiling suggested by layered clouds, ONE distant forked lightning flash behind the skyline, reflective puddles and thin ground spray. Keep the soldier and central route readable; wet teal armor and cyan core remain distinct from warm practical lights. No new aircraft/enemies/objects, no text, no HUD. Wide 16:9 cinematic realistic game lighting target.",
+      "references": [
+        "frontline/public/assets/round-5/scenes/la-street-target.jpg"
+      ],
+      "source_file": "exec-de95b120-3d9d-44cb-8ae1-fba73103129b.png",
+      "native_size": [
+        1672,
+        941
+      ],
+      "export_size": [
+        3840,
+        2160
+      ],
+      "export": "frontline/public/assets/round-6/weather/la-electrical-storm.jpg",
+      "content_scale": 2.2966507177033493,
+      "upscaled": true
+    },
+    {
+      "id": "weather/rain-streaks",
+      "section": "G",
+      "size": [
+        2048,
+        2048
+      ],
+      "transparent": true,
+      "prompt": "Use case: background-extraction. Edit this rain overlay: REMOVE ALL grey/white cloudy backdrop, fog, haze, gradients and rectangular background. Keep ONLY the sparse individual thin diagonal rain streaks and tiny bright droplets. Every space BETWEEN the isolated rain streaks MUST be fully transparent alpha=0, not a translucent fog plate. Leave generous fully transparent edges. No mist, scenery, floor, checkerboard or text. Preserve cool grey-white rain streaks with soft semi-transparent edges. Output true transparent PNG.",
+      "references": [
+        "exec-88b228a5-f321-4004-98fa-2be8771ff2a3.png"
+      ],
+      "previous_source": "exec-88b228a5-f321-4004-98fa-2be8771ff2a3.png",
+      "revision_reason": "Remove translucent fog plate; isolate rain streaks on alpha-zero background",
+      "source_file": "exec-15097e1c-04d8-4bf7-9060-ef501a136ae4.png",
+      "native_size": [
+        1536,
+        1024
+      ],
+      "export_size": [
+        2048,
+        2048
+      ],
+      "export": "frontline/public/assets/round-6/weather/rain-streaks.png",
+      "content_scale": 1.3333333333333333,
+      "upscaled": true
+    }
+  ]
+}
