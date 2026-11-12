@@ -11,9 +11,13 @@ function bytes(uri) { const s = atob(uri.slice(uri.indexOf(',') + 1)), a = new U
 function redTexture(tex) { const im = tex.image, c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d'); g.drawImage(im, 0, 0); const d = g.getImageData(0, 0, c.width, c.height), p = d.data;
   for (let i = 0; i < p.length; i += 4) { const r = p[i], gg = p[i + 1], b = p[i + 2]; if (gg > r * 1.12 && b > r * 1.05) { const l = (gg + b) * 0.5; p[i] = Math.min(255, l * 1.25); p[i + 1] = r * 0.55; p[i + 2] = r * 0.5; } }
   g.putImageData(d, 0, 0); const t = new THREE.CanvasTexture(c); t.flipY = tex.flipY; t.colorSpace = tex.colorSpace; t.wrapS = tex.wrapS; t.wrapT = tex.wrapT; t.anisotropy = 4; return t; }
+// A faint self-lit copy of the paint keeps the soldier readable at night; the cyan visor and lights glow outright.
+function glowTexture(tex, red) { const im = tex.image, c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d'); g.drawImage(im, 0, 0); const d = g.getImageData(0, 0, c.width, c.height), p = d.data;
+  for (let i = 0; i < p.length; i += 4) { const r = p[i], gg = p[i + 1], b = p[i + 2], lit = b > 170 && gg > 140 && r < 130; if (lit) { p[i] = red ? 255 : r * 0.6; p[i + 1] = red ? 60 : gg; p[i + 2] = red ? 40 : b; } else { p[i] = r * 0.1; p[i + 1] = gg * 0.1; p[i + 2] = b * 0.1; } }
+  g.putImageData(d, 0, 0); const t = new THREE.CanvasTexture(c); t.flipY = tex.flipY; t.colorSpace = tex.colorSpace; return t; }
 if (src.soldier) new GLTFLoader().parse(bytes(src.soldier), '', g => {
   const scene = g.scene; let mat = null; scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = false; o.frustumCulled = false; mat = o.material; } });
-  mat.side = THREE.FrontSide; mat.envMapIntensity = 0.9; if (mat.map) mat.map.anisotropy = 4;
+  mat.side = THREE.FrontSide; mat.envMapIntensity = 1.25; if (mat.map) { mat.map.anisotropy = 4; mat.emissiveMap = glowTexture(mat.map); mat.emissive = new THREE.Color(0xffffff); mat.emissiveIntensity = 1; }
   const box = new THREE.Box3().setFromObject(scene), clips = {}; for (const c of g.animations) { if (c.name !== 'Dead') for (const t of c.tracks) if (/Hips\.position/.test(t.name)) for (let i = 0; i < t.values.length; i += 3) { t.values[i] = t.values[0]; t.values[i + 2] = t.values[2]; } clips[c.name] = c; }
   ready.soldier = { scene, clips, scale: HEIGHT / (box.max.y - box.min.y), mat, red: null };
   for (const w of waiting.splice(0)) w();
@@ -33,7 +37,7 @@ export function dress(m, variant) {
   const go = () => { const S = ready.soldier, J = m.userData.J; if (!S || m.userData.body) return;
     m.traverse(o => { if (o.isMesh) { let p = o, gun = false; while (p) { if (p === J.gun) gun = true; p = p.parent; } if (!gun) o.visible = false; } });
     const body = cloneSkinned(S.scene), holder = new THREE.Group(); holder.rotation.y = Math.PI; holder.scale.setScalar(S.scale); holder.add(body); m.add(holder);
-    if (variant === 'red') { if (!S.red) { S.red = S.mat.clone(); S.red.map = redTexture(S.mat.map); } body.traverse(o => { if (o.isMesh) o.material = S.red; }); }
+    if (variant === 'red') { if (!S.red) { S.red = S.mat.clone(); S.red.emissiveMap = glowTexture(S.mat.map, true); S.red.map = redTexture(S.mat.map); } body.traverse(o => { if (o.isMesh) o.material = S.red; }); }
     const bone = {}; body.traverse(o => { if (o.isBone) bone[o.name] = o; }); const U = { holder, body, bone, mixer: new THREE.AnimationMixer(body), act: {}, w: {}, rest: {}, last: null, lt: null, vx: 0, vz: 0, deadT: 0, chest: new THREE.Vector3() };
     for (const k in bone) U.rest[k] = bone[k].quaternion.clone();
     for (const [k, n] of Object.entries(CLIPS)) if (S.clips[n]) { const a = U.mixer.clipAction(S.clips[n]); a.setEffectiveWeight(0); a.play(); U.act[k] = a; U.w[k] = 0; }
