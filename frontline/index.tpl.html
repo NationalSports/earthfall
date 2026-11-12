@@ -31,7 +31,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0b1420;color:#e8edf2;
 .call.wait{opacity:.5;border-color:#ffffff30}.call.wait kbd{background:#8a8f98}
 #keys{left:18px;top:14px;font-size:12px;opacity:.6;line-height:1.6}
 .panel{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:#060b13d9;background-size:cover;background-position:center;z-index:5;overflow:auto}
-.panel.on{display:flex}#pick{background:#060b13b0}.picks{display:flex;flex-direction:column;gap:10px;margin:14px 0}.picks button{display:flex;align-items:center;gap:14px;text-align:left;padding:12px 16px;border-radius:10px;border:1px solid #2f4a60;background:#12222f;color:#e9f2f7;font:inherit;cursor:pointer}.picks button:hover{border-color:#e8be60}.picks button b{font-size:22px;color:#e8be60;width:22px}.picks button i{display:block;font-style:normal;font-size:13px;opacity:.75;margin-top:2px}.card{max-width:640px;margin:20px;padding:26px 30px;border-radius:12px;background:linear-gradient(150deg,#1b2c3c,#0b1725 70%);border:1px solid #d6a45c;box-shadow:0 25px 80px #000c}
+.panel.on{display:flex;align-items:safe center}#pick{background:#060b13b0}.picks{display:flex;flex-direction:column;gap:10px;margin:14px 0}.picks button{display:flex;align-items:center;gap:14px;text-align:left;padding:12px 16px;border-radius:10px;border:1px solid #2f4a60;background:#12222f;color:#e9f2f7;font:inherit;cursor:pointer}.picks button:hover{border-color:#e8be60}.picks button b{font-size:22px;color:#e8be60;width:22px}.picks button i{display:block;font-style:normal;font-size:13px;opacity:.75;margin-top:2px}.card{max-width:640px;margin:20px;padding:26px 30px;border-radius:12px;background:linear-gradient(150deg,#1b2c3c,#0b1725 70%);border:1px solid #d6a45c;box-shadow:0 25px 80px #000c}
 .card small{letter-spacing:.2em;text-transform:uppercase;color:#e8be60;font-size:11px}.card h1{margin:6px 0 8px;font-size:32px;color:#f6e9c8}.card p{line-height:1.5;opacity:.92;margin:0 0 8px}
 .card h4{margin:14px 0 6px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#e8be60;font-weight:600}
 .opts{display:flex;flex-wrap:wrap;gap:8px}.opts label{flex:1;min-width:120px;cursor:pointer}.opts input{position:absolute;opacity:0}
@@ -87,6 +87,11 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
 <label><input type="radio" name="w" value="la" checked><span>Los Angeles<i>Earth · edge of the city</i></span></label>
 <label><input type="radio" name="w" value="kepler"><span>Kepler Ridge<i>Off-world · crystal highlands</i></span></label>
 <label><input type="radio" name="w" value="ceres"><span>Ceres Station<i>Off-world · mining flats</i></span></label></div>
+<h4>Atmosphere</h4><div class="opts">
+<label><input type="radio" name="atmosphere" value="auto" checked><span>Mission mood<i>night or storm for this mission</i></span></label>
+<label><input type="radio" name="atmosphere" value="night"><span>Night<i>moonlight and illuminated streets</i></span></label>
+<label><input type="radio" name="atmosphere" value="storm"><span>Storm<i>rain and wet ground; mining dust on Ceres</i></span></label>
+<label><input type="radio" name="atmosphere" value="dusk"><span>Dusk<i>low sun and long shadows</i></span></label></div>
 <h4>Size of the attack</h4><div class="opts">
 <label><input type="radio" name="d" value="6"><span>Raid<i>about 180 of the swarm</i></span></label>
 <label><input type="radio" name="d" value="9" checked><span>Assault<i>about 270</i></span></label>

@@ -33,6 +33,6 @@ Three lessons:
 ## Still short of Saltline
 
 - **Volume.** Frontline is roughly 1,500 lines of game code. Saltline has thirty times that in props, materials and sound alone.
-- **Ambient occlusion and wet reflections.** Not added: both need testing on a real graphics card.
-- **Surface wear on props and buildings.** Only the roads have a position-based shader so far.
-- **Animation.** Frontline's figures use simple procedural cycles; there is no reload, melee or hit-reaction animation.
+- **Ambient occlusion and reflections.** Wet material response and sky reflections are present; screen-space reflections and ambient occlusion remain unimplemented.
+- **Surface wear.** Position-based grime and rust now cover armour, props and buildings; bespoke damage decals remain future work.
+- **Animation.** Soldiers now reload, react to hits and aim with weapon-specific hand attachments. These remain procedural cycles; authored clips, full magazine swaps and dedicated melee animation remain future work.
