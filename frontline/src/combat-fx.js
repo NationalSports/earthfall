@@ -29,7 +29,7 @@ export function createCombatEffects(scene, H, particles) {
         s.flameT += 0.055; const fade = 1 - s.age / s.fire;
         for (let j = 0; j < 3; j++) { const a = s.seed + s.age * 2.7 + j * 2.1, spread = s.r * (0.2 + fade * 0.35);
           particles.emit(s.x + Math.cos(a) * spread, s.y + 0.2, s.z + Math.sin(a) * spread, {
-            n: 1, color: j === 0 ? 0xffce69 : 0xff5920, speed: 0.4, vel: [s.wind[0] * 0.22, 1.8 + fade * 2.4, s.wind[1] * 0.22],
+            n: 1, flame: true, color: j === 0 ? 0xffce69 : 0xff5920, speed: 0.4, vel: [s.wind[0] * 0.22, 1.8 + fade * 2.4, s.wind[1] * 0.22],
             life: 0.55 + fade * 0.4, size: s.r * (0.25 + fade * 0.35), size1: 0.06, gravity: -1.2, bright: 1.8, alpha: fade * 0.85 });
         }
       }

@@ -59,7 +59,7 @@ test('explosions leave fire and smoke after the flash, pool debris, and fully cl
   effects.burst(0, 0, 8, missionAtmosphere('la', 'storm'));
   for (let i = 0; i < 180; i++) effects.update(1 / 60);
   assert.equal(effects.activeSources, 1); assert.ok(effects.activeDebris > 0);
-  assert.ok(emissions.some(e => e.smoke)); assert.ok(emissions.some(e => !e.smoke));
+  assert.ok(emissions.some(e => e.smoke)); assert.ok(emissions.some(e => e.flame));
   for (let i = 0; i < 30; i++) effects.burst(i, i, 9);
   assert.equal(effects.activeSources, 16); assert.ok(effects.activeDebris <= 144);
   for (let i = 0; i < 1200; i++) effects.update(1 / 60);

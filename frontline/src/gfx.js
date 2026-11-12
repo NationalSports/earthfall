@@ -40,7 +40,7 @@ const GradeShader = { uniforms: { tDiffuse: { value: null }, uTint: { value: new
       c *= uTint; float l = dot(c, vec3(0.299, 0.587, 0.114));
       c *= mix(vec3(0.93, 1.0, 1.07), vec3(1.07, 1.0, 0.92), smoothstep(0.05, 1.3, l)); // cool shadows, warm highlights
       c = mix(vec3(l), c, 1.12); c = (c - 0.5) * 1.06 + 0.5;
-      c *= 1.0 - smoothstep(0.18, 0.75, r) * uVig; c += (hash(vUv * 900.0 + uTime) - 0.5) * 0.035;
+      c *= 1.0 - smoothstep(0.18, 0.75, r) * uVig; c += (hash(vUv * 900.0 + uTime) - 0.5) * 0.006;
       c = mix(c, vec3(0.9, 0.12, 0.08), uHurt * smoothstep(0.08, 0.6, r));
       gl_FragColor = vec4(max(c, 0.0), 1.0); }` };
 export function createComposer(renderer, scene, camera) {
@@ -163,15 +163,22 @@ export function createParticles(scene, tex) { const MAX = 3600, pos = new Float3
   for (let i = 0; i < MAX; i++) P.push({ life: 0 });
   const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setAttribute('color', new THREE.BufferAttribute(col, 3)); geo.setAttribute('psize', new THREE.BufferAttribute(size, 1)); geo.setAttribute('palpha', new THREE.BufferAttribute(alpha, 1));
   geo.setAttribute('ptype', new THREE.BufferAttribute(type, 1));
-  const mk = mode => new THREE.ShaderMaterial({ uniforms: { map: { value: tex.dot }, uScale: { value: 600 }, uMode: { value: mode } }, transparent: true, depthWrite: false, blending: mode ? THREE.NormalBlending : THREE.AdditiveBlending, vertexColors: true,
+  const mk = mode => new THREE.ShaderMaterial({ uniforms: { map: { value: tex.dot }, uScale: { value: 600 }, uMode: { value: mode }, uTime: { value: 0 } }, transparent: true, depthWrite: false, blending: mode ? THREE.NormalBlending : THREE.AdditiveBlending, vertexColors: true,
     vertexShader: 'attribute float psize; attribute float palpha; attribute float ptype; varying vec3 vC; varying float vA; varying float vType; uniform float uScale; void main(){ vC = color; vA = palpha; vType = ptype; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = min(256.0, psize * uScale / max(0.1, -mv.z)); gl_Position = projectionMatrix * mv; }',
-    fragmentShader: 'uniform sampler2D map; uniform float uMode; varying vec3 vC; varying float vA; varying float vType; void main(){ if (abs(vType - uMode) > 0.5 || vA <= 0.0) discard; vec4 t = texture2D(map, gl_PointCoord); gl_FragColor = vec4(vC, t.a * vA); }' });
+    fragmentShader: `uniform sampler2D map; uniform float uMode; uniform float uTime; varying vec3 vC; varying float vA; varying float vType;
+      void main(){ if ((uMode > 0.5 ? abs(vType - 1.0) > 0.1 : abs(vType - 1.0) < 0.1) || vA <= 0.0) discard;
+        vec4 t = texture2D(map, gl_PointCoord); vec3 c = vC;
+        if (vType > 1.5) { float h = 1.0 - gl_PointCoord.y; float sway = sin(h * 13.0 + uTime * 17.0 + vC.r * 7.0) * 0.06 * h;
+          float width = (1.0 - h) * 0.36 + 0.025; float edge = abs(gl_PointCoord.x - 0.5 + sway);
+          t.a = (1.0 - smoothstep(width - 0.055, width, edge)) * smoothstep(0.0, 0.12, h) * (1.0 - h);
+          c += vec3(0.5, 0.3, 0.06) * pow(1.0 - h, 3.0); }
+        gl_FragColor = vec4(c, t.a * vA); }` });
   const pts = new THREE.Points(geo, mk(0)), smoke = new THREE.Points(geo, mk(1)); for (const p of [pts, smoke]) { p.frustumCulled = false; scene.add(p); } smoke.name = 'normal-blended-smoke'; smoke.renderOrder = 9; pts.renderOrder = 10;
   let cur = 0; const c = new THREE.Color();
   function emit(x, y, z, o) { const n = o.n || 1; for (let i = 0; i < n; i++) { const p = P[cur]; cur = (cur + 1) % MAX; const sp = o.speed || 0, a = Math.random() * 6.283, u = Math.random() * 2 - 1, s = Math.sqrt(1 - u * u), k = sp * (0.35 + Math.random() * 0.65);
       p.x = x + (Math.random() - 0.5) * (o.spread || 0); p.y = y + (Math.random() - 0.5) * (o.spread || 0); p.z = z + (Math.random() - 0.5) * (o.spread || 0); p.vx = s * Math.cos(a) * k + (o.vel ? o.vel[0] : 0); p.vy = Math.abs(u) * k * (o.up == null ? 1 : o.up) + (o.lift || 0) + (o.vel ? o.vel[1] : 0); p.vz = s * Math.sin(a) * k + (o.vel ? o.vel[2] : 0);
-      p.life = p.max = (o.life || 0.5) * (0.6 + Math.random() * 0.8); p.s0 = o.size || 0.4; p.s1 = o.size1 == null ? p.s0 * 0.3 : o.size1; p.g = o.gravity == null ? 9 : o.gravity; p.drag = o.drag || 0; c.set(o.color || 0xffffff); p.r = c.r * (o.bright || 1); p.gc = c.g * (o.bright || 1); p.b = c.b * (o.bright || 1); p.a = o.alpha == null ? 1 : o.alpha; type[(cur + MAX - 1) % MAX] = o.smoke ? 1 : 0; } }
-  function update(dt) { for (let i = 0; i < MAX; i++) { const p = P[i]; if (p.life <= 0) { alpha[i] = 0; size[i] = 0; continue; } p.life -= dt; const k = 1 - Math.max(0, p.life) / p.max; p.vy -= p.g * dt; const dr = 1 - p.drag * dt; p.vx *= dr; p.vy *= dr; p.vz *= dr; p.x += p.vx * dt; p.y += p.vy * dt; p.z += p.vz * dt;
+      p.life = p.max = (o.life || 0.5) * (0.6 + Math.random() * 0.8); p.s0 = o.size || 0.4; p.s1 = o.size1 == null ? p.s0 * 0.3 : o.size1; p.g = o.gravity == null ? 9 : o.gravity; p.drag = o.drag || 0; c.set(o.color || 0xffffff); p.r = c.r * (o.bright || 1); p.gc = c.g * (o.bright || 1); p.b = c.b * (o.bright || 1); p.a = o.alpha == null ? 1 : o.alpha; type[(cur + MAX - 1) % MAX] = o.smoke ? 1 : o.flame ? 2 : 0; } }
+  function update(dt) { pts.material.uniforms.uTime.value += dt; for (let i = 0; i < MAX; i++) { const p = P[i]; if (p.life <= 0) { alpha[i] = 0; size[i] = 0; continue; } p.life -= dt; const k = 1 - Math.max(0, p.life) / p.max; p.vy -= p.g * dt; const dr = 1 - p.drag * dt; p.vx *= dr; p.vy *= dr; p.vz *= dr; p.x += p.vx * dt; p.y += p.vy * dt; p.z += p.vz * dt;
       pos[i * 3] = p.x; pos[i * 3 + 1] = p.y; pos[i * 3 + 2] = p.z; col[i * 3] = p.r; col[i * 3 + 1] = p.gc; col[i * 3 + 2] = p.b; size[i] = p.s0 + (p.s1 - p.s0) * k; alpha[i] = p.a * (1 - k * k); }
     for (const n of ['position', 'color', 'psize', 'palpha', 'ptype']) geo.attributes[n].needsUpdate = true; }
   function clear() { for (const p of P) p.life = 0; }
