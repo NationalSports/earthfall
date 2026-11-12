@@ -1,0 +1,53 @@
+/* HUD redesign (art request #29), built from the mockups in docs/art/hud-*.png, using the frames from #28.
+   build.js adds this last and fills in the --w-* pictures from the reviewed files in assets/ui/.
+   What the HUD says, in order: what to do next, Orders left today, what you can do here, the clock, resources, the two loss clocks. */
+#top{display:grid;grid-template-columns:auto auto 1fr auto;grid-template-areas:"brand clock orders orders" "res res res meters";align-items:center;gap:6px 20px;padding:8px 16px;background:var(--w-topbar) center/100% 100% no-repeat,#081522;border-bottom:1px solid #c4934d}
+#top .brand{grid-area:brand}#top .clock{grid-area:clock}#top .ordersbox{grid-area:orders;justify-self:center}#top .res{grid-area:res}#top .meters{grid-area:meters;margin:0 0 0 12px;gap:0;align-items:center}
+/* Clock: the pause button says Paused while the clock is stopped */
+#top .day{font-size:16px;min-width:0;white-space:nowrap}
+#top .speed{border:0;border-radius:0;overflow:visible;gap:6px}
+#top .speed button{background:#0b1826;border:1px solid #c4934d;border-radius:6px;color:#f0cd7a;min-width:42px;min-height:32px;padding:4px 10px;font-size:12px}
+#top .speed button.pz{font-family:var(--display);letter-spacing:.1em;text-transform:uppercase}
+#top .speed button.on{background:linear-gradient(#f0cd7a,#b98a2f);color:#1a1205;border-color:#ffe4a2}
+/* Orders: the hero. One coin per Order; spent coins go dark. */
+.ordersbox{display:flex;align-items:center;gap:14px;padding:2px 14px;border:12px solid transparent;border-image:var(--w-hud-orders) 30 fill / 12px stretch}
+.opips{display:flex;gap:5px;flex-wrap:wrap}.opips i{width:24px;height:24px;background:var(--w-order-pip-off) center/contain no-repeat}.opips i.on{background-image:var(--w-order-pip-on);filter:drop-shadow(0 0 4px #f0c868b0)}
+.otxt{border-left:1px solid #c4934d66;padding-left:14px}.otxt b{display:block;font-family:var(--display);font-size:17px;line-height:1.15;letter-spacing:.06em;text-transform:uppercase;color:#f4ead0;white-space:nowrap}.otxt small{font-size:11.5px;font-style:italic;white-space:nowrap}
+/* Resources: a plain row with thin dividers instead of boxes */
+#top .res{gap:4px 0;align-items:center;flex-wrap:nowrap}
+#top .chip{display:flex;align-items:center;gap:7px;background:none;border:0;border-right:1px solid #ffffff22;border-radius:0;padding:0 10px}#top .chip:first-child{padding-left:0}#top .chip:last-child{border-right:0}
+#top .chip small{margin:0;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#c9d2e0}#top .chip b{font-size:16px;color:#f4ead0}#top .chip .ri,#top .chip .ic{width:1.3em;height:1.3em}
+/* The two loss clocks */
+.mt{display:flex;align-items:center;gap:7px;padding:0 10px;border-left:1px solid #ffffff22;white-space:nowrap}.mt small{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#c9d2e0}.mt b{font-size:16px;font-variant-numeric:tabular-nums}
+.mt.threat b,.mt.threat .mi{color:#ff7a5c}.mt.harvest b{color:#e58ad8}.mt .mi{font-style:normal;font-size:16px}.mt .bar{min-width:56px;width:56px;height:6px}.mt.hot b{animation:pulse 1s infinite;border-radius:4px}
+/* Advisor line */
+#hudb{right:160px}#coach.show,#abar{max-width:780px}
+#coach.show{border:10px solid transparent;border-image:var(--w-frame-coach) 24 fill / 10px stretch;border-radius:0;background:none;box-shadow:0 6px 20px #0008;padding:3px 8px;font-size:15px}
+#coach button[data-a="sel"]{border:1px solid #c4934d;border-radius:16px;background:#1a1408;color:#f0cd7a;opacity:1;font-weight:600;padding:5px 14px}#coach button[data-a="sel"]::after{content:' ›'}
+/* Selected territory and its actions */
+#abar.show{background:none;border:0;border-radius:0;box-shadow:none;overflow:visible}
+.abh,.abh.enemy,.abh.waste{border:10px solid transparent;border-image:var(--w-frame-bar) 28 fill / 10px stretch;padding:1px 8px;margin-bottom:6px;align-items:center}
+.abh b{font-size:18px;text-transform:uppercase;letter-spacing:.06em}.abh.you span{color:#8ff0ea}.abh.enemy span{color:#ff9d7a}.abh span{opacity:1}.abh .incw{font-style:normal;color:#ff7a5c;font-weight:600}
+.abr{padding:0;gap:8px}
+.ab,.ab.gold,.ab.teal{display:grid;grid-template-columns:auto auto;justify-content:center;align-items:center;gap:4px 9px;min-height:68px;padding:2px 4px;border:12px solid transparent;border-image:var(--w-btn-plain) 40 fill / 12px stretch;border-radius:0;background:none;color:inherit}
+.ab.teal,.ab.gold{border-image-source:var(--w-btn-primary)}
+.ab b{font-family:var(--display);font-size:16px;letter-spacing:.04em;color:#f4ead0}.ab.gold b{color:#f6d98a}
+.ab small,.ab.gold small{grid-column:1/-1;justify-self:center;max-width:100%;border:1px solid #c4934d;border-radius:11px;padding:1px 10px;font-size:11.5px;color:#f0cd7a;opacity:1}.ab.teal small{border-color:#46d6d0;color:#9ff3ee}
+.ab i.ai,.ab.gold i.ai,.ab.teal i.ai{width:28px;height:28px;filter:none}.ab:hover:not(:disabled){filter:brightness(1.2)}
+/* Territory page */
+.tabs button{letter-spacing:.06em;padding-left:4px;padding-right:4px;background:var(--w-hud-tab) center/100% 100% no-repeat}.tabs button.on{background-image:var(--w-hud-tab-active);border-bottom-color:transparent;color:#f6d98a}.tabs .pclose{background:none}
+.thead,.thead.you,.thead.enemy{border:10px solid transparent;border-image:var(--w-hud-panel) 24 fill / 10px stretch;border-radius:0;background:none;padding:4px 8px}
+@media (max-width:1400px){#top .chip{padding:0 7px;gap:5px}#top .chip small,.mt small{letter-spacing:.03em}.mt{padding:0 8px}.mt .bar{display:none}}
+/* Phones, upright: status on top, actions under the thumbs in two columns */
+@media (max-width:860px){#top{grid-template-columns:1fr auto;grid-template-areas:"brand clock" "orders orders" "res res" "meters meters";gap:5px 8px;padding:6px 10px}
+#top{grid-template-columns:minmax(0,1fr) auto}#top .brand{overflow:hidden;white-space:nowrap}#top .brand small{display:none}#top .brand b{font-size:13px;letter-spacing:.08em}#top .clock{gap:6px}#top .day{font-size:12px}#top .speed{gap:4px}#top .speed button{min-width:34px;padding:3px 7px}#top .speed button.pz{font-size:10.5px}
+#top .ordersbox{justify-self:stretch;justify-content:space-between;padding:0 8px;gap:8px}.opips i{width:22px;height:22px}.otxt b{font-size:15px}
+#top .res{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px 0}#top>*{min-width:0}#top .chip{padding:0 6px;justify-content:center}#top .chip:first-child{padding-left:6px}#top .chip:nth-child(4n){border-right:0}#top .chip small{display:none}#top .chip b{font-size:14px}
+#top .meters{justify-content:center;border-top:1px solid #ffffff1a;padding-top:4px;margin:0}.mt .bar{display:block}.mt:first-child{border-left:0}.mt b{font-size:14px}
+#hudb{right:8px}#coach.show{font-size:13px;border-image-width:8px;border-width:8px}.abr{display:grid;grid-template-columns:1fr 1fr;gap:6px}.ab,.ab.gold,.ab.teal{min-height:58px;border-width:10px;border-image-width:10px}.abh b{font-size:15px}}
+/* Phones on their side: one thin status row, small tiles */
+@media (max-height:520px){#top{grid-template-columns:auto auto 1fr;grid-template-areas:"clock orders meters" "res res res";gap:3px 10px;padding:4px 10px}#top .brand{display:none}
+#top .ordersbox{justify-self:start;border-width:6px;border-image-width:6px;padding:0 6px;gap:8px}.opips i{width:16px;height:16px}.opips{gap:3px;flex-wrap:nowrap}.otxt{padding-left:8px}.otxt small{display:none}.otxt b{font-size:13px}
+#top .meters{justify-self:end;border:0;padding:0;margin:0 0 0 10px}#top .res{display:flex}#top .chip{padding:0 9px}#top .chip small{display:none}
+#hudb{left:150px;right:8px}.abr{display:flex}.ab,.ab.gold,.ab.teal{min-height:40px;border-width:7px;border-image-width:7px}.ab small{display:none}.ab b{font-size:13px}#coach.show{font-size:12.5px;border-width:6px;border-image-width:6px}.abh{border-width:6px;border-image-width:6px;margin-bottom:4px}}
+@media (prefers-reduced-motion:reduce){.mt.hot b{animation:none}}
