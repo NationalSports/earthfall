@@ -18,3 +18,7 @@ The source geometry for soldiers, enemies, turret variants and defenses remains 
 ## Round 2 — issue #34
 
 The [round 2 gallery and model notes](ROUND-2.md) cover the spitter, brute, Warlord, hive, red Skirmish soldier, eight street props, Kepler/Ceres environment textures and title background. The issue's filenames, paths and dimensions supersede the earlier `ART_BRIEF.md` for this delivery. Full prompts are in [round-2-prompts.json](round-2-prompts.json); export checks and repeat previews are in [qa/round-2/](qa/round-2/).
+
+## Regional district kit
+
+See [ROUND-3.md](ROUND-3.md) for all 48 new regional textures, mood skies, model sheets and thin-line HUD icons, with dimensions, model notes and review previews. This round uses the finer, more grounded material finish requested during review while retaining the Frontline faction palette.

@@ -1,0 +1,229 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="256" viewBox="0 0 384 256">
+<title>Earthfall Frontline original HUD icon artwork — 24 cells, 64 pixels each</title>
+<desc>White 1.75 pixel line art on transparency. Each named group is one icon in local 64 by 64 coordinates. Six columns, four rows. No application code.</desc>
+<g id="weapon-rifle" transform="translate(0 0)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>weapon-rifle</title>
+<polygon points="6,26 15,26 18,23 40,23 44,27 57,27 57,32 39,32 34,36 25,36 21,46 16,44 18,34 12,34 6,38"/>
+<polygon points="28,36 35,36 33,47 27,47"/>
+<polyline points="27,23 27,18 35,18 35,23"/>
+<polyline points="44,27 44,32"/>
+</g>
+<g id="weapon-shotgun" transform="translate(64 0)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>weapon-shotgun</title>
+<polygon points="7,25 16,25 19,23 49,23 56,26 56,34 24,34 21,44 16,43 18,33 12,33 7,38"/>
+<rect x="34" y="34" width="15" height="6"/>
+<polyline points="38,35 38,39"/>
+<polyline points="43,35 43,39"/>
+<polyline points="25,20 31,20"/>
+</g>
+<g id="weapon-marksman-rifle" transform="translate(128 0)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>weapon-marksman-rifle</title>
+<polygon points="6,28 15,28 20,24 36,24 40,27 58,27 58,30 39,30 34,34 25,34 21,43 17,42 19,33 13,33 6,38"/>
+<polygon points="28,34 34,34 33,42 28,42"/>
+<rect x="24" y="15" width="14" height="5"/>
+<polyline points="28,20 28,24 34,24 34,20"/>
+<polyline points="9,29 9,34"/>
+</g>
+<g id="weapon-machine-gun" transform="translate(192 0)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>weapon-machine-gun</title>
+<polygon points="6,26 15,26 18,22 41,22 46,26 58,26 58,33 39,33 35,36 22,36 20,45 15,44 17,34 11,34 6,38"/>
+<rect x="27" y="36" width="12" height="13"/>
+<polyline points="25,22 25,17 36,17 38,22"/>
+<polyline points="44,24 44,31"/>
+<polyline points="49,24 49,31"/>
+<polyline points="51,34 47,45"/>
+<polyline points="51,34 56,44"/>
+</g>
+<g id="weapon-flamethrower" transform="translate(256 0)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>weapon-flamethrower</title>
+<rect x="7" y="23" width="12" height="17"/>
+<polyline points="10,23 10,40"/>
+<polygon points="19,25 37,25 42,27 56,27 56,34 38,34 32,39 25,39 22,46 17,44 21,34 19,34"/>
+<polyline points="11,41 11,47 17,51 25,51 30,47 30,40"/>
+<polyline points="26,25 28,20 35,20 37,25"/>
+</g>
+<g id="weapon-rocket-launcher" transform="translate(320 0)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>weapon-rocket-launcher</title>
+<polygon points="9,24 53,24 57,27 57,36 53,39 9,39 6,36 6,27"/>
+<polyline points="11,24 11,39"/>
+<polyline points="52,24 52,39"/>
+<polyline points="24,24 26,18 37,18 40,24"/>
+<polygon points="22,39 28,39 25,48 20,46"/>
+</g>
+<g id="weapon-rail-rifle" transform="translate(0 64)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>weapon-rail-rifle</title>
+<polygon points="6,27 16,27 20,24 32,24 36,27 58,27 58,31 35,31 35,35 58,35 58,39 33,39 29,36 23,36 20,46 15,44 18,34 11,34 6,39"/>
+<polyline points="36,31 36,35"/>
+<polyline points="25,24 25,19 31,19 31,24"/>
+</g>
+<g id="weapon-plasma-rifle" transform="translate(64 64)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>weapon-plasma-rifle</title>
+<polygon points="7,26 17,26 22,23 29,23 32,20 43,20 48,25 56,26 57,32 49,36 44,41 29,41 25,36 22,36 19,46 14,44 17,34 10,34 7,38"/>
+<circle cx="37" cy="31" r="8"/>
+<polyline points="48,27 53,27"/>
+<polyline points="48,31 53,31"/>
+</g>
+<g id="support-orbital-strike" transform="translate(128 64)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>support-orbital-strike</title>
+<polyline points="13,7 34,38"/>
+<polyline points="19,7 38,36"/>
+<ellipse cx="36" cy="47" rx="17" ry="7"/>
+<polyline points="36,34 36,42"/>
+<polyline points="22,35 27,41"/>
+<polyline points="50,35 45,41"/>
+<polyline points="10,46 18,46"/>
+<polyline points="54,46 59,46"/>
+<polyline points="36,53 36,58"/>
+</g>
+<g id="support-turret" transform="translate(192 64)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>support-turret</title>
+<polygon points="16,22 38,22 43,27 38,34 17,34 13,30"/>
+<rect x="38" y="25" width="20" height="6"/>
+<polyline points="22,22 22,17 32,17 32,22"/>
+<polyline points="26,34 26,41"/>
+<polyline points="14,43 38,43"/>
+<polyline points="19,43 11,55"/>
+<polyline points="32,43 41,55"/>
+<polyline points="26,43 26,56"/>
+</g>
+<g id="support-wall" transform="translate(256 64)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>support-wall</title>
+<polygon points="7,25 57,25 57,49 7,49"/>
+<polyline points="7,25 11,19 53,19 57,25"/>
+<polyline points="23,25 23,49"/>
+<polyline points="41,25 41,49"/>
+<polyline points="11,54 53,54"/>
+<polyline points="14,29 19,29"/>
+<polyline points="29,29 35,29"/>
+<polyline points="46,29 52,29"/>
+</g>
+<g id="support-mine" transform="translate(320 64)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>support-mine</title>
+<ellipse cx="32" cy="42" rx="21" ry="7"/>
+<polyline points="11,42 11,46"/>
+<polyline points="53,42 53,46"/>
+<ellipse cx="32" cy="46" rx="21" ry="7"/>
+<polyline points="21,35 18,25"/>
+<polyline points="32,35 32,20"/>
+<polyline points="43,35 46,25"/>
+<polyline points="14,20 11,15"/>
+<polyline points="32,13 32,8"/>
+<polyline points="50,20 53,15"/>
+</g>
+<g id="support-supply-drop" transform="translate(0 128)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>support-supply-drop</title>
+<polyline points="11,23 14,15 22,10 32,8 42,10 50,15 53,23"/>
+<polyline points="11,23 21,20 32,23 43,20 53,23"/>
+<polyline points="11,23 25,39"/>
+<polyline points="53,23 39,39"/>
+<polyline points="32,23 32,39"/>
+<rect x="23" y="39" width="18" height="16"/>
+<polyline points="23,44 41,44"/>
+<polyline points="32,39 32,55"/>
+</g>
+<g id="support-airstrike" transform="translate(64 128)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>support-airstrike</title>
+<polygon points="32,8 36,26 54,38 54,42 36,35 35,47 42,52 42,55 32,52 22,55 22,52 29,47 28,35 10,42 10,38 28,26"/>
+<polyline points="10,9 10,21"/>
+<polyline points="17,13 17,25"/>
+<polyline points="47,13 47,25"/>
+<polyline points="54,9 54,21"/>
+</g>
+<g id="support-squad-drop" transform="translate(128 128)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>support-squad-drop</title>
+<polyline points="32,7 32,23"/>
+<polyline points="25,17 32,24 39,17"/>
+<circle cx="18" cy="37" r="5"/>
+<circle cx="32" cy="34" r="5"/>
+<circle cx="46" cy="37" r="5"/>
+<polyline points="10,54 10,48 14,44 22,44 26,48"/>
+<polyline points="24,54 24,45 28,41 36,41 40,45 40,54"/>
+<polyline points="38,48 42,44 50,44 54,48 54,54"/>
+</g>
+<g id="research-damage" transform="translate(192 128)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>research-damage</title>
+<circle cx="30" cy="34" r="14"/>
+<circle cx="30" cy="34" r="5"/>
+<polyline points="30,14 30,22"/>
+<polyline points="30,46 30,55"/>
+<polyline points="9,34 18,34"/>
+<polyline points="42,34 51,34"/>
+<polyline points="43,13 50,6 57,13"/>
+<polyline points="50,6 50,24"/>
+</g>
+<g id="research-reload" transform="translate(256 128)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>research-reload</title>
+<polyline points="15,23 21,14 32,10 43,14 50,23 51,32"/>
+<polyline points="44,27 51,33 57,25"/>
+<polyline points="49,41 43,50 32,54 21,50 14,41 13,32"/>
+<polyline points="7,39 13,31 20,37"/>
+<rect x="27" y="22" width="10" height="20"/>
+<polyline points="27,27 37,27"/>
+<polyline points="30,31 30,38"/>
+</g>
+<g id="research-jump-fuel" transform="translate(320 128)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>research-jump-fuel</title>
+<rect x="20" y="14" width="24" height="29"/>
+<polyline points="25,14 25,9 39,9 39,14"/>
+<polyline points="27,18 27,35"/>
+<polyline points="37,18 37,35"/>
+<polyline points="24,44 21,52 26,49 28,57 31,44"/>
+<polyline points="35,44 36,57 40,49 44,52 40,44"/>
+</g>
+<g id="research-turrets" transform="translate(0 192)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>research-turrets</title>
+<polygon points="8,26 23,26 27,30 23,35 8,35"/>
+<rect x="23" y="28" width="12" height="4"/>
+<polyline points="15,35 15,43 8,52"/>
+<polyline points="15,43 23,52"/>
+<polygon points="33,34 47,34 51,38 47,43 33,43"/>
+<rect x="47" y="36" width="12" height="4"/>
+<polyline points="40,43 40,49 34,55"/>
+<polyline points="40,49 46,55"/>
+<polyline points="28,16 35,9 42,16"/>
+<polyline points="35,9 35,25"/>
+</g>
+<g id="research-squad-damage" transform="translate(64 192)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>research-squad-damage</title>
+<circle cx="17" cy="26" r="4"/>
+<circle cx="29" cy="22" r="4"/>
+<circle cx="41" cy="26" r="4"/>
+<polyline points="10,44 10,36 14,32 21,32 25,36"/>
+<polyline points="22,43 22,32 26,28 33,28 37,32 37,39"/>
+<polyline points="38,35 42,32 47,35 48,39"/>
+<polygon points="47,41 49,46 55,47 51,51 52,57 47,54 42,57 43,51 39,47 45,46"/>
+</g>
+<g id="research-squad-armour" transform="translate(128 192)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>research-squad-armour</title>
+<polygon points="32,7 53,15 50,39 43,49 32,57 21,49 14,39 11,15"/>
+<circle cx="23" cy="26" r="4"/>
+<circle cx="41" cy="26" r="4"/>
+<circle cx="32" cy="22" r="4"/>
+<polyline points="18,38 18,34 21,31 25,31 28,34"/>
+<polyline points="27,40 27,30 30,27 34,27 37,30 37,40"/>
+<polyline points="36,34 39,31 43,31 46,34 46,38"/>
+</g>
+<g id="research-call-in-speed" transform="translate(192 192)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>research-call-in-speed</title>
+<circle cx="29" cy="34" r="19"/>
+<polyline points="29,34 29,22"/>
+<polyline points="29,34 39,39"/>
+<polyline points="18,10 24,7 34,7"/>
+<polygon points="47,8 41,23 48,23 43,36 57,18 49,18 53,8"/>
+</g>
+<g id="research-medic" transform="translate(256 192)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>research-medic</title>
+<polygon points="25,10 39,10 39,25 54,25 54,39 39,39 39,54 25,54 25,39 10,39 10,25 25,25"/>
+<polyline points="25,17 31,17"/>
+</g>
+<g id="research-grenades" transform="translate(320 192)" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+<title>research-grenades</title>
+<polygon points="26,19 38,19 43,25 46,42 41,52 23,52 18,42 21,25"/>
+<rect x="27" y="13" width="10" height="6"/>
+<circle cx="39" cy="12" r="5"/>
+<polyline points="26,29 38,29"/>
+<polyline points="24,36 40,36"/>
+<polyline points="25,43 39,43"/>
+<polyline points="31,29 31,43"/>
+</g>
+</svg>
