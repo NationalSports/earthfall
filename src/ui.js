@@ -23,12 +23,14 @@ function setSpeed(v) { if (S.over) v = 0; S.speed = v; }
 
 // ---------- Top bar ----------
 function renderTop() {
-  const own = L.owned(S).length; let boxes = ''; for (let i = 0; i < 10; i++) boxes += '<i class="' + (i < S.esc ? 'on' : '') + '"></i>';
+  // Layout from the #29 mockups: clock, then Orders as the hero (one coin per Order, spent ones dark), resources, and the two loss clocks.
+  const own = L.owned(S).length, inf = S.orders == null, n = inf ? 6 : S.orders, tot = Math.max(6, n); let pips = ''; for (let i = 0; i < tot; i++) pips += '<i class="' + (i >= tot - n ? 'on' : '') + '"></i>';
+  const chip = (k, label, v, title) => '<span class="chip ' + k + '" title="' + title + '">' + (ICON[k] || '') + '<small>' + label + '</small><b>' + v + '</b></span>';
   const h = '<div class="brand"><b>EARTHFALL</b><small>Earth Defense Coalition</small></div>' +
-    '<div class="clock"><span class="day">' + L.stamp(S) + '</span><div class="speed">' + [[0, '❚❚'], [1, '▶'], [3, '▶▶']].map(s => '<button data-a="speed" data-id="' + s[0] + '" class="' + (S.speed === s[0] ? 'on' : '') + '" aria-label="speed ' + s[0] + '">' + s[1] + '</button>').join('') + '</div></div>' +
-    '<div class="res">' + ['metal', 'fuel', 'research', 'uranium', 'intel', 'salvage'].map(k => '<span class="chip ' + k + '" title="' + k + '">' + ICON[k] + ' <b>' + Math.floor(S.res[k]) + '</b><small>' + k + '</small></span>').join('') +
-    '<span class="chip orders" title="Orders left today. Every action spends them; they refill at midnight.">❖ <b>' + (S.orders == null ? '∞' : S.orders) + '</b><small>orders</small></span><span class="chip troops" title="Reserve troops">' + ICON.troops + ' <b>' + S.pool + '</b><small>reserve</small></span><span class="chip" title="Territories held">' + ICON.held + ' <b>' + own + '</b><small>held</small></span></div>' +
-    '<div class="meters"><div class="meter"><label>Threat</label><div class="boxes">' + boxes + '</div></div><div class="meter"><label>Harvest ' + Math.floor(S.harvest) + '%</label><div class="bar"><i style="width:' + S.harvest + '%"></i></div></div></div>';
+    '<div class="clock"><span class="day">' + L.stamp(S) + '</span><div class="speed">' + [[0, S.speed === 0 ? 'Paused' : '❚❚', 'pz'], [1, '▶', ''], [3, '▶▶', '']].map(s => '<button data-a="speed" data-id="' + s[0] + '" class="' + s[2] + (S.speed === s[0] ? ' on' : '') + '" aria-label="' + (s[0] ? 'speed ' + s[0] : 'pause') + '">' + s[1] + '</button>').join('') + '</div></div>' +
+    '<div class="ordersbox" title="Orders left today. Every action spends them; they refill at midnight."><div class="opips">' + pips + '</div><div class="otxt"><b>' + (inf ? '∞' : n > 6 ? n : n + ' / 6') + ' Orders</b><small>' + (n > 6 ? (n - 6) + ' banked · ' : '') + 'Refill at midnight</small></div></div>' +
+    '<div class="res">' + ['metal', 'fuel', 'research', 'uranium', 'intel', 'salvage'].map(k => chip(k, k, Math.floor(S.res[k]), k)).join('') + chip('troops', 'reserve', S.pool, 'Reserve troops') + chip('held', 'held', own, 'Territories held') + '</div>' +
+    '<div class="meters"><span class="mt threat' + (S.esc >= 8 ? ' hot' : '') + '" title="Threat level. At 10 the swarm attacks everywhere."><i class="mi">☣\uFE0E</i><small>Threat</small><b>' + S.esc + ' / 10</b></span><span class="mt harvest' + (S.harvest >= 80 ? ' hot' : '') + '" title="The Harvest. At 100% the war is lost."><small>Harvest</small><b>' + Math.floor(S.harvest) + '%</b><span class="bar"><i style="width:' + S.harvest + '%"></i></span></span></div>';
   if (renderTop.h !== h) { renderTop.h = h; $('#top').innerHTML = h; }
 }
 
@@ -155,7 +157,7 @@ function actionBar() { const el = $('#abar'); if (!el) return; let h = '';
   else if (S && selId && !S.over && !modal) { const T = S.terr[selId], D = TERR[selId], tm = S.team, teamHere = L.teamAt(S) === selId, a = [];
     const A = (act, icon, label, sub, o) => a.push('<button class="ab ' + ((o && o.cls) || '') + '" data-a="' + act + '" data-id="' + selId + '"' + (o && o.dis ? ' disabled' : '') + '>' + (UIX[ACT_ART[act]] ? '<i class="ai ui-' + ACT_ART[act] + '"></i>' : '<i>' + icon + '</i>') + '<b>' + label + '</b><small>' + sub + '</small></button>');
     let who;
-    if (T.owner === 'you') { who = (selId === HQ ? 'Your headquarters' : 'Yours') + ' · ' + T.n + ' troops'; const built = ['works', 'barracks', 'fort', 'radar', 'battery'].filter(k => T[k]).length;
+    if (T.owner === 'you') { who = (selId === HQ ? 'Headquarters · stronghold' : L.isStrong(selId) ? 'Stronghold' : 'Yours') + ' · garrison ' + T.n; { const inc = S.parties.filter(p => p.to === selId && L.partyVisible(S, p)).sort((a, b) => a.eta - b.eta)[0]; if (inc) who += ' · <em class="incw">⚠ ' + inc.n + ' swarm arrive in ' + Math.max(0, inc.eta - S.t) + 'h</em>'; } const built = ['works', 'barracks', 'fort', 'radar', 'battery'].filter(k => T[k]).length;
       if (L.isStrong(selId)) A('reinAsk', '✚', 'Reinforce', S.pool + ' in reserve · free', { cls: 'teal', dis: S.pool < 1 }); A('moveFrom', '⇄', 'Move', T.n < 2 ? 'Only 1 here' : S.orders < 1 ? 'Out of Orders' : (T.n - 1) + ' can go · 1 ❖', { dis: T.n < 2 || S.orders < 1 }); A('buildMenu', '⚒', L.isStrong(selId) ? 'Build up' : 'Build', T.job ? Math.max(1, T.job.doneAt - S.t) + 'h to finish' : L.isStrong(selId) ? 'Stronghold · 1 ❖' : built + ' of 5 · 1 ❖');
       if (!teamHere && !tm.dest) A('deploy', '◆', 'Strike team', L.travelHours(S, tm.at, selId) + 'h away', { dis: tm.pips < 1 }); }
     else if (T.owner === 'enemy') { const av = L.assaultAvail(S, selId), known = S.obs[selId]; who = 'Occupied · ' + (known ? 'defense ' + (T.n + L.guards(S, selId)) : 'strength unknown');

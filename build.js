@@ -37,7 +37,11 @@ const { UI_PNG, validatePng } = require('./tools/check-ui-assets.js');
 const uiPng = Object.keys(UI_PNG).filter(n => has('assets/ui/' + n + '.png'));
 for (const n of uiPng) validatePng(fs.readFileSync(path.join(__dirname, 'assets/ui/' + n + '.png')), UI_PNG[n], n);
 const frames = uiPng.length ? ':root{' + uiPng.map(n => '--ui-' + n + ':url("' + uri('assets/ui/' + n + '.png', 'image/png') + '")').join(';') + '}\n' + r('src/frames.css') : '';
-const page = r('src/index.tpl.html').replace('/*CSS*/', () => r('src/style.css') + '\n' + theme + '\n' + frames).replace('/*JS*/', () => js);
+// HUD redesign (#29) with the stretchable plates from #28. Listed by name on purpose: only reviewed files are embedded.
+// Each becomes a CSS variable (--w-hud-orders and so on) that src/hud.css uses; hud.css comes last so it wins.
+const HUD_WEBP = ['topbar', 'frame-bar', 'frame-coach', 'btn-plain', 'btn-primary', 'hud-orders', 'hud-tab', 'hud-tab-active', 'hud-panel', 'order-pip-on', 'order-pip-off'].filter(n => has('assets/ui/' + n + '.webp'));
+const hud = ':root{' + HUD_WEBP.map(n => '--w-' + n + ':url("' + uri('assets/ui/' + n + '.webp', 'image/webp') + '")').join(';') + '}\n' + r('src/hud.css');
+const page = r('src/index.tpl.html').replace('/*CSS*/', () => r('src/style.css') + '\n' + theme + '\n' + frames + '\n' + hud).replace('/*JS*/', () => js);
 const cdn = '<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>';
 fs.mkdirSync(path.join(__dirname, 'dist'), { recursive: true });
 fs.writeFileSync(path.join(__dirname, 'dist/index.html'), page.replace('<!--THREE-->', cdn));
