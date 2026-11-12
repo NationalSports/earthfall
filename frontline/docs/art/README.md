@@ -14,3 +14,7 @@ This kit follows sections 12–13 of the current [Frontline handoff](https://git
 Use `texture-settings.json` for wrapping. The five ground materials are albedo/color only; they are not normal, roughness or displacement maps. The edge measurements in the main delivery's `validation.json` are provided for review. Mirrored repeat is recommended for ground to avoid hard joins; facade images are designed for horizontal repetition, with vertical clamping.
 
 The source geometry for soldiers, enemies, turret variants and defenses remains the developer's work under the latest handoff. Earlier requests for animated eight-direction billboard characters are superseded by that decision. The central art-delivery gallery and prompt manifests are in `docs/art/delivery-2026-11-11/` at the repository root.
+
+## Round 2 — issue #34
+
+The [round 2 gallery and model notes](ROUND-2.md) cover the spitter, brute, Warlord, hive, red Skirmish soldier, eight street props, Kepler/Ceres environment textures and title background. The issue's filenames, paths and dimensions supersede the earlier `ART_BRIEF.md` for this delivery. Full prompts are in [round-2-prompts.json](round-2-prompts.json); export checks and repeat previews are in [qa/round-2/](qa/round-2/).

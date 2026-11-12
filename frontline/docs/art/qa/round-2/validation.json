@@ -1,0 +1,176 @@
+{
+  "issue": 34,
+  "tool": "built-in image_gen",
+  "checks": {
+    "requested_asset_count": 12,
+    "all_dimensions_and_formats_match": true,
+    "all_images_decodable": true,
+    "visual_review": "All exports reviewed; normal ground repeats, horizontal wall repeat and centered sky seams inspected.",
+    "scope": "Only frontline/docs/art/ and frontline/public/assets/",
+    "game_runtime_tested": false
+  },
+  "exports": [
+    {
+      "path": "frontline/docs/art/concept-spitter.png",
+      "size": [
+        2048,
+        1152
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 1919044,
+      "sha256": "c2c040871c3f2640f895d2f512c280821f323d015b823ba0fdfa27d4ec5f2080"
+    },
+    {
+      "path": "frontline/docs/art/concept-brute.png",
+      "size": [
+        2048,
+        1152
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 2029863,
+      "sha256": "fe314bcf2c42310f4445931333af52024496b343b16245c9aee0f7f1d28e4dbe"
+    },
+    {
+      "path": "frontline/docs/art/concept-warlord.png",
+      "size": [
+        2048,
+        1152
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 2251558,
+      "sha256": "ce22977f71c967262442e626f2143900ad3925d2dd58e49304710468d8b99593"
+    },
+    {
+      "path": "frontline/docs/art/concept-hive.png",
+      "size": [
+        2048,
+        1152
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 1724790,
+      "sha256": "625febffd2132d078cf9f0bdf75aaff6429b013997db7d1f10fa2172b5fe1cdb"
+    },
+    {
+      "path": "frontline/docs/art/concept-red-soldier.png",
+      "size": [
+        2048,
+        1152
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 2044000,
+      "sha256": "1f4fc073f70895217f7ef4764316461e3e837dad85e584e1c2476f1f33780291"
+    },
+    {
+      "path": "frontline/docs/art/concept-street-props.png",
+      "size": [
+        2048,
+        1152
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 2331037,
+      "sha256": "4769571504501a612288f2f02c666d11c85abcc4f8eef7242a247ea7ceb3534a"
+    },
+    {
+      "path": "frontline/public/assets/sky/sky-kepler.jpg",
+      "size": [
+        2048,
+        1024
+      ],
+      "format": "JPEG",
+      "mode": "RGB",
+      "bytes": 285342,
+      "sha256": "74292ea33bf0705778230f199d426a67bd3b25043dd9e3e2906f5db6430c2d8c",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 1.839,
+        "top_bottom": 22.651
+      },
+      "repeat_axes": "X",
+      "repeat_preview_visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/sky/sky-ceres.jpg",
+      "size": [
+        2048,
+        1024
+      ],
+      "format": "JPEG",
+      "mode": "RGB",
+      "bytes": 346078,
+      "sha256": "abb6c30bd7d59fb181d3390e677879d7219f67ad142a7f984d6ea7868cf5d5f0",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 1.42,
+        "top_bottom": 102.325
+      },
+      "repeat_axes": "X",
+      "repeat_preview_visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/ground-kepler.webp",
+      "size": [
+        1024,
+        1024
+      ],
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 728350,
+      "sha256": "73b0d6096f6692c5f7867eb629f3060a64f4e6456b9a4965e886f2c62c1438fa",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 1.999,
+        "top_bottom": 2.083
+      },
+      "repeat_axes": "XY",
+      "repeat_preview_visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/ground-ceres.webp",
+      "size": [
+        1024,
+        1024
+      ],
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 871152,
+      "sha256": "a936faea80e185945a16d7f5731c5628b613bfc286aa21e906a89718de45dcfa",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 3.481,
+        "top_bottom": 3.092
+      },
+      "repeat_axes": "XY",
+      "repeat_preview_visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/facade-station.webp",
+      "size": [
+        1024,
+        1024
+      ],
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 865744,
+      "sha256": "3d0756616c0434ba37c993e3aaf8ba2641119da11a7cdcb7feb557068863ba69",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 2.192,
+        "top_bottom": 36.539
+      },
+      "repeat_axes": "X",
+      "repeat_preview_visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/title.jpg",
+      "size": [
+        1920,
+        1080
+      ],
+      "format": "JPEG",
+      "mode": "RGB",
+      "bytes": 838150,
+      "sha256": "2de674688c0349bc6fb0edfe046a68eee3bc38db17a5e48f4a82a5bfd98f5a7f"
+    }
+  ]
+}
