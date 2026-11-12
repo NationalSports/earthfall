@@ -88,7 +88,7 @@ export function makeTextures(world) {
 
 // ---------- Sky, sun and image-based lighting
 const SKIES = {
-  la: { elev: 16, azim: 214, turb: 3.2, ray: 1.5, mie: 0.0025, sun: 0xffe2b8, sunI: 2.6, hemi: [0xbfd6f2, 0x4a4030, 0.5], fog: 0x8296a8, fogD: 0.0036, tint: [1.04, 1.0, 0.95], exp: 0.46, env: 0.6 },
+  la: { elev: 16, azim: 214, turb: 3.2, ray: 1.5, mie: 0.0025, sun: 0xffe2b8, sunI: 2.6, hemi: [0xbfd6f2, 0x4a4030, 0.5], fog: 0x74889c, fogD: 0.0026, tint: [1.04, 1.0, 0.95], exp: 0.46, env: 0.6 },
   kepler: { elev: 13, azim: 325, turb: 8, ray: 3.0, mie: 0.012, sun: 0xffb0d8, sunI: 2.4, hemi: [0xc8a0ff, 0x402048, 0.5], fog: 0x6a4f88, fogD: 0.0038, tint: [1.14, 0.84, 1.22], exp: 0.42, env: 0.55 },
   ceres: { elev: 30, azim: 50, sun: 0xdcebff, sunI: 3.2, hemi: [0x5a6f96, 0x18181c, 0.35], fog: 0x05070b, fogD: 0.0016, tint: [0.96, 1.0, 1.08], exp: 0.8, env: 0.3, space: true } };
 export function buildSky(renderer, scene, group, world, grade) { const K = SKIES[world] || SKIES.la, phi = THREE.MathUtils.degToRad(90 - K.elev), theta = THREE.MathUtils.degToRad(K.azim), sunDir = new THREE.Vector3().setFromSphericalCoords(1, phi, theta);
