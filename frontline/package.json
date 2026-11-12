@@ -1,0 +1,8 @@
+{
+  "name": "earthfall-frontline",
+  "private": true,
+  "version": "0.2.0",
+  "description": "Third-person horde shooter that goes with Earthfall",
+  "scripts": { "build": "node build.js" },
+  "devDependencies": { "esbuild": "^0.24.0", "three": "^0.180.0" }
+}
