@@ -12,10 +12,11 @@ walk(path.join(__dirname, 'public/assets')); walk(path.join(__dirname, 'assets')
 for (const [want, have] of [['ground-la', 'ground-grass'], ['facade', 'facade-art-deco'], ['sky-la', 'los-angeles-panorama']]) if (!assets[want] && assets[have]) assets[want] = assets[have];
 let html = fs.readFileSync(path.join(__dirname, 'index.tpl.html'), 'utf8');
 // Scanned 3D models ride along the same way: public/assets/models/soldier.glb becomes FRONTLINE_MODELS.soldier.
-// FRONTLINE_SPLIT=1 keeps models as separate files beside the page (dist-split/), for hosts that cap the size of one file.
+// FRONTLINE_SPLIT=1 keeps the models in a second file beside the page (dist-split/models.js), for hosts that cap the size of one file.
 const SPLIT = !!process.env.FRONTLINE_SPLIT, OUT = path.join(__dirname, SPLIT ? 'dist-split' : 'dist');
-const models = {}, mdir = path.join(__dirname, 'public/assets/models'); if (fs.existsSync(mdir)) for (const f of fs.readdirSync(mdir)) if (/\.glb$/i.test(f)) models[path.basename(f, path.extname(f))] = SPLIT ? 'models/' + f : 'data:model/gltf-binary;base64,' + fs.readFileSync(path.join(mdir, f)).toString('base64');
-html = html.replace('/*ASSETS*/', () => 'window.FRONTLINE_ASSETS=' + JSON.stringify(assets) + ';window.FRONTLINE_MODELS=' + JSON.stringify(models) + ';').replace('/*GAME*/', () => game);
+const models = {}, mdir = path.join(__dirname, 'public/assets/models'); if (fs.existsSync(mdir)) for (const f of fs.readdirSync(mdir)) if (/\.glb$/i.test(f)) models[path.basename(f, path.extname(f))] = 'data:model/gltf-binary;base64,' + fs.readFileSync(path.join(mdir, f)).toString('base64');
+const modelJs = 'window.FRONTLINE_MODELS=' + JSON.stringify(models) + ';';
+html = html.replace('/*ASSETS*/', () => 'window.FRONTLINE_ASSETS=' + JSON.stringify(assets) + ';' + (SPLIT ? '</script><script src="models.js">' : modelJs)).replace('/*GAME*/', () => game);
 fs.mkdirSync(OUT, { recursive: true }); fs.writeFileSync(path.join(OUT, 'index.html'), html);
-if (SPLIT) { fs.mkdirSync(path.join(OUT, 'models'), { recursive: true }); for (const f of fs.readdirSync(mdir)) if (/\.glb$/i.test(f)) fs.copyFileSync(path.join(mdir, f), path.join(OUT, 'models', f)); }
+if (SPLIT) fs.writeFileSync(path.join(OUT, 'models.js'), modelJs);
 console.log('built ' + path.relative(path.dirname(__dirname), OUT) + '/index.html', html.length, 'bytes,', Object.keys(assets).length, 'art files');
