@@ -1,0 +1,569 @@
+[
+  {
+    "id": "models/swarmling-front-3q",
+    "prompt": "Use case: product-mockup. Asset: Frontline realistic Meshy reconstruction reference, swarmling FRONT THREE QUARTER VIEW. Create one original dog-sized insectoid alien, squat narrow armored thorax, exactly FOUR scythe-like articulated legs, forward toothed head with chitin mandibles. Realistic biological anatomy, weathered dark aubergine chitin, desaturated purple shell, orange weak-point slits, detailed matte keratin and leathery joint membranes; grounded physically based AAA game creature, not stylized or low poly. Entire single subject centered with generous margins, all four feet and head visible, isolated against perfectly uniform mid-grey #808080 background. Even neutral studio lighting, NO cast shadows, no ground plane, no pedestal, no environment. Square 2048x2048 PNG. No other views or subjects, no text, numbers, labels, scale marks, borders, watermark. Readable silhouette suitable for image-to-3D.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-672f71c6-98f3-48ce-8226-8ef67e9a49c0.png"
+  },
+  {
+    "id": "models/brute-front-3q",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Same original Frontline alien family: dark desaturated aubergine chitin, weathered layered keratin shell, charcoal leathery joints and orange bioluminescent weak points. Bull-sized heavy quadrupedal armored alien. Very low and wide silhouette, overlapping massive blunt chitin plates, thick pillar limbs, wedge shovel head, heavy forward horns. Distinct tank-like animal rather than giant swarmling. FRONT THREE QUARTER VIEW.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-3caa4160-991c-4d96-90dc-3802ff1baba7.png"
+  },
+  {
+    "id": "models/warlord-front-3q",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Same original Frontline alien family: dark desaturated aubergine chitin, weathered layered keratin shell, charcoal leathery joints and orange bioluminescent weak points. Towering boss alien, upright powerful biped stance, broad shoulders, two huge claw arms, two trunk-like legs. Crowned jagged carapace crest, gigantic ribbed chest enclosing a bright glowing orange core, brutal regal heavy silhouette. FRONT THREE QUARTER VIEW.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-084533e0-c4f3-4200-8a63-bc27cd81c16f.png"
+  },
+  {
+    "id": "models/leaper-front-3q",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Same original Frontline alien family: dark desaturated aubergine chitin, weathered layered keratin shell, charcoal leathery joints and orange bioluminescent weak points. Lean dog-sized insectoid built to pounce, narrow tapered torso, four articulated legs, much longer muscular folded rear legs like a flea, two forward scythe feet, toothed wedge head, crouched neutral stance. FRONT THREE QUARTER VIEW.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-f7fe8c0a-25a4-4858-9650-74b81450277e.png"
+  },
+  {
+    "id": "models/spitter-front-3q",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Same original Frontline alien family: dark desaturated aubergine chitin, weathered layered keratin shell, charcoal leathery joints and orange bioluminescent weak points. Bloated dog-sized quadrupedal insectoid with a cluster of three large translucent glowing ACID GREEN fluid sacs embedded across its back, visible membranes and internal fluid, forward acid-spitting maw, four short sturdy legs. FRONT THREE QUARTER VIEW.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-97577518-ef0b-4798-afb9-57fdc1835182.png"
+  },
+  {
+    "id": "models/heavy-front-3q",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-a5bf2ab1-b780-4917-ba19-fe93c57720d6.png",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Same original Frontline soldier armor family: realistic muted oxidized teal ceramic armor panels, worn brass trim and fittings, dark charcoal woven ballistic fabric, sealed helmet with a cyan visor, natural human proportions, functional straps and reinforced boots. No logos or symbols. Heavy squad role, bulky reinforced chest and shoulder plates, thick armored thighs, rectangular heavy ammunition backpack. STRICT RIGGING T-POSE: both arms perfectly straight and horizontal at shoulder height, legs straight slightly apart, hands open and empty. FRONT THREE QUARTER VIEW."
+  },
+  {
+    "id": "models/hive-front-3q",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d578b263-324e-4576-af53-59cd94ad9754.png",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Same original Frontline alien family: dark desaturated aubergine chitin, weathered layered keratin shell, charcoal leathery joints and orange bioluminescent weak points. An organic alien hive spire approximately six meters tall, rooted buttresses, tall asymmetric tapering chimney of layered carapace, multiple embedded pulsing orange vent slits and breathing membranes. No ground terrain. FRONT THREE QUARTER VIEW."
+  },
+  {
+    "id": "models/grenadier-front-3q",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-2475f849-d664-414d-b0a7-d822e33747c6.png",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Same original Frontline soldier armor family: realistic muted oxidized teal ceramic armor panels, worn brass trim and fittings, dark charcoal woven ballistic fabric, sealed helmet with a cyan visor, natural human proportions, functional straps and reinforced boots. No logos or symbols. Grenadier squad role, medium armor, separate cylindrical grenade carriers on chest webbing and hip belt, compact ordnance backpack. STRICT RIGGING T-POSE: both arms perfectly straight and horizontal at shoulder height, legs straight slightly apart, hands open and empty. FRONT THREE QUARTER VIEW."
+  },
+  {
+    "id": "models/marksman-front-3q",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-8715a9ce-61c8-46d8-b41b-3d73c9437d8c.png",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Same original Frontline soldier armor family: realistic muted oxidized teal ceramic armor panels, worn brass trim and fittings, dark charcoal woven ballistic fabric, sealed helmet with a cyan visor, natural human proportions, functional straps and reinforced boots. No logos or symbols. Marksman squad role, light slim armor, raised optical sensor on helmet, low-profile rear radio pack, short split fabric shoulder mantle kept away from arms. STRICT RIGGING T-POSE: both arms perfectly straight and horizontal at shoulder height, legs straight slightly apart, hands open and empty. FRONT THREE QUARTER VIEW."
+  },
+  {
+    "id": "models/enemy-trooper-front-3q",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-e30155c2-9b26-41cf-a322-880cb8bb7c38.png",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Same original Frontline soldier armor family: realistic muted oxidized teal ceramic armor panels, worn brass trim and fittings, dark charcoal woven ballistic fabric, sealed helmet with a cyan visor, natural human proportions, functional straps and reinforced boots. No logos or symbols. Enemy trooper: CHANGE ONLY armor color to muted deep red and black, retaining worn brass details and cyan visor. Standard medium infantry plates and compact backpack. STRICT RIGGING T-POSE: both arms perfectly straight and horizontal at shoulder height, legs straight slightly apart, hands open and empty. FRONT THREE QUARTER VIEW."
+  },
+  {
+    "id": "models/sentry-turret-front-3q",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-c61f7070-24fc-4c0d-a71e-affe036766ed.png",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Original Frontline military equipment family, realistic muted oxidized teal enamel armor, worn brass fittings, dark graphite mechanical internals and very restrained cyan status glass. Fabrication seams, scratches, brushed metal, plausible engineering. Autonomous sentry turret: a six-barrel gatling gun in compact boxy shielded housing on a rotary collar supported by exactly THREE wide splayed tripod legs with flat feet. Entire gun and all tripod feet visible. FRONT THREE QUARTER VIEW."
+  },
+  {
+    "id": "models/drop-pod-front-3q",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-ecf6ee9b-5c22-4a4b-a83d-c5b2883237f5.png",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Original Frontline military equipment family, realistic muted oxidized teal enamel armor, worn brass fittings, dark graphite mechanical internals and very restrained cyan status glass. Fabrication seams, scratches, brushed metal, plausible engineering. One closed single-squad orbital drop pod, upright tapered armored capsule, four corner shock-absorbing fins and landing feet, vertical segmented front hatch, recessed rocket nozzles, no fire, no smoke. Entire pod. FRONT THREE QUARTER VIEW."
+  },
+  {
+    "id": "models/extraction-shuttle-front-3q",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-1cdab830-15f0-4946-b3ab-602ea769f907.png",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Original Frontline military equipment family, realistic muted oxidized teal enamel armor, worn brass fittings, dark graphite mechanical internals and very restrained cyan status glass. Fabrication seams, scratches, brushed metal, plausible engineering. One squat military extraction shuttle, blunt cockpit, broad transport fuselage, short swept stub wings, four downward vector thruster nacelles, rear boarding ramp closed, landing struts down. Full craft including wing tips. FRONT THREE QUARTER VIEW."
+  },
+  {
+    "id": "models/swarmling-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. IDENTITY-PRESERVING CAMERA ROTATION ONLY. Exact same swarmling creature from input reference. TRUE ORTHOGRAPHIC SIDE ELEVATION, exactly ninety degrees to the creature's sagittal plane, looking at its LEFT FLANK, head points LEFT. Near and far legs must align in depth; only one eye and one side of jaw visible, no far side chest or face visible. Preserve shell geometry, color, limbs and pose, full creature centered. No three-quarter perspective. This single STRAIGHT SIDE ELEVATION replaces the prior angled side view. The body profile is parallel to the image plane.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-672f71c6-98f3-48ce-8226-8ef67e9a49c0.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-b4eee91c-9e8c-415e-bd5e-17fc7984d8bc.png"
+  },
+  {
+    "id": "models/leaper-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. IDENTITY-PRESERVING CAMERA ROTATION ONLY. Exact same leaper creature from input reference. TRUE ORTHOGRAPHIC SIDE ELEVATION, exactly ninety degrees to the creature's sagittal plane, looking at its LEFT FLANK, head points LEFT. Near and far legs must align in depth; only one eye and one side of jaw visible, no far side chest or face visible. Preserve shell geometry, color, limbs and pose, full creature centered. No three-quarter perspective. This single STRAIGHT SIDE ELEVATION replaces the prior angled side view. The body profile is parallel to the image plane.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-f7fe8c0a-25a4-4858-9650-74b81450277e.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-8b68d81f-2171-427b-88ce-91a1801001c0.png"
+  },
+  {
+    "id": "models/spitter-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Use input solely as exact subject identity reference. Produce the SAME spitter rotated to STRICT STRAIGHT LEFT SIDE PROFILE, exact 90 degree side view, orthographic camera at subject midpoint. Preserve all armor, plates, attachments, material colors, anatomy and design; no redesign. Full neutral stance, every limb and full object within image. CRITICAL: one SIDE VIEW ONLY, facing LEFT, zero three-quarter angle, no front view, no visible far side of torso.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-97577518-ef0b-4798-afb9-57fdc1835182.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-7ec36672-c24e-4f08-ab68-ddaf12ddbcc9.png"
+  },
+  {
+    "id": "models/warlord-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. IDENTITY-PRESERVING CAMERA ROTATION ONLY. Exact same warlord creature from input reference. TRUE ORTHOGRAPHIC SIDE ELEVATION, exactly ninety degrees to the creature's sagittal plane, looking at its LEFT FLANK, head points LEFT. Near and far legs must align in depth; only one eye and one side of jaw visible, no far side chest or face visible. Preserve shell geometry, color, limbs and pose, full creature centered. No three-quarter perspective. This single STRAIGHT SIDE ELEVATION replaces the prior angled side view. The body profile is parallel to the image plane.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-084533e0-c4f3-4200-8a63-bc27cd81c16f.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0a3708e8-4414-4b1a-b401-c66678ed5dea.png"
+  },
+  {
+    "id": "models/brute-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. IDENTITY-PRESERVING CAMERA ROTATION ONLY. Exact same brute creature from input reference. TRUE ORTHOGRAPHIC SIDE ELEVATION, exactly ninety degrees to the creature's sagittal plane, looking at its LEFT FLANK, head points LEFT. Near and far legs must align in depth; only one eye and one side of jaw visible, no far side chest or face visible. Preserve shell geometry, color, limbs and pose, full creature centered. No three-quarter perspective. This single STRAIGHT SIDE ELEVATION replaces the prior angled side view. The body profile is parallel to the image plane.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-3caa4160-991c-4d96-90dc-3802ff1baba7.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-ca119a1c-6d37-4765-81d9-2292caf1b697.png"
+  },
+  {
+    "id": "models/heavy-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Use input solely as exact subject identity reference. Produce the SAME heavy rotated to STRICT STRAIGHT LEFT SIDE PROFILE, exact 90 degree side view, orthographic camera at subject midpoint. Preserve all armor, plates, attachments, material colors, anatomy and design; no redesign. Preserve full T-pose: arms extend horizontally perpendicular to camera, so the near arm is seen end-on as a narrow foreshortened limb and the far arm is occluded, NOT arms lowered. Empty open hands. Head, torso, knees and boots all face LEFT. CRITICAL: one SIDE VIEW ONLY, facing LEFT, zero three-quarter angle, no front view, no visible far side of torso.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-a5bf2ab1-b780-4917-ba19-fe93c57720d6.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-cd1e03ee-0f85-46e0-962c-7ca76c6c4c2f.png"
+  },
+  {
+    "id": "models/grenadier-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Use input solely as exact subject identity reference. Produce the SAME grenadier rotated to STRICT STRAIGHT LEFT SIDE PROFILE, exact 90 degree side view, orthographic camera at subject midpoint. Preserve all armor, plates, attachments, material colors, anatomy and design; no redesign. Preserve full T-pose: arms extend horizontally perpendicular to camera, so the near arm is seen end-on as a narrow foreshortened limb and the far arm is occluded, NOT arms lowered. Empty open hands. Head, torso, knees and boots all face LEFT. CRITICAL: one SIDE VIEW ONLY, facing LEFT, zero three-quarter angle, no front view, no visible far side of torso.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-2475f849-d664-414d-b0a7-d822e33747c6.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-f4c8e8a0-0b2b-4068-af22-7a989b876931.png"
+  },
+  {
+    "id": "models/marksman-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Use input solely as exact subject identity reference. Produce the SAME marksman rotated to STRICT STRAIGHT LEFT SIDE PROFILE, exact 90 degree side view, orthographic camera at subject midpoint. Preserve all armor, plates, attachments, material colors, anatomy and design; no redesign. Preserve full T-pose: arms extend horizontally perpendicular to camera, so the near arm is seen end-on as a narrow foreshortened limb and the far arm is occluded, NOT arms lowered. Empty open hands. Head, torso, knees and boots all face LEFT. CRITICAL: one SIDE VIEW ONLY, facing LEFT, zero three-quarter angle, no front view, no visible far side of torso.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-8715a9ce-61c8-46d8-b41b-3d73c9437d8c.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-a364669b-caaf-4159-b743-b159e9dce993.png"
+  },
+  {
+    "id": "models/hive-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Use input solely as exact subject identity reference. Produce the SAME hive rotated to STRICT STRAIGHT LEFT SIDE PROFILE, exact 90 degree side view, orthographic camera at subject midpoint. Preserve all armor, plates, attachments, material colors, anatomy and design; no redesign. Full neutral stance, every limb and full object within image. CRITICAL: one SIDE VIEW ONLY, facing LEFT, zero three-quarter angle, no front view, no visible far side of torso.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d578b263-324e-4576-af53-59cd94ad9754.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-e11e7de4-a5b5-4fb1-9019-0e048126f723.png"
+  },
+  {
+    "id": "models/enemy-trooper-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Use input solely as exact subject identity reference. Produce the SAME enemy-trooper rotated to STRICT STRAIGHT LEFT SIDE PROFILE, exact 90 degree side view, orthographic camera at subject midpoint. Preserve all armor, plates, attachments, material colors, anatomy and design; no redesign. Preserve full T-pose: arms extend horizontally perpendicular to camera, so the near arm is seen end-on as a narrow foreshortened limb and the far arm is occluded, NOT arms lowered. Empty open hands. Head, torso, knees and boots all face LEFT. CRITICAL: one SIDE VIEW ONLY, facing LEFT, zero three-quarter angle, no front view, no visible far side of torso.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-e30155c2-9b26-41cf-a322-880cb8bb7c38.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-6e5bfc48-d6c3-41b0-8f04-44bdfa0ca012.png"
+  },
+  {
+    "id": "models/sentry-turret-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Use input solely as exact subject identity reference. Produce the SAME sentry-turret rotated to STRICT STRAIGHT LEFT SIDE PROFILE, exact 90 degree side view, orthographic camera at subject midpoint. Preserve all armor, plates, attachments, material colors, anatomy and design; no redesign. Full neutral stance, every limb and full object within image. CRITICAL: one SIDE VIEW ONLY, facing LEFT, zero three-quarter angle, no front view, no visible far side of torso.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-c61f7070-24fc-4c0d-a71e-affe036766ed.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-6b4f50ef-178d-4839-a648-38b672d07ae4.png"
+  },
+  {
+    "id": "models/drop-pod-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Use input solely as exact subject identity reference. Produce the SAME drop-pod rotated to STRICT STRAIGHT LEFT SIDE PROFILE, exact 90 degree side view, orthographic camera at subject midpoint. Preserve all armor, plates, attachments, material colors, anatomy and design; no redesign. Full neutral stance, every limb and full object within image. CRITICAL: one SIDE VIEW ONLY, facing LEFT, zero three-quarter angle, no front view, no visible far side of torso.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-ecf6ee9b-5c22-4a4b-a83d-c5b2883237f5.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-6f16c61e-dd0b-4559-8d94-d3a92e81b24f.png"
+  },
+  {
+    "id": "models/extraction-shuttle-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Use input solely as exact subject identity reference. Produce the SAME extraction-shuttle rotated to STRICT STRAIGHT LEFT SIDE PROFILE, exact 90 degree side view, orthographic camera at subject midpoint. Preserve all armor, plates, attachments, material colors, anatomy and design; no redesign. Full neutral stance, every limb and full object within image. CRITICAL: one SIDE VIEW ONLY, facing LEFT, zero three-quarter angle, no front view, no visible far side of torso.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-1cdab830-15f0-4946-b3ab-602ea769f907.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-8b8eadb1-05a9-4369-a0a5-0dfe14d2e3b5.png"
+  },
+  {
+    "id": "weapons/rifle-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Original Frontline military equipment family, realistic muted oxidized teal enamel armor, worn brass fittings, dark graphite mechanical internals and very restrained cyan status glass. Fabrication seams, scratches, brushed metal, plausible engineering. Compact standard assault rifle, short box magazine ahead of grip, medium barrel, solid stock, simple top optic. EXACT STRAIGHT LEFT SIDE PROFILE, barrel points LEFT, orthographic. Weapon ALONE, no character, hands, sling, spare ammunition or other objects.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-6d1b3d7f-d4d5-4440-a2e7-e865b99f9393.png"
+  },
+  {
+    "id": "weapons/shotgun-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Original Frontline military equipment family, realistic muted oxidized teal enamel armor, worn brass fittings, dark graphite mechanical internals and very restrained cyan status glass. Fabrication seams, scratches, brushed metal, plausible engineering. Heavy pump-action combat shotgun, thick single smoothbore barrel, tubular magazine, ribbed sliding pump foregrip and stout stock. EXACT STRAIGHT LEFT SIDE PROFILE, barrel points LEFT, orthographic. Weapon ALONE, no character, hands, sling, spare ammunition or other objects.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-a4c33fbd-c08b-43d9-a626-0f513d55fea3.png"
+  },
+  {
+    "id": "weapons/marksman-rifle-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Original Frontline military equipment family, realistic muted oxidized teal enamel armor, worn brass fittings, dark graphite mechanical internals and very restrained cyan status glass. Fabrication seams, scratches, brushed metal, plausible engineering. Long precision semiautomatic marksman rifle, slender long barrel, raised optical scope, ten-round straight magazine, adjustable stock. EXACT STRAIGHT LEFT SIDE PROFILE, barrel points LEFT, orthographic. Weapon ALONE, no character, hands, sling, spare ammunition or other objects.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0506521d-8ace-4bac-9050-444d5863314d.png"
+  },
+  {
+    "id": "weapons/rocket-launcher-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Original Frontline military equipment family, realistic muted oxidized teal enamel armor, worn brass fittings, dark graphite mechanical internals and very restrained cyan status glass. Fabrication seams, scratches, brushed metal, plausible engineering. Shoulder-fired rocket launcher, large hollow launch tube, flared rear exhaust, folding shoulder support and side sight. No loose rocket. EXACT STRAIGHT LEFT SIDE PROFILE, barrel points LEFT, orthographic. Weapon ALONE, no character, hands, sling, spare ammunition or other objects.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-a5991fe8-a3bc-4e76-999d-9683a29638bf.png"
+  },
+  {
+    "id": "weapons/rail-rifle-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Original Frontline military equipment family, realistic muted oxidized teal enamel armor, worn brass fittings, dark graphite mechanical internals and very restrained cyan status glass. Fabrication seams, scratches, brushed metal, plausible engineering. Experimental rail rifle, two parallel exposed electromagnetic accelerator rails, central cyan channel, rectangular power magazine and heavy stock. EXACT STRAIGHT LEFT SIDE PROFILE, barrel points LEFT, orthographic. Weapon ALONE, no character, hands, sling, spare ammunition or other objects.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-ce7bc8a5-b4e0-439d-839e-3ffa9f94fc5e.png"
+  },
+  {
+    "id": "weapons/plasma-gun-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Original Frontline military equipment family, realistic muted oxidized teal enamel armor, worn brass fittings, dark graphite mechanical internals and very restrained cyan status glass. Fabrication seams, scratches, brushed metal, plausible engineering. Compact plasma gun, broad magnetic containment chamber with cyan plasma glass, short circular emitter and vented receiver. No firing effect. EXACT STRAIGHT LEFT SIDE PROFILE, barrel points LEFT, orthographic. Weapon ALONE, no character, hands, sling, spare ammunition or other objects.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-98b7fe27-5b60-4b0f-9967-2d60373b922f.png"
+  },
+  {
+    "id": "weapons/flamethrower-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Original Frontline military equipment family, realistic muted oxidized teal enamel armor, worn brass fittings, dark graphite mechanical internals and very restrained cyan status glass. Fabrication seams, scratches, brushed metal, plausible engineering. A fictional science-fiction flamethrower game prop, short wide nozzle, insulated heat shroud, integrated oval fuel reservoir and heavy grip. Pure visual concept art, no engineering diagram, no specifications, no use instructions. SIDE VIEW ONLY. Object alone, horizontally centered facing left, full object within frame. No hands, characters, firing effects or separate parts.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-1a830ace-411a-431b-90d6-1c82b56dbce5.png"
+  },
+  {
+    "id": "weapons/machine-gun-side",
+    "prompt": "Use case: product-mockup. Asset: original Frontline realistic image-to-3D modeling reference. One subject only, entire full body / full object centered, generous clear margins. Square 2048x2048 PNG. Perfectly plain uniform mid-grey #808080 background edge to edge, completely even neutral studio lighting, no cast shadows, no environment, no pedestal. Photorealistic physically based game production render with intricate real material finish, muted palette; never low-poly, cartoon or toy. No text, labels, scale figures, borders or watermark. Original Frontline military equipment family, realistic muted oxidized teal enamel armor, worn brass fittings, dark graphite mechanical internals and very restrained cyan status glass. Fabrication seams, scratches, brushed metal, plausible engineering. A fictional science-fiction machine gun game prop, belt-fed heavy support weapon silhouette, broad perforated cooling shroud, folded bipod, rectangular feed box, compact stock. Pure visual concept art, no engineering diagram, no specifications, no use instructions. SIDE VIEW ONLY. Object alone, horizontally centered facing left, full object within frame. No hands, characters, firing effects or separate parts.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-55ddf15a-28ab-4ed6-b2d8-211fdef12c4b.png"
+  },
+  {
+    "id": "surfaces/wet-asphalt",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Wet dark Los Angeles asphalt, dense fine black aggregate, irregular thin shallow damp patches, subtle gritty pores. No road lines, puddle reflections or litter. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d6838d56-8ee8-4f7c-986e-cbfbcae6cccb.png"
+  },
+  {
+    "id": "surfaces/cracked-concrete",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Weathered medium grey concrete with a sparse interconnected network of hairline and medium cracks, fine aggregate, small spalled edges. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d7d0bbff-5102-4868-b2bc-c4ec3c6f290a.png"
+  },
+  {
+    "id": "surfaces/sidewalk",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Los Angeles poured concrete sidewalk slabs, square expansion joints on a regular square grid, subtle worn aggregate and dirt in seams. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d9e78b34-ff84-4eee-a0be-14b1a0828355.png"
+  },
+  {
+    "id": "surfaces/rubble",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. A flattened traversable layer of small broken grey concrete and brick rubble, no large boulders, evenly distributed angular stones and fine dust. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-c9533230-53c6-4235-b839-2ca06a994239.png"
+  },
+  {
+    "id": "surfaces/hive-creep",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Alien organic hive creep, muted aubergine fibrous tendrils and fleshy leathery mats, ribbed chitin nodes, sparse orange veins. No body parts. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-6fc7f85d-63c5-44f4-8797-e73827b57c8e.png"
+  },
+  {
+    "id": "surfaces/kepler-crystal-ground",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Alien Kepler crystal ground, dark teal mineral matrix with clusters of small fractured turquoise crystals embedded flush with surface, amethyst mineral traces. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-fce06984-5562-4d37-b7b1-02b6eeacd2aa.png"
+  },
+  {
+    "id": "surfaces/ceres-regolith",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Ceres airless regolith, cool neutral grey fine powder, scattered charcoal mineral fragments, subtle microcraters and dusty gravel, no large rocks. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-37f31217-a6d2-4f65-9d22-ab269c5ceea9.png"
+  },
+  {
+    "id": "surfaces/metal-deck-plate",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Military metal deck plates, worn dark gunmetal non-slip diamond tread, thin panel seams, flush bolts, muted teal paint remnants, no hazard lettering. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-8100d360-bbdf-418e-b07a-8cab75363281.png"
+  },
+  {
+    "id": "surfaces/facade-la-art-deco",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Los Angeles art deco facade, warm limestone, shallow stepped vertical pilasters, dark recessed rectangular windows, brass mullions. Repeating square facade module. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-39b62ffa-106e-4ae7-92a4-dddb81755bd0.png"
+  },
+  {
+    "id": "surfaces/facade-la-brick",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Los Angeles historic warehouse facade, aged warm red brick, grey mortar, repetitive steel-framed industrial windows, grime and worn lintels. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0908ee28-b196-49f8-8342-83d402a10c73.png"
+  },
+  {
+    "id": "surfaces/facade-la-modern-glass",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Los Angeles modern office facade, smoked blue-grey glass curtain wall, thin aluminum mullions, evenly spaced rectangular panes, no reflected scene. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-b01ac634-28e7-4ea6-8882-f8060cc2be76.png"
+  },
+  {
+    "id": "surfaces/facade-la-stucco",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Los Angeles Spanish revival apartment facade, faded cream stucco, terracotta trim, repeating deep rectangular windows with dark glass, subtle plaster cracks. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0578b673-c37c-4e73-9bdf-0c4ad7b076cb.png"
+  },
+  {
+    "id": "surfaces/facade-la-concrete",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Los Angeles brutalist civic facade, weathered board-formed grey concrete, repeating narrow recessed window bays, subtle water staining. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-5805e98f-6916-4e23-bc08-bd7da832b392.png"
+  },
+  {
+    "id": "surfaces/facade-la-storefront",
+    "prompt": "Use case: product-mockup. Asset: photorealistic PBR ALBEDO / BASE COLOR game texture, 2048x2048 square, full bleed. Los Angeles midcentury commercial facade, faded sage tile piers, dark storefront glass panels, brushed metal frames, closed unlettered transom panels. Perfectly flat orthographic surface facing camera. Seamlessly TILEABLE in BOTH X and Y; opposite edges and feature placement match continuously. Real-world material detail, muted grounded palette, neutral even illumination, no baked light, no cast shadows, no directional highlights, no perspective, no ground or sky, no borders, no text. Uniform material density, no focal composition. This is a texture map, not a photographed object.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-e47fac23-7156-4197-b919-9c6bbf5510b0.png"
+  },
+  {
+    "id": "surfaces/wet-asphalt-normal",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the TANGENT SPACE NORMAL MAP, OpenGL +Y convention, RGB encoded normalized surface vectors, flat regions RGB (128,128,255), fine material pores and raised relief encoded in red/green, blue dominant. No diffuse/albedo colors, no lighting or shadows, no grayscale render. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d6838d56-8ee8-4f7c-986e-cbfbcae6cccb.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-c5831e77-633b-4a84-941c-8e2182649b94.png"
+  },
+  {
+    "id": "surfaces/wet-asphalt-rough",
+    "prompt": "Use case: precise-object-edit. Asset: PBR ROUGHNESS DATA MAP matching the supplied WET ASPHALT albedo. Keep its EXACT pixel/UV grain pattern and damp-patch placement, full-bleed orthographic square 2048x2048. Output GRAYSCALE ONLY, black smooth and white rough. This asphalt is WET, so most values must be DARK GREY in normalized roughness 0.15 to 0.35, subtly darker saturated damp patches 0.10 to 0.20, tiny exposed aggregate highlights at 0.40 maximum. Absolutely no pale grey or white dry asphalt. No albedo color, directional lighting or shadows. Fine varied roughness, not a flat constant. Seamless XY repeat, no text or border.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d6838d56-8ee8-4f7c-986e-cbfbcae6cccb.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-bd85d78a-db95-4b48-9235-d069f271b5c5.png"
+  },
+  {
+    "id": "surfaces/cracked-concrete-normal",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the TANGENT SPACE NORMAL MAP, OpenGL +Y convention, RGB encoded normalized surface vectors, flat regions RGB (128,128,255), fine material pores and raised relief encoded in red/green, blue dominant. No diffuse/albedo colors, no lighting or shadows, no grayscale render. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d7d0bbff-5102-4868-b2bc-c4ec3c6f290a.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-e60574d9-71b5-4a64-b4f3-09313a515d03.png"
+  },
+  {
+    "id": "surfaces/cracked-concrete-rough",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the GRAYSCALE ROUGHNESS MAP, black means smooth/low roughness and white means rough/high roughness. Physically plausible values based on each material in the reference: glass/damp areas dark, stone/dust/organic fibers pale, aged metal medium. No color, no lighting or shadows. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d7d0bbff-5102-4868-b2bc-c4ec3c6f290a.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-195bfbf5-a315-46c5-9a92-9cd51a1ce911.png"
+  },
+  {
+    "id": "surfaces/sidewalk-rough",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the GRAYSCALE ROUGHNESS MAP, black means smooth/low roughness and white means rough/high roughness. Physically plausible values based on each material in the reference: glass/damp areas dark, stone/dust/organic fibers pale, aged metal medium. No color, no lighting or shadows. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d9e78b34-ff84-4eee-a0be-14b1a0828355.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-af596b53-6236-415d-b416-ba13734842df.png"
+  },
+  {
+    "id": "surfaces/sidewalk-normal",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the TANGENT SPACE NORMAL MAP, OpenGL +Y convention, RGB encoded normalized surface vectors, flat regions RGB (128,128,255), fine material pores and raised relief encoded in red/green, blue dominant. No diffuse/albedo colors, no lighting or shadows, no grayscale render. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d9e78b34-ff84-4eee-a0be-14b1a0828355.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-be96c6e0-e1b5-4e05-8826-72cda6fb0c22.png"
+  },
+  {
+    "id": "surfaces/rubble-rough",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the GRAYSCALE ROUGHNESS MAP, black means smooth/low roughness and white means rough/high roughness. Physically plausible values based on each material in the reference: glass/damp areas dark, stone/dust/organic fibers pale, aged metal medium. No color, no lighting or shadows. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-c9533230-53c6-4235-b839-2ca06a994239.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-9bc60b0d-1b6e-4e25-9324-ad219de9420a.png"
+  },
+  {
+    "id": "surfaces/hive-creep-normal",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the TANGENT SPACE NORMAL MAP, OpenGL +Y convention, RGB encoded normalized surface vectors, flat regions RGB (128,128,255), fine material pores and raised relief encoded in red/green, blue dominant. No diffuse/albedo colors, no lighting or shadows, no grayscale render. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-6fc7f85d-63c5-44f4-8797-e73827b57c8e.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-f29fa584-7d9b-4315-bbc1-64b8780761d7.png"
+  },
+  {
+    "id": "surfaces/rubble-normal",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the TANGENT SPACE NORMAL MAP, OpenGL +Y convention, RGB encoded normalized surface vectors, flat regions RGB (128,128,255), fine material pores and raised relief encoded in red/green, blue dominant. No diffuse/albedo colors, no lighting or shadows, no grayscale render. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-c9533230-53c6-4235-b839-2ca06a994239.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-01befc77-5386-49cc-8fd1-60ac9f640103.png"
+  },
+  {
+    "id": "surfaces/hive-creep-rough",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the GRAYSCALE ROUGHNESS MAP, black means smooth/low roughness and white means rough/high roughness. Physically plausible values based on each material in the reference: glass/damp areas dark, stone/dust/organic fibers pale, aged metal medium. No color, no lighting or shadows. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-6fc7f85d-63c5-44f4-8797-e73827b57c8e.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-8232654f-9313-43c3-9b32-e481a74a77a9.png"
+  },
+  {
+    "id": "surfaces/kepler-crystal-ground-normal",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the TANGENT SPACE NORMAL MAP, OpenGL +Y convention, RGB encoded normalized surface vectors, flat regions RGB (128,128,255), fine material pores and raised relief encoded in red/green, blue dominant. No diffuse/albedo colors, no lighting or shadows, no grayscale render. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-fce06984-5562-4d37-b7b1-02b6eeacd2aa.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0ec6567c-0448-4903-98b3-adff07c57417.png"
+  },
+  {
+    "id": "surfaces/kepler-crystal-ground-rough",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the GRAYSCALE ROUGHNESS MAP, black means smooth/low roughness and white means rough/high roughness. Physically plausible values based on each material in the reference: glass/damp areas dark, stone/dust/organic fibers pale, aged metal medium. No color, no lighting or shadows. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-fce06984-5562-4d37-b7b1-02b6eeacd2aa.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-8bf09315-d19d-45cf-ba71-75464a87bbe1.png"
+  },
+  {
+    "id": "surfaces/ceres-regolith-normal",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the TANGENT SPACE NORMAL MAP, OpenGL +Y convention, RGB encoded normalized surface vectors, flat regions RGB (128,128,255), fine material pores and raised relief encoded in red/green, blue dominant. No diffuse/albedo colors, no lighting or shadows, no grayscale render. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-37f31217-a6d2-4f65-9d22-ab269c5ceea9.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0341a2cc-3b4c-4aef-af58-e173b15497c9.png"
+  },
+  {
+    "id": "surfaces/ceres-regolith-rough",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the GRAYSCALE ROUGHNESS MAP, black means smooth/low roughness and white means rough/high roughness. Physically plausible values based on each material in the reference: glass/damp areas dark, stone/dust/organic fibers pale, aged metal medium. No color, no lighting or shadows. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-37f31217-a6d2-4f65-9d22-ab269c5ceea9.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-c03008ee-809c-4152-9f81-b03446e50943.png"
+  },
+  {
+    "id": "surfaces/metal-deck-plate-normal",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the TANGENT SPACE NORMAL MAP, OpenGL +Y convention, RGB encoded normalized surface vectors, flat regions RGB (128,128,255), fine material pores and raised relief encoded in red/green, blue dominant. No diffuse/albedo colors, no lighting or shadows, no grayscale render. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-8100d360-bbdf-418e-b07a-8cab75363281.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-7b5bdb0a-8bd3-4a98-b736-d396c294d29a.png"
+  },
+  {
+    "id": "surfaces/metal-deck-plate-rough",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the GRAYSCALE ROUGHNESS MAP, black means smooth/low roughness and white means rough/high roughness. Physically plausible values based on each material in the reference: glass/damp areas dark, stone/dust/organic fibers pale, aged metal medium. No color, no lighting or shadows. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-8100d360-bbdf-418e-b07a-8cab75363281.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-30ba0942-6749-4176-b444-fcf5fb933d51.png"
+  },
+  {
+    "id": "surfaces/facade-la-art-deco-normal",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the TANGENT SPACE NORMAL MAP, OpenGL +Y convention, RGB encoded normalized surface vectors, flat regions RGB (128,128,255), fine material pores and raised relief encoded in red/green, blue dominant. No diffuse/albedo colors, no lighting or shadows, no grayscale render. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-39b62ffa-106e-4ae7-92a4-dddb81755bd0.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-b227e43d-58f8-4e87-8ac1-5d35764313b7.png"
+  },
+  {
+    "id": "surfaces/facade-la-art-deco-rough",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the GRAYSCALE ROUGHNESS MAP, black means smooth/low roughness and white means rough/high roughness. Physically plausible values based on each material in the reference: glass/damp areas dark, stone/dust/organic fibers pale, aged metal medium. No color, no lighting or shadows. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-39b62ffa-106e-4ae7-92a4-dddb81755bd0.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-7e919e82-41fe-489d-a582-fd286515a573.png"
+  },
+  {
+    "id": "surfaces/facade-la-brick-normal",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the TANGENT SPACE NORMAL MAP, OpenGL +Y convention, RGB encoded normalized surface vectors, flat regions RGB (128,128,255), fine material pores and raised relief encoded in red/green, blue dominant. No diffuse/albedo colors, no lighting or shadows, no grayscale render. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0908ee28-b196-49f8-8342-83d402a10c73.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-c12b0f8e-7410-4d5f-b561-25dfcd85f385.png"
+  },
+  {
+    "id": "surfaces/facade-la-brick-rough",
+    "prompt": "Use case: precise-object-edit. Asset: matching PBR texture map for supplied Frontline albedo texture, 2048x2048. Keep EXACT pixel-aligned feature positions, identical UV layout, scale, cracks, seams, windows and small details. Do not invent or move any feature. Output ONLY the GRAYSCALE ROUGHNESS MAP, black means smooth/low roughness and white means rough/high roughness. Physically plausible values based on each material in the reference: glass/damp areas dark, stone/dust/organic fibers pale, aged metal medium. No color, no lighting or shadows. Seamlessly tileable in X and Y exactly like source. Flat orthographic full-bleed data map, no borders, labels or text.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0908ee28-b196-49f8-8342-83d402a10c73.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d1137642-501a-49e4-999e-bd2cec347049.png"
+  },
+  {
+    "id": "surfaces/facade-la-modern-glass-normal",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only OpenGL tangent-space NORMAL MAP, +Y convention, normalized RGB vectors, flat surfaces (128,128,255), relief edges in red/green, blue dominant, no albedo or lighting. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-b01ac634-28e7-4ea6-8882-f8060cc2be76.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-2fff82da-93fe-4fd6-9f59-488020a00658.png"
+  },
+  {
+    "id": "surfaces/facade-la-brick-glow",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only NIGHT WINDOW GLOW / EMISSIVE MAP. Everything pure BLACK except exact original window panes. A plausible staggered selection of those panes emit warm ivory and muted amber interior light, some panes remain black. Glass borders, mullions, walls and frames stay pure black, no halos outside panes, no scene lighting or cast glow. This is an emission data mask, not a night scene. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0908ee28-b196-49f8-8342-83d402a10c73.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-fad17c1d-855a-46ff-b547-34daf56d316c.png"
+  },
+  {
+    "id": "surfaces/facade-la-art-deco-glow",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only NIGHT WINDOW GLOW / EMISSIVE MAP. Everything pure BLACK except exact original window panes. A plausible staggered selection of those panes emit warm ivory and muted amber interior light, some panes remain black. Glass borders, mullions, walls and frames stay pure black, no halos outside panes, no scene lighting or cast glow. This is an emission data mask, not a night scene. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-39b62ffa-106e-4ae7-92a4-dddb81755bd0.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-13ffb50a-3762-4be2-a786-882b3ad97422.png"
+  },
+  {
+    "id": "surfaces/facade-la-modern-glass-rough",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only GRAYSCALE ROUGHNESS MAP: dark grey smooth glass, pale rough stone/stucco/concrete/tile, medium grey aged metal, exact aligned material boundaries, no color or shadows. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-b01ac634-28e7-4ea6-8882-f8060cc2be76.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-681da28f-2105-40ad-90e5-9e50bfb52188.png"
+  },
+  {
+    "id": "surfaces/facade-la-modern-glass-glow",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only NIGHT WINDOW GLOW / EMISSIVE MAP. Everything pure BLACK except exact original window panes. A plausible staggered selection of those panes emit warm ivory and muted amber interior light, some panes remain black. Glass borders, mullions, walls and frames stay pure black, no halos outside panes, no scene lighting or cast glow. This is an emission data mask, not a night scene. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-b01ac634-28e7-4ea6-8882-f8060cc2be76.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-b430b36f-4bb7-4417-8264-ed32dd80a134.png"
+  },
+  {
+    "id": "surfaces/facade-la-stucco-normal",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only OpenGL tangent-space NORMAL MAP, +Y convention, normalized RGB vectors, flat surfaces (128,128,255), relief edges in red/green, blue dominant, no albedo or lighting. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0578b673-c37c-4e73-9bdf-0c4ad7b076cb.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-8da87a58-a84c-4ebb-9a70-79a11e588f3a.png"
+  },
+  {
+    "id": "surfaces/facade-la-stucco-rough",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only GRAYSCALE ROUGHNESS MAP: dark grey smooth glass, pale rough stone/stucco/concrete/tile, medium grey aged metal, exact aligned material boundaries, no color or shadows. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0578b673-c37c-4e73-9bdf-0c4ad7b076cb.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-e64b9f59-2064-40a3-81be-18a1cf0ce16a.png"
+  },
+  {
+    "id": "surfaces/facade-la-stucco-glow",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only NIGHT WINDOW GLOW / EMISSIVE MAP. Everything pure BLACK except exact original window panes. A plausible staggered selection of those panes emit warm ivory and muted amber interior light, some panes remain black. Glass borders, mullions, walls and frames stay pure black, no halos outside panes, no scene lighting or cast glow. This is an emission data mask, not a night scene. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0578b673-c37c-4e73-9bdf-0c4ad7b076cb.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-7ee5c418-7c5d-4e84-8b42-f6d694e57e8f.png"
+  },
+  {
+    "id": "surfaces/facade-la-concrete-normal",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only OpenGL tangent-space NORMAL MAP, +Y convention, normalized RGB vectors, flat surfaces (128,128,255), relief edges in red/green, blue dominant, no albedo or lighting. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-5805e98f-6916-4e23-bc08-bd7da832b392.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-25ac4e2a-4c2f-44c6-ab30-b944781851e1.png"
+  },
+  {
+    "id": "surfaces/facade-la-concrete-rough",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only GRAYSCALE ROUGHNESS MAP: dark grey smooth glass, pale rough stone/stucco/concrete/tile, medium grey aged metal, exact aligned material boundaries, no color or shadows. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-5805e98f-6916-4e23-bc08-bd7da832b392.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-1c27fb0f-ce6f-4a3c-b7cb-0e2d6d42170f.png"
+  },
+  {
+    "id": "surfaces/facade-la-concrete-glow",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only NIGHT WINDOW GLOW / EMISSIVE MAP. Everything pure BLACK except exact original window panes. A plausible staggered selection of those panes emit warm ivory and muted amber interior light, some panes remain black. Glass borders, mullions, walls and frames stay pure black, no halos outside panes, no scene lighting or cast glow. This is an emission data mask, not a night scene. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-5805e98f-6916-4e23-bc08-bd7da832b392.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-4a19786d-f9ff-4128-9275-200c059bddff.png"
+  },
+  {
+    "id": "surfaces/facade-la-storefront-normal",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only OpenGL tangent-space NORMAL MAP, +Y convention, normalized RGB vectors, flat surfaces (128,128,255), relief edges in red/green, blue dominant, no albedo or lighting. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-e47fac23-7156-4197-b919-9c6bbf5510b0.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d7d13bee-97fb-411c-b701-f68f8d13a0d4.png"
+  },
+  {
+    "id": "surfaces/facade-la-storefront-rough",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only GRAYSCALE ROUGHNESS MAP: dark grey smooth glass, pale rough stone/stucco/concrete/tile, medium grey aged metal, exact aligned material boundaries, no color or shadows. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-e47fac23-7156-4197-b919-9c6bbf5510b0.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-329e8a31-b234-4f9b-a80f-c062090e2507.png"
+  },
+  {
+    "id": "surfaces/facade-la-storefront-glow",
+    "prompt": "Use case: precise-object-edit. Matching PBR map for supplied facade albedo. Preserve EXACT feature positions, every window and mullion at its original UV coordinates, identical framing and full-bleed 2048x2048 image. Output only NIGHT WINDOW GLOW / EMISSIVE MAP. Everything pure BLACK except exact original window panes. A plausible staggered selection of those panes emit warm ivory and muted amber interior light, some panes remain black. Glass borders, mullions, walls and frames stay pure black, no halos outside panes, no scene lighting or cast glow. This is an emission data mask, not a night scene. Seamlessly tileable in both X and Y. No new windows or changed layout, no text, labels or borders.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-e47fac23-7156-4197-b919-9c6bbf5510b0.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-47561765-acc2-4b43-a24a-b920b84c124b.png"
+  },
+  {
+    "id": "skies/la-night-storm",
+    "prompt": "Use case: precise-object-edit. Input is a horizontally half-offset 360-degree equirectangular sky texture. REPAIR ONLY the narrow vertical join at EXACT IMAGE CENTER x=50%, from top to bottom. Make clouds, color, starfield, horizon and lower hemisphere terrain flow naturally and continuously ACROSS THIS CENTER JOIN with no vertical line, brightness jump or cut features. Preserve all other pixels and the far left/right edges, composition, horizon height, exact 2:1 aspect ratio, original color grading, details and scene. Do not add objects, text, borders or new focal features. The image will be unwrapped after repair; do NOT move the join to the outside edges. Seamless natural continuous center band, physically realistic. 4096x2048 final export.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/seam-prep/la-night-storm.png",
+    "unwrap_horizontal": true,
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-70b921f1-5008-47c6-988e-7284abcfb2ff.png"
+  },
+  {
+    "id": "skies/kepler-alien-dusk",
+    "prompt": "Use case: precise-object-edit. Input is a horizontally half-offset 360-degree equirectangular sky texture. REPAIR ONLY the narrow vertical join at EXACT IMAGE CENTER x=50%, from top to bottom. Make clouds, color, starfield, horizon and lower hemisphere terrain flow naturally and continuously ACROSS THIS CENTER JOIN with no vertical line, brightness jump or cut features. Preserve all other pixels and the far left/right edges, composition, horizon height, exact 2:1 aspect ratio, original color grading, details and scene. Do not add objects, text, borders or new focal features. The image will be unwrapped after repair; do NOT move the join to the outside edges. Seamless natural continuous center band, physically realistic. 4096x2048 final export.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/seam-prep/kepler-alien-dusk.png",
+    "unwrap_horizontal": true,
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-058f4edd-663e-42a1-937f-41a0393d6a02.png"
+  },
+  {
+    "id": "skies/ceres-starfield",
+    "prompt": "Use case: precise-object-edit. Input is a horizontally half-offset 360-degree equirectangular sky texture. REPAIR ONLY the narrow vertical join at EXACT IMAGE CENTER x=50%, from top to bottom. Make clouds, color, starfield, horizon and lower hemisphere terrain flow naturally and continuously ACROSS THIS CENTER JOIN with no vertical line, brightness jump or cut features. Preserve all other pixels and the far left/right edges, composition, horizon height, exact 2:1 aspect ratio, original color grading, details and scene. Do not add objects, text, borders or new focal features. The image will be unwrapped after repair; do NOT move the join to the outside edges. Seamless natural continuous center band, physically realistic. 4096x2048 final export.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/seam-prep/ceres-starfield.png",
+    "unwrap_horizontal": true,
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-ae8b94e9-f0d7-4f9f-9cdb-19aae542c84a.png"
+  },
+  {
+    "id": "skies/la-dusk",
+    "prompt": "Use case: precise-object-edit. Input is a horizontally half-offset 360-degree equirectangular sky texture. REPAIR ONLY the narrow vertical join at EXACT IMAGE CENTER x=50%, from top to bottom. Make clouds, color, starfield, horizon and lower hemisphere terrain flow naturally and continuously ACROSS THIS CENTER JOIN with no vertical line, brightness jump or cut features. Preserve all other pixels and the far left/right edges, composition, horizon height, exact 2:1 aspect ratio, original color grading, details and scene. Do not add objects, text, borders or new focal features. The image will be unwrapped after repair; do NOT move the join to the outside edges. Seamless natural continuous center band, physically realistic. 4096x2048 final export.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/seam-prep/la-dusk.png",
+    "unwrap_horizontal": true,
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-85ed7151-00e5-44c1-a4b4-8f9032abdfa9.png"
+  },
+  {
+    "id": "effects/explosion-fireball",
+    "prompt": "Asset: realistic game VFX ANIMATION SPRITE SHEET, transparent PNG, exactly 2048x2048. An expanding spherical orange-yellow explosion fireball, bright ignition, rolling flames, cooling embers, dispersing dark wisps. EXACTLY EIGHT COLUMNS and EIGHT ROWS of equally sized 256x256 cells, exactly 64 frames, frame order left-to-right then top-to-bottom. One evolution of the SAME effect progressing smoothly over all 64 frames; fixed origin, fixed camera, fixed maximum scale, no frame-to-frame camera motion. Each frame centered within its cell with at least 20px empty padding, no overlaps across cell boundaries. Photorealistic simulation render, detailed realistic fluid/fire/particles. TRUE TRANSPARENT alpha background, including soft semi-transparent edge wisps. No background color, no checkerboard artwork, no grid lines, no text, no labels, no frame numbers, no props or weapons.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-e464022b-ec56-4f1c-be0d-2817a8c0335f.png"
+  },
+  {
+    "id": "effects/muzzle-flash-01",
+    "prompt": "Use case: product-mockup. Realistic game VFX animation atlas, 2048x2048 transparent RGBA PNG. Exactly 8 columns x 8 rows, 64 equally spaced cells in regular grid. In each cell: One small warm white-orange starburst muzzle flash, sharp tapering tongues of fire only, no smoke, no dust, no haze or background glow. Effect is TINY within each cell: maximum width and height 40% of cell dimensions, at least 30% of each cell on every side completely empty. Evolve the same effect smoothly through 64 frames row-major, stable cell-center origin, no camera movement. True alpha ZERO everywhere outside the compact fire or fluid silhouettes. No opaque background, no grey or white rectangles, no checkerboard, no text, no cell lines. Render a clear recognizable effect at game scale, physically simulated detail. Negative space between all cells stays fully transparent.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-6225c7b2-971a-4ffd-b6bf-944532f2c41c.png"
+  },
+  {
+    "id": "effects/smoke-plume",
+    "prompt": "Asset: realistic game VFX ANIMATION SPRITE SHEET, transparent PNG, exactly 2048x2048. A rising grey-black smoke plume, soft turbulent billows, spreading and thinning naturally, no fire. EXACTLY EIGHT COLUMNS and EIGHT ROWS of equally sized 256x256 cells, exactly 64 frames, frame order left-to-right then top-to-bottom. One evolution of the SAME effect progressing smoothly over all 64 frames; fixed origin, fixed camera, fixed maximum scale, no frame-to-frame camera motion. Each frame centered within its cell with at least 20px empty padding, no overlaps across cell boundaries. Photorealistic simulation render, detailed realistic fluid/fire/particles. TRUE TRANSPARENT alpha background, including soft semi-transparent edge wisps. No background color, no checkerboard artwork, no grid lines, no text, no labels, no frame numbers, no props or weapons.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-4c0243dd-1440-4837-9832-abb65c2f8154.png"
+  },
+  {
+    "id": "effects/muzzle-flash-02",
+    "prompt": "Use case: background-extraction and precise-object-edit. Repair this game VFX sprite atlas for production. Keep EXACTLY 8 columns and 8 rows, 64 equal cells, square 2048x2048 PNG. Each cell contains a short orange shotgun muzzle flash, fire only, absolutely NO smoke, fog, dust or surrounding bloom plate. Preserve the frame evolution and left-to-right then top-to-bottom order. Make each effect MUCH SMALLER: its maximum visible extent fits within the CENTRAL 45 PERCENT of its cell, with broad empty transparent margins on every side. Remove ALL PALE SQUARE BACKGROUND HAZE from every cell, including behind and between effect shapes. The ONLY alpha above zero belongs to the individual isolated effect silhouette and its very close edge wisps. Negative space must have alpha exactly ZERO. No grey/white plates, no checkerboard, no text, no grid lines. Effects remain realistic simulation cutouts. One effect in each of all 64 cells. Total transparency outside these 64 compact silhouettes.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-46d1fd8d-6371-4809-bf5b-cb4fdb46f487.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-f366d85e-d089-422d-99fa-fa502268e97a.png"
+  },
+  {
+    "id": "effects/muzzle-flash-03",
+    "prompt": "Asset: realistic game VFX ANIMATION SPRITE SHEET, transparent PNG, exactly 2048x2048. Narrow bright cyan plasma muzzle pulse. EXACTLY EIGHT COLUMNS and EIGHT ROWS of equally sized 256x256 cells, exactly 64 frames, frame order left-to-right then top-to-bottom. One evolution of the SAME effect progressing smoothly over all 64 frames; fixed origin, fixed camera, fixed maximum scale, no frame-to-frame camera motion. Each frame centered within its cell with at least 20px empty padding, no overlaps across cell boundaries. Photorealistic simulation render, detailed realistic fluid/fire/particles. TRUE TRANSPARENT alpha background, including soft semi-transparent edge wisps. No background color, no checkerboard artwork, no grid lines, no text, no labels, no frame numbers, no props or weapons.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-d4032e24-8ced-45e6-866a-d856cdec8f95.png"
+  },
+  {
+    "id": "effects/muzzle-flash-04",
+    "prompt": "Asset: realistic game VFX ANIMATION SPRITE SHEET, transparent PNG, exactly 2048x2048. Long thin pale blue rail discharge flash with electric filaments. EXACTLY EIGHT COLUMNS and EIGHT ROWS of equally sized 256x256 cells, exactly 64 frames, frame order left-to-right then top-to-bottom. One evolution of the SAME effect progressing smoothly over all 64 frames; fixed origin, fixed camera, fixed maximum scale, no frame-to-frame camera motion. Each frame centered within its cell with at least 20px empty padding, no overlaps across cell boundaries. Photorealistic simulation render, detailed realistic fluid/fire/particles. TRUE TRANSPARENT alpha background, including soft semi-transparent edge wisps. No background color, no checkerboard artwork, no grid lines, no text, no labels, no frame numbers, no props or weapons.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-9def6e13-04e9-48de-93e6-8ffa8a1c00c0.png"
+  },
+  {
+    "id": "effects/acid-splash",
+    "prompt": "Use case: product-mockup. Realistic game VFX animation atlas, 2048x2048 transparent RGBA PNG. Exactly 8 columns x 8 rows, 64 equally spaced cells in regular grid. In each cell: One small vivid acid-green liquid splash with discrete separated droplets and a compact fluid crown, fading into individual droplets. No smoke, no mist, no fog, no white cloud or ground. Effect is TINY within each cell: maximum width and height 40% of cell dimensions, at least 30% of each cell on every side completely empty. Evolve the same effect smoothly through 64 frames row-major, stable cell-center origin, no camera movement. True alpha ZERO everywhere outside the compact fire or fluid silhouettes. No opaque background, no grey or white rectangles, no checkerboard, no text, no cell lines. Render a clear recognizable effect at game scale, physically simulated detail. Negative space between all cells stays fully transparent.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-0176a59d-b3b6-4938-83e1-9b3aee99f4e9.png"
+  },
+  {
+    "id": "effects/alien-blood-splat",
+    "prompt": "Asset: realistic game VFX ANIMATION SPRITE SHEET, transparent PNG, exactly 2048x2048. Dark violet alien fluid splat, outward moving droplets and a thinning splash ring, no bodies. EXACTLY EIGHT COLUMNS and EIGHT ROWS of equally sized 256x256 cells, exactly 64 frames, frame order left-to-right then top-to-bottom. One evolution of the SAME effect progressing smoothly over all 64 frames; fixed origin, fixed camera, fixed maximum scale, no frame-to-frame camera motion. Each frame centered within its cell with at least 20px empty padding, no overlaps across cell boundaries. Photorealistic simulation render, detailed realistic fluid/fire/particles. TRUE TRANSPARENT alpha background, including soft semi-transparent edge wisps. No background color, no checkerboard artwork, no grid lines, no text, no labels, no frame numbers, no props or weapons.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-125e82b9-2efd-4138-9a88-c82cffef94e6.png"
+  },
+  {
+    "id": "effects/dust-impact",
+    "prompt": "Use case: background-extraction and precise-object-edit. Repair this game VFX sprite atlas for production. Keep EXACTLY 8 columns and 8 rows, 64 equal cells, square 2048x2048 PNG. Each cell contains one small isolated beige dust burst with individually readable particles, absolutely NO rectangular ground patch, atmospheric fill or fog across negative space. Preserve the frame evolution and left-to-right then top-to-bottom order. Make each effect MUCH SMALLER: its maximum visible extent fits within the CENTRAL 45 PERCENT of its cell, with broad empty transparent margins on every side. Remove ALL PALE SQUARE BACKGROUND HAZE from every cell, including behind and between effect shapes. The ONLY alpha above zero belongs to the individual isolated effect silhouette and its very close edge wisps. Negative space must have alpha exactly ZERO. No grey/white plates, no checkerboard, no text, no grid lines. Effects remain realistic simulation cutouts. One effect in each of all 64 cells. Total transparency outside these 64 compact silhouettes.",
+    "reference": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-c0de8f0f-9272-4c68-a013-2065bd62085b.png",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-ae42c676-b52b-47c8-a3ea-b04380d03885.png"
+  },
+  {
+    "id": "effects/sparks",
+    "prompt": "Asset: realistic game VFX ANIMATION SPRITE SHEET, transparent PNG, exactly 2048x2048. Golden hot metal impact sparks, short bright initial star, ballistic streaks fading into embers. EXACTLY EIGHT COLUMNS and EIGHT ROWS of equally sized 256x256 cells, exactly 64 frames, frame order left-to-right then top-to-bottom. One evolution of the SAME effect progressing smoothly over all 64 frames; fixed origin, fixed camera, fixed maximum scale, no frame-to-frame camera motion. Each frame centered within its cell with at least 20px empty padding, no overlaps across cell boundaries. Photorealistic simulation render, detailed realistic fluid/fire/particles. TRUE TRANSPARENT alpha background, including soft semi-transparent edge wisps. No background color, no checkerboard artwork, no grid lines, no text, no labels, no frame numbers, no props or weapons.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-9956385e-2759-4a19-b721-137e9421324a.png"
+  },
+  {
+    "id": "effects/jet-pack-flame",
+    "prompt": "Use case: product-mockup. Realistic game VFX animation atlas, 2048x2048 transparent RGBA PNG. Exactly 8 columns x 8 rows, 64 equally spaced cells in regular grid. In each cell: One very narrow downward cyan-white rocket exhaust FLAME, long pointed taper, clean luminous core and tiny orange fringe. No smoke, no mist, no haze, no surrounding oval, no glow background. Effect is TINY within each cell: maximum width and height 40% of cell dimensions, at least 30% of each cell on every side completely empty. Evolve the same effect smoothly through 64 frames row-major, stable cell-center origin, no camera movement. True alpha ZERO everywhere outside the compact fire or fluid silhouettes. No opaque background, no grey or white rectangles, no checkerboard, no text, no cell lines. Render a clear recognizable effect at game scale, physically simulated detail. Negative space between all cells stays fully transparent.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-490a23d3-e856-478e-aa01-effa05a7a865.png"
+  },
+  {
+    "id": "decals/bullet-holes",
+    "prompt": "Use case: product-mockup. Asset: realistic game DECAL, 1024x1024 transparent PNG. One compact cluster of three ballistic impact holes, dark pitted centers, chipped grey concrete edges and tiny radial cracks, top-down. Only damage fragments, no full wall. Centered with generous transparent margins. True transparent alpha background, isolated surface marking only, all negative space transparent, no square slab, no surrounding ground, no cast shadow, no lighting baked into ground. Photorealistic muted PBR game decal. No labels, borders, text, checkerboard artwork or watermark.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-7d63c85d-a6f9-48fa-b2c5-21c567b1b721.png"
+  },
+  {
+    "id": "decals/tyre-marks",
+    "prompt": "Use case: product-mockup. Asset: realistic game DECAL, 1024x1024 transparent PNG. Two parallel short tyre skid tracks with realistic worn tread impressions, irregular soot-black rubber streaks and soft broken edges, top-down. Centered with generous transparent margins. True transparent alpha background, isolated surface marking only, all negative space transparent, no square slab, no surrounding ground, no cast shadow, no lighting baked into ground. Photorealistic muted PBR game decal. No labels, borders, text, checkerboard artwork or watermark.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-4c0d649f-4df4-4513-a2ff-1953d137f07c.png"
+  },
+  {
+    "id": "decals/blood-pools",
+    "prompt": "Use case: product-mockup. Asset: realistic game DECAL, 1024x1024 transparent PNG. One irregular dark maroon pooled fluid stain with a few satellite droplets, realistic wet rim and dried edge, top-down, no body or injury. Centered with generous transparent margins. True transparent alpha background, isolated surface marking only, all negative space transparent, no square slab, no surrounding ground, no cast shadow, no lighting baked into ground. Photorealistic muted PBR game decal. No labels, borders, text, checkerboard artwork or watermark.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-8cf685aa-6175-4c07-85d3-5328641c7ee8.png"
+  },
+  {
+    "id": "decals/cracks",
+    "prompt": "Use case: product-mockup. Asset: realistic game DECAL, 1024x1024 transparent PNG. One natural branching concrete fracture network, narrow dark fissures and tiny pale chipped edges, top-down. No intact surface fill. Centered with generous transparent margins. True transparent alpha background, isolated surface marking only, all negative space transparent, no square slab, no surrounding ground, no cast shadow, no lighting baked into ground. Photorealistic muted PBR game decal. No labels, borders, text, checkerboard artwork or watermark.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-baed889c-2a60-46d2-bdaa-f3d4f68341d0.png"
+  },
+  {
+    "id": "decals/scorch-marks",
+    "prompt": "Use case: product-mockup. Asset: realistic game DECAL, 1024x1024 transparent PNG. One irregular circular soot-black explosion scorch mark with burned center, diffuse feathered soot rim and a few radial burn streaks, top-down. Centered with generous transparent margins. True transparent alpha background, isolated surface marking only, all negative space transparent, no square slab, no surrounding ground, no cast shadow, no lighting baked into ground. Photorealistic muted PBR game decal. No labels, borders, text, checkerboard artwork or watermark.",
+    "source": "/Users/stevepete/.codex/generated_images/01a1d15b-55b7-7cf3-bcee-4a982df9cb90/exec-957c762e-3f88-48b8-b281-8033d22539ce.png"
+  }
+]
