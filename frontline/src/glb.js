@@ -14,7 +14,8 @@ function redTexture(tex) { const im = tex.image, c = document.createElement('can
 if (src.soldier) new GLTFLoader().parse(bytes(src.soldier), '', g => {
   const scene = g.scene; let mat = null; scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = false; o.frustumCulled = false; mat = o.material; } });
   mat.side = THREE.FrontSide; mat.envMapIntensity = 0.9; if (mat.map) mat.map.anisotropy = 4;
-  const box = new THREE.Box3().setFromObject(scene); ready.soldier = { scene, clip: g.animations[0] || null, scale: HEIGHT / (box.max.y - box.min.y), mat, red: null };
+  const box = new THREE.Box3().setFromObject(scene), clips = {}; for (const c of g.animations) { if (c.name !== 'Dead') for (const t of c.tracks) if (/Hips\.position/.test(t.name)) for (let i = 0; i < t.values.length; i += 3) { t.values[i] = t.values[0]; t.values[i + 2] = t.values[2]; } clips[c.name] = c; }
+  ready.soldier = { scene, clips, scale: HEIGHT / (box.max.y - box.min.y), mat, red: null };
   for (const w of waiting.splice(0)) w();
 }, e => console.warn('soldier model failed to load', e));
 
@@ -33,20 +34,41 @@ export function dress(m, variant) {
     m.traverse(o => { if (o.isMesh) { let p = o, gun = false; while (p) { if (p === J.gun) gun = true; p = p.parent; } if (!gun) o.visible = false; } });
     const body = cloneSkinned(S.scene), holder = new THREE.Group(); holder.rotation.y = Math.PI; holder.scale.setScalar(S.scale); holder.add(body); m.add(holder);
     if (variant === 'red') { if (!S.red) { S.red = S.mat.clone(); S.red.map = redTexture(S.mat.map); } body.traverse(o => { if (o.isMesh) o.material = S.red; }); }
-    const bone = {}; body.traverse(o => { if (o.isBone) bone[o.name] = o; }); const U = { holder, body, bone, mixer: null, act: null, dur: 1, rest: {} };
+    const bone = {}; body.traverse(o => { if (o.isBone) bone[o.name] = o; }); const U = { holder, body, bone, mixer: new THREE.AnimationMixer(body), act: {}, w: {}, rest: {}, last: null, lt: null, vx: 0, vz: 0, deadT: 0, chest: new THREE.Vector3() };
     for (const k in bone) U.rest[k] = bone[k].quaternion.clone();
-    if (S.clip) { U.mixer = new THREE.AnimationMixer(body); const clip = S.clip.clone(); clip.tracks = clip.tracks.filter(t => !/Hips\.position/.test(t.name)); U.act = U.mixer.clipAction(clip); U.act.play(); U.dur = clip.duration; }
-    m.updateWorldMatrix(true, true); const len = (a, b) => bone[B(a)].getWorldPosition(_a).distanceTo(bone[B(b)].getWorldPosition(_b)); U.l1 = len('RightArm', 'RightForeArm'); U.l2 = len('RightForeArm', 'RightHand'); m.userData.body = U; };
+    for (const [k, n] of Object.entries(CLIPS)) if (S.clips[n]) { const a = U.mixer.clipAction(S.clips[n]); a.setEffectiveWeight(0); a.play(); U.act[k] = a; U.w[k] = 0; }
+    if (U.act.dead) { U.act.dead.setLoop(THREE.LoopOnce, 1); U.act.dead.clampWhenFinished = true; }
+    m.updateWorldMatrix(true, true); const len = (a, b) => bone[B(a)].getWorldPosition(_a).distanceTo(bone[B(b)].getWorldPosition(_b)); U.l1 = len('RightArm', 'RightForeArm'); U.l2 = len('RightForeArm', 'RightHand'); U.mixer.update(0); pickChest(m, U, U.chest); m.userData.body = U; };
   if (ready.soldier) go(); else if (src.soldier) waiting.push(go);
 }
-const X = new THREE.Vector3(), _T = new THREE.Vector3(), _pole = new THREE.Vector3(), _mq = new THREE.Quaternion();
+const CLIPS = { walk: 'Walk_Forward_While_Shooting', run: 'Run_and_Shoot', back: 'Walk_Backward_with_Gun', left: 'Walk_Left_with_Gun', right: 'Walk_Left_with_Gun', dead: 'Dead' };
+const X = new THREE.Vector3(), _T = new THREE.Vector3(), _pole = new THREE.Vector3(), _mq = new THREE.Quaternion(), _ch = new THREE.Vector3(), _want = {};
+function pickChest(m, U, out) { m.updateWorldMatrix(true, true); return m.worldToLocal(U.bone[B('Spine2')].getWorldPosition(out)); }
 // Called after the code rig has been posed: s is the same state, grips are the two hand targets in the gun's own space.
-export function poseBody(m, s, gripL, gripR) { const U = m.userData.body; if (!U) return; const J = m.userData.J, bn = U.bone, mv = s.move || 0, run = s.run || 0, hang = s.dead || s.air || s.dive;
-  for (const k in U.rest) bn[k].quaternion.copy(U.rest[k]);
-  if (U.mixer) { U.act.setEffectiveWeight(hang ? 0 : Math.min(1, mv * (0.6 + 0.4 * run))); const ph = ((s.walk || 0) / (Math.PI * 2)) % 1; U.mixer.setTime((ph < 0 ? ph + 1 : ph) * U.dur); }
-  U.holder.position.y = -mv * 0.02; m.updateWorldMatrix(true, true); if (s.dead) return;
+// Which clip plays is worked out from how the soldier is actually moving across the ground relative to where it faces.
+export function poseBody(m, s, gripL, gripR) { const U = m.userData.body; if (!U) return; const J = m.userData.J, bn = U.bone, A = U.act, hang = s.air || s.dive;
+  const t = s.t === undefined ? null : s.t, dt = t === null || U.lt === null ? 0 : Math.min(0.1, Math.max(0, t - U.lt)); U.lt = t;
+  if (dt > 0 && U.last) { const k = Math.min(1, dt * 12); U.vx += ((m.position.x - U.last.x) / dt - U.vx) * k; U.vz += ((m.position.z - U.last.z) / dt - U.vz) * k; } (U.last || (U.last = new THREE.Vector3())).copy(m.position);
+  const yaw = m.rotation.y, fwd = -(U.vx * Math.sin(yaw) + U.vz * Math.cos(yaw)), side = U.vx * Math.cos(yaw) - U.vz * Math.sin(yaw), sp = Math.hypot(fwd, side), mv = Math.min(1, sp / 2.2);
+  for (const k in A) _want[k] = 0;
+  if (s.dead) { _want.dead = 1; m.rotation.x = 0; U.holder.position.y = -0.3; }
+  else { U.holder.position.y = 0; const f = Math.max(0, fwd) / (sp || 1), b = Math.max(0, -fwd) / (sp || 1), l = Math.max(0, -side) / (sp || 1), r = Math.max(0, side) / (sp || 1), n = f + b + l + r || 1, fast = Math.min(1, Math.max(0, (sp - 7) / 2));
+    _want.idle = 1 - mv; _want.run = mv * f / n * fast; _want.walk = mv * f / n * (1 - fast); _want.back = mv * b / n; _want.left = mv * l / n; _want.right = mv * r / n; if (hang) { for (const k in _want) _want[k] = 0; _want.idle = 1; } }
+  const kk = t === null ? 1 : Math.min(1, dt * 9); let idleW = 0, walkW = 0, leftW = 0, rightW = 0;
+  for (const k in A) { U.w[k] += (_want[k] - U.w[k]) * kk; }
+  // Clips that share one animation (idle and walk, left and right) share one action: its weight is the sum, its speed set by whichever leads.
+  const cad = Math.min(1.5, Math.max(0.75, sp / 5));
+  if (A.walk) { A.walk.setEffectiveWeight(U.w.walk); A.walk.timeScale = cad * 1.25; }
+  if (A.run) { A.run.setEffectiveWeight(U.w.run); A.run.timeScale = Math.min(1.5, Math.max(0.85, sp / 8.5)); }
+  if (A.back) { A.back.setEffectiveWeight(U.w.back); A.back.timeScale = cad; }
+  if (A.left) { A.left.setEffectiveWeight(U.w.left + U.w.right); A.left.timeScale = U.w.right > U.w.left ? -cad : cad; }
+  if (A.dead) { A.dead.setEffectiveWeight(U.w.dead); if (s.dead) { if (!U.deadT) A.dead.reset().play(); U.deadT += dt; if (t === null) A.dead.time = A.dead.getClip().duration; } else U.deadT = 0; }
+  for (const k in U.rest) bn[k].quaternion.copy(U.rest[k]); U.mixer.update(dt);
+  if (s.dead) { m.updateWorldMatrix(true, true); return; }
+  // The weapon rides the chest, so it bobs and sways with the body instead of floating in front of it.
+  pickChest(m, U, _ch).sub(U.chest); J.gun.position.x += _ch.x * 0.8; J.gun.position.y += _ch.y; J.gun.position.z += _ch.z * 0.8; m.updateWorldMatrix(true, true);
   m.getWorldQuaternion(_mq); X.set(1, 0, 0).applyQuaternion(_mq);
-  const lean = (s.pitch || 0) * 0.45 - 0.06 * mv - (s.kick || 0) * 0.03; turn(bn[B('Spine1')], _q.setFromAxisAngle(X, lean)); turn(bn[B('Head')], _q.setFromAxisAngle(X, (s.pitch || 0) * 0.3));
+  const lean = (s.pitch || 0) * 0.45 - (s.kick || 0) * 0.03 + 0.06 + Math.sin((t || 0) * 1.9) * 0.012; turn(bn[B('Spine1')], _q.setFromAxisAngle(X, lean)); turn(bn[B('Head')], _q.setFromAxisAngle(X, (s.pitch || 0) * 0.3));
   if (hang) { for (const sd of ['Left', 'Right']) { turn(bn[B(sd + 'UpLeg')], _q.setFromAxisAngle(X, sd === 'Left' ? -0.5 : -0.15)); turn(bn[B(sd + 'Leg')], _q.setFromAxisAngle(X, sd === 'Left' ? 0.9 : 0.5)); } }
-  for (const sd of ['Left', 'Right']) { const R = sd === 'Right'; J.gun.localToWorld(_T.copy(R ? gripR : gripL)); _pole.set(R ? 0.6 : -0.6, -1, 0.35).applyQuaternion(_mq); reach(bn[B(sd + 'Arm')], bn[B(sd + 'ForeArm')], bn[B(sd + 'Hand')], _T, _pole, U.l1 * 1, U.l2); }
+  for (const sd of ['Left', 'Right']) { const R = sd === 'Right'; J.gun.localToWorld(_T.copy(R ? gripR : gripL)); _pole.set(R ? 0.6 : -0.6, -1, 0.35).applyQuaternion(_mq); reach(bn[B(sd + 'Arm')], bn[B(sd + 'ForeArm')], bn[B(sd + 'Hand')], _T, _pole, U.l1, U.l2); }
 }

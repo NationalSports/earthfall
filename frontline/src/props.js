@@ -53,6 +53,7 @@ const DEF = {
 const UPRIGHT = { streetLight: 1, trafficLight: 1, billboard: 1, pole: 1, mast: 1, floodlight: 1, hydrant: 1 }, _n = new THREE.Vector3(), _q = new THREE.Quaternion(), _up = new THREE.Vector3(0, 1, 0);
 const BAKED = {}; const baked = name => { if (!BAKED[name]) { const k = new Kit(); DEF[name](k); BAKED[name] = k.bake(); } return BAKED[name]; };
 // footprint (width, depth) used for collision and cover
+const TALL = { car: 1.5, truck: 2.9, bus: 3.2, barrier: 1.1, dumpster: 1.6, container: 2.7, tank: 2.9, habitat: 3.4, rover: 1.9, crates: 1.3, sandbags: 1, rubble: 1.1, planter: 0.9 };
 const SIZE = { car: [1.9, 4.4], truck: [2.2, 6], bus: [2.6, 10.6], barrier: [0.7, 2.7], dumpster: [2.1, 1.3], container: [2.5, 6.1], tank: [2.7, 5.2], habitat: [5.2, 9], rover: [2.3, 3.5], crates: [2.2, 1], sandbags: [3.6, 0.6], rubble: [2.6, 2.2], planter: [1.7, 1.7], mast: [1.2, 1.2] };
 
 // ---------- Road surface: one shader that paints asphalt, cracks, lane lines and puddles from world position
@@ -136,12 +137,12 @@ export function buildDistrict(group, world, H, TEX, addSolid, blocked, opts) { o
           else { const g = new THREE.BoxGeometry(w, h, d).toNonIndexed(), uv = g.attributes.uv, ru = Math.max(1, Math.round(Math.max(w, d) / 8)), rv = Math.max(1, Math.round(h / 8)); for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * ru, uv.getY(i) * rv); g.translate(x, y0 + h / 2, z); gb[Math.floor(r() * fm.length)].push(g);
           const rf = new THREE.BoxGeometry(w + 0.6, 0.5, d + 0.6).toNonIndexed(); rf.translate(x, y0 + h + 0.25, z); roofs.push(rf); const ac = new THREE.BoxGeometry(w * 0.3, 1.2, d * 0.3).toNonIndexed(); ac.translate(x + (r() - 0.5) * w * 0.4, y0 + h + 1.1, z + (r() - 0.5) * d * 0.4); roofs.push(ac); if (r() < 0.5) { const tk = new THREE.CylinderGeometry(1.1, 1.1, 2.2, 10).toNonIndexed(); tk.translate(x + (r() - 0.5) * w * 0.5, y0 + h + 2.2, z + (r() - 0.5) * d * 0.5); roofs.push(tk); }
  }
-          addSolid(x, z, w, d); } t += along2 + 2.5 + r() * 9; } }
+          addSolid(x, z, w, d, null, h - 0.1); } t += along2 + 2.5 + r() * 9; } }
     gb.forEach((list, i) => { if (list.length) { const m = new THREE.Mesh(mergeGeometries(list), fm[i]); m.castShadow = m.receiveShadow = true; group.add(m); } }); if (roofs.length) { const m = new THREE.Mesh(mergeGeometries(roofs), P.roof); m.castShadow = m.receiveShadow = true; group.add(m); } }
   // stamping
   const put = (name, x, z, rot, o) => { o = o || {}; if (!o.force && blocked && blocked(x, z, name)) return false; const y = H(x, z) + (o.y || 0); _o.position.set(x, y, z); _o.rotation.set(o.tiltX || 0, rot || 0, o.tiltZ || 0, 'YXZ'); if (!UPRIGHT[name]) { _n.set(H(x - 1.2, z) - H(x + 1.2, z), 2.4, H(x, z - 1.2) - H(x, z + 1.2)).normalize(); _q.setFromUnitVectors(_up, _n); _o.quaternion.premultiply(_q); } _o.scale.setScalar(o.s || 1); _o.updateMatrix(); const G = baked(name); placed.push({ name, x, z, rotation: rot || 0 });
     for (const k in G) { const g = G[k].clone().applyMatrix4(_o.matrix), key = (o.swap && o.swap[k]) || k; (bucket[key] = bucket[key] || []).push(g); }
-    const baseName = name.replace(/Wreck$|Open$/, ''), sz2 = SIZE[baseName]; if (sz2 && addSolid && !o.ghost) { const c = Math.abs(Math.cos(rot || 0)), s = Math.abs(Math.sin(rot || 0)); addSolid(x, z, (sz2[0] * c + sz2[1] * s) * (o.s || 1), (sz2[0] * s + sz2[1] * c) * (o.s || 1)); } return true; };
+    const baseName = name.replace(/Wreck$|Open$/, ''), sz2 = SIZE[baseName]; if (sz2 && addSolid && !o.ghost) { const c = Math.abs(Math.cos(rot || 0)), s = Math.abs(Math.sin(rot || 0)); addSolid(x, z, (sz2[0] * c + sz2[1] * s) * (o.s || 1), (sz2[0] * s + sz2[1] * c) * (o.s || 1), null, TALL[baseName] ? TALL[baseName] * (o.s || 1) : undefined); } return true; };
   const along = (rd, every, side, fn, start) => { let carry = start || 0; for (let i = 0; i < rd.length - 1; i++) { const ax = rd[i][0], az = rd[i][1], dx = rd[i + 1][0] - ax, dz = rd[i + 1][1] - az, len = Math.hypot(dx, dz), nx = -dz / len, nz = dx / len; let d = carry; for (; d < len; d += every) fn(ax + dx * d / len + nx * side, az + dz * d / len + nz * side, Math.atan2(dx, dz), d); carry = d - len; } };
   const BODY = ['carA', 'carB', 'carC', 'carD', 'carE', 'carF'], wreck = () => (r() < 0.5 ? 'burnt' : 'rust');
   if (world === 'la') {
