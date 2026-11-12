@@ -327,13 +327,13 @@ L.step = S => { // advance one hour
 // ---------- Command cards ----------
 // Earned by liberating a territory (one per day) or killing a leader. Play one for its effect, or trade any three for reserves.
 const CARDS_DEF = {
-  airdrop: { name: 'Airdrop', art: 'deploy', desc: '+3 reserve troops, now.' },
-  intercept: { name: 'Intercept', art: 'interceptor', desc: 'The largest incoming war party loses 3 strength.' },
-  quiet: { name: 'Quiet Night', art: 'disruptor', desc: 'The invasion skips its next day of growth.' },
-  convoy: { name: 'Supply Convoy', art: 'rapid-transport', desc: '+40 metal and +40 fuel.' },
-  eyes: { name: 'Eyes Everywhere', art: 'deep-recon', desc: '+6 intel and the whole map revealed for 48 hours.' },
-  rally: { name: 'Rally', art: 'elite-training', desc: 'Strike team back to full readiness.' },
-  dig: { name: 'Dig In', art: 'fortify', desc: '+2 troops in every territory with a war party inbound.' },
+  airdrop: { name: 'Airdrop', art: 'card-airdrop', desc: '+3 reserve troops, now.' },
+  intercept: { name: 'Intercept', art: 'card-intercept', desc: 'The largest incoming war party loses 3 strength.' },
+  quiet: { name: 'Quiet Night', art: 'card-quiet', desc: 'The invasion skips its next day of growth.' },
+  convoy: { name: 'Supply Convoy', art: 'card-convoy', desc: '+40 metal and +40 fuel.' },
+  eyes: { name: 'Eyes Everywhere', art: 'card-eyes', desc: '+6 intel and the whole map revealed for 48 hours.' },
+  rally: { name: 'Rally', art: 'card-rally', desc: 'Strike team back to full readiness.' },
+  dig: { name: 'Dig In', art: 'card-dig', desc: '+2 troops in every territory with a war party inbound.' },
   double: { name: 'Double Time', art: 'elite-training', desc: '+2 Orders, now.' } };
 L.drawCard = (S, why) => { S.cards = S.cards || []; if (S.cards.length >= 6) return; const k = pick(Object.keys(CARDS_DEF)); S.cards.push(k);
   L.log(S, 'Command card earned ' + why + ': ' + CARDS_DEF[k].name + '.', 'good'); S.ev.push({ k: 'toast', msg: 'Command card: ' + CARDS_DEF[k].name, kind: 'good' }); };

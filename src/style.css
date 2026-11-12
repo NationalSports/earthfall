@@ -126,3 +126,8 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 
 .plabel.you{background:#14606a;border-color:#6fe0da}.labels .tlabel.strong .tn::before{content:'✦ ';color:var(--gold)}
 #coach.show .helpb{padding:4px 9px;border-radius:50%}.note.job{color:var(--gold)}
+/* Art delivery of 11 Nov (#33): action emblems, city and trait emblems, How to play pictures */
+.ab i.ai{display:block;width:26px;height:26px;background-size:contain;background-repeat:no-repeat;background-position:center}.ab.gold i.ai{filter:brightness(0) opacity(.8)}.ab.teal i.ai{filter:brightness(0) invert(1)}
+.perk{position:relative}.perk .pk{position:absolute;right:8px;top:50%;width:34px;height:34px;margin-top:-17px;background-size:contain;background-repeat:no-repeat;opacity:.9}.perk .pk~b,.perk .pk~span{padding-right:44px}
+.tag .ti{display:inline-block;width:11px;height:11px;margin-right:3px;vertical-align:-1px;background-size:contain;background-repeat:no-repeat;filter:brightness(1.5)}
+.obj .art.hp{flex:none;width:72px;height:48px;border-radius:6px;border:1px solid var(--line)}
