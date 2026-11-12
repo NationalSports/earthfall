@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { makeSoldier, poseSoldier, makeBug, poseBug, makeHive, makeTurret, makePod, makeShip, setWeapon } from './models.js';
 import { buildDistrict } from './props.js';
 import { createAudio } from './audio.js';
-import { createRenderer, createComposer, makeTextures, buildSky, scatter, createParticles, createDecals } from './gfx.js';
+import { createRenderer, createComposer, makeTextures, buildSky, scatter, createParticles, createDecals, weather } from './gfx.js';
 (function () {
   'use strict';
   const $ = s => document.querySelector(s);
@@ -58,13 +58,13 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
     const g = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, map: gt || TEX.ground, bumpMap: TEX.groundBump, bumpScale: 1.4, roughness: 0.96, metalness: 0 })); g.receiveShadow = true; world.add(g);
     const facade = tex('facade');
     const building = (x, z, w, d, h) => { const y0 = H(x, z) - 1.5; if (W.city) { const fm = (facade || TEX.facade).clone(), fg = TEX.facadeGlow.clone(); for (const t of [fm, fg]) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(Math.max(1, Math.round(w / 9)), Math.max(1, Math.round(h / 9))); t.needsUpdate = true; }
-        world.add(box(w, h, d, new THREE.MeshStandardMaterial({ map: fm, emissiveMap: facade ? null : fg, emissive: facade ? 0x000000 : 0xffffff, emissiveIntensity: 1.5, roughness: 0.82, metalness: 0.1 }), x, y0 + h / 2, z));
+        world.add(box(w, h, d, weather(new THREE.MeshStandardMaterial({ map: fm, emissiveMap: facade ? null : fg, emissive: facade ? 0x000000 : 0xffffff, emissiveIntensity: 1.5, roughness: 0.82, metalness: 0.1 }), 0.7, 0), x, y0 + h / 2, z));
         world.add(box(w + 0.5, 0.5, d + 0.5, M.wallD, x, y0 + h + 0.25, z)); world.add(box(w * 0.28, 1.1, d * 0.3, M.gun, x - w * 0.2, y0 + h + 1.0, z + d * 0.12)); world.add(box(w * 0.16, 0.7, d * 0.2, M.wallD, x + w * 0.24, y0 + h + 0.8, z - d * 0.2)); world.add(cyl(0.05, 0.07, 4.5, M.gun, x + w * 0.3, y0 + h + 2.7, z + d * 0.3, 5)); world.add(box(1.6, 1.0, 0.5, M.wallD, x, y0 + 2.0, z - d / 2 - 0.3)); }
       else { for (let k = 0; k < 4; k++) { const sp = new THREE.Mesh(new THREE.ConeGeometry(Math.min(w, d) * (0.5 - k * 0.09), h * (1.7 - k * 0.32), 5), M.crystal); sp.position.set(x + Math.sin(k * 2.1) * w * 0.3 * (k ? 1 : 0), y0 + h * (0.85 - k * 0.16), z + Math.cos(k * 2.1) * d * 0.3 * (k ? 1 : 0)); sp.rotation.set(Math.sin(x + k) * 0.22, x + k, Math.cos(z + k) * 0.22); sp.castShadow = true; world.add(sp); } const cl = new THREE.PointLight(0x9a6cff, 30, 26, 2); cl.position.set(x, y0 + h * 0.8, z); world.add(cl); }
       addSolid(x, z, w, d); };
     for (const x of [-52, -34, 34, 52]) { building(x, 62, 14, 12, 10 + Math.abs(x % 9)); building(x, 44 - Math.abs(x) * 0.1, 12, 12, 8 + Math.abs((x * 3) % 7)); }
     building(-16, 70, 14, 10, 14); building(16, 70, 14, 10, 12); building(-30, 6, 9, 9, 5); building(26, -4, 10, 8, 6); building(17, -19, 9, 9, 4); building(-58, -10, 8, 10, 5); building(60, 8, 9, 8, 5);
-    district = buildDistrict(world, SETUP.world, H, TEX, addSolid, (x, z) => Math.hypot(x - CORE.x, z - CORE.z) < 9.5 || Math.hypot(x - 7, z - 36) < 3.5 || solids.some(q => x > q.x0 - 0.8 && x < q.x1 + 0.8 && z > q.z0 - 0.8 && z < q.z1 + 0.8));
+    district = buildDistrict(world, SETUP.world, H, TEX, addSolid, (x, z) => Math.hypot(x - CORE.x, z - CORE.z) < 9.5 || Math.hypot(x - 7, z - 36) < 3.5 || solids.some(q => x > q.x0 - 0.8 && x < q.x1 + 0.8 && z > q.z0 - 0.8 && z < q.z1 + 0.8), { facades: [tex('facade-art-deco') || TEX.facade.clone(), tex('facade-industrial') || TEX.facade.clone()], keepOut: [[CORE.x, CORE.z, 34], [0, 100, 16], [-64, -20, 15], [14, -42, 15], [66, -18, 15], [-62, 20, 7], [48, -18, 7], [-20, -40, 7], [70, 34, 7], [8, -64, 7], [0, -62, 14]] });
     fires = district.emitters.filter(e => e.fire).map(e => { const l = new THREE.PointLight(0xff7a30, 40, 26, 2); l.position.set(e.x, e.y + 1, e.z); world.add(l); return { e, l }; });
     scatter(world, SETUP.world, H, ARENA, (x, z) => district.paved(x, z, 0.6) || Math.hypot(x - CORE.x, z - CORE.z) < 15 || solids.some(q => x > q.x0 - 1.5 && x < q.x1 + 1.5 && z > q.z0 - 1.5 && z < q.z1 + 1.5), TEX); decals = createDecals(world, TEX, H);
     const cg = new THREE.Group(); cg.add(cyl(4, 4.6, 1, M.armorD, 0, 0.5, 0, 16)); const orb = new THREE.Mesh(new THREE.OctahedronGeometry(2.1, 0), M.core); orb.position.y = 4; orb.castShadow = true; cg.add(orb); cg.add(cyl(0.35, 0.35, 3, M.gun, 0, 2.2, 0)); const pl = new THREE.PointLight(0x46d6d0, 90, 46, 2); pl.position.y = 4; cg.add(pl); cg.position.set(CORE.x, 0, CORE.z); world.add(cg); CORE.orb = orb; CORE.light = pl; addSolid(CORE.x, CORE.z, 8, 8); }
@@ -375,7 +375,7 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
   if (ASSETS.title) $('#intro').style.backgroundImage = 'linear-gradient(#060b13cc,#060b13ee),url(' + ASSETS.title + ')';
   let last = performance.now();
   function frame(now) { if (window.__frozen) { last = now; return requestAnimationFrame(frame); } const dt = Math.min(0.05, (now - last) / 1000); last = now; gtime += dt; if (state !== 'menu' && state !== 'over') step(dt); shake = Math.max(0, shake - dt * 2.4); recoil = Math.max(0, recoil - dt * 0.35); hurtT = Math.max(0, hurtT - dt * 1.6); if (player && state !== 'menu') { SFX.listen(player.x, player.z, player.yaw); let near = 0; for (const e of enemies) if (e.kind !== 'hive' && Math.hypot(e.x - player.x, e.z - player.z) < 45) near++; SFX.setIntensity(state === 'over' ? 0 : (state === 'wave' ? 0.18 : 0.05) + near / 16); } else SFX.setIntensity(0.1);
-    particles.update(dt); placeCamera(); drawMarkers(); if (skyCtl) post.setSun(skyCtl.sunDir);
+    particles.update(dt); placeCamera(); drawMarkers(); if (skyCtl) { post.setSun(skyCtl.sunDir); skyCtl.tick(gtime); }
     if (skyCtl) { if (player && state !== 'menu') skyCtl.follow(player.x, player.y || 0, player.z); else skyCtl.follow(CORE.x, 0, CORE.z - 20); } post.grade.uniforms.uTime.value = gtime; post.grade.uniforms.uHurt.value = hurtT * 0.55;
     if (player && state !== 'menu') drawHud(dt); post.composer.render(dt); requestAnimationFrame(frame); }
   buildWorld(); if (window.FRONTLINE_SETUP) begin({}); else menu(); requestAnimationFrame(frame);
