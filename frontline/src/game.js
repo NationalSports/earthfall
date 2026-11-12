@@ -14,7 +14,7 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
 
   // ---------- Worlds: the same battle rules on different ground
   const WORLDS = {
-    la: { name: 'Los Angeles', sub: 'Earth · the edge of the city', sky: 0x6b86a3, sun: 0xffd9a8, hemi: 0x9fc4e8, g0: [0.16, 0.19, 0.23], g1: [0.02, 0.07, -0.07], hill: 1, city: true },
+    la: { name: 'Los Angeles', sub: 'Earth · the edge of the city', sky: 0x6b86a3, sun: 0xffd9a8, hemi: 0x9fc4e8, g0: [0.16, 0.19, 0.23], g1: [0.02, 0.07, -0.07], hill: 0.38, city: true, dusk: true },
     kepler: { name: 'Kepler Ridge', sub: 'Off-world · crystal highlands', sky: 0x3b2450, sun: 0xffb0e0, hemi: 0xb08cff, g0: [0.22, 0.14, 0.2], g1: [0.1, -0.02, 0.06], hill: 1.7, city: false },
     ceres: { name: 'Ceres Station', sub: 'Off-world · mining flats', sky: 0x0e1420, sun: 0xcfe4ff, hemi: 0x6f8fb8, g0: [0.2, 0.2, 0.22], g1: [0.03, 0.02, 0.0], hill: 0.55, city: true } };
 
@@ -46,7 +46,7 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
   const V = (x, y, z) => new THREE.Vector3(x, y, z);
 
   // ---------- Arena (rebuilt for each battle)
-  const ARENA = 125, CORE = { x: 0, z: 46, hp: 100, max: 100 }; let solids = [], world = null, district = null, fires = [];
+  const ARENA = 125, CORE = { x: 0, z: 46, hp: 100, max: 100 }; let solids = [], world = null, district = null, fires = [], lampL = [], lampT = 0;
   const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
   function H(x, z) { const d = Math.hypot(x - CORE.x, z - CORE.z), k = smooth(20, 52, d) * W.hill; return k * (Math.sin(x * 0.045 + 1.3) * Math.cos(z * 0.05 - 0.4) * 4.2 + Math.sin(x * 0.11 + z * 0.07) * 1.5 + Math.cos(z * 0.021 + x * 0.013) * 3.2 + 2.2 * smooth(60, 110, d)); }
   function addSolid(x, z, w, d, ref) { const s = { x0: x - w / 2, x1: x + w / 2, z0: z - d / 2, z1: z + d / 2, ref }; solids.push(s); return s; }
@@ -55,7 +55,7 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
     const geo = new THREE.PlaneGeometry(ARENA * 2, ARENA * 2, 180, 180); geo.rotateX(-Math.PI / 2); const p = geo.attributes.position, col = new Float32Array(p.count * 3), uv = geo.attributes.uv;
     for (let i = 0; i < p.count; i++) { const x = p.getX(i), z = p.getZ(i), h = H(x, z); p.setY(i, h); const t = smooth(14, 44, Math.hypot(x - CORE.x, z - CORE.z)), v = clamp(0.62 + t * 0.3 + h * 0.022, 0.4, 1.25); col[i * 3] = v * (1 - (1 - t) * 0.12); col[i * 3 + 1] = v * (1 - (1 - t) * 0.1); col[i * 3 + 2] = v; uv.setXY(i, x / 5.5, z / 5.5); }
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3)); geo.computeVertexNormals(); const gt = tex('ground-' + SETUP.world) || tex('ground'); if (gt) { gt.wrapS = gt.wrapT = THREE.RepeatWrapping; }
-    const g = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, map: gt || TEX.ground, bumpMap: TEX.groundBump, bumpScale: 1.4, roughness: 0.96, metalness: 0 })); g.receiveShadow = true; world.add(g);
+    const g = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: W.dusk ? 0x8f9788 : 0xffffff, vertexColors: true, map: gt || TEX.ground, bumpMap: TEX.groundBump, bumpScale: 1.4, roughness: 0.96, metalness: 0 })); g.receiveShadow = true; world.add(g);
     const facade = (SETUP.world === 'ceres' ? tex('facade-station') : null) || tex('facade');
     const building = (x, z, w, d, h) => { const y0 = H(x, z) - 1.5; if (W.city) { const fm = (facade || TEX.facade).clone(), fg = TEX.facadeGlow.clone(); for (const t of [fm, fg]) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(Math.max(1, Math.round(w / 9)), Math.max(1, Math.round(h / 9))); t.needsUpdate = true; }
         world.add(box(w, h, d, weather(new THREE.MeshStandardMaterial({ map: fm, emissiveMap: facade ? null : fg, emissive: facade ? 0x000000 : 0xffffff, emissiveIntensity: 1.5, roughness: 0.82, metalness: 0.1 }), 0.7, 0), x, y0 + h / 2, z));
@@ -64,8 +64,9 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
       addSolid(x, z, w, d); };
     for (const x of [-52, -34, 34, 52]) { building(x, 62, 14, 12, 10 + Math.abs(x % 9)); building(x, 44 - Math.abs(x) * 0.1, 12, 12, 8 + Math.abs((x * 3) % 7)); }
     building(-16, 70, 14, 10, 14); building(16, 70, 14, 10, 12); building(-30, 6, 9, 9, 5); building(26, -4, 10, 8, 6); building(17, -19, 9, 9, 4); building(-58, -10, 8, 10, 5); building(60, 8, 9, 8, 5);
-    district = buildDistrict(world, SETUP.world, H, TEX, addSolid, (x, z) => Math.hypot(x - CORE.x, z - CORE.z) < 9.5 || Math.hypot(x - 7, z - 36) < 3.5 || solids.some(q => x > q.x0 - 0.8 && x < q.x1 + 0.8 && z > q.z0 - 0.8 && z < q.z1 + 0.8), { facades: [tex('facade-art-deco') || TEX.facade.clone(), tex('facade-industrial') || TEX.facade.clone()], keepOut: [[CORE.x, CORE.z, 34], [0, 100, 16], [-64, -20, 15], [14, -42, 15], [66, -18, 15], [-62, 20, 7], [48, -18, 7], [-20, -40, 7], [70, 34, 7], [8, -64, 7], [0, -62, 14]] });
+    district = buildDistrict(world, SETUP.world, H, TEX, addSolid, (x, z) => Math.hypot(x - CORE.x, z - CORE.z) < 9.5 || Math.hypot(x - 7, z - 36) < 3.5 || solids.some(q => x > q.x0 - 0.8 && x < q.x1 + 0.8 && z > q.z0 - 0.8 && z < q.z1 + 0.8), { facades: [tex('facade-art-deco') || TEX.facade.clone(), tex('facade-industrial') || TEX.facade.clone()], wet: !!W.dusk, dusk: !!W.dusk, keepOut: [[CORE.x, CORE.z, 34], [0, 100, 16], [-64, -20, 15], [14, -42, 15], [66, -18, 15], [-62, 20, 7], [48, -18, 7], [-20, -40, 7], [70, 34, 7], [8, -64, 7], [0, -62, 14]] });
     fires = district.emitters.filter(e => e.fire).map(e => { const l = new THREE.PointLight(0xff7a30, 40, 26, 2); l.position.set(e.x, e.y + 1, e.z); world.add(l); return { e, l }; });
+    lampL = []; if (W.dusk || SETUP.world !== 'la') for (let i = 0; i < 4; i++) { const l = new THREE.PointLight(0xffb870, 0, 24, 1.8); world.add(l); lampL.push(l); } lampT = 0; post.bloom.strength = skyCtl.K.bloom || 0.32; post.grade.uniforms.uRays.value = skyCtl.K.rays || 0.3;
     scatter(world, SETUP.world, H, ARENA, (x, z) => district.paved(x, z, 0.6) || Math.hypot(x - CORE.x, z - CORE.z) < 15 || solids.some(q => x > q.x0 - 1.5 && x < q.x1 + 1.5 && z > q.z0 - 1.5 && z < q.z1 + 1.5), TEX); decals = createDecals(world, TEX, H);
     const cg = new THREE.Group(); cg.add(cyl(4, 4.6, 1, M.armorD, 0, 0.5, 0, 16)); const orb = new THREE.Mesh(new THREE.OctahedronGeometry(2.1, 0), M.core); orb.position.y = 4; orb.castShadow = true; cg.add(orb); cg.add(cyl(0.35, 0.35, 3, M.gun, 0, 2.2, 0)); const pl = new THREE.PointLight(0x46d6d0, 90, 46, 2); pl.position.y = 4; cg.add(pl); cg.position.set(CORE.x, 0, CORE.z); world.add(cg); CORE.orb = orb; CORE.light = pl; addSolid(CORE.x, CORE.z, 8, 8); }
 
@@ -364,7 +365,7 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
     if (bannerT > 0) { bannerT -= dt; if (bannerT <= 0) hud.msg.parentNode.classList.remove('on'); } }
   function placeCamera() { if (!player || state === 'menu') { const t = performance.now() / 9000; camera.position.set(Math.sin(t) * 70, 34, CORE.z + 40 + Math.cos(t) * 30); camera.lookAt(CORE.x, 4, CORE.z - 40); return; }
     if (state === 'drop') { const k = 1 - clamp(phaseT / 2.6, 0, 1); camera.position.set(player.x + 16, 24 - k * 12, player.z + 30); camera.lookAt(player.x, 34 - k * 32, player.z); return; }
-    const sin = Math.sin(player.yaw), cos = Math.cos(player.yaw), back = 5.4 * Math.cos(player.pitch), up = 2.4 - player.pitch * 3.2, py = player.y || 0, cx = player.x + sin * back + cos * 0.95, cz = player.z + cos * back - sin * 0.95;
+    const sin = Math.sin(player.yaw), cos = Math.cos(player.yaw), back = 4.3 * Math.cos(player.pitch), up = 2.3 - player.pitch * 2.8, py = player.y || 0, cx = player.x + sin * back + cos * 0.95, cz = player.z + cos * back - sin * 0.95;
     const sx = (Math.random() - 0.5) * shake * 0.5, sy = (Math.random() - 0.5) * shake * 0.5;
     camera.position.set(cx + sx, Math.max(py + up + 0.9, H(cx, cz) + 0.6) + sy, cz); camera.lookAt(player.x - sin * 12 + cos * 0.95, py + 1.6 + (player.pitch + recoil) * 12, player.z - cos * 12 - sin * 0.95); camera.updateMatrixWorld(); }
 
@@ -375,7 +376,7 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
   if (ASSETS.title) $('#intro').style.backgroundImage = 'linear-gradient(90deg,#060b13f5 30%,#060b1366 75%),url(' + ASSETS.title + ')';
   let last = performance.now();
   function frame(now) { if (window.__frozen) { last = now; return requestAnimationFrame(frame); } const dt = Math.min(0.05, (now - last) / 1000); last = now; gtime += dt; if (state !== 'menu' && state !== 'over') step(dt); shake = Math.max(0, shake - dt * 2.4); recoil = Math.max(0, recoil - dt * 0.35); hurtT = Math.max(0, hurtT - dt * 1.6); if (player && state !== 'menu') { SFX.listen(player.x, player.z, player.yaw); let near = 0; for (const e of enemies) if (e.kind !== 'hive' && Math.hypot(e.x - player.x, e.z - player.z) < 45) near++; SFX.setIntensity(state === 'over' ? 0 : (state === 'wave' ? 0.18 : 0.05) + near / 16); } else SFX.setIntensity(0.1);
-    particles.update(dt); placeCamera(); drawMarkers(); if (skyCtl) { post.setSun(skyCtl.sunDir); skyCtl.tick(gtime); }
+    particles.update(dt); placeCamera(); drawMarkers(); if (skyCtl) { post.setSun(skyCtl.sunDir); skyCtl.tick(gtime, camera.position); if (lampL.length && player && ((lampT -= dt) <= 0)) { lampT = 0.5; const near = district.lights.map(l => [Math.hypot(l[0] - player.x, l[1] - player.z), l]).sort((a, b) => a[0] - b[0]); lampL.forEach((L2, i) => { const q = near[i]; if (q) { L2.position.set(q[1][0], H(q[1][0], q[1][1]) + (q[1][2] || 5) - 0.6, q[1][1]); L2.intensity = 70; } else L2.intensity = 0; }); } }
     if (skyCtl) { if (player && state !== 'menu') skyCtl.follow(player.x, player.y || 0, player.z); else skyCtl.follow(CORE.x, 0, CORE.z - 20); } post.grade.uniforms.uTime.value = gtime; post.grade.uniforms.uHurt.value = hurtT * 0.55;
     if (player && state !== 'menu') drawHud(dt); post.composer.render(dt); requestAnimationFrame(frame); }
   buildWorld(); if (window.FRONTLINE_SETUP) begin({}); else menu(); requestAnimationFrame(frame);

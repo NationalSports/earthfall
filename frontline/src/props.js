@@ -69,7 +69,7 @@ const BAKED = {}; const baked = name => { if (!BAKED[name]) { const k = new Kit(
 const SIZE = { car: [1.9, 4.4], truck: [2.2, 6], bus: [2.6, 10.6], barrier: [0.7, 2.7], dumpster: [2.1, 1.3], container: [2.5, 6.1], tank: [2.7, 5.2], habitat: [5.2, 9], rover: [2.3, 3.5], crates: [2.2, 1], sandbags: [3.6, 0.6], rubble: [2.6, 2.2], planter: [1.7, 1.7], mast: [1.2, 1.2] };
 
 // ---------- Road surface: one shader that paints asphalt, cracks, lane lines and puddles from world position
-function roadMaterial(style) { const mat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.85, metalness: 0, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4 }); const dirt = style === 'track';
+function roadMaterial(style, wet) { const mat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.85, metalness: 0, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4 }); const dirt = style === 'track';
   mat.onBeforeCompile = sh => { sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vWp; varying vec2 vRuv;').replace('#include <begin_vertex>', '#include <begin_vertex>\nvWp = (modelMatrix * vec4(position, 1.0)).xyz; vRuv = uv;');
     sh.fragmentShader = sh.fragmentShader.replace('#include <common>', `#include <common>
       varying vec3 vWp; varying vec2 vRuv; float fPuddle = 0.0; float fFine = 0.0;
@@ -84,8 +84,8 @@ function roadMaterial(style) { const mat = new THREE.MeshStandardMaterial({ colo
         ${dirt ? 'float tr = smoothstep(0.12, 0.0, abs(abs(vRuv.x - 0.5) - 0.22)); a *= 1.0 - tr * 0.3;' : `float wear = 0.35 + 0.65 * smoothstep(0.3, 0.7, rf(w * 0.6 + 40.0));
         float dash = step(fract(vRuv.y * 0.16), 0.5) * smoothstep(0.022, 0.012, abs(vRuv.x - 0.5)); float edge = smoothstep(0.014, 0.006, abs(abs(vRuv.x - 0.5) - 0.44));
         a = mix(a, vec3(0.72, 0.56, 0.12), dash * wear); a = mix(a, vec3(0.72, 0.72, 0.7), edge * wear);`}
-        fPuddle = smoothstep(0.56, 0.64, rf(w * 0.13 + 3.0)) * ${dirt ? '0.0' : '1.0'}; a = mix(a, a * 0.4, fPuddle); diffuseColor.rgb = a; }`)
-      .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = mix(0.9 - fFine * 0.2, 0.05, fPuddle);'); };
+        fPuddle = smoothstep(${wet ? '0.44, 0.54' : '0.56, 0.64'}, rf(w * 0.13 + 3.0)) * ${dirt ? '0.0' : '1.0'}; a = mix(a, a * 0.4, fPuddle); diffuseColor.rgb = a; }`)
+      .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = mix(' + (wet ? '0.42' : '0.9') + ' - fFine * 0.2, 0.04, fPuddle);'); };
   return mat; }
 function ribbon(pts, width, H, lift, step) { const pos = [], uv = [], idx = [], cols = 4; let dist = 0, row = 0;
   for (let i = 0; i < pts.length - 1; i++) { const ax = pts[i][0], az = pts[i][1], bx2 = pts[i + 1][0], bz = pts[i + 1][1], len = Math.hypot(bx2 - ax, bz - az), n = Math.max(1, Math.round(len / step)), nx = -(bz - az) / len, nz = (bx2 - ax) / len;
@@ -101,7 +101,7 @@ export function buildDistrict(group, world, H, TEX, addSolid, blocked, opts) { o
   const half = L.width / 2 + (L.walks ? 2.6 : 0.5), segs = []; for (const rd of L.roads) for (let i = 0; i < rd.length - 1; i++) segs.push([rd[i][0], rd[i][1], rd[i + 1][0], rd[i + 1][1]]);
   const paved = (x, z, pad) => { for (const s of segs) { const dx = s[2] - s[0], dz = s[3] - s[1], l2 = dx * dx + dz * dz, t = Math.max(0, Math.min(1, ((x - s[0]) * dx + (z - s[1]) * dz) / l2)); if (Math.hypot(x - s[0] - dx * t, z - s[1] - dz * t) < half + (pad || 0)) return true; } return false; };
   // surfaces
-  const rm = roadMaterial(L.style); for (const rd of L.roads) { const m = new THREE.Mesh(ribbon(rd, L.width, H, 0.09, 1.3), rm); m.receiveShadow = true; group.add(m); }
+  const rm = roadMaterial(L.style, opts.wet); for (const rd of L.roads) { const m = new THREE.Mesh(ribbon(rd, L.width, H, 0.09, 1.3), rm); m.receiveShadow = true; group.add(m); }
   if (L.walks) { const wm = new THREE.MeshStandardMaterial({ map: TEX.concrete.clone(), color: 0xb8b2a6, roughness: 0.95, bumpMap: TEX.concrete, bumpScale: 0.4, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -2 }); wm.map.repeat.set(1, 0.25); wm.map.needsUpdate = true;
     for (const rd of L.roads) for (const sd of [-1, 1]) { const p = rd.map((q, i) => { const a = rd[Math.max(0, i - 1)], b = rd[Math.min(rd.length - 1, i + 1)], l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; return [q[0] - (b[1] - a[1]) / l * sd * (L.width / 2 + 1.2), q[1] + (b[0] - a[0]) / l * sd * (L.width / 2 + 1.2)]; }); const m = new THREE.Mesh(ribbon(p, 2.4, H, 0.17, 1.3), wm); m.receiveShadow = true; group.add(m); } }
   const pad = new THREE.Mesh(new THREE.CircleGeometry(14, 40), L.style === 'street' ? new THREE.MeshStandardMaterial({ map: TEX.concrete, color: 0xc4beb2, roughness: 0.9, bumpMap: TEX.concrete, bumpScale: 0.4, polygonOffset: true, polygonOffsetFactor: -3, polygonOffsetUnits: -6 }) : new THREE.MeshStandardMaterial({ color: 0x3a3d44, roughness: 0.6, metalness: 0.5, bumpMap: TEX.plate, bumpScale: 0.4, polygonOffset: true, polygonOffsetFactor: -3, polygonOffsetUnits: -6 })); pad.rotation.x = -PI / 2; pad.position.set(0, H(0, 46) + 0.2, 46); pad.receiveShadow = true; group.add(pad);
@@ -122,7 +122,7 @@ export function buildDistrict(group, world, H, TEX, addSolid, blocked, opts) { o
   const along = (rd, every, side, fn, start) => { let carry = start || 0; for (let i = 0; i < rd.length - 1; i++) { const ax = rd[i][0], az = rd[i][1], dx = rd[i + 1][0] - ax, dz = rd[i + 1][1] - az, len = Math.hypot(dx, dz), nx = -dz / len, nz = dx / len; let d = carry; for (; d < len; d += every) fn(ax + dx * d / len + nx * side, az + dz * d / len + nz * side, Math.atan2(dx, dz), d); carry = d - len; } };
   const BODY = ['carA', 'carB', 'carC', 'carD', 'carE', 'carF'], wreck = () => (r() < 0.5 ? 'burnt' : 'rust');
   if (world === 'la') {
-    L.roads.forEach((rd, ri) => { let n = 0; along(rd, 24, L.width / 2 + 1.3, (x, z, a) => { const sd = (n++ % 2) ? 1 : -1, dx = Math.cos(a), dz = -Math.sin(a), px = sd > 0 ? x : x - dx * (L.width + 2.6), pz = sd > 0 ? z : z - dz * (L.width + 2.6); if (put('streetLight', px, pz, a + (sd > 0 ? PI / 2 : -PI / 2) + PI, { ghost: true })) lights.push([px, pz]); }, 9 + ri * 5); });
+    L.roads.forEach((rd, ri) => { let n = 0; along(rd, 24, L.width / 2 + 1.3, (x, z, a) => { const sd = (n++ % 2) ? 1 : -1, dx = Math.cos(a), dz = -Math.sin(a), px = sd > 0 ? x : x - dx * (L.width + 2.6), pz = sd > 0 ? z : z - dz * (L.width + 2.6); const rot = a + (sd > 0 ? PI / 2 : -PI / 2) + PI; if (put('streetLight', px, pz, rot, { ghost: true })) lights.push([px + Math.cos(rot) * 1.75, pz - Math.sin(rot) * 1.75, 7.2]); }, 9 + ri * 5); });
     for (const [x, z] of [[0, 25], [0, -32], [-72, 25], [72, 25], [-72, -32], [72, -32]]) { put('trafficLight', x + 6.2, z + 6.2, PI, { ghost: true, force: true }); put('trafficLight', x - 6.2, z - 6.2, 0, { ghost: true, force: true }); }
     // traffic that never got out: parked, abandoned and burned vehicles make the cover north of the core
     const cars = [[-2.6, 8, 0.05], [2.4, -4, 3.2], [-2.2, -16, 0.4, 1], [3.0, -44, 2.9], [-1.5, -58, 1.2, 1], [2.6, -74, 0.1], [-2.8, -90, 3.0, 1], [-16, 22.6, 1.6], [-28, 27.6, 1.5], [-42, 22.4, 1.7, 1], [18, 27.4, 4.6], [33, 22.6, 4.7], [52, 27.8, 1.5, 1], [-20, -29.8, 1.5], [-48, -34.4, 4.8, 1], [24, -34.2, 1.6], [46, -29.6, 4.9], [-74.6, 6, 0.1], [-69.6, -14, 3.1, 1], [74.5, -6, 0.0], [69.8, 12, 3.2], [-74.5, 52, 0.05], [74.4, 58, 3.1], [-95, 27.5, 1.6], [96, 22.5, 4.7, 1]];
@@ -147,5 +147,8 @@ export function buildDistrict(group, world, H, TEX, addSolid, blocked, opts) { o
     for (const [x, z] of [[-9, 30], [9, 30], [18, 6], [-20, -8], [4, -30], [-8, -62]]) put('crates', x, z, r() * 3); for (const [x, z, a] of [[-5, 19, 0.1], [6, 17, -0.15], [-14, 22, 0.5], [15, 21, -0.5]]) put('sandbags', x, z, a);
     for (const x of [-2.4, 0.8, 3.6]) put('barrier', x, 12, PI / 2 + (r() - 0.5) * 0.2); for (const [x, z] of [[-16, 14], [16, -14], [-24, -34], [22, -58]]) put('rubble', x, z, r() * 6);
   }
+  if (opts.dusk && lights.length) { const cones = [], pools = []; for (const l of lights) { const gy = H(l[0], l[1]), c = new THREE.ConeGeometry(3.4, (l[2] || 5), 14, 1, true).toNonIndexed(); c.translate(l[0], gy + (l[2] || 5) / 2, l[1]); cones.push(c); const d = new THREE.CircleGeometry(4.6, 20).toNonIndexed(); d.rotateX(-PI / 2); d.translate(l[0], gy + 0.22, l[1]); pools.push(d); }
+    const cm = new THREE.Mesh(mergeGeometries(cones), new THREE.MeshBasicMaterial({ color: 0xffc078, transparent: true, opacity: 0.04, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, fog: false })); group.add(cm);
+    const pm2 = new THREE.Mesh(mergeGeometries(pools), new THREE.MeshBasicMaterial({ color: 0xffb060, transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -12 })); group.add(pm2); }
   for (const k in bucket) { const m = new THREE.Mesh(mergeGeometries(bucket[k]), P[k]); m.castShadow = !/^lamp|sign|poster/.test(k); m.receiveShadow = true; group.add(m); }
   return { paved, emitters, lights }; }

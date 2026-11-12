@@ -101,7 +101,7 @@ export function makeTextures(world) {
 
 // ---------- Sky, sun and image-based lighting
 const SKIES = {
-  la: { elev: 16, azim: 214, turb: 3.2, ray: 1.5, mie: 0.0025, sun: 0xffe2b8, sunI: 2.6, hemi: [0xbfd6f2, 0x4a4030, 0.5], fog: 0x74889c, fogD: 0.0026, tint: [1.04, 1.0, 0.95], exp: 0.46, env: 0.6 },
+  la: { elev: 4.5, azim: 206, turb: 9, ray: 2.6, mie: 0.012, sun: 0xff9a56, sunI: 2.1, hemi: [0x5870a0, 0x1c1814, 0.42], fog: 0x2a3444, fogD: 0.0058, tint: [1.05, 0.99, 0.96], exp: 0.62, env: 0.42, cloud: 0.72, rain: true, bloom: 0.55, rays: 0.5 },
   kepler: { elev: 13, azim: 325, turb: 8, ray: 3.0, mie: 0.012, sun: 0xffb0d8, sunI: 2.4, hemi: [0xc8a0ff, 0x402048, 0.5], fog: 0x6a4f88, fogD: 0.0038, tint: [1.14, 0.84, 1.22], exp: 0.42, env: 0.55 },
   ceres: { elev: 30, azim: 50, sun: 0xdcebff, sunI: 3.2, hemi: [0x5a6f96, 0x18181c, 0.35], fog: 0x05070b, fogD: 0.0016, tint: [0.96, 1.0, 1.08], exp: 0.8, env: 0.3, space: true } };
 export function buildSky(renderer, scene, group, world, grade) { const K = SKIES[world] || SKIES.la, phi = THREE.MathUtils.degToRad(90 - K.elev), theta = THREE.MathUtils.degToRad(K.azim), sunDir = new THREE.Vector3().setFromSphericalCoords(1, phi, theta);
@@ -121,7 +121,9 @@ export function buildSky(renderer, scene, group, world, grade) { const K = SKIES
         void main(){ vec3 d = normalize(vD); if (d.y < 0.015) discard; vec2 uv = d.xz / (d.y + 0.16) * 0.9 + vec2(uTime * 0.006, uTime * 0.002); float c = f(uv), c2 = f(uv + uSun.xz * 0.12);
           float a = smoothstep(1.0 - uCover - 0.08, 1.0 - uCover + 0.2, c) * smoothstep(0.015, 0.2, d.y); float lit = clamp((c - c2) * 4.0 + 0.55, 0.0, 1.0); float s = pow(max(dot(d, normalize(uSun)), 0.0), 6.0);
           vec3 col = mix(uDark, uLit * 1.5, lit) + uLit * s * 2.2; gl_FragColor = vec4(col, a * 0.92); }` })); clouds.renderOrder = 1; group.add(clouds);
-    const fill = new THREE.DirectionalLight(K.hemi[0], 0.85); fill.position.set(-sunDir.x, 0.7, -sunDir.z); group.add(fill); }
+    const fill = new THREE.DirectionalLight(K.hemi[0], K.rain ? 0.55 : 0.85); fill.position.set(-sunDir.x, 0.7, -sunDir.z); group.add(fill); }
+  let rain = null; if (K.rain) { const N = 1500, rp = new Float32Array(N * 6), seed = rng(5); rain = { N, rp, o: new Float32Array(N * 3) }; for (let i = 0; i < N; i++) { rain.o[i * 3] = (seed() - 0.5) * 44; rain.o[i * 3 + 1] = seed() * 22; rain.o[i * 3 + 2] = (seed() - 0.5) * 44; }
+    const rg = new THREE.BufferGeometry(); rg.setAttribute('position', new THREE.BufferAttribute(rp, 3)); rain.mesh = new THREE.LineSegments(rg, new THREE.LineBasicMaterial({ color: 0xa8bcd4, transparent: true, opacity: 0.32, fog: false, depthWrite: false })); rain.mesh.frustumCulled = false; group.add(rain.mesh); }
   // Light the whole scene from the sky itself, so metal picks up real reflections.
   const pm = new THREE.PMREMGenerator(renderer), envScene = new THREE.Scene(); if (K.space) { envScene.background = new THREE.Color(0x0a0d14); const l = new THREE.Mesh(new THREE.SphereGeometry(30, 16, 12), new THREE.MeshBasicMaterial({ color: 0xffffff })); l.position.copy(sunDir).multiplyScalar(200); envScene.add(l); } else { const s2 = new Sky(); s2.scale.setScalar(620); for (const k of ['turbidity', 'rayleigh', 'mieCoefficient', 'mieDirectionalG']) s2.material.uniforms[k].value = skyObj.material.uniforms[k].value; s2.material.uniforms.sunPosition.value.copy(sunDir); envScene.add(s2); }
   const env = pm.fromScene(envScene, 0.04).texture; scene.environment = env; scene.environmentIntensity = K.env; pm.dispose();
@@ -130,7 +132,8 @@ export function buildSky(renderer, scene, group, world, grade) { const K = SKIES
   const sun = new THREE.DirectionalLight(K.sun, K.sunI); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.05; Object.assign(sun.shadow.camera, { left: -62, right: 62, top: 62, bottom: -62, near: 1, far: 320 }); sun.shadow.camera.updateProjectionMatrix(); group.add(sun, sun.target);
   renderer.toneMappingExposure = K.exp; if (grade) grade.uniforms.uTint.value.set(K.tint[0], K.tint[1], K.tint[2]);
   // The shadow box follows the action so shadows stay sharp near you.
-  return { sunDir, hideDome() { skyObj.visible = false; if (clouds) clouds.visible = false; }, tick(t) { if (clouds) clouds.material.uniforms.uTime.value = t; }, follow(x, y, z) { if (clouds) clouds.position.set(x, 0, z); sun.target.position.set(x, y, z); sun.position.set(x + sunDir.x * 150, y + sunDir.y * 150, z + sunDir.z * 150); } }; }
+  return { sunDir, K, hideDome() { skyObj.visible = false; if (clouds) clouds.visible = false; }, tick(t, cam) { if (clouds) clouds.material.uniforms.uTime.value = t;
+      if (rain && cam) { const { N, rp, o } = rain, cx = cam.x, cy = cam.y, cz = cam.z; for (let i = 0; i < N; i++) { const y = ((o[i * 3 + 1] - t * 26) % 22 + 22) % 22 - 8, x = ((o[i * 3] - cx) % 44 + 66) % 44 - 22, z = ((o[i * 3 + 2] - cz + t * 3) % 44 + 66) % 44 - 22, j = i * 6; rp[j] = cx + x; rp[j + 1] = cy + y; rp[j + 2] = cz + z; rp[j + 3] = cx + x + 0.06; rp[j + 4] = cy + y + 0.75; rp[j + 5] = cz + z - 0.1; } rain.mesh.geometry.attributes.position.needsUpdate = true; } }, follow(x, y, z) { if (clouds) clouds.position.set(x, 0, z); sun.target.position.set(x, y, z); sun.position.set(x + sunDir.x * 150, y + sunDir.y * 150, z + sunDir.z * 150); } }; }
 
 // ---------- Scenery scattered across the field (instanced, so thousands cost almost nothing)
 export function scatter(group, world, H, ARENA, avoid, tex) { const r = rng(world.length * 31 + 5), dummy = new THREE.Object3D();
