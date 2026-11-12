@@ -4,6 +4,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { ConvexGeometry } from 'three/addons/geometries/ConvexGeometry.js';
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const PI = Math.PI, UP = new THREE.Vector3(0, 1, 0), DOWN = new THREE.Vector3(0, -1, 0);
@@ -20,11 +21,24 @@ const torus = (r, t) => new THREE.TorusGeometry(r, t, 5, 16);
 const lathe = (pts, seg) => new THREE.LatheGeometry(pts.map(p => new THREE.Vector2(p[0], p[1])), seg || 14);
 const clean = g => { const n = g.index ? g.toNonIndexed() : g; for (const k of Object.keys(n.attributes)) if (k !== 'position' && k !== 'normal' && k !== 'uv') n.deleteAttribute(k); return n; };
 
+// ---------- Sculpting tools: faceted crystal hulls, chamfered armour blocks, and blades cut from a drawn outline
+const withUv = g => { if (!g.attributes.uv) g.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(g.attributes.position.count * 2), 2)); return g; };
+// a faceted solid wrapped around a set of points; pass mirror=true to give only the +x half
+const hull = (pts, mirror) => { const v = []; for (const p of pts) { v.push(new THREE.Vector3(p[0], p[1], p[2])); if (mirror && p[0] !== 0) v.push(new THREE.Vector3(-p[0], p[1], p[2])); } return withUv(new ConvexGeometry(v)); };
+// a box with every edge cut back, so plates catch light on their bevels
+const cham = (w, h, d, c) => { const x = w / 2, y = h / 2, z = d / 2, p = []; c = Math.min(c, x * 0.9, y * 0.9, z * 0.9); for (const sx of [-1, 1]) for (const sy of [-1, 1]) for (const sz of [-1, 1]) p.push([sx * (x - c), sy * y, sz * (z - c)], [sx * x, sy * (y - c), sz * (z - c)], [sx * (x - c), sy * (y - c), sz * z]); return hull(p); };
+// a curved blade hanging down from the origin: scythe legs, horns, back spikes
+const blade = (len, w, curve, thick, tipX) => { const sh = new THREE.Shape(); sh.moveTo(-w / 2, 0); sh.lineTo(w / 2, 0); sh.quadraticCurveTo(w / 2 + curve, -len * 0.5, tipX || 0, -len); sh.quadraticCurveTo(-w / 2 + curve * 0.55, -len * 0.5, -w / 2, 0); const g = new THREE.ExtrudeGeometry(sh, { depth: thick, bevelEnabled: true, bevelThickness: thick * 0.45, bevelSize: Math.min(w * 0.3, thick * 0.9), bevelSegments: 1, curveSegments: 5, steps: 1 }); g.translate(0, 0, -thick / 2); return g; };
+// a flat plate cut from an outline in the XY plane and given thickness, with bevelled edges
+const cut = (pts, thick, bev) => { const sh = new THREE.Shape(); sh.moveTo(pts[0][0], pts[0][1]); for (let i = 1; i < pts.length; i++) sh.lineTo(pts[i][0], pts[i][1]); sh.closePath(); const g = new THREE.ExtrudeGeometry(sh, { depth: thick, bevelEnabled: true, bevelThickness: bev || thick * 0.35, bevelSize: bev || thick * 0.35, bevelSegments: 1, steps: 1 }); g.translate(0, 0, -thick / 2); return g; };
+
 class Kit {
   constructor() { this.by = {}; }
   add(mat, geo, p, r, s) { _o.position.set(0, 0, 0); _o.rotation.set(0, 0, 0); _o.scale.set(1, 1, 1); if (p) _o.position.set(p[0], p[1], p[2]); if (r) _o.rotation.set(r[0], r[1], r[2]); if (typeof s === 'number') _o.scale.setScalar(s); else if (s) _o.scale.set(s[0], s[1], s[2]); _o.updateMatrix(); const g = clean(geo); g.applyMatrix4(_o.matrix); (this.by[mat] = this.by[mat] || []).push(g); return this; }
   // a tapered limb between two points
   seg(mat, a, b, r0, r1, sides) { _a.set(a[0], a[1], a[2]); _b.set(b[0], b[1], b[2]); const len = _a.distanceTo(_b), g = clean(cyl(r1, r0, len, sides || 6)); _q.setFromUnitVectors(UP, _b.clone().sub(_a).normalize()); g.applyQuaternion(_q); g.translate((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2); (this.by[mat] = this.by[mat] || []).push(g); return this; }
+  // a blade from point a aimed at point b (its length is the distance between them)
+  blade(mat, a, b, w, curve, thick) { const dx = b[0] - a[0], dy = b[1] - a[1], dz = b[2] - a[2], hd = Math.hypot(dx, dz), len = Math.hypot(hd, dy), g = clean(blade(len, w, curve, thick, 0)); g.rotateZ(Math.atan2(hd, -dy)); g.rotateY(-Math.atan2(dz, dx)); g.translate(a[0], a[1], a[2]); (this.by[mat] = this.by[mat] || []).push(g); return this; }
   bake() { const out = {}; for (const k in this.by) out[k] = mergeGeometries(this.by[k]); return out; }
 }
 
@@ -39,36 +53,47 @@ function rig(key, def, M, over) {
 
 // ---------- Soldier (faces -z). Materials: A main armour, D dark armour, under, gun, visor, strip.
 const ARM1 = 0.36, ARM2 = 0.35, SHOULDER = [0.33, 0.56, 0], GUN_AT = [0.06, 0.36, -0.22], GRIP_R = new THREE.Vector3(0, -0.12, 0.06), GRIP_L = new THREE.Vector3(0, -0.09, -0.4);
-function soldierDef(node, red) {
+function soldierDef(node, red) { // layered armour over a dark under-suit: every plate is a faceted hull or a chamfered block
+  const X = (pts, sx) => pts.map(p => [p[0] * sx, p[1], p[2]]);
   let k = node('hips', null, [0, 1, 0]);
-  k.add('under', rb(0.42, 0.22, 0.28, 0.06)).add('D', rb(0.46, 0.09, 0.32, 0.03), [0, 0.1, 0]).add('A', rb(0.16, 0.2, 0.08, 0.03), [0, -0.06, -0.15], [0.15, 0, 0])
-    .add('D', rb(0.12, 0.16, 0.1, 0.03), [0.25, 0, 0.03]).add('D', rb(0.12, 0.16, 0.1, 0.03), [-0.25, 0, 0.03]).add('D', rb(0.2, 0.14, 0.09, 0.03), [0, 0, 0.17]).add('strip', bx(0.07, 0.025, 0.01), [0, 0.1, -0.165]);
+  k.add('under', cham(0.36, 0.2, 0.24, 0.05)).add('D', cham(0.42, 0.08, 0.3, 0.02), [0, 0.1, 0]).add('G', cham(0.09, 0.07, 0.03, 0.01), [0, 0.1, -0.155]).add('D', cham(0.2, 0.12, 0.08, 0.02), [0, 0.02, 0.17])
+    .add('A', hull([[0.09, 0.02, -0.15], [0.06, -0.16, -0.13], [0, -0.2, -0.11], [0, 0.03, -0.17], [0.07, 0.0, -0.1]], true));
+  for (const s of [-1, 1]) k.add('D', cham(0.1, 0.13, 0.07, 0.02), [s * 0.15, 0.02, -0.16]).add('D', cham(0.07, 0.13, 0.1, 0.02), [s * 0.22, 0.02, 0.04]).add('A', cham(0.07, 0.2, 0.2, 0.02), [s * 0.235, -0.1, 0], [0, 0, s * 0.12]).add('strip', bx(0.012, 0.05, 0.08), [s * 0.275, -0.1, 0]);
   for (const s of [-1, 1]) { const side = s < 0 ? 'L' : 'R';
     k = node('leg' + side, 'hips', [s * 0.15, -0.08, 0]);
-    k.add('under', cap(0.105, 0.26), [0, -0.2, 0]).add('A', rb(0.2, 0.3, 0.12, 0.04), [0, -0.2, -0.07], [-0.05, 0, 0]).add('D', rb(0.08, 0.24, 0.2, 0.03), [s * 0.1, -0.2, 0]);
-    if (s > 0) k.add('gun', rb(0.07, 0.2, 0.12, 0.02), [0.15, -0.2, 0.02]);
+    k.seg('under', [0, 0, 0], [0, -0.44, 0], 0.105, 0.085, 6).add('A', hull([[0.1, -0.04, -0.1], [0.115, -0.2, -0.13], [0.085, -0.38, -0.11], [0, -0.03, -0.13], [0, -0.2, -0.16], [0, -0.4, -0.125], [0.1, -0.2, -0.04]], true))
+      .add('A', cham(0.05, 0.3, 0.17, 0.02), [s * 0.118, -0.2, 0]).add('D', cham(0.16, 0.26, 0.05, 0.02), [0, -0.2, 0.1]).add('D', cham(0.23, 0.035, 0.23, 0.01), [0, -0.09, 0]).add('D', cham(0.035, 0.22, 0.02, 0.008), [0, -0.2, -0.158]);
+    if (s > 0) k.add('gun', cham(0.06, 0.2, 0.11, 0.02), [0.16, -0.2, 0.03]).add('G', cham(0.065, 0.03, 0.115, 0.008), [0.16, -0.12, 0.03]); else k.add('D', cham(0.06, 0.14, 0.1, 0.02), [-0.16, -0.22, 0.02]);
     k = node('shin' + side, 'leg' + side, [0, -0.44, 0]);
-    k.add('G', rb(0.16, 0.2, 0.1, 0.04), [0, 0, -0.07], [0.1, 0, 0]).add('under', cap(0.085, 0.26), [0, -0.22, 0.01]).add('A', rb(0.18, 0.32, 0.17, 0.05), [0, -0.22, -0.035]).add('strip', bx(0.03, 0.14, 0.012), [0, -0.2, -0.123])
-      .add('D', rb(0.19, 0.13, 0.34, 0.04), [0, -0.415, -0.06]).add('gun', bx(0.2, 0.04, 0.36), [0, -0.47, -0.06]).add('D', rb(0.2, 0.1, 0.1, 0.03), [0, -0.36, 0.08]).add('G', rb(0.2, 0.09, 0.1, 0.03), [0, -0.435, -0.2]); }
+    k.add('G', hull([[0.078, 0.07, -0.1], [0.095, 0, -0.118], [0.078, -0.085, -0.1], [0, 0.1, -0.112], [0, -0.105, -0.112], [0, 0, -0.14], [0.06, 0, -0.05]], true)).seg('under', [0, 0, 0], [0, -0.4, 0], 0.085, 0.07, 6)
+      .add('A', hull([[0.09, -0.09, -0.09], [0.102, -0.2, -0.1], [0.086, -0.36, -0.08], [0, -0.08, -0.11], [0, -0.2, -0.132], [0, -0.37, -0.1], [0.09, -0.1, 0.03], [0.08, -0.34, 0.04]], true))
+      .add('D', cham(0.03, 0.24, 0.02, 0.008), [0, -0.22, -0.128]).add('strip', bx(0.024, 0.1, 0.012), [0, -0.3, -0.118]).add('D', cham(0.15, 0.22, 0.06, 0.02), [0, -0.22, 0.078]).add('D', cham(0.17, 0.06, 0.2, 0.02), [0, -0.385, 0])
+      .add('A', hull([[0.095, -0.4, -0.2], [0.1, -0.47, -0.24], [0.1, -0.47, 0.11], [0.09, -0.38, 0.1], [0.07, -0.36, -0.1], [0, -0.37, -0.22]], true)).add('G', hull([[0.096, -0.42, -0.2], [0.102, -0.47, -0.25], [0.06, -0.43, -0.275], [0.07, -0.47, -0.28], [0, -0.42, -0.285]], true))
+      .add('gun', cham(0.21, 0.035, 0.4, 0.01), [0, -0.487, -0.075]).add('D', cham(0.18, 0.08, 0.08, 0.02), [0, -0.44, 0.1]); }
   k = node('torso', 'hips', [0, 0.1, 0]);
-  k.add('under', rb(0.36, 0.26, 0.24, 0.08), [0, 0.1, 0]).add('D', rb(0.3, 0.07, 0.06, 0.02), [0, 0.08, -0.12]).add('D', rb(0.26, 0.07, 0.06, 0.02), [0, 0.0, -0.115])
-    .add('A', rb(0.6, 0.4, 0.36, 0.1), [0, 0.4, 0]).add('D', rb(0.44, 0.2, 0.1, 0.04), [0, 0.46, -0.17], [-0.2, 0, 0]).add('G', rb(0.2, 0.1, 0.06, 0.02), [0, 0.3, -0.18], [0.1, 0, 0]).add('G', rb(0.62, 0.05, 0.1, 0.02), [0, 0.22, -0.14])
-    .add('strip', bx(0.1, 0.025, 0.02), [0.11, 0.5, -0.225]).add('strip', bx(0.1, 0.025, 0.02), [-0.11, 0.5, -0.225]).add('D', cyl(0.16, 0.21, 0.1, 12), [0, 0.63, 0.02])
-    .add('A', rb(0.42, 0.46, 0.18, 0.05), [0, 0.4, 0.26]).add('G', rb(0.44, 0.05, 0.19, 0.02), [0, 0.2, 0.26]).add('A', rb(0.36, 0.1, 0.2, 0.04), [0, 0.66, 0.25]).add('A', rb(0.2, 0.2, 0.05, 0.02), [0, 0.42, 0.355])
-    .add('gun', cyl(0.06, 0.06, 0.34, 8), [0.17, 0.36, 0.36]).add('gun', cyl(0.06, 0.06, 0.34, 8), [-0.17, 0.36, 0.36]).add('gun', cyl(0.05, 0.07, 0.08, 8), [0.17, 0.15, 0.36]).add('gun', cyl(0.05, 0.07, 0.08, 8), [-0.17, 0.15, 0.36])
-    .add('strip', bx(0.025, 0.14, 0.012), [0.05, 0.42, 0.383]).add('strip', bx(0.025, 0.14, 0.012), [-0.05, 0.42, 0.383]).add('strip', bx(0.24, 0.02, 0.012), [0, 0.66, 0.352])
-    .add('gun', cyl(0.008, 0.012, 0.5, 5), [0.17, 0.92, 0.3]).add('strip', sph(0.022, 6, 5), [0.17, 1.17, 0.3]);
+  k.add('under', cham(0.32, 0.24, 0.22, 0.05), [0, 0.1, 0]); for (let i = 0; i < 3; i++) k.add('D', cham(0.25 - i * 0.02, 0.055, 0.04, 0.012), [0, 0.17 - i * 0.07, -0.115 + i * 0.004]);
+  k.add('A', hull([[0.3, 0.56, -0.12], [0.31, 0.3, -0.16], [0.2, 0.2, -0.17], [0.3, 0.58, 0.12], [0.29, 0.26, 0.14], [0, 0.6, -0.17], [0, 0.22, -0.2], [0, 0.42, -0.225], [0.18, 0.6, 0.16], [0, 0.24, 0.17]], true))
+    .add('D', hull([[0.2, 0.565, -0.2], [0.23, 0.44, -0.215], [0, 0.42, -0.25], [0, 0.585, -0.215], [0.1, 0.61, -0.19]], true)).add('G', cham(0.5, 0.03, 0.04, 0.01), [0, 0.385, -0.212]).add('G', hull([[0.08, 0.3, -0.2], [0, 0.26, -0.21], [0, 0.34, -0.22], [0.06, 0.34, -0.205]], true))
+    .add('strip', bx(0.09, 0.022, 0.02), [0.11, 0.5, -0.232]).add('strip', bx(0.09, 0.022, 0.02), [-0.11, 0.5, -0.232]).add('D', cham(0.3, 0.09, 0.3, 0.04), [0, 0.64, 0.02]).add('D', cham(0.5, 0.4, 0.06, 0.02), [0, 0.42, 0.16]);
+  for (const s of [-1, 1]) k.add('A', cham(0.05, 0.18, 0.16, 0.02), [s * 0.165, 0.1, -0.02]).add('D', cham(0.07, 0.06, 0.36, 0.02), [s * 0.2, 0.615, 0.04]).add('D', cham(0.05, 0.3, 0.04, 0.015), [s * 0.2, 0.46, -0.2], [0.1, 0, 0])
+    .add('gun', cyl(0.055, 0.055, 0.36, 8), [s * 0.2, 0.36, 0.37]).add('G', cyl(0.058, 0.058, 0.04, 8), [s * 0.2, 0.55, 0.37]).add('gun', cyl(0.045, 0.065, 0.08, 8), [s * 0.2, 0.14, 0.37]).add('strip', bx(0.022, 0.14, 0.012), [s * 0.05, 0.42, 0.378]);
+  k.add('A', cham(0.34, 0.46, 0.18, 0.04), [0, 0.4, 0.28]).add('D', cham(0.3, 0.1, 0.2, 0.03), [0, 0.67, 0.27]).add('G', cham(0.36, 0.04, 0.19, 0.01), [0, 0.21, 0.28]).add('D', cyl(0.06, 0.06, 0.34, 8), [0, 0.11, 0.3], [0, 0, PI / 2]).add('strip', bx(0.2, 0.02, 0.012), [0, 0.67, 0.372])
+    .add('gun', cyl(0.008, 0.012, 0.5, 5), [0.13, 0.95, 0.3]).add('strip', sph(0.022, 6, 5), [0.13, 1.2, 0.3]); for (let i = 0; i < 3; i++) k.add('gun', bx(0.2, 0.015, 0.02), [0, 0.56 - i * 0.035, 0.372]);
   k = node('head', 'torso', [0, 0.74, 0]);
-  k.add('under', cyl(0.07, 0.085, 0.1, 8), [0, -0.03, 0]).add('A', rb(0.36, 0.34, 0.42, 0.11), [0, 0.14, 0]).add('A', rb(0.3, 0.1, 0.36, 0.04), [0, 0.3, 0.01]).add('D', rb(0.28, 0.13, 0.26, 0.05), [0, 0.02, -0.06])
-    .add('visor', rb(0.3, 0.11, 0.08, 0.03), [0, 0.14, -0.185]).add('visor', rb(0.05, 0.11, 0.16, 0.02), [0.165, 0.14, -0.12]).add('visor', rb(0.05, 0.11, 0.16, 0.02), [-0.165, 0.14, -0.12]).add('D', rb(0.38, 0.05, 0.14, 0.02), [0, 0.215, -0.17], [-0.2, 0, 0])
-    .add('D', rb(0.06, 0.07, 0.36, 0.02), [0, 0.36, 0.02]).add('G', cyl(0.065, 0.065, 0.06, 10), [0.2, 0.1, 0.02], [0, 0, PI / 2]).add('G', cyl(0.065, 0.065, 0.06, 10), [-0.2, 0.1, 0.02], [0, 0, PI / 2])
-    .add('strip', bx(0.1, 0.02, 0.02), [0, 0.06, 0.222]).add('D', rb(0.1, 0.08, 0.08, 0.02), [0, -0.01, -0.19]);
-  if (red) k.add('A', rb(0.5, 0.08, 0.4, 0.02), [0, 0.26, -0.03]).add('A', rb(0.34, 0.08, 0.32, 0.02), [0, 0.36, 0.0]).add('A', rb(0.07, 0.18, 0.22, 0.02), [0.25, 0.17, 0.03]).add('A', rb(0.07, 0.18, 0.22, 0.02), [-0.25, 0.17, 0.03]).add('G', rb(0.12, 0.1, 0.06, 0.02), [0, 0.02, -0.21]);
+  k.add('under', cyl(0.06, 0.075, 0.1, 8), [0, -0.03, 0]).add('under', cham(0.24, 0.2, 0.16, 0.04), [0, 0.1, -0.09])
+    .add('A', hull([[0.17, 0.26, -0.1], [0.185, 0.14, -0.13], [0.19, 0.06, 0.02], [0.17, 0.26, 0.12], [0.16, 0.06, 0.17], [0.1, 0.34, 0.02], [0, 0.36, -0.02], [0, 0.3, -0.17], [0, 0.3, 0.19], [0.12, 0.3, -0.14], [0, 0.05, 0.2]], true))
+    .add('D', hull([[0.19, 0.22, -0.14], [0.16, 0.23, -0.22], [0, 0.24, -0.25], [0, 0.265, -0.16], [0.19, 0.25, -0.1]], true)).add('visor', cham(0.3, 0.085, 0.07, 0.02), [0, 0.15, -0.172])
+    .add('A', hull([[0.19, 0.1, -0.13], [0.16, 0.0, -0.14], [0.12, -0.02, -0.175], [0.19, 0.02, 0.0], [0.15, 0.08, -0.19], [0.13, 0.06, -0.12]], true)).add('D', cham(0.14, 0.07, 0.08, 0.02), [0, -0.01, -0.17]).add('D', cham(0.05, 0.05, 0.3, 0.015), [0, 0.37, 0])
+    .add('strip', bx(0.1, 0.02, 0.02), [0, 0.1, 0.2]).add('strip', sph(0.02, 6, 5), [0.13, 0.3, -0.155]);
+  for (const s of [-1, 1]) k.add('visor', cham(0.04, 0.085, 0.14, 0.015), [s * 0.165, 0.15, -0.11]).add('G', cyl(0.06, 0.06, 0.05, 8), [s * 0.2, 0.12, 0.03], [0, 0, PI / 2]).add('gun', cyl(0.035, 0.035, 0.06, 8), [s * 0.205, 0.12, 0.03], [0, 0, PI / 2]);
+  if (red) k.add('A', cham(0.48, 0.07, 0.4, 0.02), [0, 0.27, -0.03]).add('A', cham(0.3, 0.07, 0.3, 0.02), [0, 0.37, 0.0]).add('A', cham(0.07, 0.18, 0.22, 0.02), [0.245, 0.17, 0.03]).add('A', cham(0.07, 0.18, 0.22, 0.02), [-0.245, 0.17, 0.03]).add('G', cham(0.12, 0.1, 0.06, 0.02), [0, 0.02, -0.21]);
   for (const s of [-1, 1]) { const side = s < 0 ? 'L' : 'R';
     k = node('arm' + side, 'torso', [s * SHOULDER[0], SHOULDER[1], SHOULDER[2]]);
-    k.add('A', rb(0.2, 0.15, 0.3, 0.05), [s * 0.03, 0.04, 0], [0, 0, s * -0.3]).add('G', rb(0.2, 0.05, 0.31, 0.02), [s * 0.065, -0.055, 0], [0, 0, s * -0.3]).add('D', sph(0.09, 8, 6), [0, -0.02, 0]).add('under', cap(0.075, 0.2), [0, -0.19, 0]);
+    k.add('A', hull(X([[0.0, 0.12, -0.13], [0.16, 0.06, -0.14], [0.18, -0.06, -0.12], [0, 0.13, 0.13], [0.16, 0.06, 0.14], [0.18, -0.06, 0.12], [-0.06, 0.06, 0], [0.2, 0.0, 0], [0.08, 0.14, 0]], s)))
+      .add('G', cham(0.05, 0.04, 0.3, 0.012), [s * 0.175, -0.075, 0], [0, 0, s * -0.25]).add('D', cham(0.14, 0.1, 0.22, 0.03), [s * 0.05, -0.1, 0]).seg('under', [0, -0.04, 0], [0, -ARM1, 0], 0.075, 0.065, 6).add('A', cham(0.06, 0.18, 0.14, 0.02), [s * 0.068, -0.21, 0]);
     k = node('fore' + side, 'arm' + side, [0, -ARM1, 0]);
-    k.add('D', sph(0.085), [0, 0, 0]).add('under', cap(0.065, 0.18), [0, -0.16, 0]).add('A', rb(0.14, 0.2, 0.15, 0.05), [0, -0.16, 0]).add('strip', bx(0.02, 0.1, 0.153), [0, -0.16, 0]).add('gun', sph(0.065), [0, -ARM2 + 0.02, 0], null, [1, 1.1, 1]); }
+    k.add('D', cham(0.13, 0.1, 0.13, 0.04)).seg('under', [0, 0, 0], [0, -0.3, 0], 0.065, 0.055, 6).add('A', hull([[0.075, -0.06, -0.08], [0.088, -0.16, -0.088], [0.07, -0.27, -0.07], [0.075, -0.06, 0.08], [0.088, -0.16, 0.088], [0.07, -0.27, 0.07]], true))
+      .add('G', cham(0.16, 0.035, 0.16, 0.012), [0, -0.275, 0]).add('strip', bx(0.02, 0.09, 0.012), [s * 0.09, -0.16, 0]).add('gun', cham(0.1, 0.1, 0.09, 0.03), [0, -ARM2 + 0.02, 0]).add('D', cham(0.09, 0.05, 0.05, 0.015), [0, -ARM2 - 0.03, -0.02]); }
   k = node('gun', 'torso', GUN_AT);
   k.add('gun', rb(0.08, 0.14, 0.44, 0.02), [0, 0, -0.1]).add('gun', rb(0.06, 0.12, 0.26, 0.02), [0, -0.02, 0.24]).add('D', rb(0.07, 0.16, 0.05, 0.02), [0, -0.03, 0.38]).add('A', rb(0.09, 0.1, 0.34, 0.03), [0, 0.01, -0.48])
     .add('gun', cyl(0.022, 0.022, 0.3, 8), [0, 0.02, -0.78], [PI / 2, 0, 0]).add('gun', cyl(0.035, 0.035, 0.08, 8), [0, 0.02, -0.93], [PI / 2, 0, 0]).add('gun', rb(0.06, 0.2, 0.1, 0.02), [0, -0.16, -0.12], [0.15, 0, 0])
@@ -104,14 +129,26 @@ function legs(node, list, n, hipY, hipX, zs, knee, foot, r, mat) { // jointed le
     list.push({ n: name, s, ph: (i % 2 ? PI : 0) + (s > 0 ? PI : 0), splay: n > 2 ? (i - (n - 1) / 2) * -0.42 : (i ? 0.3 : -0.3) }); });
 }
 const LEGS = {};
-function swarmDef(node) { const k = node('body', null, [0, 0.55, 0]);
-  k.add('bug', sph(0.34), [0, 0, 0.1], null, [1.1, 0.8, 1.3]).add('plate', sph(0.3), [0, 0.19, 0.12], null, [1.2, 0.32, 1.05]).add('plate', sph(0.2), [0, 0.2, 0.42], null, [1.1, 0.3, 0.7]);
-  [[-0.35, 0.06, 0.3], [-0.7, 0.14, 0.24], [-0.98, 0.22, 0.16]].forEach((a, i) => { k.add('bug', sph(a[2]), [0, a[1], a[0]], null, [1, 0.85, 1.15]).add('plate', sph(a[2]), [0, a[1] + a[2] * 0.5, a[0]], null, [1.05, 0.35, 0.9]); for (const s of [-1, 1]) k.add('bug', cone(0.07, 0.62 - i * 0.1, 5), [s * 0.17, a[1] + a[2] + 0.16, a[0] + 0.12], [0.75, 0, s * -0.25], [0.6, 1, 1.3]);
-    for (const s of [-1, 1]) k.add('bugGlow', sph(0.05, 6, 5), [s * a[2] * 0.9, a[1], a[0]], null, [0.5, 0.9, 2]); });
-  for (let i = 0; i < 7; i++) k.add('egg', sph(0.1 - (i % 3) * 0.012, 8, 6), [Math.cos(i * 1.05) * (i ? 0.11 : 0), 0.3 + (i ? 0 : 0.07) + (i % 2) * 0.03, -0.3 + Math.sin(i * 1.05) * (i ? 0.16 : 0)]);
-  k.add('bugD', cone(0.06, 0.45, 5), [0, 0.26, -1.28], [-PI / 2 - 0.3, 0, 0]).add('bugD', sph(0.2), [0, -0.02, 0.55], null, [1.1, 0.8, 1.2]).add('plate', sph(0.16), [0, 0.08, 0.5], null, [1.2, 0.5, 1.2]);
-  for (const s of [-1, 1]) k.add('plate', cone(0.05, 0.46, 5), [s * 0.14, -0.08, 0.86], [PI / 2, 0, s * 0.3]).add('plate', cone(0.03, 0.25, 4), [s * 0.06, -0.12, 0.8], [PI / 2 + 0.3, 0, s * -0.2]).add('bugGlow', sph(0.045, 6, 5), [s * 0.09, 0.07, 0.72]).add('bugGlow', sph(0.035, 6, 5), [s * 0.16, 0.04, 0.62]).add('bugD', cone(0.012, 0.5, 4), [s * 0.1, 0.25, 0.75], [0.9, 0, s * -0.5]);
-  legs(node, LEGS.swarm = [], 3, 0.5, 0.3, [0.32, 0.02, -0.28], [0.42, 0.36], [0.8, 0], 0.08, 'bug'); }
+// Swarmling, from the style sheet: a low crystal body, a toothed wedge head with swept-back horns, an egg cluster ringed by curved
+// spikes, and four scythe legs. Everything is faceted.
+function swarmDef(node) { let k = node('body', null, [0, 0.62, 0]);
+  k.add('bug', hull([[0.22, 0.2, 0.46], [0.18, -0.12, 0.5], [0.37, 0.26, 0.02], [0.31, -0.2, 0.0], [0.28, 0.22, -0.46], [0.2, -0.14, -0.46], [0, 0.34, 0.06], [0, -0.27, 0.05]], true))
+    .add('bugD', hull([[0.26, 0.2, -0.38], [0.2, -0.12, -0.4], [0.17, 0.24, -0.86], [0.1, -0.03, -0.86], [0, 0.2, -1.16], [0, 0.34, -0.6], [0, -0.1, -1.0]], true))
+    .add('plate', hull([[0.3, 0.25, 0.3], [0.2, 0.3, -0.05], [0, 0.4, 0.2], [0, 0.36, -0.1], [0.34, 0.2, 0.05]], true)).add('bugGlow', hull([[0.33, 0.04, 0.3], [0.36, -0.06, 0.0], [0.33, 0.0, -0.3], [0.3, -0.12, 0.1]], true)).add('bugGlow', hull([[0.12, -0.26, 0.3], [0.14, -0.27, -0.3], [0, -0.3, 0]], true));
+  for (let i = 0; i < 3; i++) k.add('plate', hull([[0.22 - i * 0.04, 0.24, -0.5 - i * 0.2], [0, 0.34 - i * 0.02, -0.46 - i * 0.2], [0.16 - i * 0.04, 0.27, -0.76 - i * 0.2], [0, 0.31, -0.82 - i * 0.2]], true));
+  k.blade('plate', [0, 0.22, -1.08], [0, 0.42, -1.62], 0.16, 0.06, 0.07);
+  // egg cluster and the ring of spikes that guards it
+  for (let i = 0; i < 8; i++) k.add('egg', sph(i ? 0.105 - (i % 3) * 0.014 : 0.14, 9, 7), [i ? Math.cos(i * 0.9) * 0.15 : 0, 0.36 + (i ? (i % 2) * 0.05 : 0.1), -0.2 + (i ? Math.sin(i * 0.9) * 0.17 : 0)]);
+  for (const [x, z, tx, ty, tz, w] of [[0, -0.5, 0, 1.12, -1.0, 0.24], [0.22, -0.36, 0.52, 0.98, -0.8, 0.2], [-0.22, -0.36, -0.52, 0.98, -0.8, 0.2], [0.3, -0.08, 0.66, 0.8, -0.38, 0.18], [-0.3, -0.08, -0.66, 0.8, -0.38, 0.18], [0.25, 0.2, 0.5, 0.66, 0.02, 0.15], [-0.25, 0.2, -0.5, 0.66, 0.02, 0.15]]) k.blade('bug', [x, 0.24, z], [tx, ty, tz], w, 0.16, 0.08);
+  k = node('head', 'body', [0, 0.02, 0.5]);
+  k.add('bug', hull([[0.2, 0.15, 0.0], [0.25, -0.02, 0.05], [0.17, 0.17, 0.3], [0.13, 0.0, 0.44], [0, 0.07, 0.6], [0, 0.24, 0.12], [0.1, -0.08, 0.3], [0, 0.18, 0.36]], true)).add('bugD', hull([[0.16, -0.09, 0.04], [0.11, -0.2, 0.3], [0, -0.17, 0.48], [0.13, -0.22, 0.08], [0, -0.1, 0.2]], true)).add('plate', hull([[0.19, 0.17, 0.02], [0.12, 0.22, 0.3], [0, 0.28, 0.14], [0, 0.2, 0.42]], true));
+  for (const sx of [-1, 1]) { k.add('bugGlow', hull([[sx * 0.2, 0.1, 0.2], [sx * 0.16, 0.13, 0.36], [sx * 0.21, 0.05, 0.3], [sx * 0.17, 0.06, 0.24]])).blade('plate', [sx * 0.13, 0.2, 0.04], [sx * 0.34, 0.5, -0.5], 0.15, 0.1, 0.06).blade('bug', [sx * 0.2, 0.06, -0.02], [sx * 0.48, 0.2, -0.36], 0.11, 0.06, 0.05);
+    for (let i = 0; i < 4; i++) k.add('tooth', cone(0.022, 0.1 - i * 0.012, 4), [sx * (0.12 - i * 0.022), -0.05, 0.3 + i * 0.07], [PI, 0, 0]).add('tooth', cone(0.02, 0.085 - i * 0.01, 4), [sx * (0.1 - i * 0.02), -0.13, 0.27 + i * 0.065]); }
+  k.blade('plate', [0, 0.25, 0.06], [0, 0.6, -0.46], 0.14, 0.1, 0.06);
+  LEGS.swarm = [];
+  for (const s of [-1, 1]) [[0.3, 0.64, 0.28, 0.5, 0.36, 0.14, 0.98, 0.34, 0.24, 0.11], [0.28, 0.62, -0.3, 0.46, 0.3, -0.12, 0.86, -0.3, 0.2, 0.095]].forEach((q, i) => { const name = 'leg' + (s < 0 ? 'L' : 'R') + i, lk = node(name, null, [s * q[0], q[1], q[2]], false), K = [s * q[3], q[4], q[5]], F = [s * q[6], -q[1], q[7]];
+    lk.seg('bug', [0, 0, 0], K, q[9], q[9] * 0.82, 5).add('bugD', hull([[K[0] - 0.09, K[1] - 0.06, K[2] - 0.07], [K[0] + 0.09, K[1] - 0.05, K[2] - 0.07], [K[0], K[1] + 0.12, K[2]], [K[0] - 0.09, K[1] - 0.06, K[2] + 0.07], [K[0] + 0.09, K[1] - 0.05, K[2] + 0.07], [K[0] + s * 0.12, K[1] + 0.04, K[2]]])).blade('bug', [K[0], K[1] + 0.02, K[2]], F, q[8], s * 0.14, 0.085).blade('plate', [K[0] + s * 0.02, K[1] - 0.25, K[2]], [F[0] + s * 0.02, F[1] + 0.02, F[2]], q[8] * 0.5, s * 0.08, 0.1);
+    LEGS.swarm.push({ n: name, s, ph: (i ? PI : 0) + (s > 0 ? PI : 0), splay: i ? 0.25 : -0.25 }); }); }
 const dod = r => new THREE.DodecahedronGeometry(r, 0), fac = (r, w, h) => sph(r, w || 7, h || 5);
 // a tapering limb that follows a list of points: necks, horns, ribs
 function chain(k, mat, pts, r0, r1, sides) { for (let i = 0; i < pts.length - 1; i++) { const t0 = i / (pts.length - 1), t1 = (i + 1) / (pts.length - 1); k.seg(mat, pts[i], pts[i + 1], r0 + (r1 - r0) * t0, r0 + (r1 - r0) * t1, sides || 5); if (i) k.add(mat, fac((r0 + (r1 - r0) * t0) * 0.98, 6, 4), pts[i]); } }
