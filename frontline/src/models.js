@@ -81,14 +81,15 @@ function reach(arm, fore, S, T, pole) { // two-bone reach: bend the elbow so the
   _perp.copy(pole).addScaledVector(_d, -pole.dot(_d)).normalize(); _e.copy(_d).multiplyScalar(Math.cos(a) * ARM1).addScaledVector(_perp, Math.sin(a) * ARM1);
   arm.quaternion.setFromUnitVectors(DOWN, _f.copy(_e).normalize()); _f.copy(_d).multiplyScalar(len).sub(_e).normalize().applyQuaternion(_qi.copy(arm.quaternion).invert()); fore.quaternion.setFromUnitVectors(DOWN, _f);
 }
-export function makeSoldier(M, main, accent, over) { const m = rig('soldier', soldierDef, M, Object.assign({ A: main || M.armor, D: accent || M.armorD, G: M.gold }, over || {})), J = m.userData.J; m.userData.gun = J.gun; m.userData.head = J.head; poseSoldier(m, {}); return m; }
+export function makeSoldier(M, main, accent, over) { const m = rig('soldier', soldierDef, M, Object.assign({ A: main || M.armor, D: accent || M.armorD, G: M.gold }, over || {})), J = m.userData.J; m.rotation.order = 'YXZ'; m.userData.gun = J.gun; m.userData.head = J.head; poseSoldier(m, {}); return m; }
 // s: walk (cycle angle), move 0..1, run 0..1, pitch, t (seconds), kick 0..1, dead, relaxed
 export function poseSoldier(m, s) { const J = m.userData.J, mv = s.move || 0, w = s.walk || 0, t = s.t || 0, pitch = s.pitch || 0, kick = s.kick || 0, run = s.run || 0;
   if (s.dead) { m.rotation.x = -1.45; J.torso.rotation.set(0, 0, 0.1); J.legL.rotation.set(0.25, 0, -0.2); J.legR.rotation.set(-0.1, 0, 0.25); J.shinL.rotation.x = -0.5; J.shinR.rotation.x = -0.15; return; }
-  m.rotation.x = 0; const sw = Math.sin(w), cw = Math.cos(w), amp = (0.6 + run * 0.25) * mv;
+  const dv = s.dive || 0, air = s.air ? 1 : 0; m.rotation.x = -1.15 * dv; const sw = Math.sin(w), cw = Math.cos(w), amp = (0.6 + run * 0.25) * mv;
   J.hips.position.y = 0.97 - mv * Math.abs(cw) * 0.05 - (1 - mv) * 0.0; J.hips.rotation.set(0, sw * 0.1 * mv, 0);
   J.legL.rotation.set(sw * amp, 0, -0.06); J.legR.rotation.set(-sw * amp, 0, 0.06);
   J.shinL.rotation.x = -(0.12 + (0.25 + 0.85 * Math.max(0, cw)) * mv); J.shinR.rotation.x = -(0.12 + (0.25 + 0.85 * Math.max(0, -cw)) * mv);
+  if (air || dv) { J.legL.rotation.set(0.5 - dv * 0.7, 0, -0.1); J.legR.rotation.set(0.15 - dv * 0.4, 0, 0.1); J.shinL.rotation.x = -0.9 + dv * 0.6; J.shinR.rotation.x = -0.5 + dv * 0.3; }
   J.torso.position.y = 0.1 + Math.sin(t * 2.1) * 0.006; J.torso.rotation.set(pitch * 0.45 - 0.08 * mv - 0.1 * run * mv - kick * 0.03, -sw * 0.14 * mv + 0.22, 0);
   J.head.rotation.set(pitch * 0.3, -0.2 + Math.sin(t * 0.7) * 0.03, 0);
   const lower = s.relaxed ? 1 : 0; J.gun.position.set(GUN_AT[0], GUN_AT[1] - lower * 0.08 + Math.sin(w * 2) * 0.012 * mv, GUN_AT[2] + kick * 0.07); J.gun.rotation.set(pitch * 0.35 + kick * 0.06 - lower * 0.45, -0.22 + lower * 0.35, 0);
