@@ -37,12 +37,13 @@
 /* Territory page */
 .tabs button{letter-spacing:.06em;padding-left:4px;padding-right:4px;background:var(--w-hud-tab) center/100% 100% no-repeat}.tabs button.on{background-image:var(--w-hud-tab-active);border-bottom-color:transparent;color:#f6d98a}.tabs .pclose{background:none}
 .thead,.thead.you,.thead.enemy{border:10px solid transparent;border-image:var(--w-hud-panel) 24 fill / 10px stretch;border-radius:0;background:none;padding:4px 8px}
+@media (max-width:1400px){#top .chip{padding:0 7px;gap:5px}#top .chip small,.mt small{letter-spacing:.03em}.mt{padding:0 8px}.mt .bar{display:none}}
 /* Phones, upright: status on top, actions under the thumbs in two columns */
 @media (max-width:860px){#top{grid-template-columns:1fr auto;grid-template-areas:"brand clock" "orders orders" "res res" "meters meters";gap:5px 8px;padding:6px 10px}
 #top{grid-template-columns:minmax(0,1fr) auto}#top .brand{overflow:hidden;white-space:nowrap}#top .brand small{display:none}#top .brand b{font-size:13px;letter-spacing:.08em}#top .clock{gap:6px}#top .day{font-size:12px}#top .speed{gap:4px}#top .speed button{min-width:34px;padding:3px 7px}#top .speed button.pz{font-size:10.5px}
 #top .ordersbox{justify-self:stretch;justify-content:space-between;padding:0 8px;gap:8px}.opips i{width:22px;height:22px}.otxt b{font-size:15px}
 #top .res{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px 0}#top>*{min-width:0}#top .chip{padding:0 6px;justify-content:center}#top .chip:first-child{padding-left:6px}#top .chip:nth-child(4n){border-right:0}#top .chip small{display:none}#top .chip b{font-size:14px}
-#top .meters{justify-content:center;border-top:1px solid #ffffff1a;padding-top:4px;margin:0}.mt:first-child{border-left:0}.mt b{font-size:14px}
+#top .meters{justify-content:center;border-top:1px solid #ffffff1a;padding-top:4px;margin:0}.mt .bar{display:block}.mt:first-child{border-left:0}.mt b{font-size:14px}
 #hudb{right:8px}#coach.show{font-size:13px;border-image-width:8px;border-width:8px}.abr{display:grid;grid-template-columns:1fr 1fr;gap:6px}.ab,.ab.gold,.ab.teal{min-height:58px;border-width:10px;border-image-width:10px}.abh b{font-size:15px}}
 /* Phones on their side: one thin status row, small tiles */
 @media (max-height:520px){#top{grid-template-columns:auto auto 1fr;grid-template-areas:"clock orders meters" "res res res";gap:3px 10px;padding:4px 10px}#top .brand{display:none}
