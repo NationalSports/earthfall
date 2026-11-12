@@ -47,7 +47,7 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
 <div class="hud" id="hit"></div>
 <div class="hud" id="wave"></div>
 <canvas class="hud" id="map" width="150" height="150"></canvas>
-<div class="hud" id="keys">W A S D move · Shift sprint · Space jump pack · F dive · mouse aim · click fire<br>R reload · G grenade · Q or wheel next weapon · 1–7 support · V Z X C squad</div>
+<div class="hud" id="keys">W A S D move · Shift sprint · Space jump pack · F dive · mouse aim · click fire<br>R reload · G grenade · Q or wheel next weapon · 1–7 support · V Z X C squad · E plant charge</div>
 <div class="hud" id="cross"></div>
 <div class="hud" id="ban"><div id="msg"></div><div id="sub"></div></div>
 <div class="hud" id="scrap"></div>
@@ -59,7 +59,7 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
 <p>You drop in beside the city core with your squad. The swarm comes over the hills across the whole horizon. Build defenses, call support from orbit, and range out: burn out hives to thin the swarm and bring back the research caches under the gold beacons.</p>
 <h4>Mission</h4><div class="opts">
 <label><input type="radio" name="m" value="defense" checked><span>Defense<i>hold the city core for five waves</i></span></label>
-<label><input type="radio" name="m" value="assault"><span>Assault<i>push out and destroy three hives</i></span></label>
+<label><input type="radio" name="m" value="assault"><span>Expedition<i>cross the city, blow three hives, reach the shuttle</i></span></label>
 <label><input type="radio" name="m" value="skirmish"><span>Skirmish<i>team fight against enemy soldiers, first to 15</i></span></label></div>
 <h4>Where</h4><div class="opts">
 <label><input type="radio" name="w" value="la" checked><span>Los Angeles<i>Earth · edge of the city</i></span></label>
@@ -75,7 +75,7 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
 <label><input type="checkbox" name="r" value="exo"><span>Exo Armor<i>150 health</i></span></label>
 <label><input type="checkbox" name="r" value="elite"><span>Elite Training<i>faster reload and sprint</i></span></label>
 <label><input type="checkbox" name="r" value="hardened"><span>Hardened<i>tougher walls, turrets, allies</i></span></label></div>
-<h4>Controls</h4><div class="ctl"><b>W A S D</b><span>move</span><b>Mouse</b><span>aim (arrow keys also work)</span><b>Click</b><span>fire</span><b>R</b><span>reload</span><b>G</b><span>grenade</span><b>Shift</b><span>sprint (uses stamina)</span><b>Space</b><span>jump pack: hold to fly a short way</span><b>F</b><span>dive in the direction you are moving</span><b>Q / wheel</b><span>next weapon</span><b>V</b><span>squad fights on its own (default)</span><b>M</b><span>music on or off</span><b>1</b><span>orbital strike (keep clear)</span><b>2 3 4</b><span>turret, wall, mine (cost scrap)</span><b>5 · 7</b><span>supply drop · squad drop</span><b>Z X C</b><span>squad: follow, hold a spot, back to the wall</span><b>Enter</b><span>start the wave early</span></div>
+<h4>Controls</h4><div class="ctl"><b>W A S D</b><span>move</span><b>Mouse</b><span>aim (arrow keys also work)</span><b>Click</b><span>fire</span><b>R</b><span>reload</span><b>G</b><span>grenade</span><b>Shift</b><span>sprint (uses stamina)</span><b>Space</b><span>jump pack: hold to fly a short way</span><b>F</b><span>dive in the direction you are moving</span><b>Q / wheel</b><span>next weapon</span><b>V</b><span>squad fights on its own (default)</span><b>E</b><span>plant a charge on a hive (hold)</span><b>M</b><span>music on or off</span><b>1</b><span>orbital strike (keep clear)</span><b>2 3 4</b><span>turret, wall, mine (cost scrap)</span><b>5 · 7</b><span>supply drop · squad drop</span><b>Z X C</b><span>squad: follow, hold a spot, back to the wall</span><b>Enter</b><span>start the wave early</span></div>
 <button id="start" type="button">Drop in</button></form></div>
 <div class="panel" id="over"></div>
 <div class="panel" id="pick"></div>

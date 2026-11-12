@@ -128,8 +128,8 @@ function bruteDef(boss) { return node => { let k = node('body', null, [0, 1.5, 0
   for (const s of [-1, 1]) { k.add('plate', cone(0.12, boss ? 1.0 : 0.7, 6), [s * 0.36, 0.3, 0.25], [0.9, 0, s * -0.45]).add('plate', cone(0.09, 0.5, 5), [s * 0.2, -0.22, 0.48], [PI / 2 + 0.25, 0, s * 0.35]); for (let i = 0; i < 3; i++) k.add('bugGlow', sph(0.055 - i * 0.008, 6, 5), [s * (0.16 + i * 0.1), 0.02 + i * 0.05, 0.42 - i * 0.08]); }
   for (const s of [-1, 1]) { k = node('arm' + (s < 0 ? 'L' : 'R'), 'body', [s * 0.85, 0, 0.75]); k.seg('bugD', [0, 0, 0], [s * 0.4, -0.45, 0.5], 0.24, 0.19, 8).add('bugD', sph(0.22, 8, 6), [s * 0.4, -0.45, 0.5]).seg('plate', [s * 0.4, -0.45, 0.5], [s * 0.5, -1.45, 0.95], 0.21, 0.03, 5).add('plate', cone(0.1, 0.5, 4), [s * 0.5, -0.4, 0.3], [-0.9, 0, s * -0.6]); }
   legs(node, LEGS[boss ? 'boss' : 'brute'] = [], 2, 1.2, 0.8, [0.1, -0.85], [0.6, 0.4], [1.0, 0], 0.2, 'bugD'); }; }
-const BUG = { swarm: swarmDef, spitter: spitterDef, brute: bruteDef(false), boss: bruteDef(true) }, RATE = { swarm: 13, spitter: 8, brute: 6, boss: 5 };
-export function makeBug(M, kind) { const key = BUG[kind] ? kind : 'brute', m = rig('bug-' + key, BUG[key], M), J = m.userData.J; m.userData.kind = key; m.userData.legs = LEGS[key].map(l => ({ g: J[l.n], s: l.s, ph: l.ph, splay: l.splay })); m.userData.y0 = J.body.position.y; if (key === 'boss') m.scale.setScalar(1.7); return m; }
+const BUG = { swarm: swarmDef, leaper: node => { swarmDef(node); LEGS.leaper = LEGS.swarm; }, spitter: spitterDef, brute: bruteDef(false), boss: bruteDef(true) }, RATE = { swarm: 13, leaper: 16, spitter: 8, brute: 6, boss: 5 };
+export function makeBug(M, kind, over) { const key = BUG[kind] ? kind : 'brute', m = rig('bug-' + key, BUG[key], M, over), J = m.userData.J; if (key === 'leaper') m.scale.setScalar(1.3); m.userData.kind = key; m.userData.legs = LEGS[key].map(l => ({ g: J[l.n], s: l.s, ph: l.ph, splay: l.splay })); m.userData.y0 = J.body.position.y; if (key === 'boss') m.scale.setScalar(1.7); return m; }
 // s: t (seconds), move 0..1, atk 0..1
 export function poseBug(m, s) { const U = m.userData, J = U.J, t = s.t || 0, mv = s.move === undefined ? 1 : s.move, atk = s.atk || 0, w = t * RATE[U.kind], big = U.kind === 'brute' || U.kind === 'boss';
   for (const l of U.legs) { const p = w + l.ph, f = Math.sin(p) * mv; l.g.rotation.y = l.s * (-(f * 0.5) - l.splay); l.g.rotation.z = l.s * Math.max(0, Math.cos(p)) * (big ? 0.22 : 0.4) * mv; }
@@ -164,3 +164,10 @@ function podDef(node) { const k = node('pod', null, [0, 0, 0]);
 export function makePod(M) { return rig('pod', podDef, M, { A: M.armor, D: M.armorD, G: M.gold }); }
 
 export { Kit, rb, bx, sph, cap, cyl, cone, torus, lathe };
+
+// The extraction shuttle: a blunt dropship with four engine pods and a rear ramp.
+function shipDef(node) { const k = node('ship', null, [0, 0, 0]);
+  k.add('A', rb(3.4, 2.0, 8, 0.5), [0, 2.2, 0]).add('D', rb(3.0, 1.2, 3, 0.4), [0, 3.0, -1.5]).add('visor', rb(2.4, 0.7, 0.3, 0.1), [0, 2.9, -3.95], [0.35, 0, 0]).add('D', rb(3.5, 0.3, 8.2, 0.1), [0, 1.2, 0]).add('G', rb(3.45, 0.14, 6, 0.04), [0, 2.9, 0.8]).add('D', rb(2.6, 0.12, 2.6, 0.03), [0, 0.6, 5.0], [-0.42, 0, 0]).add('strip', bx(2.2, 0.06, 0.06), [0, 1.3, 4.05]);
+  for (const s of [-1, 1]) { k.add('D', rb(3.2, 0.25, 2.4, 0.08), [s * 3.2, 2.9, 0.3], [0, 0, s * -0.12]).add('gun', cyl(0.7, 0.8, 1.6, 12), [s * 4.4, 2.6, -0.6]).add('gun', cyl(0.7, 0.8, 1.6, 12), [s * 4.4, 2.6, 1.6]).add('strip', cyl(0.55, 0.55, 0.08, 12), [s * 4.4, 1.78, -0.6]).add('strip', cyl(0.55, 0.55, 0.08, 12), [s * 4.4, 1.78, 1.6]).add('D', rb(0.2, 1.6, 1.4, 0.05), [s * 1.2, 3.9, 3.2], [0, 0, s * -0.3]).add('strip', bx(0.05, 0.3, 1.2), [s * 1.72, 2.4, 0])
+    .seg('gun', [s * 1.3, 1.1, -2], [s * 1.6, 0.1, -2.2], 0.1, 0.08, 6).seg('gun', [s * 1.3, 1.1, 2.4], [s * 1.6, 0.1, 2.6], 0.1, 0.08, 6).add('D', rb(0.6, 0.12, 1.0, 0.03), [s * 1.6, 0.06, -2.2]).add('D', rb(0.6, 0.12, 1.0, 0.03), [s * 1.6, 0.06, 2.6]); } }
+export function makeShip(M) { return rig('ship', shipDef, M, { A: M.pod, D: M.armorD, G: M.gold }); }
