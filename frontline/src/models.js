@@ -52,8 +52,28 @@ function rig(key, def, M, over) {
 }
 
 // ---------- Soldier (faces -z). Materials: A main armour, D dark armour, under, gun, visor, strip.
-const ARM1 = 0.36, ARM2 = 0.35, SHOULDER = [0.33, 0.56, 0], GUN_AT = [0.06, 0.36, -0.22], GRIP_R = new THREE.Vector3(0, -0.12, 0.06), GRIP_L = new THREE.Vector3(0, -0.09, -0.4);
-function soldierDef(node, red) { // layered armour over a dark under-suit: every plate is a faceted hull or a chamfered block
+const ARM1 = 0.36, ARM2 = 0.35, SHOULDER = [0.33, 0.56, 0], GUN_AT = [0.0, 0.43, -0.10], GRIP_R = new THREE.Vector3(0, -0.12, 0.06), GRIP_L = new THREE.Vector3(0, -0.09, -0.4);
+// Attachment points belong to each visible weapon, including the raised launcher and long rail barrel.
+const WEAPON_RIG = [
+  { left: [0, -0.09, -0.4], muzzle: [0, 0.02, -0.98] },
+  { left: [0, -0.07, -0.42], muzzle: [0, 0.035, -0.95] },
+  { left: [0, -0.07, -0.44], muzzle: [0, 0.02, -1.29] },
+  { left: [0, -0.09, -0.4], muzzle: [0, 0.02, -1.12] },
+  { left: [0, -0.09, -0.4], muzzle: [0, 0.02, -1.06] },
+  { left: [0, -0.07, -0.4], muzzle: [0.02, 0.2, -0.83] },
+  { left: [0, -0.09, -0.4], muzzle: [0, 0.02, -1.22] },
+  { left: [0, -0.09, -0.42], muzzle: [0, 0.02, -0.8] }
+];
+export function weaponMuzzle(m, out = new THREE.Vector3()) {
+  m.updateWorldMatrix(true, true);
+  return m.userData.J.gun.localToWorld(out.fromArray((WEAPON_RIG[m.userData.wIdx] || WEAPON_RIG[0]).muzzle));
+}
+export function weaponGrip(m, side, out = new THREE.Vector3()) {
+  m.updateWorldMatrix(true, true);
+  if (side === 'R') out.copy(GRIP_R); else out.fromArray((WEAPON_RIG[m.userData.wIdx] || WEAPON_RIG[0]).left);
+  return m.userData.J.gun.localToWorld(out);
+}
+function soldierDef(node, red) { // layered armour over a dark under-suit
   const X = (pts, sx) => pts.map(p => [p[0] * sx, p[1], p[2]]);
   let k = node('hips', null, [0, 1, 0]);
   k.add('under', cham(0.36, 0.2, 0.24, 0.05)).add('D', cham(0.42, 0.08, 0.3, 0.02), [0, 0.1, 0]).add('G', cham(0.09, 0.07, 0.03, 0.01), [0, 0.1, -0.155]).add('D', cham(0.2, 0.12, 0.08, 0.02), [0, 0.02, 0.17])
@@ -85,6 +105,7 @@ function soldierDef(node, red) { // layered armour over a dark under-suit: every
     .add('D', hull([[0.19, 0.22, -0.14], [0.16, 0.23, -0.22], [0, 0.24, -0.25], [0, 0.265, -0.16], [0.19, 0.25, -0.1]], true)).add('visor', cham(0.3, 0.085, 0.07, 0.02), [0, 0.15, -0.172])
     .add('A', hull([[0.19, 0.1, -0.13], [0.16, 0.0, -0.14], [0.12, -0.02, -0.175], [0.19, 0.02, 0.0], [0.15, 0.08, -0.19], [0.13, 0.06, -0.12]], true)).add('D', cham(0.14, 0.07, 0.08, 0.02), [0, -0.01, -0.17]).add('D', cham(0.05, 0.05, 0.3, 0.015), [0, 0.37, 0])
     .add('strip', bx(0.1, 0.02, 0.02), [0, 0.1, 0.2]).add('strip', sph(0.02, 6, 5), [0.13, 0.3, -0.155]);
+  k.add('skin', rb(0.2, 0.075, 0.025, 0.015), [0, 0.065, -0.205]);
   for (const s of [-1, 1]) k.add('visor', cham(0.04, 0.085, 0.14, 0.015), [s * 0.165, 0.15, -0.11]).add('G', cyl(0.06, 0.06, 0.05, 8), [s * 0.2, 0.12, 0.03], [0, 0, PI / 2]).add('gun', cyl(0.035, 0.035, 0.06, 8), [s * 0.205, 0.12, 0.03], [0, 0, PI / 2]);
   if (red) k.add('A', cham(0.48, 0.07, 0.4, 0.02), [0, 0.27, -0.03]).add('A', cham(0.3, 0.07, 0.3, 0.02), [0, 0.37, 0.0]).add('A', cham(0.07, 0.18, 0.22, 0.02), [0.245, 0.17, 0.03]).add('A', cham(0.07, 0.18, 0.22, 0.02), [-0.245, 0.17, 0.03]).add('G', cham(0.12, 0.1, 0.06, 0.02), [0, 0.02, -0.21]);
   for (const s of [-1, 1]) { const side = s < 0 ? 'L' : 'R';
@@ -108,7 +129,7 @@ function reach(arm, fore, S, T, pole) { // two-bone reach: bend the elbow so the
   arm.quaternion.setFromUnitVectors(DOWN, _f.copy(_e).normalize()); _f.copy(_d).multiplyScalar(len).sub(_e).normalize().applyQuaternion(_qi.copy(arm.quaternion).invert()); fore.quaternion.setFromUnitVectors(DOWN, _f);
 }
 export function makeSoldier(M, main, accent, over, variant) { const m = rig('soldier' + (variant || ''), variant === 'red' ? node => soldierDef(node, true) : soldierDef, M, Object.assign({ A: main || M.armor, D: accent || M.armorD, G: M.gold }, over || {})), J = m.userData.J; m.rotation.order = 'YXZ'; m.userData.gun = J.gun; m.userData.head = J.head; poseSoldier(m, {}); return m; }
-// s: walk (cycle angle), move 0..1, run 0..1, pitch, t (seconds), kick 0..1, dead, relaxed
+// reload is normalized progress (0..1); aimTarget is a world point. Both hands solve against the transformed gun.
 export function poseSoldier(m, s) { const J = m.userData.J, mv = s.move || 0, w = s.walk || 0, t = s.t || 0, pitch = s.pitch || 0, kick = s.kick || 0, run = s.run || 0;
   if (s.dead) { m.rotation.x = -1.45; J.torso.rotation.set(0, 0, 0.1); J.legL.rotation.set(0.25, 0, -0.2); J.legR.rotation.set(-0.1, 0, 0.25); J.shinL.rotation.x = -0.5; J.shinR.rotation.x = -0.15; return; }
   const dv = s.dive || 0, air = s.air ? 1 : 0; m.rotation.x = -1.15 * dv; const sw = Math.sin(w), cw = Math.cos(w), amp = (0.6 + run * 0.25) * mv;
@@ -116,10 +137,35 @@ export function poseSoldier(m, s) { const J = m.userData.J, mv = s.move || 0, w 
   J.legL.rotation.set(sw * amp, 0, -0.06); J.legR.rotation.set(-sw * amp, 0, 0.06);
   J.shinL.rotation.x = -(0.12 + (0.25 + 0.85 * Math.max(0, cw)) * mv); J.shinR.rotation.x = -(0.12 + (0.25 + 0.85 * Math.max(0, -cw)) * mv);
   if (air || dv) { J.legL.rotation.set(0.5 - dv * 0.7, 0, -0.1); J.legR.rotation.set(0.15 - dv * 0.4, 0, 0.1); J.shinL.rotation.x = -0.9 + dv * 0.6; J.shinR.rotation.x = -0.5 + dv * 0.3; }
-  J.torso.position.y = 0.1 + Math.sin(t * 2.1) * 0.006; J.torso.rotation.set(pitch * 0.45 - 0.08 * mv - 0.1 * run * mv - kick * 0.03, -sw * 0.14 * mv + 0.22, 0);
-  J.head.rotation.set(pitch * 0.3, -0.2 + Math.sin(t * 0.7) * 0.03, 0);
-  const lower = s.relaxed ? 1 : 0; J.gun.position.set(GUN_AT[0], GUN_AT[1] - lower * 0.08 + Math.sin(w * 2) * 0.012 * mv, GUN_AT[2] + kick * 0.07); J.gun.rotation.set(pitch * 0.35 + kick * 0.06 - lower * 0.45, -0.22 + lower * 0.35, 0);
-  for (const s2 of [-1, 1]) { const R = s2 > 0; _T.copy(R ? GRIP_R : GRIP_L).applyEuler(J.gun.rotation).add(J.gun.position); _S.set(s2 * SHOULDER[0], SHOULDER[1], SHOULDER[2]); _pole.set(s2 * 0.6, -1, 0.35); reach(R ? J.armR : J.armL, R ? J.foreR : J.foreL, _S, _T, _pole); }
+  const hit = Math.sin(clamp(s.hit || 0, 0, 1) * Math.PI * 0.85), direction = s.hitSide || 1;
+  const progress = clamp(s.reload || 0, 0, 1), reloading = progress > 0 && progress < 1;
+  const blend = reloading ? Math.sin(Math.PI * progress) : 0;
+  J.torso.position.y = 0.1 + Math.sin(t * 2.1) * 0.006 - hit * 0.035;
+  J.torso.rotation.set(pitch * 0.35 - 0.08 * mv - 0.1 * run * mv - kick * 0.03 - hit * 0.15, -sw * 0.14 * mv + 0.22 + blend * 0.12, hit * direction * 0.12);
+  J.head.rotation.set(pitch * 0.3 + hit * 0.1, -0.2 + Math.sin(t * 0.7) * 0.03, -hit * direction * 0.08);
+  const lower = s.relaxed ? 1 : 0;
+  J.gun.position.set(GUN_AT[0] - blend * 0.035, GUN_AT[1] - lower * 0.08 - blend * 0.09 + Math.sin(w * 2) * 0.012 * mv, GUN_AT[2] + kick * 0.07 + blend * 0.06);
+  J.gun.rotation.set(pitch * 0.65 + kick * 0.06 - lower * 0.45 - blend * 0.65, -0.22 + lower * 0.35 + blend * 0.28, -blend * 0.18);
+  if (s.aimTarget && !reloading && !lower) {
+    m.updateWorldMatrix(true, true);
+    J.torso.worldToLocal(_T.copy(s.aimTarget)); _T.sub(J.gun.position).normalize();
+    J.gun.quaternion.setFromUnitVectors(_d.set(0, 0, -1), _T);
+    J.gun.rotateX(kick * 0.025);
+  }
+  const attachment = WEAPON_RIG[m.userData.wIdx] || WEAPON_RIG[0];
+  for (const s2 of [-1, 1]) { const R = s2 > 0;
+    if (R) _T.copy(GRIP_R); else _T.fromArray(attachment.left);
+    _T.applyQuaternion(J.gun.quaternion).add(J.gun.position);
+    if (!R && reloading) {
+      // Release, reach to the belt, bring a fresh cell to the receiver, then return to the foregrip.
+      const belt = _a.set(-0.24, -0.02, 0.02), receiver = _b.set(0, -0.16, -0.1).applyQuaternion(J.gun.quaternion).add(J.gun.position);
+      const smooth = v => { v = clamp(v, 0, 1); return v * v * (3 - 2 * v); };
+      if (progress < 0.3) _T.lerp(belt, smooth(progress / 0.3));
+      else if (progress < 0.65) _T.copy(belt).lerp(receiver, smooth((progress - 0.3) / 0.35));
+      else _T.copy(receiver).lerp(_a.fromArray(attachment.left).applyQuaternion(J.gun.quaternion).add(J.gun.position), smooth((progress - 0.65) / 0.35));
+    }
+    _S.set(s2 * SHOULDER[0], SHOULDER[1], SHOULDER[2]); _pole.set(s2 * 0.6, -1, 0.35); reach(R ? J.armR : J.armL, R ? J.foreR : J.foreL, _S, _T, _pole);
+  }
 }
 
 // ---------- The swarm (faces +z). Materials: bug, bugD, plate, bugGlow, acid.
