@@ -1,0 +1,901 @@
+{
+  "requested_exports": 48,
+  "checks": {
+    "all_expected_names_present": true,
+    "dimensions_formats_and_decoding": true,
+    "icon_count": 24,
+    "icons_white_on_true_transparency": true,
+    "icons_transparent_outer_border": true,
+    "icon_stroke_width_px": 1.75,
+    "scope_only_allowed_directories": true,
+    "game_runtime_tested": false
+  },
+  "exports": [
+    {
+      "path": "frontline/public/assets/textures/facade-europe-stone.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1152968,
+      "sha256": "c94d4474615a2c5b3dd5b7da8d5146b94a7c078f0bca5c7da20b082667c250bf",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 5.792,
+        "top_bottom": 8.274
+      },
+      "interior_neighbor_mean": {
+        "x": 5.697,
+        "y": 6.66
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/facade-europe-brick.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1382196,
+      "sha256": "fcdceb134bd450b99152863d9d48562bc82b270690e49f299cc16ad45ce4c8bb",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 12.184,
+        "top_bottom": 31.106
+      },
+      "interior_neighbor_mean": {
+        "x": 6.088,
+        "y": 11.11
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/ground-cobble.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1740506,
+      "sha256": "f12320ba9b8e033e21d524a19e8ee6e8e38932a554a530663653c60ded56097a",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 12.098,
+        "top_bottom": 13.002
+      },
+      "interior_neighbor_mean": {
+        "x": 10.343,
+        "y": 11.28
+      },
+      "repeat_axes": "XY",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/facade-desert-sandstone.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1420704,
+      "sha256": "bb7d95c7b1617ba2d0916061f43b0f6abab08758f23ef2ca73bdd8cf91281064",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 11.005,
+        "top_bottom": 10.915
+      },
+      "interior_neighbor_mean": {
+        "x": 7.873,
+        "y": 9.563
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/facade-desert-plaster.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1312730,
+      "sha256": "7ed7c7ac84c8f17210b5c7103d4c19001d5cd27507ed147710e91b45ad8419f8",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 7.171,
+        "top_bottom": 65.463
+      },
+      "interior_neighbor_mean": {
+        "x": 5.381,
+        "y": 6.858
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/ground-sand.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1507634,
+      "sha256": "9472744206afc148eaa69bedaf2af8ffb579044403fcbe41e10f013c9c8f4410",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 6.291,
+        "top_bottom": 7.757
+      },
+      "interior_neighbor_mean": {
+        "x": 5.685,
+        "y": 6.881
+      },
+      "repeat_axes": "XY",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/facade-asia-tower.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1167864,
+      "sha256": "9676d0e3b412b8bf2f8b81961600b501e162c5eefe6540c6b5dcdebf55e7e192",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 7.953,
+        "top_bottom": 68.876
+      },
+      "interior_neighbor_mean": {
+        "x": 7.072,
+        "y": 9.566
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/facade-asia-shop.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1228730,
+      "sha256": "172c6f134aae122412ec9cadf73ea958d00a5c7691c8ea60e891d5d4dd052d44",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 12.789,
+        "top_bottom": 9.204
+      },
+      "interior_neighbor_mean": {
+        "x": 6.34,
+        "y": 13.002
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/ground-paver.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1536442,
+      "sha256": "b394d7469f51758d3009b462985c8cba17a7d956f8f38ff701da020cd5504ea1",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 8.276,
+        "top_bottom": 11.406
+      },
+      "interior_neighbor_mean": {
+        "x": 8.033,
+        "y": 9.894
+      },
+      "repeat_axes": "XY",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/facade-north-concrete.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1302140,
+      "sha256": "b3155a7a847a4dfe7c128658fbe11da9711880135a81c93022d8ab50364ec655",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 6.92,
+        "top_bottom": 35.894
+      },
+      "interior_neighbor_mean": {
+        "x": 6.693,
+        "y": 9.964
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/facade-north-panel.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1115954,
+      "sha256": "c499b6c9a80b41a1bd846b00d4e2e297a89d39ed88ae0264f4d83dcfbcb2bfe2",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 3.493,
+        "top_bottom": 16.427
+      },
+      "interior_neighbor_mean": {
+        "x": 4.112,
+        "y": 12.913
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/ground-snow.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1194288,
+      "sha256": "80019810c6a054f9c797bc0ebf00a459cb6adc2e255c122109921b37c9483d8f",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 5.347,
+        "top_bottom": 5.572
+      },
+      "interior_neighbor_mean": {
+        "x": 3.47,
+        "y": 3.862
+      },
+      "repeat_axes": "XY",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/facade-tropic-colour.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1182866,
+      "sha256": "d92a36be3d64342d0de465be34fc75e0bd462fd0299e2f2c306db58b0fa22909",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 5.068,
+        "top_bottom": 22.048
+      },
+      "interior_neighbor_mean": {
+        "x": 4.597,
+        "y": 7.553
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/facade-tropic-block.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1390256,
+      "sha256": "e4cca1b50d6aa5ca84433ee11d9158e9f8e55da674dc7e846df3df1c1522bdc4",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 10.757,
+        "top_bottom": 21.272
+      },
+      "interior_neighbor_mean": {
+        "x": 9.761,
+        "y": 10.215
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/textures/ground-redearth.webp",
+      "width": 1024,
+      "height": 1024,
+      "format": "WEBP",
+      "mode": "RGB",
+      "bytes": 1515022,
+      "sha256": "e52e445bff3b59964b332fd4ed2132073268982304f2711fa4fab1cec9efc203",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 8.405,
+        "top_bottom": 8.414
+      },
+      "interior_neighbor_mean": {
+        "x": 7.141,
+        "y": 8.55
+      },
+      "repeat_axes": "XY",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/sky/sky-storm.jpg",
+      "width": 2048,
+      "height": 1024,
+      "format": "JPEG",
+      "mode": "RGB",
+      "bytes": 543736,
+      "sha256": "2124d1cb6c93e857682f3532a810ea1c13b7b6e82c06ff94c5ea2b786e4465ba",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 1.786,
+        "top_bottom": 17.79
+      },
+      "interior_neighbor_mean": {
+        "x": 1.226,
+        "y": 2.437
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/sky/sky-night.jpg",
+      "width": 2048,
+      "height": 1024,
+      "format": "JPEG",
+      "mode": "RGB",
+      "bytes": 248347,
+      "sha256": "812ca9184bd216d3bc5652d613a1a5a5827b5919a9243ac005e81a97d2785ece",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 1.207,
+        "top_bottom": 2.963
+      },
+      "interior_neighbor_mean": {
+        "x": 0.418,
+        "y": 0.746
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/sky/sky-dusk.jpg",
+      "width": 2048,
+      "height": 1024,
+      "format": "JPEG",
+      "mode": "RGB",
+      "bytes": 545659,
+      "sha256": "f09484c50adc7d54a2d2f34b52c60abc84d0309824ec04cc9a2c426ddd6cf32c",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 3.156,
+        "top_bottom": 14.611
+      },
+      "interior_neighbor_mean": {
+        "x": 1.365,
+        "y": 2.225
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/public/assets/sky/sky-desert.jpg",
+      "width": 2048,
+      "height": 1024,
+      "format": "JPEG",
+      "mode": "RGB",
+      "bytes": 562182,
+      "sha256": "b9d0745cdb977771f93631b3415276ad584e64037dac363ad20325853dfc2904",
+      "edge_mean_absolute_rgb_0_to_255": {
+        "left_right": 5.155,
+        "top_bottom": 67.924
+      },
+      "interior_neighbor_mean": {
+        "x": 1.548,
+        "y": 2.632
+      },
+      "repeat_axes": "X",
+      "visually_reviewed": true
+    },
+    {
+      "path": "frontline/docs/art/concept-leaper.png",
+      "width": 2048,
+      "height": 1152,
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 1695253,
+      "sha256": "88ecd90e26a1fa600519f838e91ed2b0d5a8e79ebcfa5bcbdce748943ba367dc"
+    },
+    {
+      "path": "frontline/docs/art/concept-shuttle.png",
+      "width": 2048,
+      "height": 1152,
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 1988599,
+      "sha256": "8ae8a1bd42be1b418841a6b9401aa37cd50abbcc183387a48a33a3f541560a53"
+    },
+    {
+      "path": "frontline/docs/art/concept-weapons.png",
+      "width": 2048,
+      "height": 1152,
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 2359920,
+      "sha256": "ff8c4202db00bfbf42b5938e7077c3d61383a4b945c052a57c8e6a7dcbaa2ab3"
+    },
+    {
+      "path": "frontline/docs/art/concept-squad-roles.png",
+      "width": 2048,
+      "height": 1152,
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 2137831,
+      "sha256": "5e9cc708b430340aab30612d286324578f62c7a78e7775f1d3bb1ce391607e38"
+    },
+    {
+      "path": "frontline/docs/art/concept-region-props.png",
+      "width": 2048,
+      "height": 1152,
+      "format": "PNG",
+      "mode": "RGB",
+      "bytes": 2050413,
+      "sha256": "326076df5ec2ab206c50bd7edc83dc1500fa9c7c19081c65f5eb462e62c7a488"
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/weapon-rifle.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 796,
+      "sha256": "c25fd2dc5a773fef56f25fe76c9f4cd48d7dd023e4a5877bc8eac2d096d9d3da",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        3,
+        14,
+        61,
+        51
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/weapon-shotgun.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 648,
+      "sha256": "eada9cdcfb8df0966f37a0bc642276343cb0dd73718407eb989d14f09c6c1881",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        4,
+        16,
+        60,
+        48
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/weapon-marksman-rifle.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 746,
+      "sha256": "35745e86cebc3a8102e7ff2ff7fd902c600374215a6a8365e6fa3409ea97df36",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        3,
+        12,
+        62,
+        47
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/weapon-machine-gun.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 928,
+      "sha256": "39c18dd78f718ca8bad64c22671973bc98c2a740399bb3b24cd26c73c9fc1fae",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        3,
+        13,
+        62,
+        52
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/weapon-flamethrower.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 772,
+      "sha256": "27b191e6f1edfca71ef379be238a04fc0172c61937691fc463f04ea2eafa0f55",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        4,
+        16,
+        60,
+        55
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/weapon-rocket-launcher.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 618,
+      "sha256": "849596806dc9c9fe4598c9d25c383cecdfba435e5fac8f40d50531fb5b06425b",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        3,
+        14,
+        61,
+        52
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/weapon-rail-rifle.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 698,
+      "sha256": "5327275772b4b8668121b0bcbe51db74918f530ffaa7f1f3bf010fa4652b2f84",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        3,
+        15,
+        62,
+        50
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/weapon-plasma-rifle.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 940,
+      "sha256": "6c27bc06aca865a8018663f86ef6d7f6117da2701ccfef9221ea80b4408c9090",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        4,
+        16,
+        61,
+        50
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/support-orbital-strike.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 968,
+      "sha256": "211c10472890458d80c020bd76082a7efa70b77d9091d5c4b91b865bbb025b14",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        7,
+        3,
+        62,
+        62
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/support-turret.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 790,
+      "sha256": "dbd03717ea780777e43b541fefb41af1861d4bcdb38c5c085f0bd67834c4be22",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        8,
+        13,
+        61,
+        60
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/support-wall.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 524,
+      "sha256": "7f7e4ee816d6fbaa611063acc1f58f9bfd1041f25f4332b1b9557f1bf3d18690",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        4,
+        15,
+        61,
+        58
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/support-mine.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 1026,
+      "sha256": "d111660d944c9d1db76e466cea7404f6a6dd18ff3f512aabf3c43015a97a10b7",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        8,
+        4,
+        57,
+        56
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/support-supply-drop.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 1048,
+      "sha256": "fb296aa531fb12cc54f44b57a3f35a0d4daec8492fe6d4b9f12d5f2e761afc3e",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        8,
+        4,
+        56,
+        59
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/support-airstrike.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 1054,
+      "sha256": "99eb7891d9203e625cd72328cfb62c3e0c12d3e8fbeeebffcaf10bdd546974c8",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        7,
+        4,
+        58,
+        59
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/support-squad-drop.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 734,
+      "sha256": "d8a2c257acd5cbd3b750fd50debcbef4cb1123d6074d54c049f7ddcb70a6a4e0",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        7,
+        3,
+        58,
+        58
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/research-damage.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 1010,
+      "sha256": "385b5af54d6a3c5ccba21cb390a2a5c03b85dbcf159931aabce569286c62358a",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        6,
+        2,
+        60,
+        59
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/research-reload.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 1054,
+      "sha256": "acbf140f6580555a99fffb335119ffdc6e81683bd56000a572d91a89c13e3ae7",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        4,
+        6,
+        60,
+        58
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/research-jump-fuel.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 710,
+      "sha256": "76e682249bb1c7cf6fee6224931d3f6519cf2a1484ca8276010a35d1bfdafa31",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        17,
+        5,
+        47,
+        61
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/research-turrets.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 800,
+      "sha256": "eb9bade779e5fe2c1ff50129fd7a47095681a8912db4b96aafbee894489b8deb",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        5,
+        5,
+        62,
+        59
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/research-squad-damage.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 862,
+      "sha256": "dfe2780f4340a9316399d4648103ebf98086d9178e6244a361ed7b166784e3dc",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        7,
+        15,
+        58,
+        61
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/research-squad-armour.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 1246,
+      "sha256": "6f23282cf71871e351bab47a28ad4c74270b35799dc523e9866eef8c50474d5e",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        8,
+        3,
+        57,
+        61
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/research-call-in-speed.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 1170,
+      "sha256": "4d51dbc29ecaa6b5df630b5e57c95dc6fba03122684f49c56edf5e77051fdd16",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        7,
+        3,
+        60,
+        56
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/research-medic.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 420,
+      "sha256": "7ad76249ff1d8b982c9afb9f2669aa1049855af8ceba27a01998ebde9dbd2670",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        7,
+        6,
+        58,
+        58
+      ],
+      "all_visible_rgb_white": true
+    },
+    {
+      "path": "frontline/public/assets/ui/icons/research-grenades.webp",
+      "width": 64,
+      "height": 64,
+      "format": "WEBP",
+      "mode": "RGBA",
+      "bytes": 870,
+      "sha256": "17db6fb5dff86a0df5b00f8913b6cfc97fb44081a339fd8dceb4bcfa95b2c16e",
+      "alpha_min_max": [
+        0,
+        255
+      ],
+      "nontransparent_bbox": [
+        15,
+        4,
+        50,
+        56
+      ],
+      "all_visible_rgb_white": true
+    }
+  ]
+}
