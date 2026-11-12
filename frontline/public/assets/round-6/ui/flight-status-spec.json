@@ -1,0 +1,103 @@
+{
+  "status": "Art reference; values are untested examples, not runtime configuration",
+  "canvas": [
+    1800,
+    1100
+  ],
+  "panels": [
+    {
+      "id": "transport-loading",
+      "rect": [
+        60,
+        150,
+        800,
+        380
+      ],
+      "title": "KESTREL / HOVER",
+      "accent": "#8bd1d4",
+      "headline": "RAMP OPEN / LOADING",
+      "timer": "00:08",
+      "line": "SQUAD 04 / 04  |  DEFENSIVE GUN 300",
+      "label": "NACELLES",
+      "bar": 0.91,
+      "foot": "LANDING ZONE MUST REMAIN CLEAR"
+    },
+    {
+      "id": "escort-attack",
+      "rect": [
+        940,
+        150,
+        800,
+        380
+      ],
+      "title": "GOSHAWK / ESCORT",
+      "accent": "#8bd1d4",
+      "headline": "ATTACK RUN AVAILABLE",
+      "timer": "01:15",
+      "line": "CANNON 300  |  ROCKETS 08",
+      "label": "AIRFRAME",
+      "bar": 0.86,
+      "foot": "RETURN TO BASE TO REARM AND REPAIR"
+    },
+    {
+      "id": "engine-damage",
+      "rect": [
+        60,
+        630,
+        800,
+        380
+      ],
+      "title": "GOSHAWK / CAUTION",
+      "accent": "#f18d7c",
+      "headline": "ENGINE DAMAGED / RETURN",
+      "timer": "00:24",
+      "line": "CANNON 042  |  ROCKETS 02",
+      "label": "ENGINE",
+      "bar": 0.24,
+      "foot": "REPOSITION / SEEK A SAFE LANDING ZONE"
+    },
+    {
+      "id": "moth-interference",
+      "rect": [
+        940,
+        630,
+        800,
+        380
+      ],
+      "title": "LOCAL HAZARD",
+      "accent": "#c7b18a",
+      "headline": "INTERFERENCE / REPOSITION",
+      "timer": "08 s",
+      "line": "SUPPORT SIGNAL UNSTABLE",
+      "label": "SIGNAL",
+      "bar": 0.43,
+      "foot": "FLY CLEAR TO RESTORE SUPPORT"
+    }
+  ],
+  "palette": {
+    "cyan": "#8bd1d4",
+    "brass": "#c7b18a",
+    "danger": "#f18d7c",
+    "text": "#edf1ed"
+  },
+  "required_live_fields": [
+    "platform identity",
+    "flight mode",
+    "ramp state",
+    "boarding count",
+    "ammo",
+    "rockets",
+    "time until return/service",
+    "airframe and system damage",
+    "directional threats",
+    "local interference state"
+  ],
+  "warning_principles": [
+    "Use words + icon shape + color together",
+    "Never cover central aiming/flight view with a warning panel",
+    "Show offscreen threat direction and an attack tell before impact",
+    "Keep manual controls active through interference",
+    "Show return countdown before service departure"
+  ],
+  "placement_note": "Cards are a design board. Adapt as a compact HUD extension to Round 5 anchors; do not paste all four panels onto gameplay at once."
+}

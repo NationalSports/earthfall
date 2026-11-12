@@ -1,0 +1,71 @@
+{
+  "generated_sections": {
+    "C": 4,
+    "B": 10,
+    "D": 8,
+    "F": 4,
+    "H": 2,
+    "E": 3,
+    "A": 14,
+    "G": 4
+  },
+  "generated_selected_total": 49,
+  "isolated_model_and_pose_references": 39,
+  "generated_scene_references": 7,
+  "generated_transparent_weather_overlays": 3,
+  "asset_files": 68,
+  "raster_assets": 58,
+  "svg_assets": 9,
+  "asset_bytes": 152877689,
+  "native_sizes": {
+    "1254x1254": 39,
+    "1672x941": 7,
+    "1774x887": 1,
+    "2172x724": 1,
+    "1536x1024": 1
+  },
+  "content_upscaled_count": 48,
+  "alpha_checks": [
+    {
+      "path": "frontline/public/assets/round-6/weather/acid-mist.png",
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-6/weather/blowing-dust.png",
+      "alpha_range": [
+        0,
+        252
+      ]
+    },
+    {
+      "path": "frontline/public/assets/round-6/weather/rain-streaks.png",
+      "alpha_range": [
+        0,
+        250
+      ]
+    }
+  ],
+  "automated_checks": [
+    "All 49 selected generation records complete; 39 isolated modeling/pose references, 7 scenes, 3 transparent overlays",
+    "All 58 raster assets decode and have expected dimensions/modes",
+    "All 9 editable SVGs parse, contain no scripts and resolve only existing local image resources",
+    "All 3 weather overlays contain actual zero-to-visible alpha; smoke/dust/rain may be translucent",
+    "Vehicle required views and all five enemy front/side pairs present",
+    "Every asset has byte count, dimensions, mode and SHA-256 in round-6-files.csv"
+  ],
+  "visual_review": [
+    "Vehicle identity, main/tail rotor versus twin tiltrotor silhouette, hover/cruise/ramp states and complete isolated-object framing",
+    "Flying-enemy body/wing silhouettes, exposed organs and side-pair consistency",
+    "Enemy damage changes compared with Round 4 identities; civilian T-pose and movement key-pose readability",
+    "Ship spaces, cave/storm scenes and extraction/aerial encounter compositions",
+    "Counterplay card text fit and flight-warning board contrast, labels and hierarchy"
+  ],
+  "limitations": [
+    "Generated alternate geometry can drift; primary front view is authority. Reconcile rotor/wing counts, component pivots and exact dimensions in 3D.",
+    "Pixel exports may be upscaled; source-native dimensions and content scale disclosed per record.",
+    "Game balance numbers are untested proposals; no runtime code, mesh, animation, physics, AI or networking is supplied."
+  ]
+}
