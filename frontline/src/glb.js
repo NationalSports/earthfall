@@ -26,9 +26,9 @@ if (src.soldier) load(src.soldier).then(buf => new GLTFLoader().parse(buf, '', g
 
 // ---------- The swarm. Each scan carries an automatic skeleton with no animation, so its legs are found by shape
 // (bone chains that reach the ground) and walked in code.
-const BUGS = { swarm: { file: 'swarmling', h: 1.0 }, leaper: { file: 'leaper', h: 1.25 }, spitter: { file: 'spitter', h: 1.45 }, brute: { file: 'brute', h: 2.3 }, boss: { file: 'boss', h: 2.7 } };
+const BUGS = { swarm: { file: 'swarmling', h: 1.0 }, leaper: { file: 'leaper', h: 1.25 }, spitter: { file: 'spitter', h: 1.45 }, brute: { file: 'brute', h: 2.3 }, boss: { file: 'boss', h: 2.7 }, dartwing: { file: 'dartwing', h: 1.1, fly: true }, razorwing: { file: 'razorwing', h: 1.9, fly: true } };
 const bugWait = {};
-for (const f of ['swarmling', 'leaper', 'spitter', 'brute', 'boss']) if (src[f]) load(src[f]).then(buf => new GLTFLoader().parse(buf, '', g => { let mat = null; g.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.frustumCulled = false; mat = o.material; } });
+for (const f of ['swarmling', 'leaper', 'spitter', 'brute', 'boss', 'dartwing', 'razorwing']) if (src[f]) load(src[f]).then(buf => new GLTFLoader().parse(buf, '', g => { let mat = null; g.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.frustumCulled = false; mat = o.material; } });
   mat.side = THREE.FrontSide; mat.envMapIntensity = 1.2; if (mat.map) { mat.emissiveMap = glowTexture(mat.map, false, true); mat.emissive = new THREE.Color(0xffffff); }
   const box = new THREE.Box3().setFromObject(g.scene); ready[f] = { scene: g.scene, hgt: box.max.y - box.min.y, mat, tints: {} }; for (const w of (bugWait[f] || []).splice(0)) w(); }, e => console.warn(f + ' model failed', e))).catch(e => console.warn(f + ' model failed', e));
 const _p = new THREE.Vector3(), _h = new THREE.Vector3(), _Z = new THREE.Vector3(), _hq = new THREE.Quaternion();
@@ -40,11 +40,12 @@ export function dressBug(m, kind) { const def = BUGS[kind]; if (!def || !src[def
     body.traverse(b => { if (!b.isBone || kids(b).length < 3) return; b.getWorldPosition(_h); for (const c of kids(b)) { let tip = c, n = 1; while (kids(tip).length === 1) { tip = kids(tip)[0]; n++; } if (kids(tip).length || n < 3) continue; tip.getWorldPosition(_p); m.worldToLocal(_p); const hub = m.worldToLocal(_h.clone());
       limbs.push({ root: c, rest: c.quaternion.clone(), leg: _p.y * m.scale.y < top * 0.22, side: _p.x >= hub.x ? 1 : -1, z: _p.z, ph: 0 }); } });
     for (const sd of [-1, 1]) limbs.filter(l => l.leg && l.side === sd).sort((a, b) => a.z - b.z).forEach((l, i) => { l.ph = (i % 2) * Math.PI + (sd > 0 ? Math.PI : 0); });
-    limbs.filter(l => !l.leg).forEach((l, i) => { l.ph = i * 1.7; }); m.userData.body = { holder, limbs, y0: 0 }; };
+    limbs.filter(l => !l.leg).forEach((l, i) => { l.ph = i * 1.7; }); m.userData.body = { holder, limbs, y0: 0, fly: !!def.fly }; };
   if (ready[def.file]) go(); else (bugWait[def.file] || (bugWait[def.file] = [])).push(go);
 }
 // w is the walk-cycle angle the code rig already uses; s: move 0..1, atk 0..1, t seconds.
 export function poseBugBody(m, s, w) { const U = m.userData.body; if (!U) return; const mv = s.move === undefined ? 1 : s.move, atk = s.atk || 0, t = s.t || 0;
+  if (U.fly) { U.holder.position.y = Math.sin(t * 5 + m.id) * 0.18; U.holder.rotation.x = 0.12 + atk * 0.5; U.holder.rotation.z = (s.bank || 0); for (const l of U.limbs) l.root.quaternion.copy(l.rest); m.updateWorldMatrix(true, true); U.holder.getWorldQuaternion(_hq); _Z.set(0, 0, 1).applyQuaternion(_hq); for (const l of U.limbs) turn(l.root, _q.setFromAxisAngle(_Z, l.side * Math.sin(t * 22 + l.ph * 0.2) * 0.5)); return; }
   U.holder.position.y = Math.abs(Math.sin(w)) * 0.03 * mv; U.holder.rotation.x = atk * 0.28 + Math.sin(w * 2) * 0.02 * mv; U.holder.rotation.z = Math.sin(w) * 0.035 * mv;
   for (const l of U.limbs) l.root.quaternion.copy(l.rest); m.updateWorldMatrix(true, true); U.holder.getWorldQuaternion(_hq); X.set(1, 0, 0).applyQuaternion(_hq); _Z.set(0, 0, 1).applyQuaternion(_hq);
   for (const l of U.limbs) { if (l.leg) { const a = w + l.ph; turn(l.root, _q.setFromAxisAngle(X, Math.sin(a) * 0.42 * mv)); turn(l.root, _q.setFromAxisAngle(_Z, l.side * Math.max(0, Math.cos(a)) * 0.3 * mv)); }
@@ -105,7 +106,7 @@ export function poseBody(m, s, gripL, gripR) { const U = m.userData.body; if (!U
 }
 
 // ---------- Scanned set pieces with no skeleton: buildings, hive, turret, drop pod, shuttle, generator.
-const STATIC = ['prop-sedan', 'prop-sedan-burned', 'prop-van', 'prop-bus', 'prop-barrier', 'prop-dumpster', 'prop-rubble', 'prop-streetlight', 'prop-signal', 'prop-shelter', 'prop-wall', 'prop-palm', 'hive', 'turret', 'pod', 'shuttle', 'generator', 'bld-artdeco', 'bld-brick', 'bld-diner', 'bld-garage', 'bld-glass', 'bld-stucco'], statWait = {};
+const STATIC = ['goshawk', 'prop-sedan', 'prop-sedan-burned', 'prop-van', 'prop-bus', 'prop-barrier', 'prop-dumpster', 'prop-rubble', 'prop-streetlight', 'prop-signal', 'prop-shelter', 'prop-wall', 'prop-palm', 'hive', 'turret', 'pod', 'shuttle', 'generator', 'bld-artdeco', 'bld-brick', 'bld-diner', 'bld-garage', 'bld-glass', 'bld-stucco'], statWait = {};
 for (const f of STATIC) if (src[f]) load(src[f]).then(buf => new GLTFLoader().parse(buf, '', g => { g.scene.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; const mt = o.material; mt.side = THREE.FrontSide; mt.envMapIntensity = 1.1; if (mt.map) { mt.map.anisotropy = 8; mt.emissiveMap = mt.map; mt.emissive = new THREE.Color(0xffffff); mt.emissiveIntensity = f === 'hive' ? 0.3 : 0.14; } } });
   const box = new THREE.Box3().setFromObject(g.scene); ready[f] = { scene: g.scene, box, size: box.getSize(new THREE.Vector3()) }; for (const w of (statWait[f] || []).splice(0)) w(); }, e => console.warn(f + ' model failed', e))).catch(e => console.warn(f + ' model failed', e));
 // A copy standing on its base at the origin, scaled per axis.
