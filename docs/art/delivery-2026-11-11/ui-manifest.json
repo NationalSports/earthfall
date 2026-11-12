@@ -1,0 +1,744 @@
+[
+  {
+    "path": "assets/ui/act-attack.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__act-attack.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/act-reinforce.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__act-reinforce.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/act-move.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__act-move.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/act-build.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__act-build.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/act-airlift.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__act-airlift.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/act-team.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__act-team.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/act-missiles.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__act-missiles.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/act-sabotage.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__act-sabotage.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/act-bombers.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__act-bombers.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/act-details.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__act-details.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/act-emp.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__act-emp.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/act-warhead.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__act-warhead.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/res-metal.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__res-metal.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/res-fuel.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__res-fuel.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/res-research.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__res-research.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/res-uranium.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__res-uranium.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/res-intel.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__res-intel.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/res-salvage.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__res-salvage.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/res-reserve.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__res-reserve.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/res-held.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__res-held.svg",
+    "issue": 28
+  },
+  {
+    "path": "assets/ui/perk-london.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__perk-london.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/perk-berlin.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__perk-berlin.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/perk-saopaulo.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__perk-saopaulo.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/perk-nairobi.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__perk-nairobi.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/perk-cairo.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__perk-cairo.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/perk-delhi.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__perk-delhi.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/perk-denver.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__perk-denver.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/perk-moscow.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__perk-moscow.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/perk-sydney.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__perk-sydney.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/trait-butcher.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__trait-butcher.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/trait-warden.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__trait-warden.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/trait-ghost.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__trait-ghost.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/trait-breeder.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__trait-breeder.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/trait-raider.webp",
+    "w": 96,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__trait-raider.svg",
+    "issue": 22
+  },
+  {
+    "path": "assets/ui/hud-top.webp",
+    "w": 1024,
+    "h": 160,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__hud-top.svg",
+    "issue": 29,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/hud-advisor.webp",
+    "w": 960,
+    "h": 144,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__hud-advisor.svg",
+    "issue": 29,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/hud-actionbar.webp",
+    "w": 960,
+    "h": 208,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__hud-actionbar.svg",
+    "issue": 29,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/hud-action.webp",
+    "w": 240,
+    "h": 160,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__hud-action.svg",
+    "issue": 29,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/hud-action-primary.webp",
+    "w": 240,
+    "h": 160,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__hud-action-primary.svg",
+    "issue": 29,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/hud-chip.webp",
+    "w": 192,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__hud-chip.svg",
+    "issue": 29,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/hud-orders.webp",
+    "w": 640,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__hud-orders.svg",
+    "issue": 29,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/hud-meter.webp",
+    "w": 512,
+    "h": 64,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__hud-meter.svg",
+    "issue": 29,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/hud-panel.webp",
+    "w": 512,
+    "h": 768,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__hud-panel.svg",
+    "issue": 29,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/hud-tab.webp",
+    "w": 240,
+    "h": 88,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__hud-tab.svg",
+    "issue": 29,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/hud-tab-active.webp",
+    "w": 240,
+    "h": 88,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__hud-tab-active.svg",
+    "issue": 29,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/frame-bar.webp",
+    "w": 720,
+    "h": 200,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__frame-bar.svg",
+    "issue": 28,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/frame-coach.webp",
+    "w": 720,
+    "h": 120,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__frame-coach.svg",
+    "issue": 28,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/btn-primary.webp",
+    "w": 240,
+    "h": 160,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__btn-primary.svg",
+    "issue": 28,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/btn-plain.webp",
+    "w": 240,
+    "h": 160,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__btn-plain.svg",
+    "issue": 28,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/topbar.webp",
+    "w": 1600,
+    "h": 160,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__topbar.svg",
+    "issue": 28,
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "contentInset": 32
+  },
+  {
+    "path": "assets/ui/order-pip-on.webp",
+    "w": 64,
+    "h": 64,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__order-pip-on.svg",
+    "issue": 29
+  },
+  {
+    "path": "assets/ui/order-pip-off.webp",
+    "w": 64,
+    "h": 64,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/assets__ui__order-pip-off.svg",
+    "issue": 29
+  },
+  {
+    "path": "frontline/public/assets/ui/health-bar.webp",
+    "w": 512,
+    "h": 80,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__health-bar.svg",
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/ammo-panel.webp",
+    "w": 256,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__ammo-panel.svg",
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/wave-counter.webp",
+    "w": 256,
+    "h": 96,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__wave-counter.svg",
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/build-tile.webp",
+    "w": 160,
+    "h": 160,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__build-tile.svg",
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/build-tile-active.webp",
+    "w": 160,
+    "h": 160,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__build-tile-active.svg",
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/minimap-frame.webp",
+    "w": 384,
+    "h": 384,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__minimap-frame.svg",
+    "slice": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/turret.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__turret.svg",
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/barrier.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__barrier.svg",
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/mine.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__mine.svg",
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/railgun.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__railgun.svg",
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/strike.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__strike.svg",
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/supply.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__supply.svg",
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/repair.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__repair.svg",
+    "issue": "frontline"
+  },
+  {
+    "path": "frontline/public/assets/ui/crosshair.webp",
+    "w": 64,
+    "h": 64,
+    "alpha": true,
+    "method": "native-svg",
+    "source": "docs/art/delivery-2026-11-11/source/frontline__public__assets__ui__crosshair.svg",
+    "issue": "frontline"
+  }
+]
