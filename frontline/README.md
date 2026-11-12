@@ -14,6 +14,18 @@ The third-person horde shooter that goes with Earthfall. `HANDOFF.md` is the ful
 - **Research from Earthfall** changes your kit: rail rifle, more health, faster reload, tougher defenses.
 - Minimap, sound, win and lose screens, and a result object handed back to Earthfall.
 
+## How it is drawn
+
+Everything on screen is generated in code; there are no image files yet. `src/gfx.js` holds it:
+
+- three.js r180, bundled with esbuild into one page.
+- A physical sky with the sun, and image-based lighting taken from that sky so metal reflects it.
+- Post-processing: bloom, filmic tone mapping, colour grade, vignette, grain, and a red pulse when you are hit.
+- Procedural textures drawn at start-up: ground, concrete, lit building facades, armour plating, chitin.
+- Instanced scenery (rocks, grass tufts, dead trees, crystals, craters) scattered over the hills.
+- One pooled particle system for muzzle flash, sparks, fire, smoke and gore, pooled flash lights, and scorch decals.
+- A shadow box that follows the player, camera shake and recoil.
+
 ## Not built yet
 
 - The button in Earthfall that launches a battle here and takes the result back.
@@ -23,7 +35,7 @@ The third-person horde shooter that goes with Earthfall. `HANDOFF.md` is the ful
 
 ## Build and play
 
-`node frontline/build.js` (needs `three@0.128` at the repo root), then open `frontline/dist/index.html` in a desktop browser.
+`cd frontline && npm install && node build.js`, then open `frontline/dist/index.html` in a desktop browser.
 
 Controls: W A S D move, mouse aim, click fire, R reload, G grenade, Q swap weapon, Shift sprint, 1 to 7 support and building, Z X C squad orders, Enter starts a wave early.
 
