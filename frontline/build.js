@@ -8,6 +8,8 @@ const assets = {}, mime = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 
 const REGION_KIT = /^(ground-(cobble|paver|redearth|sand|snow)|facade-(desert|tropic|europe|north|asia)-)/;
 const walk = dir => { if (!fs.existsSync(dir)) return; for (const f of fs.readdirSync(dir)) { const full = path.join(dir, f), ext = path.extname(f).toLowerCase(); if (fs.statSync(full).isDirectory()) walk(full); else if (mime[ext] && !/\/(ui|weapons|props)\//.test(full.replace(/\\/g, '/')) && !REGION_KIT.test(f)) assets[path.basename(f, ext)] = 'data:' + mime[ext] + ';base64,' + fs.readFileSync(full).toString('base64'); } };
 walk(path.join(__dirname, 'public/assets')); walk(path.join(__dirname, 'assets')); if (process.env.FRONTLINE_ART) walk(process.env.FRONTLINE_ART);
+// Round 4 art (frontline/assets/r4, resized copies of chat's kit) ships in a second file, dist/art-r4.js, to keep the page itself small.
+const r4 = {}; { const dir = path.join(__dirname, 'assets/r4'); if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir)) { const ext = path.extname(f).toLowerCase(), n = path.basename(f, ext); if (mime[ext]) { r4[n] = 'data:' + mime[ext] + ';base64,' + fs.readFileSync(path.join(dir, f)).toString('base64'); delete assets[n]; } } }
 // The art kit's own file names stand in for the names the game asks for.
 for (const [want, have] of [['ground-la', 'ground-grass'], ['facade', 'facade-art-deco'], ['sky-la', 'los-angeles-panorama']]) if (!assets[want] && assets[have]) assets[want] = assets[have];
 let html = fs.readFileSync(path.join(__dirname, 'index.tpl.html'), 'utf8');
@@ -16,7 +18,8 @@ let html = fs.readFileSync(path.join(__dirname, 'index.tpl.html'), 'utf8');
 const SPLIT = true, OUT = path.join(__dirname, 'dist');
 const models = {}, mdir = path.join(__dirname, 'public/assets/models'); if (fs.existsSync(mdir)) for (const f of fs.readdirSync(mdir)) if (/\.glb$/i.test(f)) models[path.basename(f, path.extname(f))] = 'data:model/gltf-binary;base64,' + fs.readFileSync(path.join(mdir, f)).toString('base64');
 const modelJs = 'window.FRONTLINE_MODELS=' + JSON.stringify(models) + ';';
-html = html.replace('/*ASSETS*/', () => 'window.FRONTLINE_ASSETS=' + JSON.stringify(assets) + ';' + 'window.FRONTLINE_MODELS={};' + Object.keys(models).map(n => '</script><script src="model-' + n + '.js">').join('')).replace('/*GAME*/', () => game);
+html = html.replace('/*ASSETS*/', () => 'window.FRONTLINE_ASSETS=' + JSON.stringify(assets) + ';' + 'window.FRONTLINE_MODELS={};</script><script src="art-r4.js">' + Object.keys(models).map(n => '</script><script src="model-' + n + '.js">').join('')).replace('/*GAME*/', () => game);
 fs.mkdirSync(OUT, { recursive: true }); fs.writeFileSync(path.join(OUT, 'index.html'), html);
+fs.writeFileSync(path.join(OUT, 'art-r4.js'), 'Object.assign(window.FRONTLINE_ASSETS,' + JSON.stringify(r4) + ');');
 for (const n in models) fs.writeFileSync(path.join(OUT, 'model-' + n + '.js'), 'window.FRONTLINE_MODELS[' + JSON.stringify(n) + ']=' + JSON.stringify(models[n]) + ';');
 console.log('built ' + path.relative(path.dirname(__dirname), OUT) + '/index.html', html.length, 'bytes,', Object.keys(assets).length, 'art files');
