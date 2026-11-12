@@ -2,6 +2,7 @@
 // Hold the city core against the swarm. Built from simple three.js shapes; art from frontline/assets plugs in when present.
 import * as THREE from 'three';
 import { makeSoldier, poseSoldier, makeBug, poseBug, makeHive, makeTurret, makePod } from './models.js';
+import { buildDistrict } from './props.js';
 import { createRenderer, createComposer, makeTextures, buildSky, scatter, createParticles, createDecals } from './gfx.js';
 (function () {
   'use strict';
@@ -47,7 +48,7 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
   const V = (x, y, z) => new THREE.Vector3(x, y, z);
 
   // ---------- Arena (rebuilt for each battle)
-  const ARENA = 125, CORE = { x: 0, z: 46, hp: 100, max: 100 }; let solids = [], world = null;
+  const ARENA = 125, CORE = { x: 0, z: 46, hp: 100, max: 100 }; let solids = [], world = null, district = null, fires = [];
   const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
   function H(x, z) { const d = Math.hypot(x - CORE.x, z - CORE.z), k = smooth(20, 52, d) * W.hill; return k * (Math.sin(x * 0.045 + 1.3) * Math.cos(z * 0.05 - 0.4) * 4.2 + Math.sin(x * 0.11 + z * 0.07) * 1.5 + Math.cos(z * 0.021 + x * 0.013) * 3.2 + 2.2 * smooth(60, 110, d)); }
   function addSolid(x, z, w, d, ref) { const s = { x0: x - w / 2, x1: x + w / 2, z0: z - d / 2, z1: z + d / 2, ref }; solids.push(s); return s; }
@@ -64,8 +65,10 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
       else { for (let k = 0; k < 4; k++) { const sp = new THREE.Mesh(new THREE.ConeGeometry(Math.min(w, d) * (0.5 - k * 0.09), h * (1.7 - k * 0.32), 5), M.crystal); sp.position.set(x + Math.sin(k * 2.1) * w * 0.3 * (k ? 1 : 0), y0 + h * (0.85 - k * 0.16), z + Math.cos(k * 2.1) * d * 0.3 * (k ? 1 : 0)); sp.rotation.set(Math.sin(x + k) * 0.22, x + k, Math.cos(z + k) * 0.22); sp.castShadow = true; world.add(sp); } const cl = new THREE.PointLight(0x9a6cff, 30, 26, 2); cl.position.set(x, y0 + h * 0.8, z); world.add(cl); }
       addSolid(x, z, w, d); };
     for (const x of [-52, -34, 34, 52]) { building(x, 62, 14, 12, 10 + Math.abs(x % 9)); building(x, 44 - Math.abs(x) * 0.1, 12, 12, 8 + Math.abs((x * 3) % 7)); }
-    building(-16, 70, 14, 10, 14); building(16, 70, 14, 10, 12); building(-30, 6, 9, 9, 5); building(26, -4, 10, 8, 6); building(2, -22, 9, 9, 4); building(-58, -10, 8, 10, 5); building(60, 8, 9, 8, 5);
-    scatter(world, SETUP.world, H, ARENA, (x, z) => Math.hypot(x - CORE.x, z - CORE.z) < 27 || solids.some(q => x > q.x0 - 1.5 && x < q.x1 + 1.5 && z > q.z0 - 1.5 && z < q.z1 + 1.5), TEX); decals = createDecals(world, TEX, H);
+    building(-16, 70, 14, 10, 14); building(16, 70, 14, 10, 12); building(-30, 6, 9, 9, 5); building(26, -4, 10, 8, 6); building(17, -19, 9, 9, 4); building(-58, -10, 8, 10, 5); building(60, 8, 9, 8, 5);
+    district = buildDistrict(world, SETUP.world, H, TEX, addSolid, (x, z) => Math.hypot(x - CORE.x, z - CORE.z) < 9.5 || Math.hypot(x - 7, z - 36) < 3.5 || solids.some(q => x > q.x0 - 0.8 && x < q.x1 + 0.8 && z > q.z0 - 0.8 && z < q.z1 + 0.8));
+    fires = district.emitters.filter(e => e.fire).map(e => { const l = new THREE.PointLight(0xff7a30, 40, 26, 2); l.position.set(e.x, e.y + 1, e.z); world.add(l); return { e, l }; });
+    scatter(world, SETUP.world, H, ARENA, (x, z) => district.paved(x, z, 0.6) || Math.hypot(x - CORE.x, z - CORE.z) < 15 || solids.some(q => x > q.x0 - 1.5 && x < q.x1 + 1.5 && z > q.z0 - 1.5 && z < q.z1 + 1.5), TEX); decals = createDecals(world, TEX, H);
     const cg = new THREE.Group(); cg.add(cyl(4, 4.6, 1, M.armorD, 0, 0.5, 0, 16)); const orb = new THREE.Mesh(new THREE.OctahedronGeometry(2.1, 0), M.core); orb.position.y = 4; orb.castShadow = true; cg.add(orb); cg.add(cyl(0.35, 0.35, 3, M.gun, 0, 2.2, 0)); const pl = new THREE.PointLight(0x46d6d0, 90, 46, 2); pl.position.y = 4; cg.add(pl); cg.position.set(CORE.x, 0, CORE.z); world.add(cg); CORE.orb = orb; CORE.light = pl; addSolid(CORE.x, CORE.z, 8, 8); }
 
   // ---------- Models
@@ -313,6 +316,7 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
     for (let i = fx.length - 1; i >= 0; i--) { const f = fx[i]; f.t += dt; const k = f.t / f.d; if (k >= 1) { scene.remove(f.o); fx.splice(i, 1); continue; } f.o.material.opacity = 1 - k; }
     for (const f of flashes) { if (f.t > 0) { f.t -= dt; f.l.intensity = f.i0 * Math.max(0, f.t / f.d); } else f.l.intensity = 0; }
     for (const e of enemies) if (e.kind === 'hive' && Math.random() < dt * 6) particles.emit(e.x + rnd(-2, 2), H(e.x, e.z) + 4, e.z + rnd(-2, 2), { n: 1, color: 0xff3a70, speed: 0.6, life: 1.6, size: 0.35, size1: 0.05, gravity: -1.8, bright: 2.5 });
+    if (district) { for (const e of district.emitters) { if (Math.random() < dt * 9) particles.emit(e.x + rnd(-0.6, 0.6), e.y + 0.4, e.z + rnd(-0.6, 0.6), { n: 1, color: 0x2a2623, speed: 0.5, vel: [1.2, 2.6, 0.4], life: 3.4, size: 1.1, size1: 3.6, gravity: -0.6, bright: 0.35 }); if (e.fire && Math.random() < dt * 22) particles.emit(e.x + rnd(-0.7, 0.7), e.y, e.z + rnd(-0.7, 0.7), { n: 1, color: Math.random() < 0.5 ? 0xff7a20 : 0xffc040, speed: 0.6, vel: [0.3, 2.4, 0], life: 0.6, size: 0.9, size1: 0.15, gravity: -2, bright: 2.2 }); } for (const f of fires) f.l.intensity = 30 + Math.sin(gtime * 17 + f.e.x) * 8 + Math.random() * 10; }
     CORE.orb.rotation.y += dt * 0.8; CORE.orb.position.y = 4 + Math.sin(performance.now() / 600) * 0.25; CORE.light.intensity = 30 + 70 * CORE.hp / CORE.max;
     if (bannerT > 0) { bannerT -= dt; if (bannerT <= 0) hud.msg.parentNode.classList.remove('on'); } }
   function placeCamera() { if (!player || state === 'menu') { const t = performance.now() / 9000; camera.position.set(Math.sin(t) * 70, 34, CORE.z + 40 + Math.cos(t) * 30); camera.lookAt(CORE.x, 4, CORE.z - 40); return; }
@@ -327,9 +331,9 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
   $('#start').onclick = () => { const f = $('#setup'), research = [].slice.call(f.querySelectorAll('input[name=r]:checked')).map(i => i.value); begin({ mode: f.querySelector('input[name=m]:checked').value, world: f.querySelector('input[name=w]:checked').value, attackers: +f.querySelector('input[name=d]:checked').value, research }); };
   if (ASSETS.title) $('#intro').style.backgroundImage = 'linear-gradient(#060b13cc,#060b13ee),url(' + ASSETS.title + ')';
   let last = performance.now();
-  function frame(now) { if (window.__frozen) { last = now; return requestAnimationFrame(frame); } const dt = Math.min(0.05, (now - last) / 1000); last = now; gtime += dt; if (state !== 'menu' && state !== 'over') step(dt); shake = Math.max(0, shake - dt * 2.4); recoil = Math.max(0, recoil - dt * 0.35); hurtT = Math.max(0, hurtT - dt * 1.6); particles.update(dt); placeCamera();
+  function frame(now) { if (window.__frozen) { last = now; return requestAnimationFrame(frame); } const dt = Math.min(0.05, (now - last) / 1000); last = now; gtime += dt; if (state !== 'menu' && state !== 'over') step(dt); shake = Math.max(0, shake - dt * 2.4); recoil = Math.max(0, recoil - dt * 0.35); hurtT = Math.max(0, hurtT - dt * 1.6); particles.update(dt); placeCamera(); if (skyCtl) post.setSun(skyCtl.sunDir);
     if (skyCtl) { if (player && state !== 'menu') skyCtl.follow(player.x, player.y || 0, player.z); else skyCtl.follow(CORE.x, 0, CORE.z - 20); } post.grade.uniforms.uTime.value = gtime; post.grade.uniforms.uHurt.value = hurtT * 0.55;
     if (player && state !== 'menu') drawHud(dt); post.composer.render(dt); requestAnimationFrame(frame); }
   buildWorld(); if (window.FRONTLINE_SETUP) begin({}); else menu(); requestAnimationFrame(frame);
-  window.__f = { boom, pick, offer, dive, get picking() { return picking; }, get PK() { return PK; }, WEAPONS, get score() { return score; }, particles, spawn, addTurret, view(px, py, pz, tx, ty, tz) { camera.position.set(px, py, pz); camera.lookAt(tx, ty, tz); camera.updateMatrixWorld(); if (skyCtl && player) skyCtl.follow(player.x, player.y || 0, player.z); post.composer.render(0.016); }, renderOnce() { particles.update(0.016); placeCamera(); if (skyCtl && player) skyCtl.follow(player.x, player.y || 0, player.z); post.composer.render(0.016); }, cam: placeCamera, begin, step, callIn, grenade, shoot, swap, SETUP, CALLS, WORLDS, CORE, get player() { return player; }, get enemies() { return enemies; }, get turrets() { return turrets; }, get walls() { return walls; }, get allies() { return allies; }, get state() { return state; }, get wave() { return wave; }, setOrder, get order() { return order; }, get research() { return research; }, get caches() { return caches; }, get scrap() { return scrap; }, set scrap(v) { scrap = v; }, skip() { phaseT = 0; } };
+  window.__f = { boom, pick, offer, dive, get picking() { return picking; }, get PK() { return PK; }, WEAPONS, get score() { return score; }, particles, spawn, addTurret, view(px, py, pz, tx, ty, tz) { camera.position.set(px, py, pz); camera.lookAt(tx, ty, tz); camera.updateMatrixWorld(); if (skyCtl) post.setSun(skyCtl.sunDir); if (skyCtl && player) skyCtl.follow(player.x, player.y || 0, player.z); post.composer.render(0.016); }, renderOnce() { particles.update(0.016); placeCamera(); if (skyCtl && player) skyCtl.follow(player.x, player.y || 0, player.z); post.composer.render(0.016); }, cam: placeCamera, begin, step, callIn, grenade, shoot, swap, SETUP, CALLS, WORLDS, CORE, get player() { return player; }, get enemies() { return enemies; }, get turrets() { return turrets; }, get walls() { return walls; }, get allies() { return allies; }, get state() { return state; }, get wave() { return wave; }, setOrder, get order() { return order; }, get research() { return research; }, get caches() { return caches; }, get scrap() { return scrap; }, set scrap(v) { scrap = v; }, skip() { phaseT = 0; } };
 })();

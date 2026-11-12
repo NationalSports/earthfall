@@ -20,21 +20,36 @@ export function createRenderer(container) {
   container.appendChild(renderer.domElement); return renderer;
 }
 // Final grade: tint, contrast, vignette, a little film grain, and a red pulse when you are hurt.
-const GradeShader = { uniforms: { tDiffuse: { value: null }, uTint: { value: new THREE.Vector3(1, 1, 1) }, uTime: { value: 0 }, uHurt: { value: 0 }, uVig: { value: 0.9 } },
+const GradeShader = { uniforms: { tDiffuse: { value: null }, uTint: { value: new THREE.Vector3(1, 1, 1) }, uTime: { value: 0 }, uHurt: { value: 0 }, uVig: { value: 0.9 }, uSun: { value: new THREE.Vector2(0.5, 0.8) }, uSunVis: { value: 0 }, uRays: { value: 0.3 }, uPx: { value: new THREE.Vector2(1 / 1280, 1 / 720) }, uWet: { value: 0 } },
   vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-  fragmentShader: `uniform sampler2D tDiffuse; uniform vec3 uTint; uniform float uTime; uniform float uHurt; uniform float uVig; varying vec2 vUv;
+  fragmentShader: `uniform sampler2D tDiffuse; uniform vec3 uTint; uniform float uTime; uniform float uHurt; uniform float uVig; uniform vec2 uSun; uniform float uSunVis; uniform float uRays; uniform vec2 uPx; uniform float uWet; varying vec2 vUv;
     float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+    vec3 hot(vec2 uv){ vec3 c = texture2D(tDiffuse, clamp(uv, 0.001, 0.999)).rgb; return min(max(c - 2.4, 0.0), vec3(3.0)); }
     void main(){ vec2 d = vUv - 0.5; float r = dot(d, d);
       vec3 c = vec3(texture2D(tDiffuse, vUv + d * r * 0.004).r, texture2D(tDiffuse, vUv).g, texture2D(tDiffuse, vUv - d * r * 0.004).b);
-      c *= uTint; c = mix(vec3(dot(c, vec3(0.299, 0.587, 0.114))), c, 1.12); c = (c - 0.5) * 1.06 + 0.5;
+      // a light unsharp mask so textures stay crisp
+      vec3 bl = (texture2D(tDiffuse, vUv + vec2(uPx.x, 0.0)).rgb + texture2D(tDiffuse, vUv - vec2(uPx.x, 0.0)).rgb + texture2D(tDiffuse, vUv + vec2(0.0, uPx.y)).rgb + texture2D(tDiffuse, vUv - vec2(0.0, uPx.y)).rgb) * 0.25;
+      c += clamp(c - bl, -0.25, 0.25) * 0.45;
+      // light shafts: smear the brightest sky toward the viewer, so buildings and palms cut visible rays
+      if (uSunVis > 0.01) { vec2 dir = uSun - vUv; float jit = hash(vUv * 700.0 + uTime) / 26.0; vec3 acc = vec3(0.0); float w = 1.0;
+        for (int i = 0; i < 26; i++) { acc += hot(vUv + dir * (float(i) / 26.0 + jit) * 0.9) * w; w *= 0.95; }
+        c += acc / 26.0 * uRays * uSunVis;
+        vec2 gp = 0.5 + (0.5 - uSun) * 0.55; c += hot(gp + (vUv - gp) * 3.0) * vec3(0.5, 0.8, 1.0) * 0.012 * uSunVis; // one faint lens ghost
+      }
+      c *= uTint; float l = dot(c, vec3(0.299, 0.587, 0.114));
+      c *= mix(vec3(0.93, 1.0, 1.07), vec3(1.07, 1.0, 0.92), smoothstep(0.05, 1.3, l)); // cool shadows, warm highlights
+      c = mix(vec3(l), c, 1.12); c = (c - 0.5) * 1.06 + 0.5;
       c *= 1.0 - smoothstep(0.18, 0.75, r) * uVig; c += (hash(vUv * 900.0 + uTime) - 0.5) * 0.035;
       c = mix(c, vec3(0.9, 0.12, 0.08), uHurt * smoothstep(0.08, 0.6, r));
-      gl_FragColor = vec4(c, 1.0); }` };
+      gl_FragColor = vec4(max(c, 0.0), 1.0); }` };
 export function createComposer(renderer, scene, camera) {
   const composer = new EffectComposer(renderer); composer.addPass(new RenderPass(scene, camera));
   const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.32, 0.55, 1.35); composer.addPass(bloom);
   const grade = new ShaderPass(GradeShader); composer.addPass(grade); composer.addPass(new OutputPass());
-  return { composer, bloom, grade, resize(w, h) { composer.setSize(w, h); bloom.setSize(w, h); } };
+  const sv = new THREE.Vector3(), cd = new THREE.Vector3();
+  return { composer, bloom, grade, resize(w, h) { composer.setSize(w, h); bloom.setSize(w, h); grade.uniforms.uPx.value.set(1 / w, 1 / h); },
+    // where the sun sits on screen, and how strongly its shafts should show
+    setSun(sunDir) { camera.getWorldDirection(cd); const f = cd.dot(sunDir); sv.copy(camera.position).addScaledVector(sunDir, 400).project(camera); const u = grade.uniforms; u.uSun.value.set(sv.x * 0.5 + 0.5, sv.y * 0.5 + 0.5); const off = Math.max(Math.abs(sv.x), Math.abs(sv.y)); u.uSunVis.value = f > 0.05 ? clamp(1.7 - off, 0, 1) * clamp(f * 3, 0, 1) : 0; } };
 }
 
 // ---------- Procedural textures (drawn on a canvas, never loaded from a file)
@@ -73,7 +88,7 @@ export function makeTextures(world) {
 
 // ---------- Sky, sun and image-based lighting
 const SKIES = {
-  la: { elev: 22, azim: 38, turb: 5, ray: 1.6, mie: 0.004, sun: 0xffe2b8, sunI: 2.6, hemi: [0xbfd6f2, 0x4a4030, 0.5], fog: 0x7f95ad, fogD: 0.0034, tint: [1.03, 1.0, 0.96], exp: 0.42, env: 0.55 },
+  la: { elev: 16, azim: 214, turb: 3.2, ray: 1.5, mie: 0.0025, sun: 0xffe2b8, sunI: 2.6, hemi: [0xbfd6f2, 0x4a4030, 0.5], fog: 0x8296a8, fogD: 0.0036, tint: [1.04, 1.0, 0.95], exp: 0.46, env: 0.6 },
   kepler: { elev: 13, azim: 325, turb: 8, ray: 3.0, mie: 0.012, sun: 0xffb0d8, sunI: 2.4, hemi: [0xc8a0ff, 0x402048, 0.5], fog: 0x6a4f88, fogD: 0.0038, tint: [1.14, 0.84, 1.22], exp: 0.42, env: 0.55 },
   ceres: { elev: 30, azim: 50, sun: 0xdcebff, sunI: 3.2, hemi: [0x5a6f96, 0x18181c, 0.35], fog: 0x05070b, fogD: 0.0016, tint: [0.96, 1.0, 1.08], exp: 0.8, env: 0.3, space: true } };
 export function buildSky(renderer, scene, group, world, grade) { const K = SKIES[world] || SKIES.la, phi = THREE.MathUtils.degToRad(90 - K.elev), theta = THREE.MathUtils.degToRad(K.azim), sunDir = new THREE.Vector3().setFromSphericalCoords(1, phi, theta);
