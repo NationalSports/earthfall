@@ -15,13 +15,14 @@ function redTexture(tex) { const im = tex.image, c = document.createElement('can
 function glowTexture(tex, red) { const im = tex.image, c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d'); g.drawImage(im, 0, 0); const d = g.getImageData(0, 0, c.width, c.height), p = d.data;
   for (let i = 0; i < p.length; i += 4) { const r = p[i], gg = p[i + 1], b = p[i + 2], lit = b > 170 && gg > 140 && r < 130; if (lit) { p[i] = red ? 255 : r * 0.6; p[i + 1] = red ? 60 : gg; p[i + 2] = red ? 40 : b; } else { p[i] = r * 0.1; p[i + 1] = gg * 0.1; p[i + 2] = b * 0.1; } }
   g.putImageData(d, 0, 0); const t = new THREE.CanvasTexture(c); t.flipY = tex.flipY; t.colorSpace = tex.colorSpace; return t; }
-if (src.soldier) new GLTFLoader().parse(bytes(src.soldier), '', g => {
+const load = uri => uri.startsWith('data:') ? Promise.resolve(bytes(uri)) : fetch(uri).then(r => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); });
+if (src.soldier) load(src.soldier).then(buf => new GLTFLoader().parse(buf, '', g => {
   const scene = g.scene; let mat = null; scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = false; o.frustumCulled = false; mat = o.material; } });
   mat.side = THREE.FrontSide; mat.envMapIntensity = 1.25; if (mat.map) { mat.map.anisotropy = 4; mat.emissiveMap = glowTexture(mat.map); mat.emissive = new THREE.Color(0xffffff); mat.emissiveIntensity = 1; }
   const box = new THREE.Box3().setFromObject(scene), clips = {}; for (const c of g.animations) { if (c.name !== 'Dead') for (const t of c.tracks) if (/Hips\.position/.test(t.name)) for (let i = 0; i < t.values.length; i += 3) { t.values[i] = t.values[0]; t.values[i + 2] = t.values[2]; } clips[c.name] = c; }
   ready.soldier = { scene, clips, scale: HEIGHT / (box.max.y - box.min.y), mat, red: null };
   for (const w of waiting.splice(0)) w();
-}, e => console.warn('soldier model failed to load', e));
+}, e => console.warn('soldier model failed to load', e))).catch(e => console.warn('soldier model failed to load', e));
 
 const B = n => 'mixamorig' + n, _a = new THREE.Vector3(), _b = new THREE.Vector3(), _c = new THREE.Vector3(), _q = new THREE.Quaternion(), _pq = new THREE.Quaternion(), _bq = new THREE.Quaternion(), _e = new THREE.Vector3(), _d = new THREE.Vector3(), _perp = new THREE.Vector3(), _ax = new THREE.Vector3();
 // Turn a bone in world space by q, whatever its own axes are.
