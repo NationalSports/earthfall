@@ -1,0 +1,217 @@
+{
+  "logical_canvas": [
+    1920,
+    1080
+  ],
+  "mockup_export": [
+    3840,
+    2160
+  ],
+  "safe_margin": 48,
+  "colors": {
+    "panel": "#0b191f",
+    "teal": "#254e52",
+    "cyan": "#89d2d4",
+    "brass": "#c9b284",
+    "critical": "#f38b79",
+    "text": "#edf1ed"
+  },
+  "typography": {
+    "family": "Arial / Helvetica; Menlo for changing numeric values",
+    "body_px": 16,
+    "label_px": 13,
+    "key_value_px": 36
+  },
+  "anchors": {
+    "phase": [
+      48,
+      40,
+      360,
+      110
+    ],
+    "compass": [
+      712,
+      35,
+      496,
+      66
+    ],
+    "objective": [
+      1480,
+      40,
+      392,
+      155
+    ],
+    "support": [
+      48,
+      176,
+      246,
+      119
+    ],
+    "squad": [
+      65,
+      790,
+      325,
+      115
+    ],
+    "player": [
+      48,
+      936,
+      398,
+      96
+    ],
+    "ammo": [
+      1510,
+      936,
+      362,
+      96
+    ],
+    "minimap": [
+      1650,
+      702,
+      222,
+      176
+    ],
+    "reticle": [
+      960,
+      540
+    ]
+  },
+  "central_aim_safe_rect": [
+    650,
+    300,
+    520,
+    400
+  ],
+  "states": {
+    "preparation": {
+      "label": "PREPARE DEFENCES",
+      "sub": "Set cover and hold the approach",
+      "timer": "00:42",
+      "health": 1,
+      "ammo": "40",
+      "reserve": "240",
+      "objective": "FORTIFY THE CITY CORE",
+      "detail": "Place defences before the next wave",
+      "progress": 0.3,
+      "status": "PREPARATION",
+      "support": "SENTRY / READY"
+    },
+    "combat": {
+      "label": "WAVE 04 / ASSAULT",
+      "sub": "Hold the street approach",
+      "timer": "02:18",
+      "health": 0.76,
+      "ammo": "28",
+      "reserve": "196",
+      "objective": "DEFEND THE CITY CORE",
+      "detail": "Core integrity 82%  \u2022  Hostiles inbound",
+      "progress": 0.82,
+      "status": "IN COMBAT",
+      "support": "SENTRY / 00:36"
+    },
+    "critical": {
+      "label": "WAVE 04 / ASSAULT",
+      "sub": "Core perimeter breached",
+      "timer": "01:07",
+      "health": 0.18,
+      "ammo": "06",
+      "reserve": "080",
+      "objective": "KEEP THE CORE ONLINE",
+      "detail": "Core integrity 31%  \u2022  Clear the perimeter",
+      "progress": 0.31,
+      "status": "CRITICAL",
+      "support": "RESUPPLY / READY"
+    },
+    "extraction": {
+      "label": "EXTRACTION INBOUND",
+      "sub": "Rendezvous at the beacon",
+      "timer": "00:28",
+      "health": 0.61,
+      "ammo": "17",
+      "reserve": "064",
+      "objective": "REACH THE EXTRACTION ZONE",
+      "detail": "Stay inside the perimeter until touchdown",
+      "progress": 0.7,
+      "status": "EXTRACTING",
+      "support": "SMOKE / READY"
+    }
+  },
+  "live_fields": [
+    "all text, keys, timers, health, ammunition, objective progress, squad names/status, world markers, map, input hints"
+  ],
+  "art_only": "SVG/PNG are static visual references. Claude owns runtime, input mapping, accessibility and code. No UI behavior is implemented here.",
+  "components_atlas": {
+    "canvas": [
+      1024,
+      560
+    ],
+    "export": [
+      2048,
+      1120
+    ],
+    "objective_frame": [
+      24,
+      24,
+      470,
+      150
+    ],
+    "support_frame": [
+      520,
+      24,
+      480,
+      150
+    ],
+    "health_frame": [
+      24,
+      220,
+      400,
+      92
+    ],
+    "critical_frame": [
+      520,
+      220,
+      400,
+      92
+    ],
+    "diamonds_centres": [
+      [
+        80,
+        400
+      ],
+      [
+        190,
+        400
+      ],
+      [
+        300,
+        400
+      ],
+      [
+        410,
+        400
+      ]
+    ],
+    "medical_plus_centres": [
+      [
+        80,
+        485
+      ],
+      [
+        190,
+        485
+      ],
+      [
+        300,
+        485
+      ],
+      [
+        410,
+        485
+      ]
+    ],
+    "reticle_center": [
+      760,
+      400
+    ]
+  }
+}

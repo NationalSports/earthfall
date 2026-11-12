@@ -1,0 +1,56 @@
+{
+  "logical_canvas": [
+    1920,
+    1080
+  ],
+  "export_canvas": [
+    3840,
+    2160
+  ],
+  "layers_back_to_front": [
+    {
+      "asset": "la-command-backplate.jpg",
+      "rect": [
+        0,
+        0,
+        1920,
+        1080
+      ]
+    },
+    {
+      "asset": "smoke-overlay.png",
+      "rect": [
+        1190,
+        190,
+        420,
+        750
+      ],
+      "opacity": 1
+    },
+    {
+      "asset": "squad-foreground.png",
+      "rect": [
+        950,
+        335,
+        930,
+        730
+      ]
+    },
+    {
+      "asset": "frontline-emblem.svg",
+      "rect": [
+        115,
+        95,
+        72,
+        72
+      ]
+    }
+  ],
+  "left_text_safe_rect": [
+    120,
+    220,
+    500,
+    720
+  ],
+  "implementation": "Use separate live text and buttons in these locations; main-menu-layout is an art reference, not a runtime UI. hero omits all text and UI. Preserve aspect ratios. No animation included."
+}
