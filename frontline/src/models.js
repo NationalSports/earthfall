@@ -2,7 +2,7 @@
 // Each model is a small skeleton of named joints. The pieces hanging off a joint are merged into one mesh per
 // material, and the merged shapes are cached, so a hundred swarm on screen share the same geometry.
 import * as THREE from 'three';
-import { dress, poseBody, dressBug, poseBugBody } from './glb.js';
+import { dress, poseBody, dressBug, poseBugBody, dressStatic } from './glb.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { ConvexGeometry } from 'three/addons/geometries/ConvexGeometry.js';
@@ -243,7 +243,7 @@ function hiveDef(node) { let k = node('mound', null, [0, 0, 0]);
     chain(k, 'bug', [[c * R, 0.5, z * R], [c * R * 1.22, Ht * 0.38, z * R * 1.22], [c * R * 1.05, Ht * 0.72, z * R * 1.05], [c * R * 0.62, Ht * 0.93, z * R * 0.62], [c * R * 0.22, Ht, z * R * 0.22]], 0.55 * q[3], 0.05, 5); });
   k = node('glow', null, [0, 0, 0], false); k.add('egg', sph(1.0, 16, 12), [0, 2.25, 0]);
   for (let i = 0; i < 11; i++) { const a = i * 0.571 + 0.2, rr = 1.25 + (i % 3) * 0.22, y = 1.35 + (i % 4) * 0.22; k.add('egg', sph(0.42 - (i % 3) * 0.07, 10, 8), [Math.cos(a) * rr, y, Math.sin(a) * rr * 0.85], null, [1, 1.15, 1]); } }
-export function makeHive(M) { const m = rig('hive', hiveDef, M), l = new THREE.PointLight(0xff5a20, 120, 40, 2); l.position.y = 3.2; m.add(l); m.userData.legs = []; m.userData.glow = m.userData.J.glow; return m; }
+export function makeHive(M) { const m = rig('hive', hiveDef, M), l = new THREE.PointLight(0xff5a20, 120, 40, 2); l.position.y = 3.2; m.add(l); m.userData.legs = []; m.userData.glow = m.userData.J.glow; dressStatic(m, 'hive', 8); return m; }
 function turretDef(node) { let k = node('base', null, [0, 0, 0]);
   k.add('gun', cyl(0.42, 0.5, 0.4, 10), [0, 0.62, 0]).add('D', cyl(0.56, 0.56, 0.12, 12), [0, 0.86, 0]).add('strip', cyl(0.57, 0.57, 0.025, 16), [0, 0.78, 0]).add('gun', cyl(0.2, 0.2, 0.3, 8), [0, 0.35, 0]);
   for (let i = 0; i < 3; i++) { const a = i * 2.094 + PI / 3, c = Math.cos(a), z = Math.sin(a); k.seg('A', [c * 0.38, 0.62, z * 0.38], [c * 1.1, 0.16, z * 1.1], 0.17, 0.13, 4).add('G', rb(0.3, 0.12, 0.3, 0.03), [c * 0.95, 0.27, z * 0.95], [0, -a, -0.55]).add('gun', rb(0.42, 0.14, 0.36, 0.03), [c * 1.18, 0.07, z * 1.18], [0, -a, 0]).add('gun', sph(0.14, 8, 6), [c * 0.38, 0.62, z * 0.38]); }
@@ -254,11 +254,11 @@ function turretDef(node) { let k = node('base', null, [0, 0, 0]);
   k = node('barrels', 'top', [0, 0, -0.6]);
   k.add('gun', cyl(0.2, 0.2, 0.25, 12), [0, 0, -0.1], [PI / 2, 0, 0]).add('gun', cyl(0.19, 0.19, 0.12, 12), [0, 0, -0.6], [PI / 2, 0, 0]).add('D', cyl(0.21, 0.21, 0.16, 12), [0, 0, -1.02], [PI / 2, 0, 0]);
   for (let i = 0; i < 4; i++) { const a = i * PI / 2 + PI / 4; k.add('gun', cyl(0.06, 0.06, 1.1, 8), [Math.cos(a) * 0.1, Math.sin(a) * 0.1, -0.6], [PI / 2, 0, 0]); } }
-export function makeTurret(M) { const m = rig('turret', turretDef, M, { A: M.armor, D: M.armorD, G: M.gold }); m.userData.top = m.userData.J.top; m.userData.barrels = m.userData.J.barrels; return m; }
+export function makeTurret(M) { const m = rig('turret', turretDef, M, { A: M.armor, D: M.armorD, G: M.gold }); m.userData.top = m.userData.J.top; m.userData.barrels = m.userData.J.barrels; dressStatic(m, 'turret', 2.4, -Math.PI / 2, m.userData.J.top); return m; }
 function podDef(node) { const k = node('pod', null, [0, 0, 0]);
   k.add('pod', lathe([[0.01, 0], [0.45, 0.25], [0.85, 1.0], [0.9, 2.6], [0.7, 3.3], [0.3, 3.8], [0.01, 3.9]], 10)).add('D', cyl(0.92, 0.92, 0.2, 10), [0, 1.3, 0]).add('D', cyl(0.92, 0.92, 0.2, 10), [0, 2.5, 0]).add('strip', cyl(0.93, 0.93, 0.04, 12), [0, 1.9, 0]).add('gun', cone(0.5, 0.5, 8), [0, 0.2, 0], [PI, 0, 0]);
   for (let i = 0; i < 4; i++) { const a = i * PI / 2 + PI / 4; k.add('A', rb(0.08, 1.4, 0.8, 0.03), [Math.cos(a) * 1.05, 2.9, Math.sin(a) * 1.05], [0, -a, 0.18]).add('visor', rb(0.3, 0.5, 0.04, 0.02), [Math.cos(i * PI / 2) * 0.9, 1.9, Math.sin(i * PI / 2) * 0.9], [0, -i * PI / 2 + PI / 2, 0]); } }
-export function makePod(M) { return rig('pod', podDef, M, { A: M.armor, D: M.armorD, G: M.gold }); }
+export function makePod(M) { const m = rig('pod', podDef, M, { A: M.armor, D: M.armorD, G: M.gold }); dressStatic(m, 'pod', 3.8); return m; }
 
 // ---------- Weapons. Each sits on the soldier's gun joint with the same grip points as the rifle, barrel toward -z.
 const WPN = {
@@ -278,4 +278,4 @@ function shipDef(node) { const k = node('ship', null, [0, 0, 0]);
   k.add('A', rb(3.4, 2.0, 8, 0.5), [0, 2.2, 0]).add('D', rb(3.0, 1.2, 3, 0.4), [0, 3.0, -1.5]).add('visor', rb(2.4, 0.7, 0.3, 0.1), [0, 2.9, -3.95], [0.35, 0, 0]).add('D', rb(3.5, 0.3, 8.2, 0.1), [0, 1.2, 0]).add('G', rb(3.45, 0.14, 6, 0.04), [0, 2.9, 0.8]).add('D', rb(2.6, 0.12, 2.6, 0.03), [0, 0.6, 5.0], [-0.42, 0, 0]).add('strip', bx(2.2, 0.06, 0.06), [0, 1.3, 4.05]);
   for (const s of [-1, 1]) { k.add('D', rb(3.2, 0.25, 2.4, 0.08), [s * 3.2, 2.9, 0.3], [0, 0, s * -0.12]).add('gun', cyl(0.7, 0.8, 1.6, 12), [s * 4.4, 2.6, -0.6]).add('gun', cyl(0.7, 0.8, 1.6, 12), [s * 4.4, 2.6, 1.6]).add('strip', cyl(0.55, 0.55, 0.08, 12), [s * 4.4, 1.78, -0.6]).add('strip', cyl(0.55, 0.55, 0.08, 12), [s * 4.4, 1.78, 1.6]).add('D', rb(0.2, 1.6, 1.4, 0.05), [s * 1.2, 3.9, 3.2], [0, 0, s * -0.3]).add('strip', bx(0.05, 0.3, 1.2), [s * 1.72, 2.4, 0])
     .seg('gun', [s * 1.3, 1.1, -2], [s * 1.6, 0.1, -2.2], 0.1, 0.08, 6).seg('gun', [s * 1.3, 1.1, 2.4], [s * 1.6, 0.1, 2.6], 0.1, 0.08, 6).add('D', rb(0.6, 0.12, 1.0, 0.03), [s * 1.6, 0.06, -2.2]).add('D', rb(0.6, 0.12, 1.0, 0.03), [s * 1.6, 0.06, 2.6]); } }
-export function makeShip(M) { return rig('ship', shipDef, M, { A: M.pod, D: M.armorD, G: M.gold }); }
+export function makeShip(M) { const m = rig('ship', shipDef, M, { A: M.pod, D: M.armorD, G: M.gold }); dressStatic(m, 'shuttle', 4.4); return m; }

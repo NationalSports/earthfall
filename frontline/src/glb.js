@@ -26,9 +26,9 @@ if (src.soldier) load(src.soldier).then(buf => new GLTFLoader().parse(buf, '', g
 
 // ---------- The swarm. Each scan carries an automatic skeleton with no animation, so its legs are found by shape
 // (bone chains that reach the ground) and walked in code.
-const BUGS = { swarm: { file: 'swarmling', h: 1.0 }, leaper: { file: 'swarmling', h: 1.0, tint: 0xa8ffc0 }, spitter: { file: 'spitter', h: 1.45 }, brute: { file: 'brute', h: 2.3 }, boss: { file: 'boss', h: 2.7 } };
+const BUGS = { swarm: { file: 'swarmling', h: 1.0 }, leaper: { file: 'leaper', h: 1.25 }, spitter: { file: 'spitter', h: 1.45 }, brute: { file: 'brute', h: 2.3 }, boss: { file: 'boss', h: 2.7 } };
 const bugWait = {};
-for (const f of ['swarmling', 'spitter', 'brute', 'boss']) if (src[f]) load(src[f]).then(buf => new GLTFLoader().parse(buf, '', g => { let mat = null; g.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.frustumCulled = false; mat = o.material; } });
+for (const f of ['swarmling', 'leaper', 'spitter', 'brute', 'boss']) if (src[f]) load(src[f]).then(buf => new GLTFLoader().parse(buf, '', g => { let mat = null; g.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.frustumCulled = false; mat = o.material; } });
   mat.side = THREE.FrontSide; mat.envMapIntensity = 1.2; if (mat.map) { mat.emissiveMap = glowTexture(mat.map, false, true); mat.emissive = new THREE.Color(0xffffff); }
   const box = new THREE.Box3().setFromObject(g.scene); ready[f] = { scene: g.scene, hgt: box.max.y - box.min.y, mat, tints: {} }; for (const w of (bugWait[f] || []).splice(0)) w(); }, e => console.warn(f + ' model failed', e))).catch(e => console.warn(f + ' model failed', e));
 const _p = new THREE.Vector3(), _h = new THREE.Vector3(), _Z = new THREE.Vector3(), _hq = new THREE.Quaternion();
@@ -103,3 +103,17 @@ export function poseBody(m, s, gripL, gripR) { const U = m.userData.body; if (!U
   if (hang) { for (const sd of ['Left', 'Right']) { turn(bn[B(sd + 'UpLeg')], _q.setFromAxisAngle(X, sd === 'Left' ? -0.5 : -0.15)); turn(bn[B(sd + 'Leg')], _q.setFromAxisAngle(X, sd === 'Left' ? 0.9 : 0.5)); } }
   for (const sd of ['Left', 'Right']) { const R = sd === 'Right'; J.gun.localToWorld(_T.copy(R ? gripR : gripL)); _pole.set(R ? 0.6 : -0.6, -1, 0.35).applyQuaternion(_mq); reach(bn[B(sd + 'Arm')], bn[B(sd + 'ForeArm')], bn[B(sd + 'Hand')], _T, _pole, U.l1, U.l2); }
 }
+
+// ---------- Scanned set pieces with no skeleton: buildings, hive, turret, drop pod, shuttle, generator.
+const STATIC = ['hive', 'turret', 'pod', 'shuttle', 'generator', 'bld-artdeco', 'bld-brick', 'bld-diner', 'bld-garage', 'bld-glass', 'bld-stucco'], statWait = {};
+for (const f of STATIC) if (src[f]) load(src[f]).then(buf => new GLTFLoader().parse(buf, '', g => { g.scene.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; const mt = o.material; mt.side = THREE.FrontSide; mt.envMapIntensity = 1.1; if (mt.map) { mt.map.anisotropy = 8; mt.emissiveMap = mt.map; mt.emissive = new THREE.Color(0xffffff); mt.emissiveIntensity = f === 'hive' ? 0.3 : 0.14; } } });
+  const box = new THREE.Box3().setFromObject(g.scene); ready[f] = { scene: g.scene, box, size: box.getSize(new THREE.Vector3()) }; for (const w of (statWait[f] || []).splice(0)) w(); }, e => console.warn(f + ' model failed', e))).catch(e => console.warn(f + ' model failed', e));
+// A copy standing on its base at the origin, scaled per axis.
+function standing(S, sx, sy, sz) { const inner = S.scene.clone(), holder = new THREE.Group(); inner.position.set(-(S.box.min.x + S.box.max.x) / 2, -S.box.min.y, -(S.box.min.z + S.box.max.z) / 2); holder.add(inner); holder.scale.set(sx, sy, sz); return holder; }
+// Swap a code-built set piece for its scan. parent lets the scan ride a moving joint (the turret's head).
+export function dressStatic(m, name, height, yaw, parent) { if (!src[name]) return; const go = () => { const S = ready[name]; if (!S || m.userData.scan) return; m.traverse(o => { if (o.isMesh) o.visible = false; });
+    const k = height / S.size.y, h = standing(S, k, k, k); h.rotation.y = yaw || 0; const host = parent || m; m.updateWorldMatrix(true, true); if (host !== m) { host.getWorldPosition(_p); m.worldToLocal(_p); h.position.set(-_p.x, -_p.y, -_p.z); } host.add(h); m.userData.scan = h; };
+  if (ready[name]) go(); else (statWait[name] || (statWait[name] = [])).push(go); }
+// A scanned building sized for a lot: along the street and back from it. Returns null until the scans are loaded.
+export function scanBuilding(along, deep, r) { const have = STATIC.filter(n => n.startsWith('bld-') && ready[n]); if (have.length < 3) return null; const S = ready[have[Math.floor(r() * have.length)]], k = Math.min(along / S.size.x, deep / S.size.z), kx = Math.min(along / S.size.x, k * 1.25), kz = Math.min(deep / S.size.z, k * 1.25);
+  return { obj: standing(S, kx, k * 1.1, kz), w: S.size.x * kx, d: S.size.z * kz, h: S.size.y * k * 1.1 }; }
