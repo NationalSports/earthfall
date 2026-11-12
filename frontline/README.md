@@ -62,3 +62,13 @@ This is the offline starting point for multiplayer. Each soldier is one entry wi
 - **Arsenal:** eight weapons in `WEAPONS`, each with its own spread, recoil, sound and reload. You start with the rifle, shotgun and marksman rifle; Q or the mouse wheel cycles. The machine gun, flamethrower, rocket launcher, rail rifle and plasma rifle come from research.
 - **Field research:** a recovered cache, a cleared wave, a burned hive, or every fifth kill in Skirmish pauses the battle and offers three upgrades from `PERKS` (a new weapon, damage, reload, jump fuel, turrets, squad, call-ins). Keys 1 to 3 choose.
 - **Squad:** the default order is now "fighting on their own" (V). Soldiers take firing positions on the nearest threat, back away from melee, and with nothing to shoot scout toward the next objective. Roles by slot: rifle, heavy, grenadier, marksman. Z, X and C still give follow, hold and wall.
+
+## Districts, sound and the expedition
+
+- **Districts (`src/props.js`):** each world has a layout of roads and a hand-placed set of props. Los Angeles has streets with sidewalks, traffic and street lights, abandoned and burning vehicles, buses, barriers, dumpsters, billboards, power lines, rubble and sandbags. Kepler and Ceres have habitats, tanks, masts, containers, rovers and floodlights. Vehicles and containers block movement and line of sight.
+- **Sound (`src/audio.js`):** all synthesized. M toggles the music.
+- **Expedition (the Assault mode):** you drop at the south edge and cross the city. Bullets do nothing to hives, so you hold E beside one to plant a charge. Patrols wander and call in breaches that erupt from the ground. When the last hive burns, return to the landing zone, hold it until the shuttle lands, and board.
+- **Enemies:** the leaper jumps at you from range. Brutes and the Warlord are armoured: the rifle, shotgun and machine gun do about a third of their damage, while the marksman rifle, rail, rocket, plasma and flame go through.
+- **Weapons** each have their own model on the soldier (`setWeapon` in `src/models.js`), with shell casings, muzzle smoke and impact dust.
+
+See `docs/TEARDOWN.md` for what was learned from Saltline and what is still missing.
