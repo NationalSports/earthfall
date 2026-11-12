@@ -6,6 +6,10 @@ const ICON = { metal: '⬢', fuel: '⚡\uFE0E', research: '✦', uranium: '☢\u
 // Drawn icons from assets/ui/icons.svg replace the glyphs above when the sprite is in the build.
 if (typeof UI_ICONS === 'string' && UI_ICONS) { const ic = n => '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-' + n + '"/></svg>'; for (const k of Object.keys(ICON)) { const n = k === 'troops' ? 'reserve-troops' : k === 'held' ? 'territories-held' : k; if (UI_ICONS.includes('id="ic-' + n + '"')) ICON[k] = ic(n); }
   document.body.insertAdjacentHTML('afterbegin', UI_ICONS); }
+// Painted resource icons (art request #28) replace both of the above when they are in the build.
+// Each is used as a stencil filled with the text color, so every resource keeps its own color.
+if (typeof UIX === 'object') { let css = ''; for (const k of Object.keys(ICON)) { const n = k === 'troops' ? 'reserve' : k, u = UIX['res-' + n]; if (!u) continue; css += '.ri-' + n + '{-webkit-mask-image:url(' + u + ');mask-image:url(' + u + ')}'; ICON[k] = '<i class="ri ri-' + n + '"></i>'; }
+  if (css) { const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st); } }
 let panelOpen = false; const compact = () => window.matchMedia('(max-width:860px),(max-height:520px)').matches;
 function setPanel(v) { panelOpen = v; document.body.classList.toggle('pclosed', !v); }
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -330,6 +334,7 @@ async function boot() {
   setPanel(!compact());
   const ld = src => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = src; });
   const art = { map: await ld(ART.map), mask: await ld(ART.mask), globe: await ld(ART.globe), infest: ART.infest ? await ld(ART.infest) : null, pieces: {} }; await Promise.all(Object.keys(PIECES).map(async k => { art.pieces[k] = await ld(PIECES[k]); }));
+  art.city = {}; if (typeof CITY === 'object') await Promise.all(Object.keys(CITY).map(async k => { try { const im = await ld(CITY[k]); if (/^ground-/.test(k)) art.city[k] = im; else art.pieces['city-' + k] = im; } catch (e) {} }));
   { const st = document.createElement('style'); st.textContent = Object.keys(CARDS).map(k => '.art-' + k + '{background-image:url(' + CARDS[k] + ')}').join(''); document.head.appendChild(st); }
   { const st = document.createElement('style'); st.textContent = Object.keys(UIX).map(k => '.ui-' + k + '{background-image:url(' + UIX[k] + ')}').join(''); document.head.appendChild(st); }
   await Promise.all(Object.keys(BATTLE).map(async k => { try { BIMG[k] = await ld(BATTLE[k]); } catch (e) {} }));

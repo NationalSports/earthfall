@@ -131,3 +131,5 @@ body.pclosed #panel{transform:translateX(100%)}body.pclosed #ptoggle{display:blo
 .perk{position:relative}.perk .pk{position:absolute;right:8px;top:50%;width:34px;height:34px;margin-top:-17px;background-size:contain;background-repeat:no-repeat;opacity:.9}.perk .pk~b,.perk .pk~span{padding-right:44px}
 .tag .ti{display:inline-block;width:11px;height:11px;margin-right:3px;vertical-align:-1px;background-size:contain;background-repeat:no-repeat;filter:brightness(1.5)}
 .obj .art.hp{flex:none;width:72px;height:48px;border-radius:6px;border:1px solid var(--line)}
+/* Painted resource icons (#28), drawn as a stencil in the surrounding text color */
+.ri{display:inline-block;width:1.15em;height:1.15em;vertical-align:-.2em;background:currentColor;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center}

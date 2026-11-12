@@ -17,7 +17,9 @@ const assets = 'const ART = { map: ' + JSON.stringify(uri('assets/board/map-worl
   'const PIECES = ' + JSON.stringify(dir('assets/pieces', 'image/webp')) + ';\n' +
   'const CARDS = ' + JSON.stringify(Object.fromEntries(Object.entries(dir('assets/cards', 'image/webp')).filter(([k]) => !SKIP_CARD(k)))) + ';\n' +
   'const BATTLE = ' + JSON.stringify(Object.fromEntries(BATTLE_ART.filter(f => has2('assets/battle/' + f)).map(f => [f.replace(/\.\w+$/, ''), uri('assets/battle/' + f, f.endsWith('.jpg') ? 'image/jpeg' : 'image/webp')]))) + ';\n' +
-  'const UIX = ' + JSON.stringify(Object.fromEntries(Object.entries(dir('assets/ui', 'image/webp')).filter(([k]) => /^(act|perk|trait)-/.test(k)))) + ';\n';
+  'const UIX = ' + JSON.stringify(Object.fromEntries(Object.entries(dir('assets/ui', 'image/webp')).filter(([k]) => /^(act|perk|trait|res)-/.test(k)))) + ';\n' +
+  // Painted city plates and building miniatures for the close-up city (#20).
+  'const CITY = ' + JSON.stringify(has2('assets/city') ? dir('assets/city', 'image/webp') : {}) + ';\n';
 // Delivered, reviewed scripts and the icon sprite. Files are listed by name on purpose: nothing in assets/ is embedded without a review.
 const has = f => fs.existsSync(path.join(__dirname, f));
 // assets/fx/infestation.js: the revision from #25 passed review in #16 (painting stays visible), so it is switched on.
