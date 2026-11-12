@@ -49,3 +49,9 @@ Code is in `frontline/src/` (Claude). Art goes in `frontline/assets/` and `front
 - Soldiers walk with bending knees, lean into a run, aim with the whole upper body, and their hands follow the rifle (two-bone reach). The rifle kicks when fired.
 - The swarm walks on jointed legs in an alternating gait, rears to strike, and rolls over and sinks when killed.
 - `build.js` also picks up the art kit in `frontline/public/assets/` (ground, facade and sky), so those plug in as soon as that folder is on the branch.
+
+## Skirmish
+
+A third mode on the briefing screen: your team (you and three squadmates) against a red team of enemy soldiers run by the game. First to 15 kills wins, both sides respawn at their base, and your health recharges when you are out of fire for four seconds. The red soldiers need a clear line of sight, strafe, keep their distance and fire in bursts.
+
+This is the offline starting point for multiplayer. Each soldier is one entry with a position, facing and health, so a later networked version replaces `trooperThink` (and the squad logic) with players' inputs from a server.

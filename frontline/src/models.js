@@ -81,7 +81,7 @@ function reach(arm, fore, S, T, pole) { // two-bone reach: bend the elbow so the
   _perp.copy(pole).addScaledVector(_d, -pole.dot(_d)).normalize(); _e.copy(_d).multiplyScalar(Math.cos(a) * ARM1).addScaledVector(_perp, Math.sin(a) * ARM1);
   arm.quaternion.setFromUnitVectors(DOWN, _f.copy(_e).normalize()); _f.copy(_d).multiplyScalar(len).sub(_e).normalize().applyQuaternion(_qi.copy(arm.quaternion).invert()); fore.quaternion.setFromUnitVectors(DOWN, _f);
 }
-export function makeSoldier(M, main, accent) { const m = rig('soldier', soldierDef, M, { A: main || M.armor, D: accent || M.armorD, G: M.gold }), J = m.userData.J; m.userData.gun = J.gun; m.userData.head = J.head; poseSoldier(m, {}); return m; }
+export function makeSoldier(M, main, accent, over) { const m = rig('soldier', soldierDef, M, Object.assign({ A: main || M.armor, D: accent || M.armorD, G: M.gold }, over || {})), J = m.userData.J; m.userData.gun = J.gun; m.userData.head = J.head; poseSoldier(m, {}); return m; }
 // s: walk (cycle angle), move 0..1, run 0..1, pitch, t (seconds), kick 0..1, dead, relaxed
 export function poseSoldier(m, s) { const J = m.userData.J, mv = s.move || 0, w = s.walk || 0, t = s.t || 0, pitch = s.pitch || 0, kick = s.kick || 0, run = s.run || 0;
   if (s.dead) { m.rotation.x = -1.45; J.torso.rotation.set(0, 0, 0.1); J.legL.rotation.set(0.25, 0, -0.2); J.legR.rotation.set(-0.1, 0, 0.25); J.shinL.rotation.x = -0.5; J.shinR.rotation.x = -0.15; return; }
