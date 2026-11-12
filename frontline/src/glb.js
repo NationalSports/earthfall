@@ -12,8 +12,8 @@ function redTexture(tex) { const im = tex.image, c = document.createElement('can
   for (let i = 0; i < p.length; i += 4) { const r = p[i], gg = p[i + 1], b = p[i + 2]; if (gg > r * 1.12 && b > r * 1.05) { const l = (gg + b) * 0.5; p[i] = Math.min(255, l * 1.25); p[i + 1] = r * 0.55; p[i + 2] = r * 0.5; } }
   g.putImageData(d, 0, 0); const t = new THREE.CanvasTexture(c); t.flipY = tex.flipY; t.colorSpace = tex.colorSpace; t.wrapS = tex.wrapS; t.wrapT = tex.wrapT; t.anisotropy = 4; return t; }
 // A faint self-lit copy of the paint keeps the soldier readable at night; the cyan visor and lights glow outright.
-function glowTexture(tex, red) { const im = tex.image, c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d'); g.drawImage(im, 0, 0); const d = g.getImageData(0, 0, c.width, c.height), p = d.data;
-  for (let i = 0; i < p.length; i += 4) { const r = p[i], gg = p[i + 1], b = p[i + 2], lit = b > 170 && gg > 140 && r < 130; if (lit) { p[i] = red ? 255 : r * 0.6; p[i + 1] = red ? 60 : gg; p[i + 2] = red ? 40 : b; } else { p[i] = r * 0.1; p[i + 1] = gg * 0.1; p[i + 2] = b * 0.1; } }
+function glowTexture(tex, red, alien) { const im = tex.image, c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d'); g.drawImage(im, 0, 0); const d = g.getImageData(0, 0, c.width, c.height), p = d.data;
+  for (let i = 0; i < p.length; i += 4) { const r = p[i], gg = p[i + 1], b = p[i + 2], lit = alien ? (r > 170 && b > 170 && gg < 120) || (gg > 190 && r < 170 && b < 110) : b > 170 && gg > 140 && r < 130; if (lit && alien) { } else if (lit) { p[i] = red ? 255 : r * 0.6; p[i + 1] = red ? 60 : gg; p[i + 2] = red ? 40 : b; } else { p[i] = r * 0.1; p[i + 1] = gg * 0.1; p[i + 2] = b * 0.1; } }
   g.putImageData(d, 0, 0); const t = new THREE.CanvasTexture(c); t.flipY = tex.flipY; t.colorSpace = tex.colorSpace; return t; }
 const load = uri => uri.startsWith('data:') ? Promise.resolve(bytes(uri)) : fetch(uri).then(r => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); });
 if (src.soldier) load(src.soldier).then(buf => new GLTFLoader().parse(buf, '', g => {
@@ -24,6 +24,32 @@ if (src.soldier) load(src.soldier).then(buf => new GLTFLoader().parse(buf, '', g
   for (const w of waiting.splice(0)) w();
 }, e => console.warn('soldier model failed to load', e))).catch(e => console.warn('soldier model failed to load', e));
 
+// ---------- The swarm. Each scan carries an automatic skeleton with no animation, so its legs are found by shape
+// (bone chains that reach the ground) and walked in code.
+const BUGS = { swarm: { file: 'swarmling', h: 1.0 }, leaper: { file: 'swarmling', h: 1.0, tint: 0xa8ffc0 }, spitter: { file: 'spitter', h: 1.45 }, brute: { file: 'brute', h: 2.3 }, boss: { file: 'boss', h: 2.7 } };
+const bugWait = {};
+for (const f of ['swarmling', 'spitter', 'brute', 'boss']) if (src[f]) load(src[f]).then(buf => new GLTFLoader().parse(buf, '', g => { let mat = null; g.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.frustumCulled = false; mat = o.material; } });
+  mat.side = THREE.FrontSide; mat.envMapIntensity = 1.2; if (mat.map) { mat.emissiveMap = glowTexture(mat.map, false, true); mat.emissive = new THREE.Color(0xffffff); }
+  const box = new THREE.Box3().setFromObject(g.scene); ready[f] = { scene: g.scene, hgt: box.max.y - box.min.y, mat, tints: {} }; for (const w of (bugWait[f] || []).splice(0)) w(); }, e => console.warn(f + ' model failed', e))).catch(e => console.warn(f + ' model failed', e));
+const _p = new THREE.Vector3(), _h = new THREE.Vector3(), _Z = new THREE.Vector3(), _hq = new THREE.Quaternion();
+export function dressBug(m, kind) { const def = BUGS[kind]; if (!def || !src[def.file]) return;
+  const go = () => { const S = ready[def.file]; if (!S || m.userData.body) return; m.traverse(o => { if (o.isMesh) o.visible = false; });
+    const body = cloneSkinned(S.scene), holder = new THREE.Group(), sc = def.h / S.hgt; holder.scale.setScalar(sc); holder.add(body); m.add(holder);
+    if (def.tint) { const mt = S.tints[kind] || (S.tints[kind] = Object.assign(S.mat.clone(), { color: new THREE.Color(def.tint) })); body.traverse(o => { if (o.isMesh) o.material = mt; }); }
+    m.updateWorldMatrix(true, true); const kids = b => b.children.filter(c => c.isBone), limbs = [], floor = holder.getWorldPosition(new THREE.Vector3()).y, top = S.hgt * sc * m.scale.y;
+    body.traverse(b => { if (!b.isBone || kids(b).length < 3) return; b.getWorldPosition(_h); for (const c of kids(b)) { let tip = c, n = 1; while (kids(tip).length === 1) { tip = kids(tip)[0]; n++; } if (kids(tip).length || n < 3) continue; tip.getWorldPosition(_p); m.worldToLocal(_p); const hub = m.worldToLocal(_h.clone());
+      limbs.push({ root: c, rest: c.quaternion.clone(), leg: _p.y * m.scale.y < top * 0.22, side: _p.x >= hub.x ? 1 : -1, z: _p.z, ph: 0 }); } });
+    for (const sd of [-1, 1]) limbs.filter(l => l.leg && l.side === sd).sort((a, b) => a.z - b.z).forEach((l, i) => { l.ph = (i % 2) * Math.PI + (sd > 0 ? Math.PI : 0); });
+    limbs.filter(l => !l.leg).forEach((l, i) => { l.ph = i * 1.7; }); m.userData.body = { holder, limbs, y0: 0 }; };
+  if (ready[def.file]) go(); else (bugWait[def.file] || (bugWait[def.file] = [])).push(go);
+}
+// w is the walk-cycle angle the code rig already uses; s: move 0..1, atk 0..1, t seconds.
+export function poseBugBody(m, s, w) { const U = m.userData.body; if (!U) return; const mv = s.move === undefined ? 1 : s.move, atk = s.atk || 0, t = s.t || 0;
+  U.holder.position.y = Math.abs(Math.sin(w)) * 0.03 * mv; U.holder.rotation.x = atk * 0.28 + Math.sin(w * 2) * 0.02 * mv; U.holder.rotation.z = Math.sin(w) * 0.035 * mv;
+  for (const l of U.limbs) l.root.quaternion.copy(l.rest); m.updateWorldMatrix(true, true); U.holder.getWorldQuaternion(_hq); X.set(1, 0, 0).applyQuaternion(_hq); _Z.set(0, 0, 1).applyQuaternion(_hq);
+  for (const l of U.limbs) { if (l.leg) { const a = w + l.ph; turn(l.root, _q.setFromAxisAngle(X, Math.sin(a) * 0.42 * mv)); turn(l.root, _q.setFromAxisAngle(_Z, l.side * Math.max(0, Math.cos(a)) * 0.3 * mv)); }
+    else turn(l.root, _q.setFromAxisAngle(X, Math.sin(t * 2.3 + l.ph) * 0.07 + atk * (l.z > 0 ? 0.7 : 0.15))); }
+}
 const B = n => 'mixamorig' + n, _a = new THREE.Vector3(), _b = new THREE.Vector3(), _c = new THREE.Vector3(), _q = new THREE.Quaternion(), _pq = new THREE.Quaternion(), _bq = new THREE.Quaternion(), _e = new THREE.Vector3(), _d = new THREE.Vector3(), _perp = new THREE.Vector3(), _ax = new THREE.Vector3();
 // Turn a bone in world space by q, whatever its own axes are.
 function turn(bone, q) { bone.parent.getWorldQuaternion(_pq); bone.getWorldQuaternion(_bq); bone.quaternion.copy(_pq.invert()).multiply(q).multiply(_bq); bone.updateWorldMatrix(false, true); }

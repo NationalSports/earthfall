@@ -2,7 +2,7 @@
 // Each model is a small skeleton of named joints. The pieces hanging off a joint are merged into one mesh per
 // material, and the merged shapes are cached, so a hundred swarm on screen share the same geometry.
 import * as THREE from 'three';
-import { dress, poseBody } from './glb.js';
+import { dress, poseBody, dressBug, poseBugBody } from './glb.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { ConvexGeometry } from 'three/addons/geometries/ConvexGeometry.js';
@@ -223,9 +223,10 @@ function bruteDef(boss) { return node => { let k = node('body', null, [0, 1.45, 
   for (const s of [-1, 1]) { k = node('arm' + (s < 0 ? 'L' : 'R'), 'body', [s * 1.05, 0.08, 0.72]); k.add('bug', fac(0.44, 6, 4), null, null, [1, 0.9, 1.1]).seg('bugD', [0, -0.05, 0.05], [s * 0.22, -0.62, 0.42], 0.3, 0.26, 6).add('bugGlow', torus(0.27, 0.07), [s * 0.2, -0.56, 0.38], [PI / 2 - 0.5, 0, 0]).add('bug', dod(0.58), [s * 0.28, -1.0, 0.72], [0.4, s * 0.6, 0]).seg('bug', [s * 0.1, 0.3, 0], [s * 0.45, 0.75, -0.5], 0.2, 0.02, 4); }
   legs(node, LEGS[boss ? 'boss' : 'brute'] = [], 2, 1.1, 0.72, [0.2, -0.85], [0.34, 0.16], [0.52, 0], 0.27, 'bugD'); }; }
 const BUG = { swarm: swarmDef, leaper: node => { swarmDef(node); LEGS.leaper = LEGS.swarm; }, spitter: spitterDef, brute: bruteDef(false), boss: bruteDef(true) }, RATE = { swarm: 13, leaper: 16, spitter: 8, brute: 6, boss: 5 };
-export function makeBug(M, kind, over) { const key = BUG[kind] ? kind : 'brute', m = rig('bug-' + key, BUG[key], M, over), J = m.userData.J; if (key === 'leaper') m.scale.setScalar(1.3); m.userData.kind = key; m.userData.legs = LEGS[key].map(l => ({ g: J[l.n], s: l.s, ph: l.ph, splay: l.splay })); m.userData.y0 = J.body.position.y; if (key === 'boss') m.scale.setScalar(1.83); return m; }
+export function makeBug(M, kind, over) { const key = BUG[kind] ? kind : 'brute', m = rig('bug-' + key, BUG[key], M, over), J = m.userData.J; if (key === 'leaper') m.scale.setScalar(1.3); m.userData.kind = key; m.userData.legs = LEGS[key].map(l => ({ g: J[l.n], s: l.s, ph: l.ph, splay: l.splay })); m.userData.y0 = J.body.position.y; if (key === 'boss') m.scale.setScalar(1.83); dressBug(m, key); return m; }
 // s: t (seconds), move 0..1, atk 0..1
-export function poseBug(m, s) { const U = m.userData, J = U.J, t = s.t || 0, mv = s.move === undefined ? 1 : s.move, atk = s.atk || 0, w = t * RATE[U.kind], big = U.kind === 'brute' || U.kind === 'boss';
+export function poseBug(m, s) { poseBugRig(m, s); if (m.userData.body) poseBugBody(m, s, (s.t || 0) * RATE[m.userData.kind]); }
+function poseBugRig(m, s) { const U = m.userData, J = U.J, t = s.t || 0, mv = s.move === undefined ? 1 : s.move, atk = s.atk || 0, w = t * RATE[U.kind], big = U.kind === 'brute' || U.kind === 'boss';
   for (const l of U.legs) { const p = w + l.ph, f = Math.sin(p) * mv; l.g.rotation.y = l.s * (-(f * 0.5) - l.splay); l.g.rotation.z = l.s * Math.max(0, Math.cos(p)) * (big ? 0.22 : 0.4) * mv; }
   J.body.position.y = U.y0 + Math.sin(w * 2) * (big ? 0.07 : 0.035) * mv - atk * 0.08; J.body.rotation.set(Math.sin(w) * 0.03 * mv - atk * (big ? 0.18 : 0.3), 0, Math.cos(w) * (big ? 0.05 : 0.07) * mv);
   if (J.head) J.head.rotation.set(-atk * 0.4 + Math.sin(t * 2.3) * 0.06, Math.sin(t * 1.7) * 0.12, 0);

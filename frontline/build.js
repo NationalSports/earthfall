@@ -12,8 +12,8 @@ walk(path.join(__dirname, 'public/assets')); walk(path.join(__dirname, 'assets')
 for (const [want, have] of [['ground-la', 'ground-grass'], ['facade', 'facade-art-deco'], ['sky-la', 'los-angeles-panorama']]) if (!assets[want] && assets[have]) assets[want] = assets[have];
 let html = fs.readFileSync(path.join(__dirname, 'index.tpl.html'), 'utf8');
 // Scanned 3D models ride along the same way: public/assets/models/soldier.glb becomes FRONTLINE_MODELS.soldier.
-// FRONTLINE_SPLIT=1 keeps the models in a second file beside the page (dist-split/models.js), for hosts that cap the size of one file.
-const SPLIT = !!process.env.FRONTLINE_SPLIT, OUT = path.join(__dirname, SPLIT ? 'dist-split' : 'dist');
+// The models go in a second file beside the page (dist/models.js): together they are too big for hosts that cap one file.
+const SPLIT = true, OUT = path.join(__dirname, 'dist');
 const models = {}, mdir = path.join(__dirname, 'public/assets/models'); if (fs.existsSync(mdir)) for (const f of fs.readdirSync(mdir)) if (/\.glb$/i.test(f)) models[path.basename(f, path.extname(f))] = 'data:model/gltf-binary;base64,' + fs.readFileSync(path.join(mdir, f)).toString('base64');
 const modelJs = 'window.FRONTLINE_MODELS=' + JSON.stringify(models) + ';';
 html = html.replace('/*ASSETS*/', () => 'window.FRONTLINE_ASSETS=' + JSON.stringify(assets) + ';' + (SPLIT ? '</script><script src="models.js">' : modelJs)).replace('/*GAME*/', () => game);
