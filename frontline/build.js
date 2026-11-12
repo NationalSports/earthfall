@@ -9,6 +9,8 @@ walk(path.join(__dirname, 'public/assets')); walk(path.join(__dirname, 'assets')
 // The art kit's own file names stand in for the names the game asks for.
 for (const [want, have] of [['ground-la', 'ground-grass'], ['facade', 'facade-art-deco'], ['sky-la', 'los-angeles-panorama']]) if (!assets[want] && assets[have]) assets[want] = assets[have];
 let html = fs.readFileSync(path.join(__dirname, 'index.tpl.html'), 'utf8');
-html = html.replace('/*ASSETS*/', () => 'window.FRONTLINE_ASSETS=' + JSON.stringify(assets) + ';').replace('/*GAME*/', () => game);
+// Scanned 3D models ride along the same way: public/assets/models/soldier.glb becomes FRONTLINE_MODELS.soldier.
+const models = {}, mdir = path.join(__dirname, 'public/assets/models'); if (fs.existsSync(mdir)) for (const f of fs.readdirSync(mdir)) if (/\.glb$/i.test(f)) models[path.basename(f, path.extname(f))] = 'data:model/gltf-binary;base64,' + fs.readFileSync(path.join(mdir, f)).toString('base64');
+html = html.replace('/*ASSETS*/', () => 'window.FRONTLINE_ASSETS=' + JSON.stringify(assets) + ';window.FRONTLINE_MODELS=' + JSON.stringify(models) + ';').replace('/*GAME*/', () => game);
 fs.mkdirSync(path.join(__dirname, 'dist'), { recursive: true }); fs.writeFileSync(path.join(__dirname, 'dist/index.html'), html);
 console.log('built frontline/dist/index.html', html.length, 'bytes,', Object.keys(assets).length, 'art files');

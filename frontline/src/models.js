@@ -2,6 +2,7 @@
 // Each model is a small skeleton of named joints. The pieces hanging off a joint are merged into one mesh per
 // material, and the merged shapes are cached, so a hundred swarm on screen share the same geometry.
 import * as THREE from 'three';
+import { dress, poseBody } from './glb.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { ConvexGeometry } from 'three/addons/geometries/ConvexGeometry.js';
@@ -107,9 +108,10 @@ function reach(arm, fore, S, T, pole) { // two-bone reach: bend the elbow so the
   _perp.copy(pole).addScaledVector(_d, -pole.dot(_d)).normalize(); _e.copy(_d).multiplyScalar(Math.cos(a) * ARM1).addScaledVector(_perp, Math.sin(a) * ARM1);
   arm.quaternion.setFromUnitVectors(DOWN, _f.copy(_e).normalize()); _f.copy(_d).multiplyScalar(len).sub(_e).normalize().applyQuaternion(_qi.copy(arm.quaternion).invert()); fore.quaternion.setFromUnitVectors(DOWN, _f);
 }
-export function makeSoldier(M, main, accent, over, variant) { const m = rig('soldier' + (variant || ''), variant === 'red' ? node => soldierDef(node, true) : soldierDef, M, Object.assign({ A: main || M.armor, D: accent || M.armorD, G: M.gold }, over || {})), J = m.userData.J; m.rotation.order = 'YXZ'; m.userData.gun = J.gun; m.userData.head = J.head; poseSoldier(m, {}); return m; }
+export function makeSoldier(M, main, accent, over, variant) { const m = rig('soldier' + (variant || ''), variant === 'red' ? node => soldierDef(node, true) : soldierDef, M, Object.assign({ A: main || M.armor, D: accent || M.armorD, G: M.gold }, over || {})), J = m.userData.J; m.rotation.order = 'YXZ'; m.userData.gun = J.gun; m.userData.head = J.head; dress(m, variant); poseSoldier(m, {}); return m; }
 // s: walk (cycle angle), move 0..1, run 0..1, pitch, t (seconds), kick 0..1, dead, relaxed
-export function poseSoldier(m, s) { const J = m.userData.J, mv = s.move || 0, w = s.walk || 0, t = s.t || 0, pitch = s.pitch || 0, kick = s.kick || 0, run = s.run || 0;
+export function poseSoldier(m, s) { poseRig(m, s); poseBody(m, s, GRIP_L, GRIP_R); }
+function poseRig(m, s) { const J = m.userData.J, mv = s.move || 0, w = s.walk || 0, t = s.t || 0, pitch = s.pitch || 0, kick = s.kick || 0, run = s.run || 0;
   if (s.dead) { m.rotation.x = -1.45; J.torso.rotation.set(0, 0, 0.1); J.legL.rotation.set(0.25, 0, -0.2); J.legR.rotation.set(-0.1, 0, 0.25); J.shinL.rotation.x = -0.5; J.shinR.rotation.x = -0.15; return; }
   const dv = s.dive || 0, air = s.air ? 1 : 0; m.rotation.x = -1.15 * dv; const sw = Math.sin(w), cw = Math.cos(w), amp = (0.6 + run * 0.25) * mv;
   J.hips.position.y = 0.97 - mv * Math.abs(cw) * 0.05 - (1 - mv) * 0.0; J.hips.rotation.set(0, sw * 0.1 * mv, 0);
