@@ -55,3 +55,10 @@ Code is in `frontline/src/` (Claude). Art goes in `frontline/assets/` and `front
 A third mode on the briefing screen: your team (you and three squadmates) against a red team of enemy soldiers run by the game. First to 15 kills wins, both sides respawn at their base, and your health recharges when you are out of fire for four seconds. The red soldiers need a clear line of sight, strafe, keep their distance and fire in bursts.
 
 This is the offline starting point for multiplayer. Each soldier is one entry with a position, facing and health, so a later networked version replaces `trooperThink` (and the squad logic) with players' inputs from a server.
+
+## Movement, arsenal and field research
+
+- **Movement:** Space is a jump pack (hold to fly a short way; it refills on the ground), F dives in the direction you are moving and shrugs off most damage, and sprint uses stamina.
+- **Arsenal:** eight weapons in `WEAPONS`, each with its own spread, recoil, sound and reload. You start with the rifle, shotgun and marksman rifle; Q or the mouse wheel cycles. The machine gun, flamethrower, rocket launcher, rail rifle and plasma rifle come from research.
+- **Field research:** a recovered cache, a cleared wave, a burned hive, or every fifth kill in Skirmish pauses the battle and offers three upgrades from `PERKS` (a new weapon, damage, reload, jump fuel, turrets, squad, call-ins). Keys 1 to 3 choose.
+- **Squad:** the default order is now "fighting on their own" (V). Soldiers take firing positions on the nearest threat, back away from melee, and with nothing to shoot scout toward the next objective. Roles by slot: rifle, heavy, grenadier, marksman. Z, X and C still give follow, hold and wall.
