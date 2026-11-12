@@ -105,7 +105,7 @@ export function poseBody(m, s, gripL, gripR) { const U = m.userData.body; if (!U
 }
 
 // ---------- Scanned set pieces with no skeleton: buildings, hive, turret, drop pod, shuttle, generator.
-const STATIC = ['hive', 'turret', 'pod', 'shuttle', 'generator', 'bld-artdeco', 'bld-brick', 'bld-diner', 'bld-garage', 'bld-glass', 'bld-stucco'], statWait = {};
+const STATIC = ['prop-sedan', 'prop-sedan-burned', 'prop-van', 'prop-bus', 'prop-barrier', 'prop-dumpster', 'prop-rubble', 'prop-streetlight', 'prop-signal', 'prop-shelter', 'prop-wall', 'prop-palm', 'hive', 'turret', 'pod', 'shuttle', 'generator', 'bld-artdeco', 'bld-brick', 'bld-diner', 'bld-garage', 'bld-glass', 'bld-stucco'], statWait = {};
 for (const f of STATIC) if (src[f]) load(src[f]).then(buf => new GLTFLoader().parse(buf, '', g => { g.scene.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; const mt = o.material; mt.side = THREE.FrontSide; mt.envMapIntensity = 1.1; if (mt.map) { mt.map.anisotropy = 8; mt.emissiveMap = mt.map; mt.emissive = new THREE.Color(0xffffff); mt.emissiveIntensity = f === 'hive' ? 0.3 : 0.14; } } });
   const box = new THREE.Box3().setFromObject(g.scene); ready[f] = { scene: g.scene, box, size: box.getSize(new THREE.Vector3()) }; for (const w of (statWait[f] || []).splice(0)) w(); }, e => console.warn(f + ' model failed', e))).catch(e => console.warn(f + ' model failed', e));
 // A copy standing on its base at the origin, scaled per axis.
@@ -117,3 +117,9 @@ export function dressStatic(m, name, height, yaw, parent) { if (!src[name]) retu
 // A scanned building sized for a lot: along the street and back from it. Returns null until the scans are loaded.
 export function scanBuilding(along, deep, r) { const have = STATIC.filter(n => n.startsWith('bld-') && ready[n]); if (have.length < 3) return null; const S = ready[have[Math.floor(r() * have.length)]], k = Math.min(along / S.size.x, deep / S.size.z), kx = Math.min(along / S.size.x, k * 1.25), kz = Math.min(deep / S.size.z, k * 1.25);
   return { obj: standing(S, kx, k * 1.1, kz), w: S.size.x * kx, d: S.size.z * kz, h: S.size.y * k * 1.1 }; }
+
+// Street props: a scan standing in for a code-built prop of the same kind, matched to its length (or height) and long axis.
+const PROP = { car: ['prop-sedan', 'len', 4.7, 'z', [0xffffff, 0xd9c2ae, 0xa9b6c8, 0x8e8e8e, 0xc9a09a]], carWreck: ['prop-sedan-burned', 'len', 4.7, 'z'], truck: ['prop-van', 'len', 5.7, 'z', [0xffffff, 0xcfd6c4, 0xb8b8b8]], bus: ['prop-bus', 'len', 10.6, 'z'], barrier: ['prop-barrier', 'len', 2.7, 'z'], dumpster: ['prop-dumpster', 'len', 2.1, 'x'], rubble: ['prop-rubble', 'len', 2.8, 'x'], streetLight: ['prop-streetlight', 'h', 7.2], trafficLight: ['prop-signal', 'h', 6.6], shelter: ['prop-shelter', 'len', 4.2, 'x'], brokenWall: ['prop-wall', 'len', 5, 'x'] }, tints = {};
+export function scanProp(name, r) { const P = PROP[name], S = P && ready[P[0]]; if (!S) return null; const longX = S.size.x >= S.size.z, k = P[1] === 'h' ? P[2] / S.size.y : P[2] / Math.max(S.size.x, S.size.z), h = standing(S, k, k, k), out = new THREE.Group();
+  if (P[1] === 'len' && longX !== (P[3] === 'x')) h.rotation.y = Math.PI / 2; if (P[4]) { const c = P[4][Math.floor((r ? r() : Math.random()) * P[4].length)]; if (c !== 0xffffff) { const key = P[0] + c; h.traverse(o => { if (o.isMesh) o.material = tints[key] || (tints[key] = Object.assign(o.material.clone(), { color: new THREE.Color(c) })); }); } }
+  out.add(h); return out; }
