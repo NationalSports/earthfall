@@ -1,0 +1,37 @@
+{
+  "canvas": [
+    2048,
+    1152
+  ],
+  "region_ids": [
+    "NA",
+    "SA",
+    "EU",
+    "AF",
+    "AS",
+    "OC"
+  ],
+  "frame_slice_px": [
+    56,
+    56,
+    56,
+    56
+  ],
+  "source_geometry": "assets/board/land-mask.png and anchors.json",
+  "territory_partition": "nearest repository mission anchor, matching existing board convention",
+  "objective_icons": [
+    "eliminate",
+    "defend",
+    "extract",
+    "destroy-hive",
+    "recover",
+    "escort",
+    "activate",
+    "scan"
+  ],
+  "colors": {
+    "teal": "#193137",
+    "brass": "#8b7b57",
+    "cyan": "#acdfe1"
+  }
+}

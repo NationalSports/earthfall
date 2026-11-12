@@ -1,0 +1,2072 @@
+[
+  {
+    "path": "frontline/public/assets/round-4/models/swarmling-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2920724,
+    "sha256": "865473a91d069e265e314ba182fbc95559781ff42929913352d3b9cbf8da0c40"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/brute-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3811564,
+    "sha256": "a6eb2fa613e222221b6d1c594db7976d215d94c4f6b4fdb2b52e910fde0ef559"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/warlord-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 4078471,
+    "sha256": "94178c82033bbe669483bc527bacf300a01c299ec9b8774b570357c4c35c0762"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/leaper-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3037206,
+    "sha256": "210b2ce4765ba0df948d59568e1272f5fa304d3bf90f718b1cf708f7d2edb8b3"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/spitter-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3811410,
+    "sha256": "deaffcdb538d4051c1703ceaf5bc212a724711146586316326d8e5244ef4a10d"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/heavy-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2707705,
+    "sha256": "c5bc0267ce357f9c35cfb3db4b65320c5e2265bf3078f18d882c7c72971c0d5e"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/hive-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3175029,
+    "sha256": "f01206e733ef5f37f8de6b044577377f3aa4294cb63230709ac4eff2ade53909"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/grenadier-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2632579,
+    "sha256": "64ac142878a91a2e53053dd354d8784a49e9871e89840f4a214edec35ba83d77"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/marksman-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2372850,
+    "sha256": "6b9efe63aef848966787c62c79a849330954a29ac23a29be132305c4da9d05b3"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/enemy-trooper-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2518227,
+    "sha256": "769da89282634065fa92d7a00a6fcd6093d7cc19b9bbd5ee8df8d8e1bd4076dc"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/sentry-turret-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3159005,
+    "sha256": "4e36a111b780fc66020fb4ca19b43af271f4223420d0d3fde5ea428186458231"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/drop-pod-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3805303,
+    "sha256": "01dbb2af07fe65a86786230bb8562bdc8ad9ac3b29f793fd33e020f1655c1d94"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/extraction-shuttle-front-3q.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2740028,
+    "sha256": "81808e12d59dde8e38209e2d43e3569b0a53fbee2bdb883a2773f399b0f38bda"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/swarmling-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3143795,
+    "sha256": "560dc18e3d6c5f903932586c7aca47c62f9679b4e1566acac4d47bd1b72036fa"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/leaper-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3068013,
+    "sha256": "3d18c6dfb773659fcec9b534cec29679107ca1b74bc54c3c45d5c97c4528b57f"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/spitter-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3577523,
+    "sha256": "a5da0e1491311926d52592b05141a3a6bcb2f0540b6c0b23e93a8f9efcc02a7f"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/warlord-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2715728,
+    "sha256": "fbfd646176f7b5db3af8b93f596eccb6e0014dbc2f44520eb694df909ba72de3"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/brute-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3474229,
+    "sha256": "35dc53226968009dc173043af78dcb94e57390370f754867d85fe9405a18964e"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/heavy-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2202386,
+    "sha256": "a9111abec1857c0bc7a75c311ebbb811091e16ff4f24326b7913c11d96c5be3e"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/grenadier-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2138019,
+    "sha256": "8be73b0cb2d0aced378511a29847196faa380586e5c1b3d17b0d7fc9ff971bb8"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/marksman-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1931279,
+    "sha256": "9393010f6df81180a58d6c0ecb3ddfd3fdc8bc323a226e918b6f21702449b44e"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/hive-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2976342,
+    "sha256": "5251b2b63567f7aebc9543a64af4067c1f634410a57d8bb894c958ac88821289"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/enemy-trooper-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2163197,
+    "sha256": "9beaf7a3fa1cb7475d3d6afb4439df016603d551f244e21bef0a7697db266b18"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/sentry-turret-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3096305,
+    "sha256": "969cf8a7c67a58680cc849749559aa7c2cca261741367968d85a682293c2692b"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/drop-pod-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3250443,
+    "sha256": "91dc73643da325f07e6def0069f48283d8ca463c4e5ab598cd921ed4a6519617"
+  },
+  {
+    "path": "frontline/public/assets/round-4/models/extraction-shuttle-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2634732,
+    "sha256": "68815df3fd5853a7314f6d574a5b50f2798b8712372dcb07853bc23d4e8c46de"
+  },
+  {
+    "path": "frontline/public/assets/round-4/weapons/rifle-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1955492,
+    "sha256": "ee64fbff8746a1703d8310d9d2e0563c57226499b2267dc1042876dcb8598c06"
+  },
+  {
+    "path": "frontline/public/assets/round-4/weapons/shotgun-side.png",
+    "section": "A",
+    "native_size": [
+      1774,
+      887
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1582241,
+    "sha256": "220366bb302beec38314a84326cf3ff9b13730b6a9d6b0ae1039121bbdf1b4d2"
+  },
+  {
+    "path": "frontline/public/assets/round-4/weapons/marksman-rifle-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1680902,
+    "sha256": "2204583a58239031d882ca1e4dc64f106da9ede67b20c4fcaf1a1df8341e8051"
+  },
+  {
+    "path": "frontline/public/assets/round-4/weapons/rocket-launcher-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2265472,
+    "sha256": "a068a22e799800125ff727e6a1851e555e0dac7b1d25e334a7e105a3dbf3588c"
+  },
+  {
+    "path": "frontline/public/assets/round-4/weapons/rail-rifle-side.png",
+    "section": "A",
+    "native_size": [
+      1774,
+      887
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1693890,
+    "sha256": "4bcf5dfc5081af22d1a9e4f861f7dc4e271e1bcbe3ed6b755ad0206ed2540c9f"
+  },
+  {
+    "path": "frontline/public/assets/round-4/weapons/plasma-gun-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3002233,
+    "sha256": "8320c1d23e717b350025d340124a9e9829c12b1761f15fdd1ad3031a880bba02"
+  },
+  {
+    "path": "frontline/public/assets/round-4/weapons/flamethrower-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2584952,
+    "sha256": "7dcc6adcf8726f9c98ce62d70fa5298ff5c4c4b1dad457711b7f20cf7fe02f37"
+  },
+  {
+    "path": "frontline/public/assets/round-4/weapons/machine-gun-side.png",
+    "section": "A",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2121948,
+    "sha256": "404654ec12368cabfa191c9667a48130b35f03b41876220a177445968fa1347a"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/wet-asphalt.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2557703,
+    "sha256": "5e5ba13cfbe5ba2f0cf06916cfa3e514bb7a867d871a44dfd3f8d99121ea22ce"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/cracked-concrete.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2444016,
+    "sha256": "6011d45dd76a2aaba43582f2f44a289da193ed142ebf0edcba1ebd66d9dcfe80"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/sidewalk.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2422152,
+    "sha256": "9011909c858737d667c1c5f674f222b42283cf49924f5a0be456aaf9ccfe6b5a"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/rubble.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2763842,
+    "sha256": "e7a6454222db281db632085b53af7565768d91cd625e5c4e3f40726038ff3eee"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/hive-creep.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2135181,
+    "sha256": "fb64ac6fba1080a35d6cbe2ceee6ace639afafb841fdd4d411155a393fec0e35"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/kepler-crystal-ground.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2545374,
+    "sha256": "42ddc7d2ad947acfc3c7a7cab38bf287126fca8e2d40ce10f9fe7ed28f1cebff"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/ceres-regolith.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2290842,
+    "sha256": "8e225b35880e1ea8e20642291a5c1d2d457111c3da0027e5492b617413e1bc8a"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/metal-deck-plate.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2094918,
+    "sha256": "91572c227e14ff617635e5b53a7fb298873060b426a95f1684228970d410c157"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-art-deco.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1932484,
+    "sha256": "fb943b933dbbf7cd4e465552a3c0357d51fc8974e0add18d75cb856afa01ab56"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-brick.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2230928,
+    "sha256": "6e7a3c961e192d2ce5b5ab0babc55fb7c8ae3073e5629611c3a64a7377ca2731"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-modern-glass.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 893576,
+    "sha256": "8ee961af594256319b2531bc57d54824b9ae6a64cab2eda22e9d82cd30f6b473"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-stucco.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1721649,
+    "sha256": "fc7cd5ad46af7f4883b13db161788ec55172793067ec3e0498b0feef6d0d9643"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-concrete.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1832083,
+    "sha256": "d39bd34da9df8fa9737a120ae4009d5937564e19a245046041d2482ea87d0bc8"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-storefront.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1364798,
+    "sha256": "55b19a443142ad1314035b648d97cf86fc3aa34d8e2d52c4f0c27367f0342c21"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/wet-asphalt-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 4188675,
+    "sha256": "fb566dd409f6ea4bf5f9adec789ed8b312f7e8206c1ed4dcfd295ac49c35d9a6"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/wet-asphalt-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1461521,
+    "sha256": "2120b6bff16d8827ecba18ddc30aef645fc8e949d5ac222f77927641cc34c845"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/cracked-concrete-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3276107,
+    "sha256": "73d570a89e5be67420a3dedbfa260eed7b44991b3023838672160dcbab8f0965"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/cracked-concrete-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1735032,
+    "sha256": "a6ecdc9204ce757bc19e66fb7e8c10b0e5bf083751bb0c90df6444bacd80234b"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/sidewalk-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1947021,
+    "sha256": "c25d108f5e3adcb314ca22a2c6108a254082b5b97e26a26a5270d40bd91b1bb7"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/sidewalk-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3158832,
+    "sha256": "3beb00d51f7b0d30e747ea10681b883e21b41ce6deb86f4fd1431daea43c0059"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/rubble-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2158292,
+    "sha256": "d421c0349458495634d919d19d6230f39206dbf9cdc221afd2497737e189afad"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/hive-creep-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3655091,
+    "sha256": "a233b87d274e217220241f0c26679f9bb9c17015f32a1464014178b4b737994d"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/rubble-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3897932,
+    "sha256": "5212b36c38f873ee6d5d3b405b73936f4d43d73d2a7e935ab40ade7ce254a57d"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/hive-creep-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2066627,
+    "sha256": "29be4f629c3f7411104b4775b29071ee8fdbdc25dbf17235a8061be209e816ec"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/kepler-crystal-ground-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3697870,
+    "sha256": "c1505ec8250e291b420f6c32bb7d2618ab044fa0f01ffce5bba102dc338cc556"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/kepler-crystal-ground-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2143477,
+    "sha256": "c5ba82fdbcd03a93a9e4dfb09077dc7567e1d71efd336a0e973fe9c7ae67fdaa"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/ceres-regolith-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3677318,
+    "sha256": "0a9983d3c2792600874cc1ecc113ac467bc04cdd37117888da449aaf8792f4dd"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/ceres-regolith-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1757100,
+    "sha256": "2608dcce937b55fe7b4ffa6e7d715928ccd55a3bcca9c0529e8f5915785faa54"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/metal-deck-plate-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3268782,
+    "sha256": "9a5bedfc379212d377011ff8a3211579d409860a1b6bdfd0a3417cdd9c13df99"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/metal-deck-plate-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1842432,
+    "sha256": "114b714f17e12054198fc11a068d05cbcb312aef472bf6edd666237147f5c756"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-art-deco-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2569223,
+    "sha256": "75dd7ffc5490b13b5c48950271986460851fb5ca45ce4933d24b2cad08de3939"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-art-deco-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1471403,
+    "sha256": "6e702b60416733d9788c331581cd65f41f20fcdf7e0d25aa12504287ce029db0"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-brick-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 3208118,
+    "sha256": "e19d117d75090a87a747f5056ec875db8d0e0f5cef87686baf24ce16ba199041"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-brick-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1556374,
+    "sha256": "dc98b2e1fa38e8b4f37dba998c730209c753711715071ae2ea0a219eae1fc6ce"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-modern-glass-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 902633,
+    "sha256": "5951e0fa666a5faa7845ffd419503736f5c6cc7c270bb780252aec31e80caa79"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-brick-glow.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 720195,
+    "sha256": "d3cd9b273eee0318898cc8cce36c6cf0f31b520595f13cda90e736cc8ebc3870"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-art-deco-glow.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 625194,
+    "sha256": "8471a15b357090aa754cc2b6ff986304320b554b4799bd54d701823011b8dfb7"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-modern-glass-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 502912,
+    "sha256": "81047d566e1d22a6bd6dcc30295f61bc390d730ca05fd8e2d665ca1db9d4b626"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-modern-glass-glow.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 465837,
+    "sha256": "f446b70b314d957bcd21d99504612e9cca846c272f48a915aacf3decef72c7c2"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-stucco-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2582402,
+    "sha256": "cf04b61f3c77875f5fb867dae2ab776931629b09b82cdbecf7bfbdff3a13038c"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-stucco-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1351044,
+    "sha256": "676f341206e56561d8e04c4f43a398688196a713671ef8b0e5ce3ef45fbd6fe7"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-stucco-glow.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 360071,
+    "sha256": "c041d1ac167a7b6a3f8e6128a05826739a0660929cec9cbb8b6cc08be9f962e4"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-concrete-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2423635,
+    "sha256": "8c639fb6068711ed5e8df594aa81b4b5d371bbd2de5a0cde7a5c2f7927f218e5"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-concrete-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1493193,
+    "sha256": "6fd6da1c64254131f25fa47beeedabbbe333161a18d53d27403fbbbc3e094556"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-concrete-glow.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 406367,
+    "sha256": "8fc8a311b65fe1c20744b3ead6ce21a80b0457447d6a9d5bf2af16967359317b"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-storefront-normal.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1246017,
+    "sha256": "9f2d91223b0e94548d47797ee437474a4fc33befc05da84d3a725957866ddca5"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-storefront-rough.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1031569,
+    "sha256": "19e20bf1265b0a4f66c739f859060f276b32569798b9e5a5096e555c81fa9bac"
+  },
+  {
+    "path": "frontline/public/assets/round-4/surfaces/facade-la-storefront-glow.jpg",
+    "section": "C",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 701233,
+    "sha256": "d59c5f67f14412ccf3cd6b7157c3f82bdee5bda7e3370d1351fc9726b168a525"
+  },
+  {
+    "path": "frontline/public/assets/round-4/skies/la-night-storm.jpg",
+    "section": "D",
+    "native_size": [
+      1774,
+      887
+    ],
+    "size": [
+      4096,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1656537,
+    "sha256": "b53532b4ccb9083d7c3e1115424512575aa6d771348d27e16a100606992b4a8d"
+  },
+  {
+    "path": "frontline/public/assets/round-4/skies/kepler-alien-dusk.jpg",
+    "section": "D",
+    "native_size": [
+      1774,
+      887
+    ],
+    "size": [
+      4096,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1547161,
+    "sha256": "653220f349ff86e8fec62c82340fe4a0a8591772d472817280e3ddc6c02bdae3"
+  },
+  {
+    "path": "frontline/public/assets/round-4/skies/ceres-starfield.jpg",
+    "section": "D",
+    "native_size": [
+      1774,
+      887
+    ],
+    "size": [
+      4096,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 2020836,
+    "sha256": "a802002674342e032d7b27dc83791f7c96771b17bbd81c5d3ab4deaf4d3b7f49"
+  },
+  {
+    "path": "frontline/public/assets/round-4/skies/la-dusk.jpg",
+    "section": "D",
+    "native_size": [
+      1774,
+      887
+    ],
+    "size": [
+      4096,
+      2048
+    ],
+    "mode": "RGB",
+    "bytes": 1562086,
+    "sha256": "9993f59f5216bc51f36ee0314405ee7d26b0b9d3fdc726c390ea3a0a764ee814"
+  },
+  {
+    "path": "frontline/public/assets/round-4/effects/explosion-fireball.png",
+    "section": "B",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "bytes": 3443958,
+    "sha256": "9316ed2ed050c9cd7705e508772a1ca935d658b3e03ea3d8bcfe1bf5c2e6d813",
+    "alpha_extrema": [
+      0,
+      253
+    ],
+    "transparent_pixels": 1844673
+  },
+  {
+    "path": "frontline/public/assets/round-4/effects/muzzle-flash-01.png",
+    "section": "B",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "bytes": 950253,
+    "sha256": "6ace4aa79b644349b42aca5dad2347c31aa724afd1b9ee53f3a18d0c1b7868ef",
+    "alpha_extrema": [
+      0,
+      253
+    ],
+    "transparent_pixels": 3134608
+  },
+  {
+    "path": "frontline/public/assets/round-4/effects/smoke-plume.png",
+    "section": "B",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "bytes": 2532640,
+    "sha256": "498695cb4676deb27d0240d0c2c5c0951f719409becb1d48a004ec4a12b781ef",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2070539
+  },
+  {
+    "path": "frontline/public/assets/round-4/effects/muzzle-flash-02.png",
+    "section": "B",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "bytes": 598253,
+    "sha256": "e76b010201984bf0d85bb65b41b1a9e5f5c12883b466195528980848a5e81450",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 3863728
+  },
+  {
+    "path": "frontline/public/assets/round-4/effects/muzzle-flash-03.png",
+    "section": "B",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "bytes": 1233634,
+    "sha256": "cdcd56440f46ac5a0ccc26d745ac55dcce6d937a29372bb2876c9e3d82d53501",
+    "alpha_extrema": [
+      0,
+      253
+    ],
+    "transparent_pixels": 3417312
+  },
+  {
+    "path": "frontline/public/assets/round-4/effects/muzzle-flash-04.png",
+    "section": "B",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "bytes": 1637325,
+    "sha256": "b78d639bb5675d5e80f4972db92ebe37525d5924aeb22501b2bbcbf575d7f5a4",
+    "alpha_extrema": [
+      0,
+      252
+    ],
+    "transparent_pixels": 2376273
+  },
+  {
+    "path": "frontline/public/assets/round-4/effects/acid-splash.png",
+    "section": "B",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "bytes": 999762,
+    "sha256": "e8ae958f5095cdae866d5340b83cc9e7d041546d31207c7fb690b3eb9c257279",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2472082
+  },
+  {
+    "path": "frontline/public/assets/round-4/effects/alien-blood-splat.png",
+    "section": "B",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "bytes": 3257200,
+    "sha256": "e8aead448564ed8995461368945e8d9d6cbe9f3e2d450185daee61d9b526e5f8",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2284026
+  },
+  {
+    "path": "frontline/public/assets/round-4/effects/dust-impact.png",
+    "section": "B",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "bytes": 868168,
+    "sha256": "6adea920a6f5d7cfc17396443493dc34028d8f0e63f3cc4591ed05c340ca2530",
+    "alpha_extrema": [
+      0,
+      254
+    ],
+    "transparent_pixels": 3672267
+  },
+  {
+    "path": "frontline/public/assets/round-4/effects/sparks.png",
+    "section": "B",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "bytes": 2560251,
+    "sha256": "d05693936750a5e2e8047b136374698f59b49af4f0cd885e8e5bebb203179d99",
+    "alpha_extrema": [
+      0,
+      253
+    ],
+    "transparent_pixels": 1991167
+  },
+  {
+    "path": "frontline/public/assets/round-4/effects/jet-pack-flame.png",
+    "section": "B",
+    "native_size": [
+      1261,
+      1247
+    ],
+    "size": [
+      2048,
+      2048
+    ],
+    "mode": "RGBA",
+    "bytes": 1107363,
+    "sha256": "6d2fc4c4b9486b7c971ce81af774ef0a4293e458da8e2710bfa34ab1cbd8c511",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 1942434
+  },
+  {
+    "path": "frontline/public/assets/round-4/decals/bullet-holes.png",
+    "section": "E",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "bytes": 457428,
+    "sha256": "97c63b3a6545e531127ec993059dc521cb0f70e8a13a8cedbbf9a4ea6e747529",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 891112
+  },
+  {
+    "path": "frontline/public/assets/round-4/decals/tyre-marks.png",
+    "section": "E",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "bytes": 592300,
+    "sha256": "ac59c6059ec40910a6ffad64a24f2ecfaa4cc804e4b76e28f9b6c750e91af265",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 837096
+  },
+  {
+    "path": "frontline/public/assets/round-4/decals/blood-pools.png",
+    "section": "E",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "bytes": 626830,
+    "sha256": "976612bfe9b4eba4dd1947b534de7fd2713fb2d21e31e37475e5feb7d9241807",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 723446
+  },
+  {
+    "path": "frontline/public/assets/round-4/decals/cracks.png",
+    "section": "E",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "bytes": 185507,
+    "sha256": "3d1de675ad19562c6e30fceb889898d4448c0089d29a23ffe9183baae4880a76",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 956966
+  },
+  {
+    "path": "frontline/public/assets/round-4/decals/scorch-marks.png",
+    "section": "E",
+    "native_size": [
+      1254,
+      1254
+    ],
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGBA",
+    "bytes": 980169,
+    "sha256": "83f12e6ff7bfe0237a3e3d97b217f0148a56a8b3f27434b971d7dad3098ce490",
+    "alpha_extrema": [
+      0,
+      253
+    ],
+    "transparent_pixels": 615386
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/earth-territory-base.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 513425,
+    "sha256": "761664a5aaa03d589a6f6e7faee6f64802e0142c29573848cf523308d6280969",
+    "alpha_extrema": [
+      255,
+      255
+    ],
+    "transparent_pixels": 0
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/mission-briefing-frame.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 140929,
+    "sha256": "6e764c3e3a959dd9bbcff5afe0cea044069f94720c1c4fd81478e36e5482ff10",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2042052
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/objective-activate.png",
+    "section": "F",
+    "native_size": [
+      128,
+      128
+    ],
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "bytes": 3988,
+    "sha256": "fc5c3d44fd53f8b613cf4f3047b63d913b54b024f69ac7a7522aa665a839b50d",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 15222
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/objective-defend.png",
+    "section": "F",
+    "native_size": [
+      128,
+      128
+    ],
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "bytes": 4706,
+    "sha256": "42b85f8e661b34a4c2ba7f63a612f1e338818bb6d25b103c1e633b8099a2f1d1",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 14858
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/objective-destroy-hive.png",
+    "section": "F",
+    "native_size": [
+      128,
+      128
+    ],
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "bytes": 4712,
+    "sha256": "9f337c7cc8709fe3e42bf7530b4eb2deda37917b2ea1a5c8e63e672a4cf6efa4",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 14757
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/objective-eliminate.png",
+    "section": "F",
+    "native_size": [
+      128,
+      128
+    ],
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "bytes": 4148,
+    "sha256": "8d0230ef0a9228790072aaeb7aa304c557fbf56aed3567893819d3574197d739",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 14908
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/objective-escort.png",
+    "section": "F",
+    "native_size": [
+      128,
+      128
+    ],
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "bytes": 3561,
+    "sha256": "64ff21b392188f4b796b036d560ca9215cd17b7b805b837e3c219fba5cb7e92c",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 14555
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/objective-extract.png",
+    "section": "F",
+    "native_size": [
+      128,
+      128
+    ],
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "bytes": 2421,
+    "sha256": "88a0ea561639adc9e1033ee9868321e4be1c67dbb159e920771013e3f07658c6",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 15148
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/objective-recover.png",
+    "section": "F",
+    "native_size": [
+      128,
+      128
+    ],
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "bytes": 4906,
+    "sha256": "40da082f25de6a332f097fef0c6752cae9d269731a8a584302edadac38d073f9",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 14569
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/objective-scan.png",
+    "section": "F",
+    "native_size": [
+      128,
+      128
+    ],
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "bytes": 4984,
+    "sha256": "4d3fd1b25a9ba0b578365c416431404e69ee9801ed110749850ceb6cdde7aa1f",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 14624
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/region-af-fill.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 54465,
+    "sha256": "0f411f663b91e2616367e70604023c2ab32299e648b7c649e3046abef320ef63",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2277799
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/region-af.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 69692,
+    "sha256": "1e79b2012ada50778af66d908761f92466f8f770938f5668d698d6953250ad55",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2352627
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/region-as-fill.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 64265,
+    "sha256": "dc1133fc5a0bd27c8000146360e619a6729a6b8b7f4f7d13568bba640878e331",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2189711
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/region-as.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 102322,
+    "sha256": "25904d9c31e42c4d444fa3e8c1dac4c84ce307098a20532bd7d343846bb41acc",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2339263
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/region-eu-fill.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 57383,
+    "sha256": "c391b45193067e6809e1582eddce8ed15c981a3c26f8816ebc18f6370f985095",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2314949
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/region-eu.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 78569,
+    "sha256": "0c09e27724efec07e53f68c92de641bb8143d8708805ddd7d09419b442e88caa",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2346733
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/region-na-fill.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 62930,
+    "sha256": "903c464966767b27bf027aed387eea6a3b64955a5983da9be90fb78cba6f4450",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2260448
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/region-na.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 97948,
+    "sha256": "67db8f078d8d53943738e78e2ab4796b12cfa2ecee98b3c5d23bd89c9d0bea0e",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2338197
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/region-oc-fill.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 57095,
+    "sha256": "fa932909eea58680ba099b66d70311f35f99c1232cc8f3a969b44819a68e0844",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2327844
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/region-oc.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 77365,
+    "sha256": "f34cef2960bb56d72301c5ccad606ca20cd6155772cff49e4d99535b1a37b6e4",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2349120
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/region-sa-fill.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 53844,
+    "sha256": "8a3cfe58b87c502e4fea0b15f0bd754a599a1d235d883c69e19c69cea42853d5",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2307411
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/region-sa.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 67655,
+    "sha256": "0fd1ba330458a878190f73d00f246bf1ca17aaab297197609e57e92bd18aa467",
+    "alpha_extrema": [
+      0,
+      255
+    ],
+    "transparent_pixels": 2353015
+  },
+  {
+    "path": "frontline/public/assets/round-4/ui/territory-outlines.png",
+    "section": "F",
+    "native_size": [
+      2048,
+      1152
+    ],
+    "size": [
+      2048,
+      1152
+    ],
+    "mode": "RGBA",
+    "bytes": 312249,
+    "sha256": "d32fc9a351fc6ac9adbdb9a9baba0fdb24a0e259f0ec87cde3c471f5815f3c6a",
+    "alpha_extrema": [
+      0,
+      177
+    ],
+    "transparent_pixels": 2298742
+  }
+]
