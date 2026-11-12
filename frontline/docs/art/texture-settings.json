@@ -1,0 +1,8 @@
+{
+  "colorSpace": "sRGB for all color artwork; use the API appropriate to the game's Three.js version",
+  "ground": { "wrapS": "MirroredRepeatWrapping", "wrapT": "MirroredRepeatWrapping", "anisotropy": "up to 8, limited by renderer capability", "generateMipmaps": true },
+  "facades": { "wrapS": "RepeatWrapping", "wrapT": "ClampToEdgeWrapping", "generateMipmaps": true },
+  "panorama": { "wrapS": "RepeatWrapping", "wrapT": "ClampToEdgeWrapping", "mapping": "equirectangular backdrop candidate; inspect actual spherical poles and seam" },
+  "cutouts": { "wrapS": "ClampToEdgeWrapping", "wrapT": "ClampToEdgeWrapping", "transparent": true, "alphaTest": 0.02, "depthWrite": false },
+  "notes": "Edge pixels are not mathematically periodic. Values are integration suggestions, not changes to the game."
+}

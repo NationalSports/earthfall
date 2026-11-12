@@ -1,0 +1,2373 @@
+{
+  "count": 137,
+  "failures": [],
+  "assets": [
+    {
+      "path": "docs/art/hud-desktop.png",
+      "width": 2560,
+      "height": 1440,
+      "bytes": 7554348,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 3686400,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "path": "docs/art/hud-phone-portrait.png",
+      "width": 1170,
+      "height": 2532,
+      "bytes": 4851020,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 2962440,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        852,
+        1846
+      ]
+    },
+    {
+      "path": "docs/art/hud-phone-landscape.png",
+      "width": 2532,
+      "height": 1170,
+      "bytes": 5466798,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 2962440,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1846,
+        852
+      ]
+    },
+    {
+      "path": "docs/art/hud-territory-page.png",
+      "width": 1170,
+      "height": 2532,
+      "bytes": 4050042,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 2962440,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        852,
+        1846
+      ]
+    },
+    {
+      "path": "assets/cards/portrait-vanguard.webp",
+      "width": 480,
+      "height": 600,
+      "bytes": 59486,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 288000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "path": "assets/cards/portrait-cipher.webp",
+      "width": 480,
+      "height": 600,
+      "bytes": 43738,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 288000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "path": "assets/cards/portrait-engineer.webp",
+      "width": 480,
+      "height": 600,
+      "bytes": 69532,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 288000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "path": "assets/cards/enemy-commander.webp",
+      "width": 480,
+      "height": 600,
+      "bytes": 50860,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 288000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "path": "assets/cards/enemy-warlord.webp",
+      "width": 480,
+      "height": 600,
+      "bytes": 65280,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 288000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "path": "assets/cards/enemy-overlord.webp",
+      "width": 480,
+      "height": 600,
+      "bytes": 51946,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 288000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1122,
+        1402
+      ]
+    },
+    {
+      "path": "assets/city/ground-coalition.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 336094,
+      "alpha": true,
+      "transparentPixels": 285772,
+      "opaquePixels": 697,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/city/ground-occupied.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 437916,
+      "alpha": true,
+      "transparentPixels": 281776,
+      "opaquePixels": 728,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/city/ground-wasteland.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 424148,
+      "alpha": true,
+      "transparentPixels": 278637,
+      "opaquePixels": 817,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/city/refinery.webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 30694,
+      "alpha": true,
+      "transparentPixels": 26929,
+      "opaquePixels": 1022,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/city/lab.webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 31228,
+      "alpha": true,
+      "transparentPixels": 21923,
+      "opaquePixels": 631,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/city/mine.webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 32058,
+      "alpha": true,
+      "transparentPixels": 28538,
+      "opaquePixels": 942,
+      "corners": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/city/depot.webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 25978,
+      "alpha": true,
+      "transparentPixels": 27170,
+      "opaquePixels": 641,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/city/uranium-works.webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 31304,
+      "alpha": true,
+      "transparentPixels": 25784,
+      "opaquePixels": 795,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/city/wall-segment.webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 24350,
+      "alpha": true,
+      "transparentPixels": 32703,
+      "opaquePixels": 593,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/city/tower.webp",
+      "width": 256,
+      "height": 256,
+      "bytes": 18852,
+      "alpha": true,
+      "transparentPixels": 39739,
+      "opaquePixels": 683,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/battle/field.jpg",
+      "width": 1800,
+      "height": 840,
+      "bytes": 495776,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 1512000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1836,
+        857
+      ]
+    },
+    {
+      "path": "assets/battle/squad.webp",
+      "width": 192,
+      "height": 192,
+      "bytes": 16478,
+      "alpha": true,
+      "transparentPixels": 23897,
+      "opaquePixels": 613,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/battle/team.webp",
+      "width": 192,
+      "height": 192,
+      "bytes": 15290,
+      "alpha": true,
+      "transparentPixels": 25413,
+      "opaquePixels": 639,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/battle/swarm-1.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 6026,
+      "alpha": true,
+      "transparentPixels": 12884,
+      "opaquePixels": 260,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/battle/swarm-2.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 6762,
+      "alpha": true,
+      "transparentPixels": 12354,
+      "opaquePixels": 333,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/battle/swarm-3.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 7208,
+      "alpha": true,
+      "transparentPixels": 11174,
+      "opaquePixels": 273,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "assets/battle/wall.webp",
+      "width": 96,
+      "height": 840,
+      "bytes": 34066,
+      "alpha": true,
+      "transparentPixels": 18734,
+      "opaquePixels": 1803,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1199,
+        1312
+      ]
+    },
+    {
+      "path": "assets/battle/blast.webp",
+      "width": 1024,
+      "height": 256,
+      "bytes": 24400,
+      "alpha": true,
+      "transparentPixels": 242699,
+      "opaquePixels": 26,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/cards/card-airdrop.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 91818,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/card-intercept.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 95726,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/card-quiet.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 103726,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/card-convoy.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 92334,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/card-eyes.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 77590,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/card-rally.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 95912,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/card-dig.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 108554,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/emp.webp",
+      "width": 1200,
+      "height": 800,
+      "bytes": 311770,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 960000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/warhead.webp",
+      "width": 1200,
+      "height": 800,
+      "bytes": 228170,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 960000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/breakout.webp",
+      "width": 1200,
+      "height": 800,
+      "bytes": 337328,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 960000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/help-win.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 99346,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/help-attack.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 115240,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/help-grow.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 116124,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/help-time.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 91578,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/help-team.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 78912,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/help-zoom.webp",
+      "width": 600,
+      "height": 400,
+      "bytes": 117124,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 240000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/cards/guide-landing.webp",
+      "width": 1200,
+      "height": 400,
+      "bytes": 187038,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 480000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/cards/guide-chest.webp",
+      "width": 1200,
+      "height": 400,
+      "bytes": 146082,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 480000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/cards/guide-troops.webp",
+      "width": 1200,
+      "height": 400,
+      "bytes": 186596,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 480000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/cards/guide-build.webp",
+      "width": 1200,
+      "height": 400,
+      "bytes": 195862,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 480000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/cards/guide-armor.webp",
+      "width": 1200,
+      "height": 400,
+      "bytes": 184954,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 480000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/cards/guide-begin.webp",
+      "width": 1200,
+      "height": 400,
+      "bytes": 178094,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 480000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/cards/guide-orders.webp",
+      "width": 1200,
+      "height": 400,
+      "bytes": 161776,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 480000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/cards/guide-attack.webp",
+      "width": 1200,
+      "height": 400,
+      "bytes": 194414,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 480000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "assets/cards/guide-time.webp",
+      "width": 1200,
+      "height": 400,
+      "bytes": 160876,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 480000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        2172,
+        724
+      ]
+    },
+    {
+      "path": "frontline/docs/art/style-sheet.png",
+      "width": 2048,
+      "height": 1152,
+      "bytes": 4120525,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 2359296,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "generatedDimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "path": "frontline/public/assets/textures/ground-asphalt.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 300150,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 1048576,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "edge": {
+        "leftRightMeanDelta": 7.39,
+        "topBottomMeanDelta": 6.94,
+        "interiorColumnMeanDelta": 5.77
+      },
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "frontline/public/assets/textures/ground-concrete.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 183438,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 1048576,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "edge": {
+        "leftRightMeanDelta": 4.83,
+        "topBottomMeanDelta": 5.86,
+        "interiorColumnMeanDelta": 3.64
+      },
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "frontline/public/assets/textures/ground-dirt.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 204742,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 1048576,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "edge": {
+        "leftRightMeanDelta": 5.22,
+        "topBottomMeanDelta": 6.26,
+        "interiorColumnMeanDelta": 3.25
+      },
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "frontline/public/assets/textures/ground-grass.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 158554,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 1048576,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "edge": {
+        "leftRightMeanDelta": 5.31,
+        "topBottomMeanDelta": 4.33,
+        "interiorColumnMeanDelta": 3.26
+      },
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "frontline/public/assets/textures/ground-infested.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 114118,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 1048576,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "edge": {
+        "leftRightMeanDelta": 4.22,
+        "topBottomMeanDelta": 4.82,
+        "interiorColumnMeanDelta": 1.58
+      },
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "frontline/public/assets/textures/facade-art-deco.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 194886,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 1048576,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "edge": {
+        "leftRightMeanDelta": 4.64,
+        "topBottomMeanDelta": 20.95,
+        "interiorColumnMeanDelta": 3.01
+      },
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "frontline/public/assets/textures/facade-industrial.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 132634,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 1048576,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "edge": {
+        "leftRightMeanDelta": 2.93,
+        "topBottomMeanDelta": 94.28,
+        "interiorColumnMeanDelta": 1.35
+      },
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "frontline/public/assets/props/rubble.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 156608,
+      "alpha": true,
+      "transparentPixels": 666755,
+      "opaquePixels": 659,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1323,
+        1189
+      ]
+    },
+    {
+      "path": "frontline/public/assets/props/cover-crate.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 135752,
+      "alpha": true,
+      "transparentPixels": 547553,
+      "opaquePixels": 1251,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "frontline/public/assets/props/cover-barrier.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 90154,
+      "alpha": true,
+      "transparentPixels": 729896,
+      "opaquePixels": 694,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "frontline/public/assets/props/city-core.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 147002,
+      "alpha": true,
+      "transparentPixels": 575566,
+      "opaquePixels": 684,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "generatedDimensions": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "path": "frontline/public/assets/sky/los-angeles-panorama.jpg",
+      "width": 2048,
+      "height": 1024,
+      "bytes": 496514,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 2097152,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "edge": {
+        "leftRightMeanDelta": 5.84,
+        "topBottomMeanDelta": 7.49,
+        "interiorColumnMeanDelta": 2.63
+      },
+      "generatedDimensions": [
+        1774,
+        887
+      ]
+    },
+    {
+      "path": "frontline/public/assets/weapons/rifle-view.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 136702,
+      "alpha": true,
+      "transparentPixels": 1084291,
+      "opaquePixels": 0,
+      "corners": [
+        0,
+        0,
+        0,
+        251
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "frontline/public/assets/weapons/rail-rifle-view.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 137966,
+      "alpha": true,
+      "transparentPixels": 1094240,
+      "opaquePixels": 0,
+      "corners": [
+        0,
+        0,
+        0,
+        250
+      ],
+      "generatedDimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "assets/ui/act-attack.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 588,
+      "alpha": true,
+      "transparentPixels": 13054,
+      "opaquePixels": 2820,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/act-reinforce.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 810,
+      "alpha": true,
+      "transparentPixels": 12828,
+      "opaquePixels": 2899,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/act-move.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 376,
+      "alpha": true,
+      "transparentPixels": 13091,
+      "opaquePixels": 2713,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/act-build.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 850,
+      "alpha": true,
+      "transparentPixels": 11950,
+      "opaquePixels": 3639,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/act-airlift.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 824,
+      "alpha": true,
+      "transparentPixels": 11813,
+      "opaquePixels": 3770,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/act-team.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 842,
+      "alpha": true,
+      "transparentPixels": 12206,
+      "opaquePixels": 3342,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/act-missiles.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 1016,
+      "alpha": true,
+      "transparentPixels": 11856,
+      "opaquePixels": 3757,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/act-sabotage.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 426,
+      "alpha": true,
+      "transparentPixels": 12370,
+      "opaquePixels": 3219,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/act-bombers.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 796,
+      "alpha": true,
+      "transparentPixels": 12477,
+      "opaquePixels": 3220,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/act-details.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 496,
+      "alpha": true,
+      "transparentPixels": 10394,
+      "opaquePixels": 4863,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/act-emp.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 1220,
+      "alpha": true,
+      "transparentPixels": 11813,
+      "opaquePixels": 3718,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/act-warhead.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 1026,
+      "alpha": true,
+      "transparentPixels": 11686,
+      "opaquePixels": 3824,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/res-metal.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 608,
+      "alpha": true,
+      "transparentPixels": 6267,
+      "opaquePixels": 2359,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/res-fuel.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 376,
+      "alpha": true,
+      "transparentPixels": 6159,
+      "opaquePixels": 2328,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/res-research.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 510,
+      "alpha": true,
+      "transparentPixels": 6721,
+      "opaquePixels": 1910,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/res-uranium.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 1090,
+      "alpha": true,
+      "transparentPixels": 5833,
+      "opaquePixels": 2684,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/res-intel.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 736,
+      "alpha": true,
+      "transparentPixels": 7082,
+      "opaquePixels": 1640,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/res-salvage.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 696,
+      "alpha": true,
+      "transparentPixels": 7061,
+      "opaquePixels": 1692,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/res-reserve.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 820,
+      "alpha": true,
+      "transparentPixels": 6239,
+      "opaquePixels": 2270,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/res-held.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 554,
+      "alpha": true,
+      "transparentPixels": 5633,
+      "opaquePixels": 2791,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/perk-london.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 1220,
+      "alpha": true,
+      "transparentPixels": 11581,
+      "opaquePixels": 3865,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/perk-berlin.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 624,
+      "alpha": true,
+      "transparentPixels": 11352,
+      "opaquePixels": 4028,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/perk-saopaulo.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 328,
+      "alpha": true,
+      "transparentPixels": 11022,
+      "opaquePixels": 4358,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/perk-nairobi.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 584,
+      "alpha": true,
+      "transparentPixels": 12235,
+      "opaquePixels": 3413,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/perk-cairo.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 422,
+      "alpha": true,
+      "transparentPixels": 10925,
+      "opaquePixels": 4402,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/perk-delhi.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 1084,
+      "alpha": true,
+      "transparentPixels": 11891,
+      "opaquePixels": 3666,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/perk-denver.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 834,
+      "alpha": true,
+      "transparentPixels": 11461,
+      "opaquePixels": 4074,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/perk-moscow.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 544,
+      "alpha": true,
+      "transparentPixels": 11003,
+      "opaquePixels": 4336,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/perk-sydney.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 944,
+      "alpha": true,
+      "transparentPixels": 11530,
+      "opaquePixels": 3968,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/trait-butcher.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 404,
+      "alpha": true,
+      "transparentPixels": 7396,
+      "opaquePixels": 1484,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/trait-warden.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 694,
+      "alpha": true,
+      "transparentPixels": 6524,
+      "opaquePixels": 2055,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/trait-ghost.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 708,
+      "alpha": true,
+      "transparentPixels": 6742,
+      "opaquePixels": 1886,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/trait-breeder.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 728,
+      "alpha": true,
+      "transparentPixels": 5868,
+      "opaquePixels": 2604,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/trait-raider.webp",
+      "width": 96,
+      "height": 96,
+      "bytes": 360,
+      "alpha": true,
+      "transparentPixels": 7332,
+      "opaquePixels": 1372,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/hud-top.webp",
+      "width": 1024,
+      "height": 160,
+      "bytes": 3360,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 161212,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/hud-advisor.webp",
+      "width": 960,
+      "height": 144,
+      "bytes": 3212,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 135772,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/hud-actionbar.webp",
+      "width": 960,
+      "height": 208,
+      "bytes": 3596,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 197084,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/hud-action.webp",
+      "width": 240,
+      "height": 160,
+      "bytes": 2508,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 37340,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/hud-action-primary.webp",
+      "width": 240,
+      "height": 160,
+      "bytes": 3154,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 37340,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/hud-chip.webp",
+      "width": 192,
+      "height": 96,
+      "bytes": 2150,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 17596,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/hud-orders.webp",
+      "width": 640,
+      "height": 128,
+      "bytes": 3022,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 80124,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/hud-meter.webp",
+      "width": 512,
+      "height": 64,
+      "bytes": 2592,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 31356,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/hud-panel.webp",
+      "width": 512,
+      "height": 768,
+      "bytes": 5672,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 390396,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/hud-tab.webp",
+      "width": 240,
+      "height": 88,
+      "bytes": 2254,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 20204,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/hud-tab-active.webp",
+      "width": 240,
+      "height": 88,
+      "bytes": 2952,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 20204,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/frame-bar.webp",
+      "width": 720,
+      "height": 200,
+      "bytes": 3210,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 141900,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/frame-coach.webp",
+      "width": 720,
+      "height": 120,
+      "bytes": 2678,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 84460,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/btn-primary.webp",
+      "width": 240,
+      "height": 160,
+      "bytes": 3154,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 37340,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/btn-plain.webp",
+      "width": 240,
+      "height": 160,
+      "bytes": 2508,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 37340,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/topbar.webp",
+      "width": 1600,
+      "height": 160,
+      "bytes": 3632,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 252220,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/order-pip-on.webp",
+      "width": 64,
+      "height": 64,
+      "bytes": 878,
+      "alpha": true,
+      "transparentPixels": 1820,
+      "opaquePixels": 2128,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/ui/order-pip-off.webp",
+      "width": 64,
+      "height": 64,
+      "bytes": 1018,
+      "alpha": true,
+      "transparentPixels": 1820,
+      "opaquePixels": 2128,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/health-bar.webp",
+      "width": 512,
+      "height": 80,
+      "bytes": 2762,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 39516,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/ammo-panel.webp",
+      "width": 256,
+      "height": 128,
+      "bytes": 2566,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 31740,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/wave-counter.webp",
+      "width": 256,
+      "height": 96,
+      "bytes": 2398,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 23612,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/build-tile.webp",
+      "width": 160,
+      "height": 160,
+      "bytes": 2056,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 24700,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/build-tile-active.webp",
+      "width": 160,
+      "height": 160,
+      "bytes": 2326,
+      "alpha": true,
+      "transparentPixels": 264,
+      "opaquePixels": 24700,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/minimap-frame.webp",
+      "width": 384,
+      "height": 384,
+      "bytes": 2068,
+      "alpha": true,
+      "transparentPixels": 135476,
+      "opaquePixels": 5944,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/turret.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 500,
+      "alpha": true,
+      "transparentPixels": 12330,
+      "opaquePixels": 3345,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/barrier.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 664,
+      "alpha": true,
+      "transparentPixels": 11582,
+      "opaquePixels": 3934,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/mine.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 474,
+      "alpha": true,
+      "transparentPixels": 12321,
+      "opaquePixels": 3292,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/railgun.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 550,
+      "alpha": true,
+      "transparentPixels": 11991,
+      "opaquePixels": 3597,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/strike.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 360,
+      "alpha": true,
+      "transparentPixels": 13277,
+      "opaquePixels": 2496,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/supply.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 652,
+      "alpha": true,
+      "transparentPixels": 10120,
+      "opaquePixels": 5211,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/repair.webp",
+      "width": 128,
+      "height": 128,
+      "bytes": 746,
+      "alpha": true,
+      "transparentPixels": 13244,
+      "opaquePixels": 2578,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "frontline/public/assets/ui/crosshair.webp",
+      "width": 64,
+      "height": 64,
+      "bytes": 124,
+      "alpha": true,
+      "transparentPixels": 3992,
+      "opaquePixels": 92,
+      "corners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "assets/cards/vanguard.webp",
+      "width": 480,
+      "height": 600,
+      "bytes": 59486,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 288000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "path": "assets/cards/cipher.webp",
+      "width": 480,
+      "height": 600,
+      "bytes": 43738,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 288000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "path": "assets/cards/engineer.webp",
+      "width": 480,
+      "height": 600,
+      "bytes": 69532,
+      "alpha": false,
+      "transparentPixels": 0,
+      "opaquePixels": 288000,
+      "corners": [
+        255,
+        255,
+        255,
+        255
+      ]
+    }
+  ]
+}

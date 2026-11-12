@@ -1,0 +1,26 @@
+[
+  {
+    "path": "assets/cards/vanguard.webp",
+    "w": 480,
+    "h": 600,
+    "alpha": false,
+    "method": "alias",
+    "source": "assets/cards/portrait-vanguard.webp"
+  },
+  {
+    "path": "assets/cards/cipher.webp",
+    "w": 480,
+    "h": 600,
+    "alpha": false,
+    "method": "alias",
+    "source": "assets/cards/portrait-cipher.webp"
+  },
+  {
+    "path": "assets/cards/engineer.webp",
+    "w": 480,
+    "h": 600,
+    "alpha": false,
+    "method": "alias",
+    "source": "assets/cards/portrait-engineer.webp"
+  }
+]

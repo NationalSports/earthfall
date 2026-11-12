@@ -1,0 +1,25 @@
+/* Example classes only; this file is not imported into the game. */
+.ef-hud-plate {
+  border: 6px solid transparent;
+  border-image: url('../../../assets/ui/hud-panel.webp') 24 fill / 6px stretch;
+  padding: 12px;
+  color: #f0ecd8;
+}
+.ef-hud-action {
+  border: 6px solid transparent;
+  border-image: url('../../../assets/ui/hud-action.webp') 24 fill / 6px stretch;
+  padding: 10px 16px;
+  min-height: 48px;
+  color: #f0ecd8;
+  font: inherit;
+}
+.ef-hud-action.primary { border-image-source: url('../../../assets/ui/hud-action-primary.webp'); }
+.ef-hud-action:focus-visible { outline: 3px solid #6cddd5; outline-offset: 3px; }
+.ef-hud-advisor { border-image-source: url('../../../assets/ui/hud-advisor.webp'); }
+.ef-hud-top { border-image-source: url('../../../assets/ui/hud-top.webp'); }
+.ef-hud-actionbar { border-image-source: url('../../../assets/ui/hud-actionbar.webp'); }
+.ef-hud-chip { border-image-source: url('../../../assets/ui/hud-chip.webp'); }
+.ef-hud-orders { border-image-source: url('../../../assets/ui/hud-orders.webp'); }
+.ef-hud-meter { border-image-source: url('../../../assets/ui/hud-meter.webp'); }
+.ef-hud-tab { border-image-source: url('../../../assets/ui/hud-tab.webp'); }
+.ef-hud-tab[aria-selected='true'] { border-image-source: url('../../../assets/ui/hud-tab-active.webp'); }

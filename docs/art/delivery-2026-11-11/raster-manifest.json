@@ -1,0 +1,1181 @@
+[
+  {
+    "id": "hud-desktop",
+    "path": "docs/art/hud-desktop.png",
+    "w": 2560,
+    "h": 1440,
+    "alpha": false,
+    "subject": "Use case: ui-mockup. Create one polished actual game-screen mockup, landscape 2560x1440 target, for Earthfall, premium painted miniature strategy board game. Follow composition of reference style: navy ocean, sage land, carved tan ridges, little teal coalition units, coral infestation, ivory place labels. Map is large and breathing, not crowded by boxes. Elegant dark enamel UI with restrained gold edges, ivory serif headings and very clear sans-serif values. Screen title EARTHFALL. Selected city Los Angeles, friendly coalition HQ with gold selection ring and cyan insignia. Top slim status: Day 6 • 14:00, PAUSED, play and fast controls. Main hero command counter six large gold order pips with two spent, labeled '4 / 6 ORDERS' and 'Refills at midnight'. Resource row Metal 120, Fuel 80, Research 36, Uranium 4, Intel 12, Reserve 8. Threat 2 / 10 and Harvest 18% smaller on right. One prominent advisor line above bottom actions: 'Reinforce Los Angeles before the swarm arrives.' followed by 'Show'. Bottom action rail with exactly four large thumb-friendly actions: 'Reinforce' with 'Free', 'March' with '1 Order', 'Build' with '1 Order', 'Details'. Right compact territory inspector heading 'LOS ANGELES', badge 'COALITION HQ • STRONGHOLD', Garrison 5, Industry Lv 2, Fortress Lv 1, incoming swarm 'Arrives in 8h'. Make Orders and advisor more noticeable than resources, no character rails or huge research trays. All copy legible, clean intentional typography. Original fictional game assets only. Single screen, no device frame, no surrounding poster or explanation.",
+    "style": "ui",
+    "status": "generated",
+    "source": "generated_images/exec-9716947e-f40b-48aa-87bd-9054498cc49b.png",
+    "generatedDimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in image_gen",
+    "prompt": "Use case: ui-mockup. Create one polished actual game-screen mockup, landscape 2560x1440 target, for Earthfall, premium painted miniature strategy board game. Follow composition of reference style: navy ocean, sage land, carved tan ridges, little teal coalition units, coral infestation, ivory place labels. Map is large and breathing, not crowded by boxes. Elegant dark enamel UI with restrained gold edges, ivory serif headings and very clear sans-serif values. Screen title EARTHFALL. Selected city Los Angeles, friendly coalition HQ with gold selection ring and cyan insignia. Top slim status: Day 6 • 14:00, PAUSED, play and fast controls. Main hero command counter six large gold order pips with two spent, labeled '4 / 6 ORDERS' and 'Refills at midnight'. Resource row Metal 120, Fuel 80, Research 36, Uranium 4, Intel 12, Reserve 8. Threat 2 / 10 and Harvest 18% smaller on right. One prominent advisor line above bottom actions: 'Reinforce Los Angeles before the swarm arrives.' followed by 'Show'. Bottom action rail with exactly four large thumb-friendly actions: 'Reinforce' with 'Free', 'March' with '1 Order', 'Build' with '1 Order', 'Details'. Right compact territory inspector heading 'LOS ANGELES', badge 'COALITION HQ • STRONGHOLD', Garrison 5, Industry Lv 2, Fortress Lv 1, incoming swarm 'Arrives in 8h'. Make Orders and advisor more noticeable than resources, no character rails or huge research trays. All copy legible, clean intentional typography. Original fictional game assets only. Single screen, no device frame, no surrounding poster or explanation."
+  },
+  {
+    "id": "hud-phone",
+    "path": "docs/art/hud-phone-portrait.png",
+    "w": 1170,
+    "h": 2532,
+    "alpha": false,
+    "subject": "Portrait phone game screen, 1170x2532 aspect. Same Earthfall design as desktop reference. Top 120px safe area blank navy, then title EARTHFALL and Day 6 · 14:00 · PAUSED with play/fast. Large six Orders pips, two dim, 4 / 6 ORDERS. Two compact rows of readable resources: Metal 120, Fuel 80, Research 36, Uranium 4, Intel 12, Reserve 8. Threat 2/10 and Harvest 18%. Main middle 55% of screen is painted regional western North America map with Los Angeles selected in gold, teal coalition, coral invading swarm to east. Bottom advisor 'Reinforce Los Angeles before the swarm arrives.' with Show button. Bottom territory header LOS ANGELES · STRONGHOLD, Garrison 5, incoming 8h; four big thumb buttons Reinforce / Free, March / 1 Order, Build / 1 Order, Details arranged 2x2, generous safe-area below. Single screen, no device frame. All text as specified; prioritise action hierarchy, minimal borders.",
+    "style": "ui",
+    "status": "generated",
+    "source": "generated_images/exec-4c4f9337-9f3f-4070-bc34-794b0de212a7.png",
+    "prompt": "Portrait phone game screen, 1170x2532 aspect. Same Earthfall design as desktop reference. Top 120px safe area blank navy, then title EARTHFALL and Day 6 · 14:00 · PAUSED with play/fast. Large six Orders pips, two dim, 4 / 6 ORDERS. Two compact rows of readable resources: Metal 120, Fuel 80, Research 36, Uranium 4, Intel 12, Reserve 8. Threat 2/10 and Harvest 18%. Main middle 55% of screen is painted regional western North America map with Los Angeles selected in gold, teal coalition, coral invading swarm to east. Bottom advisor 'Reinforce Los Angeles before the swarm arrives.' with Show button. Bottom territory header LOS ANGELES · STRONGHOLD, Garrison 5, incoming 8h; four big thumb buttons Reinforce / Free, March / 1 Order, Build / 1 Order, Details arranged 2x2, generous safe-area below. Single screen, no device frame. All text as specified; prioritise action hierarchy, minimal borders.",
+    "generatedDimensions": [
+      852,
+      1846
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "hud-landscape",
+    "path": "docs/art/hud-phone-landscape.png",
+    "w": 2532,
+    "h": 1170,
+    "alpha": false,
+    "subject": "Landscape phone game screen, 2532x1170 aspect. Same Earthfall design as desktop reference. Allow 100px safe areas at both sides. Compact top title EARTHFALL, Day 6 · 14:00 · PAUSED with play/fast, six Orders pips two dim, 4 / 6 ORDERS. Second slim row Metal 120, Fuel 80, Research 36, Uranium 4, Intel 12, Reserve 8, Threat 2/10, Harvest 18%. Painted regional western USA fills left 70%, Los Angeles selected gold. Right 30% readable compact inspector LOS ANGELES · STRONGHOLD, Garrison 5, incoming 8h. Four large actions Reinforce / Free, March / 1 Order, Build / 1 Order, Details in 2x2 right bottom. Advisor across map bottom 'Reinforce Los Angeles before the swarm arrives.' and Show. Map stays visible. No device frame.",
+    "style": "ui",
+    "status": "generated",
+    "source": "generated_images/exec-b05e52ea-4a9c-4cad-a142-e141722d042f.png",
+    "prompt": "Landscape phone game screen, 2532x1170 aspect. Same Earthfall design as desktop reference. Allow 100px safe areas at both sides. Compact top title EARTHFALL, Day 6 · 14:00 · PAUSED with play/fast, six Orders pips two dim, 4 / 6 ORDERS. Second slim row Metal 120, Fuel 80, Research 36, Uranium 4, Intel 12, Reserve 8, Threat 2/10, Harvest 18%. Painted regional western USA fills left 70%, Los Angeles selected gold. Right 30% readable compact inspector LOS ANGELES · STRONGHOLD, Garrison 5, incoming 8h. Four large actions Reinforce / Free, March / 1 Order, Build / 1 Order, Details in 2x2 right bottom. Advisor across map bottom 'Reinforce Los Angeles before the swarm arrives.' and Show. Map stays visible. No device frame.",
+    "generatedDimensions": [
+      1846,
+      852
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "hud-territory",
+    "path": "docs/art/hud-territory-page.png",
+    "w": 1170,
+    "h": 2532,
+    "alpha": false,
+    "subject": "Portrait phone territory detail screen, 1170x2532 aspect. Same Earthfall navy enamel / restrained brass UI as desktop reference. Top safe-area 120px. Back to map, Day 6 · 14:00 · PAUSED. Large LOS ANGELES title, teal COALITION HQ badge and gold STRONGHOLD shield. Illustrated compact Los Angeles skyline header with teal city core. Garrison 5, defense bonus +1. 'PRODUCTION PER DAY' with 'Metal +18' and explanation 'Stronghold: double output'. 'BUILDINGS' clean list with icons, 'Industry · Level 2 / 5', 'Barracks · Level 1 / 4', 'Fortress · Level 1 / 3', 'Radar · Not built', 'Missile battery · Not built', 'Command Post · Not built'. Bottom hero 4 / 6 ORDERS, six pips two spent. Gold Build / 1 Order and teal Reinforce / Free actions, minimum thumb targets. Use consistent airy typography, spare boxes, no device frame. Main meaning must be production and building levels.",
+    "style": "ui",
+    "status": "generated",
+    "source": "generated_images/exec-5fbdac97-8aa6-424e-a57a-dbe5462f62d2.png",
+    "prompt": "Portrait phone territory detail screen, 1170x2532 aspect. Same Earthfall navy enamel / restrained brass UI as desktop reference. Top safe-area 120px. Back to map, Day 6 · 14:00 · PAUSED. Large LOS ANGELES title, teal COALITION HQ badge and gold STRONGHOLD shield. Illustrated compact Los Angeles skyline header with teal city core. Garrison 5, defense bonus +1. 'PRODUCTION PER DAY' with 'Metal +18' and explanation 'Stronghold: double output'. 'BUILDINGS' clean list with icons, 'Industry · Level 2 / 5', 'Barracks · Level 1 / 4', 'Fortress · Level 1 / 3', 'Radar · Not built', 'Missile battery · Not built', 'Command Post · Not built'. Bottom hero 4 / 6 ORDERS, six pips two spent. Gold Build / 1 Order and teal Reinforce / Free actions, minimum thumb targets. Use consistent airy typography, spare boxes, no device frame. Main meaning must be production and building levels.",
+    "generatedDimensions": [
+      852,
+      1846
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "portrait-vanguard",
+    "path": "assets/cards/portrait-vanguard.webp",
+    "w": 480,
+    "h": 600,
+    "alpha": false,
+    "subject": "Consistent six-character portrait series. Original battle-worn human male squad leader about 40, dark skin, close-cropped hair, heavy gunmetal armor, broad cyan enamel shoulder panels, calm direct gaze, no helmet. Head and shoulders, bust centered, same camera distance, eyes at 38% height, entire head and shoulder silhouette in frame with 8% padding. Three-quarter facing slightly toward viewer right. Navy gradient background. Warm key upper left, soft cool fill right, painterly realistic board-game illustration, detailed face, simplified readable armor. No text, no borders, no logos.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-343f73f5-b765-4782-9316-d180707b112d.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/portrait-vanguard.webp. Target 480x600. Consistent six-character portrait series. Original battle-worn human male squad leader about 40, dark skin, close-cropped hair, heavy gunmetal armor, broad cyan enamel shoulder panels, calm direct gaze, no helmet. Head and shoulders, bust centered, same camera distance, eyes at 38% height, entire head and shoulder silhouette in frame with 8% padding. Three-quarter facing slightly toward viewer right. Navy gradient background. Warm key upper left, soft cool fill right, painterly realistic board-game illustration, detailed face, simplified readable armor. No text, no borders, no logos.",
+    "generatedDimensions": [
+      1122,
+      1402
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "portrait-cipher",
+    "path": "assets/cards/portrait-cipher.webp",
+    "w": 480,
+    "h": 600,
+    "alpha": false,
+    "subject": "Consistent six-character portrait series. Original human female covert specialist about 30, East Asian features, short dark hair, matte graphite light armor, narrow cyan visor lifted above eyes, measured alert gaze. Head and shoulders, bust centered, same camera distance, eyes at 38% height, entire head and shoulder silhouette in frame with 8% padding. Three-quarter facing slightly toward viewer right. Navy gradient background. Warm key upper left, soft cool fill right, painterly realistic board-game illustration, detailed face, simplified readable armor. No text, no borders, no logos.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-86a6db0c-81dc-4505-8174-5975891c109c.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/portrait-cipher.webp. Target 480x600. Consistent six-character portrait series. Original human female covert specialist about 30, East Asian features, short dark hair, matte graphite light armor, narrow cyan visor lifted above eyes, measured alert gaze. Head and shoulders, bust centered, same camera distance, eyes at 38% height, entire head and shoulder silhouette in frame with 8% padding. Three-quarter facing slightly toward viewer right. Navy gradient background. Warm key upper left, soft cool fill right, painterly realistic board-game illustration, detailed face, simplified readable armor. No text, no borders, no logos.",
+    "generatedDimensions": [
+      1122,
+      1402
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "portrait-engineer",
+    "path": "assets/cards/portrait-engineer.webp",
+    "w": 480,
+    "h": 600,
+    "alpha": false,
+    "subject": "Consistent six-character portrait series. Original human female field engineer about 35, warm brown skin, textured tied-back hair, goggles pushed up, gunmetal utility armor with teal panels, visible practical tool harness, intelligent steady expression. Head and shoulders, bust centered, same camera distance, eyes at 38% height, entire head and shoulder silhouette in frame with 8% padding. Three-quarter facing slightly toward viewer right. Navy gradient background. Warm key upper left, soft cool fill right, painterly realistic board-game illustration, detailed face, simplified readable armor. No text, no borders, no logos.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-48ac05a1-739d-45d6-a9a7-2d6dc89c56d0.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/portrait-engineer.webp. Target 480x600. Consistent six-character portrait series. Original human female field engineer about 35, warm brown skin, textured tied-back hair, goggles pushed up, gunmetal utility armor with teal panels, visible practical tool harness, intelligent steady expression. Head and shoulders, bust centered, same camera distance, eyes at 38% height, entire head and shoulder silhouette in frame with 8% padding. Three-quarter facing slightly toward viewer right. Navy gradient background. Warm key upper left, soft cool fill right, painterly realistic board-game illustration, detailed face, simplified readable armor. No text, no borders, no logos.",
+    "generatedDimensions": [
+      1122,
+      1402
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "enemy-commander",
+    "path": "assets/cards/enemy-commander.webp",
+    "w": 480,
+    "h": 600,
+    "alpha": false,
+    "subject": "Consistent six-character portrait series. Original changed human commander, recognisably human head and shoulders, segmented coral and bone-white armor, smooth geometric half-mask revealing one human cheek and lips, subtly unnatural pale skin, tiny violet command light; no animal traits. Head and shoulders, bust centered, same camera distance, eyes at 38% height, entire head and shoulder silhouette in frame with 8% padding. Three-quarter facing slightly toward viewer right. Navy gradient background. Warm key upper left, soft cool fill right, painterly realistic board-game illustration, detailed face, simplified readable armor. No text, no borders, no logos.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-9c51b979-cddd-45e6-a183-50b482625797.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/enemy-commander.webp. Target 480x600. Consistent six-character portrait series. Original changed human commander, recognisably human head and shoulders, segmented coral and bone-white armor, smooth geometric half-mask revealing one human cheek and lips, subtly unnatural pale skin, tiny violet command light; no animal traits. Head and shoulders, bust centered, same camera distance, eyes at 38% height, entire head and shoulder silhouette in frame with 8% padding. Three-quarter facing slightly toward viewer right. Navy gradient background. Warm key upper left, soft cool fill right, painterly realistic board-game illustration, detailed face, simplified readable armor. No text, no borders, no logos.",
+    "generatedDimensions": [
+      1122,
+      1402
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "enemy-warlord",
+    "path": "assets/cards/enemy-warlord.webp",
+    "w": 480,
+    "h": 600,
+    "alpha": false,
+    "subject": "Consistent six-character portrait series. Original changed human warlord, recognisably human head and shoulders, heavy coral and bone-white segmented armor, scarred half-mask, violet crystalline growth confined to one shoulder, one clearly human eye and cheek visible, stern dignified bearing; no creature anatomy. Head and shoulders, bust centered, same camera distance, eyes at 38% height, entire head and shoulder silhouette in frame with 8% padding. Three-quarter facing slightly toward viewer right. Navy gradient background. Warm key upper left, soft cool fill right, painterly realistic board-game illustration, detailed face, simplified readable armor. No text, no borders, no logos.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-23a544af-26c7-4c29-8ec9-4a7138c0a6b6.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/enemy-warlord.webp. Target 480x600. Consistent six-character portrait series. Original changed human warlord, recognisably human head and shoulders, heavy coral and bone-white segmented armor, scarred half-mask, violet crystalline growth confined to one shoulder, one clearly human eye and cheek visible, stern dignified bearing; no creature anatomy. Head and shoulders, bust centered, same camera distance, eyes at 38% height, entire head and shoulder silhouette in frame with 8% padding. Three-quarter facing slightly toward viewer right. Navy gradient background. Warm key upper left, soft cool fill right, painterly realistic board-game illustration, detailed face, simplified readable armor. No text, no borders, no logos.",
+    "generatedDimensions": [
+      1122,
+      1402
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "enemy-overlord",
+    "path": "assets/cards/enemy-overlord.webp",
+    "w": 480,
+    "h": 600,
+    "alpha": false,
+    "subject": "Consistent six-character portrait series. Original changed human overlord, regal human figure, dark armor with restrained violet veins, thin gold circlet, mask partly open showing one unmistakably human eye and human nose, human proportions; no monster skull, horns or tentacles. Head and shoulders, bust centered, same camera distance, eyes at 38% height, entire head and shoulder silhouette in frame with 8% padding. Three-quarter facing slightly toward viewer right. Navy gradient background. Warm key upper left, soft cool fill right, painterly realistic board-game illustration, detailed face, simplified readable armor. No text, no borders, no logos.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-56ad5211-8fcc-4ee9-9faa-57e67d5aa83d.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/enemy-overlord.webp. Target 480x600. Consistent six-character portrait series. Original changed human overlord, regal human figure, dark armor with restrained violet veins, thin gold circlet, mask partly open showing one unmistakably human eye and human nose, human proportions; no monster skull, horns or tentacles. Head and shoulders, bust centered, same camera distance, eyes at 38% height, entire head and shoulder silhouette in frame with 8% padding. Three-quarter facing slightly toward viewer right. Navy gradient background. Warm key upper left, soft cool fill right, painterly realistic board-game illustration, detailed face, simplified readable armor. No text, no borders, no logos.",
+    "generatedDimensions": [
+      1122,
+      1402
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "ground-coalition",
+    "path": "assets/city/ground-coalition.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": true,
+    "subject": "Perfectly straight overhead circular city ground plate, outer diameter 90% of square image, centered, soft natural thin outer edge. A living near-future city of dark street grids and low rooftops, lit city blocks, restrained cyan light, gunmetal and navy architecture. Mostly flat low urban detail, clear broad avenues with open building pads. No freestanding tall buildings. Everything outside circle completely transparent. Painted miniature tabletop style; subtle upper-left light, consistent scale for all three city plates. No text, labels, frame, tokens or UI. Square asset.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-c1e382f9-e5cc-481f-80b9-5bb4aa474f67.png",
+    "prompt": "Use case: illustration-story. Asset assets/city/ground-coalition.webp. Target 1024x1024. Perfectly straight overhead circular city ground plate, outer diameter 90% of square image, centered, soft natural thin outer edge. A living near-future city of dark street grids and low rooftops, lit city blocks, restrained cyan light, gunmetal and navy architecture. Mostly flat low urban detail, clear broad avenues with open building pads. No freestanding tall buildings. Everything outside circle completely transparent. Painted miniature tabletop style; subtle upper-left light, consistent scale for all three city plates. No text, labels, frame, tokens or UI. Square asset.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "ground-occupied",
+    "path": "assets/city/ground-occupied.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": true,
+    "subject": "Use case: precise-object-edit. Edit this exact city plate; keep the identical street grid, building footprints, circle size, perspective, lighting direction and transparency. Change only surface materials and condition: add coral veins following the existing streets, dark dead buildings, cracked chitin growing over some blocks and scattered violet command nodes. Preserve readable main avenues and existing open pads. Transparent outside the original circle; no text or frame.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-c1736b71-2d1c-4951-b64a-88679af969d6.png",
+    "prompt": "Use case: illustration-story. Asset assets/city/ground-occupied.webp. Target 1024x1024. Use case: precise-object-edit. Edit this exact city plate; keep the identical street grid, building footprints, circle size, perspective, lighting direction and transparency. Change only surface materials and condition: add coral veins following the existing streets, dark dead buildings, cracked chitin growing over some blocks and scattered violet command nodes. Preserve readable main avenues and existing open pads. Transparent outside the original circle; no text or frame.",
+    "reference": "assets/city/ground-coalition.webp",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "ground-wasteland",
+    "path": "assets/city/ground-wasteland.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": true,
+    "subject": "Use case: precise-object-edit. Edit this exact city plate; keep the identical street grid, building footprints, circle size, perspective, lighting direction and transparency. Change only surface materials and condition: ruined charred flat building foundations, scorched ground, glassed crater centered on the central crossroad, subtle embers and cracks. Keep all existing streets and block footprint positions identical. No new circular radial road plan. Transparent outside the original circle; no text or frame.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-15710f8b-e842-469c-9001-8b2fdb136665.png",
+    "prompt": "Use case: illustration-story. Asset assets/city/ground-wasteland.webp. Target 1024x1024. Use case: precise-object-edit. Edit this exact city plate; keep the identical street grid, building footprints, circle size, perspective, lighting direction and transparency. Change only surface materials and condition: ruined charred flat building foundations, scorched ground, glassed crater centered on the central crossroad, subtle embers and cracks. Keep all existing streets and block footprint positions identical. No new circular radial road plan. Transparent outside the original circle; no text or frame.",
+    "reference": "assets/city/ground-coalition.webp",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "refinery",
+    "path": "assets/city/refinery.webp",
+    "w": 256,
+    "h": 256,
+    "alpha": true,
+    "subject": "One isolated painted sci-fi tabletop miniature: compact refinery with two cylindrical storage tanks, pipes and a small distillation tower. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-0380fbad-2704-4e30-ab40-66e0be776bf8.png",
+    "prompt": "Use case: illustration-story. Asset assets/city/refinery.webp. Target 256x256. One isolated painted sci-fi tabletop miniature: compact refinery with two cylindrical storage tanks, pipes and a small distillation tower. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "lab",
+    "path": "assets/city/lab.webp",
+    "w": 256,
+    "h": 256,
+    "alpha": true,
+    "subject": "One isolated painted sci-fi tabletop miniature: compact scientific laboratory with a skylight, luminous cyan reactor window and a small antenna. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-765c9a39-182d-440d-bd86-36bbc3b4e0f9.png",
+    "prompt": "Use case: illustration-story. Asset assets/city/lab.webp. Target 256x256. One isolated painted sci-fi tabletop miniature: compact scientific laboratory with a skylight, luminous cyan reactor window and a small antenna. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "mine",
+    "path": "assets/city/mine.webp",
+    "w": 256,
+    "h": 256,
+    "alpha": true,
+    "subject": "One isolated painted sci-fi tabletop miniature: ore mine with a clear open pit mouth, gantry crane and conveyor, small exposed mineral pile. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-18a0c8f0-47cb-461b-a6b9-db6be3fa4c8c.png",
+    "prompt": "Use case: illustration-story. Asset assets/city/mine.webp. Target 256x256. One isolated painted sci-fi tabletop miniature: ore mine with a clear open pit mouth, gantry crane and conveyor, small exposed mineral pile. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "depot",
+    "path": "assets/city/depot.webp",
+    "w": 256,
+    "h": 256,
+    "alpha": true,
+    "subject": "One isolated painted sci-fi tabletop miniature: supply depot with a low warehouse, three cargo containers and loading ramp. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-e82b2f31-7739-47cc-900a-4b32b52fd310.png",
+    "prompt": "Use case: illustration-story. Asset assets/city/depot.webp. Target 256x256. One isolated painted sci-fi tabletop miniature: supply depot with a low warehouse, three cargo containers and loading ramp. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "uranium-works",
+    "path": "assets/city/uranium-works.webp",
+    "w": 256,
+    "h": 256,
+    "alpha": true,
+    "subject": "One isolated painted sci-fi tabletop miniature: uranium processing facility with sealed containment towers, guarded pipes and a subtle yellow-green status light. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-9f750b9e-2879-4ea8-8849-a5dea965e385.png",
+    "prompt": "Use case: illustration-story. Asset assets/city/uranium-works.webp. Target 256x256. One isolated painted sci-fi tabletop miniature: uranium processing facility with sealed containment towers, guarded pipes and a subtle yellow-green status light. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "wall-segment",
+    "path": "assets/city/wall-segment.webp",
+    "w": 256,
+    "h": 256,
+    "alpha": true,
+    "subject": "One isolated painted sci-fi tabletop miniature: one curved fortress wall section of gunmetal stone and teal armor, a small gate with cyan light, no other buildings. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-4b1e9086-a767-4d3d-9ee8-1b8ac9b48664.png",
+    "prompt": "Use case: illustration-story. Asset assets/city/wall-segment.webp. Target 256x256. One isolated painted sci-fi tabletop miniature: one curved fortress wall section of gunmetal stone and teal armor, a small gate with cyan light, no other buildings. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "tower",
+    "path": "assets/city/tower.webp",
+    "w": 256,
+    "h": 256,
+    "alpha": true,
+    "subject": "One isolated painted sci-fi tabletop miniature: a compact cluster of three future city skyscrapers at varied heights, teal windows, clean silhouettes. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-51f34db8-95b6-434c-a545-00a7ac14a812.png",
+    "prompt": "Use case: illustration-story. Asset assets/city/tower.webp. Target 256x256. One isolated painted sci-fi tabletop miniature: a compact cluster of three future city skyscrapers at varied heights, teal windows, clean silhouettes. Three-quarter orthographic view from above, visible front and right sides, warm light upper left, teal enamel / dark gunmetal, muted brass fittings, oval dark base sits at image bottom with 6% margin, object occupies 82% of frame, all parts uncut. Transparent background, no words, no frame or UI. Match Earthfall existing miniatures.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "battle-field",
+    "path": "assets/battle/field.jpg",
+    "w": 1800,
+    "h": 840,
+    "alpha": false,
+    "subject": "Straight overhead landscape battlefield 1800x840 aspect. Dark painted terrain, scorched crimson-infested left third, open charcoal-sage dirt in middle, ONLY rightmost 6% shows edge of lit cyan futuristic city. Exactly three faint straight horizontal traversable lanes centered 25%,50%,75% image height; open and unobstructed across full middle. No units, no sprites, no text, no UI, no bright hotspots. Soft upper-left light. Cyan/coral pieces must be readable on terrain.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-ef15cd3d-a766-4f33-b3ad-955fa68cf143.png",
+    "prompt": "Use case: illustration-story. Asset assets/battle/field.jpg. Target 1800x840. Straight overhead landscape battlefield 1800x840 aspect. Dark painted terrain, scorched crimson-infested left third, open charcoal-sage dirt in middle, ONLY rightmost 6% shows edge of lit cyan futuristic city. Exactly three faint straight horizontal traversable lanes centered 25%,50%,75% image height; open and unobstructed across full middle. No units, no sprites, no text, no UI, no bright hotspots. Soft upper-left light. Cyan/coral pieces must be readable on terrain.",
+    "generatedDimensions": [
+      1836,
+      857
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "battle-squad",
+    "path": "assets/battle/squad.webp",
+    "w": 192,
+    "h": 192,
+    "alpha": true,
+    "subject": "Small game sprite, three Coalition infantry in gunmetal armor with clear cyan panels, compact triangular squad, all facing LEFT. View from overhead and slightly behind, almost top down, all feet visible; upper-left light and very subtle painted contact shadow only. Isolated entirety with 12% padding on genuinely transparent background, no base disk, no text or frame. Painterly miniature, silhouette clear at 32px.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-0bb4149c-f4bd-48d4-90f3-2b31a10bb813.png",
+    "prompt": "Use case: illustration-story. Asset assets/battle/squad.webp. Target 192x192. Small game sprite, three Coalition infantry in gunmetal armor with clear cyan panels, compact triangular squad, all facing LEFT. View from overhead and slightly behind, almost top down, all feet visible; upper-left light and very subtle painted contact shadow only. Isolated entirety with 12% padding on genuinely transparent background, no base disk, no text or frame. Painterly miniature, silhouette clear at 32px.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "battle-team",
+    "path": "assets/battle/team.webp",
+    "w": 192,
+    "h": 192,
+    "alpha": true,
+    "subject": "Small game sprite, three elite human strike-team soldiers in gunmetal armor with teal panels and restrained gold trim, compact triangular squad, all facing LEFT. View from overhead and slightly behind, almost top down, all feet visible; upper-left light and very subtle painted contact shadow only. Isolated entirety with 12% padding on genuinely transparent background, no base disk, no text or frame. Painterly miniature, silhouette clear at 32px.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-c650dd6d-39a4-4d62-b948-56693dd683ca.png",
+    "prompt": "Use case: illustration-story. Asset assets/battle/team.webp. Target 192x192. Small game sprite, three elite human strike-team soldiers in gunmetal armor with teal panels and restrained gold trim, compact triangular squad, all facing LEFT. View from overhead and slightly behind, almost top down, all feet visible; upper-left light and very subtle painted contact shadow only. Isolated entirety with 12% padding on genuinely transparent background, no base disk, no text or frame. Painterly miniature, silhouette clear at 32px.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "battle-swarm-1",
+    "path": "assets/battle/swarm-1.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "subject": "Small game sprite, one small fast alien swarmling, coral-red chitin with purple joints, recognisable low rushing silhouette, facing RIGHT. View from overhead and slightly behind, almost top down, all feet visible; upper-left light and very subtle painted contact shadow only. Isolated entirety with 12% padding on genuinely transparent background, no base disk, no text or frame. Painterly miniature, silhouette clear at 32px.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-2c1312bb-dd13-4677-8713-b035dbb07711.png",
+    "prompt": "Use case: illustration-story. Asset assets/battle/swarm-1.webp. Target 128x128. Small game sprite, one small fast alien swarmling, coral-red chitin with purple joints, recognisable low rushing silhouette, facing RIGHT. View from overhead and slightly behind, almost top down, all feet visible; upper-left light and very subtle painted contact shadow only. Isolated entirety with 12% padding on genuinely transparent background, no base disk, no text or frame. Painterly miniature, silhouette clear at 32px.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "battle-swarm-2",
+    "path": "assets/battle/swarm-2.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "subject": "Small game sprite, one medium ranged swarm spitter, coral-red armored hunched silhouette with a violet abdomen, facing RIGHT. View from overhead and slightly behind, almost top down, all feet visible; upper-left light and very subtle painted contact shadow only. Isolated entirety with 12% padding on genuinely transparent background, no base disk, no text or frame. Painterly miniature, silhouette clear at 32px.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-082fe272-3f7a-4cc9-a6b3-12fdd3a7ea98.png",
+    "prompt": "Use case: illustration-story. Asset assets/battle/swarm-2.webp. Target 128x128. Small game sprite, one medium ranged swarm spitter, coral-red armored hunched silhouette with a violet abdomen, facing RIGHT. View from overhead and slightly behind, almost top down, all feet visible; upper-left light and very subtle painted contact shadow only. Isolated entirety with 12% padding on genuinely transparent background, no base disk, no text or frame. Painterly miniature, silhouette clear at 32px.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "battle-swarm-3",
+    "path": "assets/battle/swarm-3.webp",
+    "w": 128,
+    "h": 128,
+    "alpha": true,
+    "subject": "Small game sprite, one heavy swarm brute, wide coral-red armor plates and violet joints, large readable shoulders, facing RIGHT. View from overhead and slightly behind, almost top down, all feet visible; upper-left light and very subtle painted contact shadow only. Isolated entirety with 12% padding on genuinely transparent background, no base disk, no text or frame. Painterly miniature, silhouette clear at 32px.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-acd044de-fb04-4325-a252-dc27ad91fc72.png",
+    "prompt": "Use case: illustration-story. Asset assets/battle/swarm-3.webp. Target 128x128. Small game sprite, one heavy swarm brute, wide coral-red armor plates and violet joints, large readable shoulders, facing RIGHT. View from overhead and slightly behind, almost top down, all feet visible; upper-left light and very subtle painted contact shadow only. Isolated entirety with 12% padding on genuinely transparent background, no base disk, no text or frame. Painterly miniature, silhouette clear at 32px.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "battle-wall",
+    "path": "assets/battle/wall.webp",
+    "w": 96,
+    "h": 840,
+    "alpha": true,
+    "subject": "One very tall narrow vertical futuristic fortress wall strip, 96:840 aspect, front-top orthographic view. Gunmetal stone, teal armor, restrained gold supports. Exactly THREE open gates, centered at 25%,50%,75% of total height. Cyan small gate lights. Uniform wall width 70% of image, transparent margin left and right, transparent gate holes. No perspective taper, no words, no scene or scenery. Functional lane-battle game asset.",
+    "style": "sprite",
+    "status": "generated",
+    "source": "generated_images/exec-26d37cee-c242-4f93-9fb5-921df23555aa.png",
+    "prompt": "Use case: stylized-concept. Asset assets/battle/wall.webp. Target 96x840. One very tall narrow vertical futuristic fortress wall strip, 96:840 aspect, front-top orthographic view. Gunmetal stone, teal armor, restrained gold supports. Exactly THREE open gates, centered at 25%,50%,75% of total height. Cyan small gate lights. Uniform wall width 70% of image, transparent margin left and right, transparent gate holes. No perspective taper, no words, no scene or scenery. Functional lane-battle game asset.",
+    "generatedDimensions": [
+      1199,
+      1312
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "battle-blast",
+    "path": "assets/battle/blast.webp",
+    "w": 1024,
+    "h": 256,
+    "alpha": true,
+    "subject": "One horizontal game explosion animation strip with EXACTLY FOUR separate equally sized square cells in a single row. Entire strip target 1024x256 (4:1). Four explosion centers MUST be exactly at 12.5%,37.5%,62.5%,87.5% of width and 50% height. Each explosion MUST fit entirely inside only the middle 60% of its own cell width and height, with completely empty transparent gaps between cells. NO broad halos, NO white fog, no overlap between frames. Cell1 tiny crisp white-gold ignition spark. Cell2 modest orange fireball. Cell3 small coral smoke ring and a few embers. Cell4 small faint dark smoke. All frames fixed center, same scale camera, top-down painterly VFX. Truly transparent background. No labels or grid lines. Leave a fully transparent margin of at least 15% of each cell around every explosion.",
+    "style": "sprite",
+    "status": "generated",
+    "source": "generated_images/exec-99df252c-92a2-4103-aaf3-172c8bdd91e2.png",
+    "prompt": "Use case: stylized-concept. Asset assets/battle/blast.webp. Target 1024x256. One horizontal game explosion animation strip with EXACTLY FOUR separate equally sized square cells in a single row. Entire strip target 1024x256 (4:1). Four explosion centers MUST be exactly at 12.5%,37.5%,62.5%,87.5% of width and 50% height. Each explosion MUST fit entirely inside only the middle 60% of its own cell width and height, with completely empty transparent gaps between cells. NO broad halos, NO white fog, no overlap between frames. Cell1 tiny crisp white-gold ignition spark. Cell2 modest orange fireball. Cell3 small coral smoke ring and a few embers. Cell4 small faint dark smoke. All frames fixed center, same scale camera, top-down painterly VFX. Truly transparent background. No labels or grid lines. Leave a fully transparent margin of at least 15% of each cell around every explosion.",
+    "generatedDimensions": [
+      2172,
+      724
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "card-airdrop",
+    "path": "assets/cards/card-airdrop.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:2 landscape composition. three cargo crates descending under clearly visible parachutes to a small waiting Coalition infantry squad. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-c0fa35a4-e0e9-4d8e-ad11-e95cc6d41868.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/card-airdrop.webp. Target 600x400. Wide full-bleed narrative illustration, 3:2 landscape composition. three cargo crates descending under clearly visible parachutes to a small waiting Coalition infantry squad. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "card-intercept",
+    "path": "assets/cards/card-intercept.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Every human visible in this scene is a Coalition human. Replace ALL violet or purple clothing, capes, scarves, uniform panels and human insignia with practical dark gunmetal and teal military material. Remove regal capes and replace them with practical fitted gunmetal field jackets where needed. Human armor is teal/gunmetal, small gold fasteners. Preserve skin, faces and all poses. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-a56f64ef-d159-41b7-b8bd-fa4d412e80d7.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/card-intercept.webp. Target 600x400. Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Every human visible in this scene is a Coalition human. Replace ALL violet or purple clothing, capes, scarves, uniform panels and human insignia with practical dark gunmetal and teal military material. Remove regal capes and replace them with practical fitted gunmetal field jackets where needed. Human armor is teal/gunmetal, small gold fasteners. Preserve skin, faces and all poses. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "originalSubject": "Wide full-bleed narrative illustration, 3:2 landscape composition. two cyan Coalition interceptor aircraft diving diagonally onto a coral swarm column on a road. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "reference": "assets/cards/card-intercept.webp",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "card-quiet",
+    "path": "assets/cards/card-quiet.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Remove all foreground people, replacing their silhouettes naturally with quiet moonlit shore and foliage. Keep the dormant hive and night scene. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-12dc2d33-2793-488a-9519-c9e416009e5d.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/card-quiet.webp. Target 600x400. Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Remove all foreground people, replacing their silhouettes naturally with quiet moonlit shore and foliage. Keep the dormant hive and night scene. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "originalSubject": "Wide full-bleed narrative illustration, 3:2 landscape composition. a dormant coral hive on a still dark night, quiet moonlight, no fighting. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "reference": "assets/cards/card-quiet.webp",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "card-convoy",
+    "path": "assets/cards/card-convoy.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Every human visible in this scene is a Coalition human. Replace ALL violet or purple clothing, capes, scarves, uniform panels and human insignia with practical dark gunmetal and teal military material. Remove regal capes and replace them with practical fitted gunmetal field jackets where needed. Human armor is teal/gunmetal, small gold fasteners. Preserve skin, faces and all poses. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-4fcb3509-5ae9-40e6-8926-a563df1a5915.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/card-convoy.webp. Target 600x400. Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Every human visible in this scene is a Coalition human. Replace ALL violet or purple clothing, capes, scarves, uniform panels and human insignia with practical dark gunmetal and teal military material. Remove regal capes and replace them with practical fitted gunmetal field jackets where needed. Human armor is teal/gunmetal, small gold fasteners. Preserve skin, faces and all poses. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "originalSubject": "Wide full-bleed narrative illustration, 3:2 landscape composition. a supply convoy of three practical teal-armored cargo vehicles traveling a road at dusk. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "reference": "assets/cards/card-convoy.webp",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "card-eyes",
+    "path": "assets/cards/card-eyes.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:2 landscape composition. an orbital reconnaissance satellite in foreground above Earth, restrained cyan beams revealing several city lights below, no UI. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-5649cfec-effa-4b77-9c75-98d7753fec1f.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/card-eyes.webp. Target 600x400. Wide full-bleed narrative illustration, 3:2 landscape composition. an orbital reconnaissance satellite in foreground above Earth, restrained cyan beams revealing several city lights below, no UI. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "card-rally",
+    "path": "assets/cards/card-rally.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Every human visible in this scene is a Coalition human. Replace ALL violet or purple clothing, capes, scarves, uniform panels and human insignia with practical dark gunmetal and teal military material. Remove regal capes and replace them with practical fitted gunmetal field jackets where needed. Human armor is teal/gunmetal, small gold fasteners. Preserve skin, faces and all poses. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-2c9d71c1-eb31-408e-a71a-f74bbf6c9fc6.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/card-rally.webp. Target 600x400. Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Every human visible in this scene is a Coalition human. Replace ALL violet or purple clothing, capes, scarves, uniform panels and human insignia with practical dark gunmetal and teal military material. Remove regal capes and replace them with practical fitted gunmetal field jackets where needed. Human armor is teal/gunmetal, small gold fasteners. Preserve skin, faces and all poses. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "originalSubject": "Wide full-bleed narrative illustration, 3:2 landscape composition. a small human strike team regrouping beside a medic treating a seated soldier, a warm flare as rally signal. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "reference": "assets/cards/card-rally.webp",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "card-dig",
+    "path": "assets/cards/card-dig.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Every human visible in this scene is a Coalition human. Replace ALL violet or purple clothing, capes, scarves, uniform panels and human insignia with practical dark gunmetal and teal military material. Remove regal capes and replace them with practical fitted gunmetal field jackets where needed. Human armor is teal/gunmetal, small gold fasteners. Preserve skin, faces and all poses. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-7ee7bde9-a6d7-4d5e-b401-a1a0006a19b4.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/card-dig.webp. Target 600x400. Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Every human visible in this scene is a Coalition human. Replace ALL violet or purple clothing, capes, scarves, uniform panels and human insignia with practical dark gunmetal and teal military material. Remove regal capes and replace them with practical fitted gunmetal field jackets where needed. Human armor is teal/gunmetal, small gold fasteners. Preserve skin, faces and all poses. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "originalSubject": "Wide full-bleed narrative illustration, 3:2 landscape composition. Coalition troops visibly digging trenches and building earthworks, coral swarm just appearing on distant horizon. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "reference": "assets/cards/card-dig.webp",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "emp",
+    "path": "assets/cards/emp.webp",
+    "w": 1200,
+    "h": 800,
+    "alpha": false,
+    "subject": "Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Every human visible in this scene is a Coalition human. Replace ALL violet or purple clothing, capes, scarves, uniform panels and human insignia with practical dark gunmetal and teal military material. Remove regal capes and replace them with practical fitted gunmetal field jackets where needed. Human armor is teal/gunmetal, small gold fasteners. Preserve skin, faces and all poses. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-2b079493-0d59-4a7e-a6dd-dc3f1e5347bd.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/emp.webp. Target 1200x800. Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Every human visible in this scene is a Coalition human. Replace ALL violet or purple clothing, capes, scarves, uniform panels and human insignia with practical dark gunmetal and teal military material. Remove regal capes and replace them with practical fitted gunmetal field jackets where needed. Human armor is teal/gunmetal, small gold fasteners. Preserve skin, faces and all poses. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "originalSubject": "Wide full-bleed narrative illustration, 3:2 landscape composition. a solid physical EMP pulse weapon on a tripod in the foreground, capacitors and electromagnetic coils firing a vivid cyan expanding ring that extinguishes distant swarm command lights; weapon is unmistakable, not a holographic globe. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "reference": "assets/cards/emp.webp",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "warhead",
+    "path": "assets/cards/warhead.webp",
+    "w": 1200,
+    "h": 800,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:2 landscape composition. a single actual nuclear warhead with an ogive nose and dark teal mechanical housing rising on a service elevator in an open underground missile silo, overhead light, recognizable silo hatch. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-5456b08a-5051-47fd-9415-252691e0b157.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/warhead.webp. Target 1200x800. Wide full-bleed narrative illustration, 3:2 landscape composition. a single actual nuclear warhead with an ogive nose and dark teal mechanical housing rising on a service elevator in an open underground missile silo, overhead light, recognizable silo hatch. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "breakout",
+    "path": "assets/cards/breakout.webp",
+    "w": 1200,
+    "h": 800,
+    "alpha": false,
+    "subject": "Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Every human visible in this scene is a Coalition human. Replace ALL violet or purple clothing, capes, scarves, uniform panels and human insignia with practical dark gunmetal and teal military material. Remove regal capes and replace them with practical fitted gunmetal field jackets where needed. Human armor is teal/gunmetal, small gold fasteners. Preserve skin, faces and all poses. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-3b5683b2-ff3b-47a3-82f0-4b20cd7a4702.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/breakout.webp. Target 1200x800. Use case: precise-object-edit. Edit the attached finished illustration with one targeted correction. Every human visible in this scene is a Coalition human. Replace ALL violet or purple clothing, capes, scarves, uniform panels and human insignia with practical dark gunmetal and teal military material. Remove regal capes and replace them with practical fitted gunmetal field jackets where needed. Human armor is teal/gunmetal, small gold fasteners. Preserve skin, faces and all poses. Keep the exact camera, composition, architecture, vehicles, weapons, action, lighting and aspect ratio unchanged. Purple may remain ONLY on alien enemy hardware or organic growth; retain coral enemy swarm. No new people, no new objects, no text, no borders. Painterly premium game illustration. Do not redesign scene.",
+    "originalSubject": "Wide full-bleed narrative illustration, 3:2 landscape composition. a massive coral swarm visibly breaking through a shattered defensive border wall from right to left, broken barricade, scattering concrete, teal defenders falling back; emphasize physical breach, no map UI. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "reference": "assets/cards/breakout.webp",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "help-win",
+    "path": "assets/cards/help-win.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:2 landscape composition. an imposing changed-human Overlord in violet-veined armor looming behind a physical world map table, unmistakable human silhouette and one human eye, tactical victory theme. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-a82ceeed-99a0-4c25-b431-2c5abd0349b6.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/help-win.webp. Target 600x400. Wide full-bleed narrative illustration, 3:2 landscape composition. an imposing changed-human Overlord in violet-veined armor looming behind a physical world map table, unmistakable human silhouette and one human eye, tactical victory theme. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark.",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "help-attack",
+    "path": "assets/cards/help-attack.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:2 landscape composition. Coalition troops physically crossing a defended frontier through a breach toward coral occupied ground, advance clearly left to right. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-e005ee60-2168-4672-acb0-6298d4c6c9a6.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/help-attack.webp. Target 600x400. Wide full-bleed narrative illustration, 3:2 landscape composition. Coalition troops physically crossing a defended frontier through a breach toward coral occupied ground, advance clearly left to right. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "help-grow",
+    "path": "assets/cards/help-grow.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:2 landscape composition. a near-future city being fortified, workers and armored engineers erecting walls around cyan-lit buildings. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-7b210d28-2658-44aa-8b94-ace730ebb490.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/help-grow.webp. Target 600x400. Wide full-bleed narrative illustration, 3:2 landscape composition. a near-future city being fortified, workers and armored engineers erecting walls around cyan-lit buildings. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "help-time",
+    "path": "assets/cards/help-time.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:2 landscape composition. a large analog war-room clock suspended above a painted strategy map table with miniature troop columns; clock face simple ticks, no lettering. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-0e95da05-7111-448b-8548-6989fab8881f.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/help-time.webp. Target 600x400. Wide full-bleed narrative illustration, 3:2 landscape composition. a large analog war-room clock suspended above a painted strategy map table with miniature troop columns; clock face simple ticks, no lettering. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "help-team",
+    "path": "assets/cards/help-team.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:2 landscape composition. three stealthy human strike-team operatives infiltrating a coral-lit enemy command facility. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-b724dcc0-699d-4953-9daa-a3336a2e1721.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/help-team.webp. Target 600x400. Wide full-bleed narrative illustration, 3:2 landscape composition. three stealthy human strike-team operatives infiltrating a coral-lit enemy command facility. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "help-zoom",
+    "path": "assets/cards/help-zoom.webp",
+    "w": 600,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:2 landscape composition. a hand holding a physical magnifying lens over a miniature city on a painted strategy board, city details larger inside lens. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-d99f1f01-e343-45d4-a5b3-91d310e58377.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/help-zoom.webp. Target 600x400. Wide full-bleed narrative illustration, 3:2 landscape composition. a hand holding a physical magnifying lens over a miniature city on a painted strategy board, city details larger inside lens. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "guide-landing",
+    "path": "assets/cards/guide-landing.webp",
+    "w": 1200,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:1 panoramic composition. coral swarm descending from high above a future city at night in glowing entry trails, landing beyond cyan defensive walls. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-1f41efa6-829d-46fa-971b-3677a020e3a3.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/guide-landing.webp. Target 1200x400. Wide full-bleed narrative illustration, 3:1 panoramic composition. coral swarm descending from high above a future city at night in glowing entry trails, landing beyond cyan defensive walls. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      2172,
+      724
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "guide-chest",
+    "path": "assets/cards/guide-chest.webp",
+    "w": 1200,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:1 panoramic composition. a war-room table with clear stacks of metal ingots, sealed fuel drums and a compact cyan research console, readable three-resource arrangement. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-00e2f311-9175-4e09-9937-87963f1086b0.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/guide-chest.webp. Target 1200x400. Wide full-bleed narrative illustration, 3:1 panoramic composition. a war-room table with clear stacks of metal ingots, sealed fuel drums and a compact cyan research console, readable three-resource arrangement. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      2172,
+      724
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "guide-troops",
+    "path": "assets/cards/guide-troops.webp",
+    "w": 1200,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:1 panoramic composition. Coalition troops visibly disembarking down the ramp of a teal military transport in a border town. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-a4edf2e5-cbba-4e69-84ec-56af8adcd11d.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/guide-troops.webp. Target 1200x400. Wide full-bleed narrative illustration, 3:1 panoramic composition. Coalition troops visibly disembarking down the ramp of a teal military transport in a border town. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      2172,
+      724
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "guide-build",
+    "path": "assets/cards/guide-build.webp",
+    "w": 1200,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:1 panoramic composition. engineers and cranes erecting a fortress wall around a cyan city, one completed section and one section being raised. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-a5cae506-b467-4597-90ff-062fcf0af523.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/guide-build.webp. Target 1200x400. Wide full-bleed narrative illustration, 3:1 panoramic composition. engineers and cranes erecting a fortress wall around a cyan city, one completed section and one section being raised. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      2172,
+      724
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "guide-armor",
+    "path": "assets/cards/guide-armor.webp",
+    "w": 1200,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:1 panoramic composition. two armored teal Coalition vehicles rolling out of a barracks gate, a glass-domed scientific research lab clearly visible behind. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-09d397e2-ced5-42be-bb11-eb7e1b784cf8.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/guide-armor.webp. Target 1200x400. Wide full-bleed narrative illustration, 3:1 panoramic composition. two armored teal Coalition vehicles rolling out of a barracks gate, a glass-domed scientific research lab clearly visible behind. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      2172,
+      724
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "guide-begin",
+    "path": "assets/cards/guide-begin.webp",
+    "w": 1200,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:1 panoramic composition. a commander's gloved hand hovering decisively above a physical painted world map, about to give the first order, troops on board. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-13447de0-00d2-43aa-87d7-56edf34cefc7.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/guide-begin.webp. Target 1200x400. Wide full-bleed narrative illustration, 3:1 panoramic composition. a commander's gloved hand hovering decisively above a physical painted world map, about to give the first order, troops on board. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      2172,
+      724
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "guide-orders",
+    "path": "assets/cards/guide-orders.webp",
+    "w": 1200,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:1 panoramic composition. exactly six round command tokens arranged in a simple row on a navy war-room table, four glowing gold and two dark spent tokens, no text. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-48227685-b537-4c16-b40e-e7fa4ff99854.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/guide-orders.webp. Target 1200x400. Wide full-bleed narrative illustration, 3:1 panoramic composition. exactly six round command tokens arranged in a simple row on a navy war-room table, four glowing gold and two dark spent tokens, no text. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      2172,
+      724
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "guide-attack",
+    "path": "assets/cards/guide-attack.webp",
+    "w": 1200,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:1 panoramic composition. two separate cyan troop columns converging on a coral occupied city from both left and right, clear pincer movement. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-deafc97d-5fa0-4fd8-b7fd-d69854989f06.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/guide-attack.webp. Target 1200x400. Wide full-bleed narrative illustration, 3:1 panoramic composition. two separate cyan troop columns converging on a coral occupied city from both left and right, clear pincer movement. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      2172,
+      724
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "guide-time",
+    "path": "assets/cards/guide-time.webp",
+    "w": 1200,
+    "h": 400,
+    "alpha": false,
+    "subject": "Wide full-bleed narrative illustration, 3:1 panoramic composition. a large analog war-room clock above a tactical map table, small troop columns visibly traveling along routes, sense of time passing without text. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "style": "illustration",
+    "status": "generated",
+    "source": "generated_images/exec-47c19dfd-108e-46cc-82f7-6eb5a8d0c2a5.png",
+    "prompt": "Use case: illustration-story. Asset assets/cards/guide-time.webp. Target 1200x400. Wide full-bleed narrative illustration, 3:1 panoramic composition. a large analog war-room clock above a tactical map table, small troop columns visibly traveling along routes, sense of time passing without text. Essential subject centrally in middle third, safe for thumbnail cropping. Original near-future Earth, detailed painted premium strategy-board-game art, navy and charcoal environment, Coalition cyan/gunmetal, swarm coral crimson, commanders violet, restrained gold light. Warm key light upper left. No written words, numbers, interface, text fragments, borders, white bars or watermark. Coalition soldiers and officers wear practical gunmetal and teal armor only: no purple clothing, no capes, no regal uniforms. Violet appears only on enemy command hardware. Keep composition focused on requested action.",
+    "generatedDimensions": [
+      2172,
+      724
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-style",
+    "path": "frontline/docs/art/style-sheet.png",
+    "w": 2048,
+    "h": 1152,
+    "alpha": false,
+    "subject": "Original clean heroic sci-fi art direction sheet for Earthfall Frontline. Four coherent panels side by side: 1 human soldier in smooth chunky teal armor with a cyan visor and gold accents, 2 purple organic glossy swarmling with glowing coral weak point, 3 practical chunky teal gun turret on tripod, 4 sunlit Los Angeles street corner with art deco concrete buildings and distant open blue sky. Consistent scale reference, bright saturated teal against big open skies, painted clean low-poly visual direction, original silhouettes. No logos or copyrighted characters. Fine gold dividers, navy panel backgrounds, no text.",
+    "style": "concept",
+    "status": "generated",
+    "source": "generated_images/exec-56f7dc0a-5b66-46b0-90d4-8c6e2710b07c.png",
+    "prompt": "Use case: illustration-story. Asset frontline/docs/art/style-sheet.png. Target 2048x1152. Original clean heroic sci-fi art direction sheet for Earthfall Frontline. Four coherent panels side by side: 1 human soldier in smooth chunky teal armor with a cyan visor and gold accents, 2 purple organic glossy swarmling with glowing coral weak point, 3 practical chunky teal gun turret on tripod, 4 sunlit Los Angeles street corner with art deco concrete buildings and distant open blue sky. Consistent scale reference, bright saturated teal against big open skies, painted clean low-poly visual direction, original silhouettes. No logos or copyrighted characters. Fine gold dividers, navy panel backgrounds, no text.",
+    "generatedDimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-ground-asphalt",
+    "path": "frontline/public/assets/textures/ground-asphalt.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": false,
+    "subject": "Seamless tileable straight overhead game material texture: charcoal asphalt road surface, very fine aggregate and sparse hairline wear, absolutely no painted road markings. Original clean heroic sci-fi painted style. Perfectly consistent top/bottom and left/right, no vignette, no lighting gradient, no text, no objects casting shadows, no central focal feature. Albedo only, evenly lit, tile across a 150-meter arena.",
+    "style": "texture",
+    "status": "generated",
+    "source": "generated_images/exec-2854b48e-4e92-4aec-986b-2c3eeba41572.png",
+    "prompt": "Use case: stylized-concept. Asset frontline/public/assets/textures/ground-asphalt.webp. Target 1024x1024. Seamless tileable straight overhead game material texture: charcoal asphalt road surface, very fine aggregate and sparse hairline wear, absolutely no painted road markings. Original clean heroic sci-fi painted style. Perfectly consistent top/bottom and left/right, no vignette, no lighting gradient, no text, no objects casting shadows, no central focal feature. Albedo only, evenly lit, tile across a 150-meter arena.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-ground-concrete",
+    "path": "frontline/public/assets/textures/ground-concrete.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": false,
+    "subject": "Seamless tileable straight overhead game material texture: warm light-gray poured concrete plaza surface, fine mottling and shallow pores, no large cracks. Original clean heroic sci-fi painted style. Perfectly consistent top/bottom and left/right, no vignette, no lighting gradient, no text, no objects casting shadows, no central focal feature. Albedo only, evenly lit, tile across a 150-meter arena.",
+    "style": "texture",
+    "status": "generated",
+    "source": "generated_images/exec-268171c9-d00b-407c-bf79-5b4263ae1338.png",
+    "prompt": "Use case: stylized-concept. Asset frontline/public/assets/textures/ground-concrete.webp. Target 1024x1024. Seamless tileable straight overhead game material texture: warm light-gray poured concrete plaza surface, fine mottling and shallow pores, no large cracks. Original clean heroic sci-fi painted style. Perfectly consistent top/bottom and left/right, no vignette, no lighting gradient, no text, no objects casting shadows, no central focal feature. Albedo only, evenly lit, tile across a 150-meter arena.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-ground-dirt",
+    "path": "frontline/public/assets/textures/ground-dirt.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": false,
+    "subject": "Seamless tileable straight overhead game material texture: dry muted tan packed earth, fine scattered grit, no large rocks. Original clean heroic sci-fi painted style. Perfectly consistent top/bottom and left/right, no vignette, no lighting gradient, no text, no objects casting shadows, no central focal feature. Albedo only, evenly lit, tile across a 150-meter arena.",
+    "style": "texture",
+    "status": "generated",
+    "source": "generated_images/exec-724ce1a1-d5a7-486e-aae9-ff943cfc6559.png",
+    "prompt": "Use case: stylized-concept. Asset frontline/public/assets/textures/ground-dirt.webp. Target 1024x1024. Seamless tileable straight overhead game material texture: dry muted tan packed earth, fine scattered grit, no large rocks. Original clean heroic sci-fi painted style. Perfectly consistent top/bottom and left/right, no vignette, no lighting gradient, no text, no objects casting shadows, no central focal feature. Albedo only, evenly lit, tile across a 150-meter arena.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-ground-grass",
+    "path": "frontline/public/assets/textures/ground-grass.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": false,
+    "subject": "Seamless tileable straight overhead game material texture: muted sage grass ground with small irregular tufts and hints of earth, no flowers. Original clean heroic sci-fi painted style. Perfectly consistent top/bottom and left/right, no vignette, no lighting gradient, no text, no objects casting shadows, no central focal feature. Albedo only, evenly lit, tile across a 150-meter arena.",
+    "style": "texture",
+    "status": "generated",
+    "source": "generated_images/exec-c30c5554-b3d9-4de5-b2fa-3ce64aa11139.png",
+    "prompt": "Use case: stylized-concept. Asset frontline/public/assets/textures/ground-grass.webp. Target 1024x1024. Seamless tileable straight overhead game material texture: muted sage grass ground with small irregular tufts and hints of earth, no flowers. Original clean heroic sci-fi painted style. Perfectly consistent top/bottom and left/right, no vignette, no lighting gradient, no text, no objects casting shadows, no central focal feature. Albedo only, evenly lit, tile across a 150-meter arena.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-ground-infested",
+    "path": "frontline/public/assets/textures/ground-infested.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": false,
+    "subject": "Seamless tileable straight overhead game material texture: charcoal ground with branching glossy purple organic growth and occasional small coral luminous veins, sparse pattern, calm brightness. Original clean heroic sci-fi painted style. Perfectly consistent top/bottom and left/right, no vignette, no lighting gradient, no text, no objects casting shadows, no central focal feature. Albedo only, evenly lit, tile across a 150-meter arena.",
+    "style": "texture",
+    "status": "generated",
+    "source": "generated_images/exec-dd252b44-d7e9-4b10-bdc4-ef18e8645f93.png",
+    "prompt": "Use case: stylized-concept. Asset frontline/public/assets/textures/ground-infested.webp. Target 1024x1024. Seamless tileable straight overhead game material texture: charcoal ground with branching glossy purple organic growth and occasional small coral luminous veins, sparse pattern, calm brightness. Original clean heroic sci-fi painted style. Perfectly consistent top/bottom and left/right, no vignette, no lighting gradient, no text, no objects casting shadows, no central focal feature. Albedo only, evenly lit, tile across a 150-meter arena.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-facade-art-deco",
+    "path": "frontline/public/assets/textures/facade-art-deco.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": false,
+    "subject": "Straight-on orthographic seamless game facade texture, warm concrete Los Angeles art deco building facade, 4 floors, vertical fluted piers, teal metal window frames, evenly spaced rectangular windows. Only flat facade, no roof, sky, ground or side perspective. Tile horizontally with exact aligned edges. Clean heroic stylized painted science fiction, original design, soft flat daylight, no words, logos, signs, people or UI.",
+    "style": "texture",
+    "status": "generated",
+    "source": "generated_images/exec-3d69354f-e5c0-41a8-a037-91078f81a928.png",
+    "prompt": "Use case: stylized-concept. Asset frontline/public/assets/textures/facade-art-deco.webp. Target 1024x1024. Straight-on orthographic seamless game facade texture, warm concrete Los Angeles art deco building facade, 4 floors, vertical fluted piers, teal metal window frames, evenly spaced rectangular windows. Only flat facade, no roof, sky, ground or side perspective. Tile horizontally with exact aligned edges. Clean heroic stylized painted science fiction, original design, soft flat daylight, no words, logos, signs, people or UI.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-facade-industrial",
+    "path": "frontline/public/assets/textures/facade-industrial.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": false,
+    "subject": "Straight-on orthographic seamless game facade texture, low near-future industrial building facade, gray modular panels, teal utility doors, small windows, ventilation slots, restrained brass structural brackets. Only flat facade, no roof, sky, ground or side perspective. Tile horizontally with exact aligned edges. Clean heroic stylized painted science fiction, original design, soft flat daylight, no words, logos, signs, people or UI.",
+    "style": "texture",
+    "status": "generated",
+    "source": "generated_images/exec-59f9a1dd-4e62-4449-b61f-7f16d0f1deef.png",
+    "prompt": "Use case: stylized-concept. Asset frontline/public/assets/textures/facade-industrial.webp. Target 1024x1024. Straight-on orthographic seamless game facade texture, low near-future industrial building facade, gray modular panels, teal utility doors, small windows, ventilation slots, restrained brass structural brackets. Only flat facade, no roof, sky, ground or side perspective. Tile horizontally with exact aligned edges. Clean heroic stylized painted science fiction, original design, soft flat daylight, no words, logos, signs, people or UI.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-rubble",
+    "path": "frontline/public/assets/props/rubble.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": true,
+    "subject": "Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Standalone original game prop concept/cutout: one small mound of broken Los Angeles concrete chunks, exposed metal bars, charcoal dust, two pieces of teal building cladding. Three-quarter orthographic view, upper-left warm daylight, crisp clean stylized painted materials, restrained wear, bright heroic sci-fi. Whole object visible with 12% transparent margin. Genuinely transparent background, no labels, no scenery, no insignia from existing franchises.",
+    "style": "illustration",
+    "status": "generated",
+    "reference": "frontline/docs/art/style-sheet.png",
+    "source": "generated_images/exec-86b48e84-5693-42e0-955a-6b3fc4f2bf81.png",
+    "prompt": "Use case: illustration-story. Asset frontline/public/assets/props/rubble.webp. Target 1024x1024. Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Standalone original game prop concept/cutout: one small mound of broken Los Angeles concrete chunks, exposed metal bars, charcoal dust, two pieces of teal building cladding. Three-quarter orthographic view, upper-left warm daylight, crisp clean stylized painted materials, restrained wear, bright heroic sci-fi. Whole object visible with 12% transparent margin. Genuinely transparent background, no labels, no scenery, no insignia from existing franchises.",
+    "generatedDimensions": [
+      1323,
+      1189
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-cover-crate",
+    "path": "frontline/public/assets/props/cover-crate.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": true,
+    "subject": "Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Standalone original game prop concept/cutout: one chunky human-scale military cover crate, teal enamel armored corners, gunmetal inset panels, brass latches, practical wide silhouette. Three-quarter orthographic view, upper-left warm daylight, crisp clean stylized painted materials, restrained wear, bright heroic sci-fi. Whole object visible with 12% transparent margin. Genuinely transparent background, no labels, no scenery, no insignia from existing franchises.",
+    "style": "illustration",
+    "status": "generated",
+    "reference": "frontline/docs/art/style-sheet.png",
+    "source": "generated_images/exec-70b50a1e-8653-4593-94f0-d7035b148bc0.png",
+    "prompt": "Use case: illustration-story. Asset frontline/public/assets/props/cover-crate.webp. Target 1024x1024. Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Standalone original game prop concept/cutout: one chunky human-scale military cover crate, teal enamel armored corners, gunmetal inset panels, brass latches, practical wide silhouette. Three-quarter orthographic view, upper-left warm daylight, crisp clean stylized painted materials, restrained wear, bright heroic sci-fi. Whole object visible with 12% transparent margin. Genuinely transparent background, no labels, no scenery, no insignia from existing franchises.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-cover-barrier",
+    "path": "frontline/public/assets/props/cover-barrier.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": true,
+    "subject": "Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Standalone original game prop concept/cutout: one human waist-high modular concrete barrier with teal armor face panels and subtle gold fastening bolts, clean broad horizontal silhouette. Three-quarter orthographic view, upper-left warm daylight, crisp clean stylized painted materials, restrained wear, bright heroic sci-fi. Whole object visible with 12% transparent margin. Genuinely transparent background, no labels, no scenery, no insignia from existing franchises.",
+    "style": "illustration",
+    "status": "generated",
+    "reference": "frontline/docs/art/style-sheet.png",
+    "source": "generated_images/exec-f8cc32e1-902c-4d4c-8cf8-fafeef5a9610.png",
+    "prompt": "Use case: illustration-story. Asset frontline/public/assets/props/cover-barrier.webp. Target 1024x1024. Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Standalone original game prop concept/cutout: one human waist-high modular concrete barrier with teal armor face panels and subtle gold fastening bolts, clean broad horizontal silhouette. Three-quarter orthographic view, upper-left warm daylight, crisp clean stylized painted materials, restrained wear, bright heroic sci-fi. Whole object visible with 12% transparent margin. Genuinely transparent background, no labels, no scenery, no insignia from existing franchises.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-city-core",
+    "path": "frontline/public/assets/props/city-core.webp",
+    "w": 1024,
+    "h": 1024,
+    "alpha": true,
+    "subject": "Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Standalone original game prop concept/cutout: one original city power-core objective, robust low cylindrical pedestal of teal enamel and gunmetal, protected vertical luminous cyan core, four gold braces, readable futuristic civic structure. Three-quarter orthographic view, upper-left warm daylight, crisp clean stylized painted materials, restrained wear, bright heroic sci-fi. Whole object visible with 12% transparent margin. Genuinely transparent background, no labels, no scenery, no insignia from existing franchises.",
+    "style": "illustration",
+    "status": "generated",
+    "reference": "frontline/docs/art/style-sheet.png",
+    "source": "generated_images/exec-2a194e1b-37b5-4625-9f9d-9af7718fdbbf.png",
+    "prompt": "Use case: illustration-story. Asset frontline/public/assets/props/city-core.webp. Target 1024x1024. Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Standalone original game prop concept/cutout: one original city power-core objective, robust low cylindrical pedestal of teal enamel and gunmetal, protected vertical luminous cyan core, four gold braces, readable futuristic civic structure. Three-quarter orthographic view, upper-left warm daylight, crisp clean stylized painted materials, restrained wear, bright heroic sci-fi. Whole object visible with 12% transparent margin. Genuinely transparent background, no labels, no scenery, no insignia from existing franchises.",
+    "generatedDimensions": [
+      1254,
+      1254
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-sky",
+    "path": "frontline/public/assets/sky/los-angeles-panorama.jpg",
+    "w": 2048,
+    "h": 1024,
+    "alpha": false,
+    "subject": "Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Equirectangular 360-degree environment sky panorama 2:1 aspect for original science-fiction Los Angeles arena. Broad bright blue open sky with gentle white high clouds, warm afternoon sun upper left but no blown bright disk, distant tan San Gabriel mountains and subtle future LA skyline only across lower quarter, slight atmospheric haze. Left and right seamlessly wrap, horizon perfectly level at 65% height, no close foreground objects, no people, no weapons, no UI or text. Clean heroic painted environment, natural colors.",
+    "style": "environment",
+    "status": "generated",
+    "reference": "frontline/docs/art/style-sheet.png",
+    "source": "generated_images/exec-e4c2fe0b-4077-4590-af51-c4271c67b8c5.png",
+    "prompt": "Use case: illustration-story. Asset frontline/public/assets/sky/los-angeles-panorama.jpg. Target 2048x1024. Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Equirectangular 360-degree environment sky panorama 2:1 aspect for original science-fiction Los Angeles arena. Broad bright blue open sky with gentle white high clouds, warm afternoon sun upper left but no blown bright disk, distant tan San Gabriel mountains and subtle future LA skyline only across lower quarter, slight atmospheric haze. Left and right seamlessly wrap, horizon perfectly level at 65% height, no close foreground objects, no people, no weapons, no UI or text. Clean heroic painted environment, natural colors.",
+    "generatedDimensions": [
+      1774,
+      887
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-rifle-view",
+    "path": "frontline/public/assets/weapons/rifle-view.webp",
+    "w": 1536,
+    "h": 1024,
+    "alpha": true,
+    "subject": "Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Original first-person weapon art concept/cutout: practical compact Coalition assault rifle with chunky teal/gunmetal casing and muted gold fasteners, held by two armored hands at lower right in first-person ready pose, muzzle points toward image center-left. Futuristic engineering with convincing human grips and no resemblance to a recognizable franchise weapon. Clean heroic painted visual style, soft upper-left light. Weapon fully visible except forearms exiting bottom-right frame; large transparent negative space upper half. Transparent background, no scenery, no crosshair, no labels or UI.",
+    "style": "illustration",
+    "status": "generated",
+    "reference": "frontline/docs/art/style-sheet.png",
+    "source": "generated_images/exec-7cd90282-0c02-46a7-ba9e-60a5e77ef7a2.png",
+    "prompt": "Use case: illustration-story. Asset frontline/public/assets/weapons/rifle-view.webp. Target 1536x1024. Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Original first-person weapon art concept/cutout: practical compact Coalition assault rifle with chunky teal/gunmetal casing and muted gold fasteners, held by two armored hands at lower right in first-person ready pose, muzzle points toward image center-left. Futuristic engineering with convincing human grips and no resemblance to a recognizable franchise weapon. Clean heroic painted visual style, soft upper-left light. Weapon fully visible except forearms exiting bottom-right frame; large transparent negative space upper half. Transparent background, no scenery, no crosshair, no labels or UI.",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  },
+  {
+    "id": "frontline-rail-rifle-view",
+    "path": "frontline/public/assets/weapons/rail-rifle-view.webp",
+    "w": 1536,
+    "h": 1024,
+    "alpha": true,
+    "subject": "Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Original first-person weapon art concept/cutout: long precision Coalition rail rifle with twin straight magnetic rails, visible cyan energy channel, dark gunmetal and teal casing with restrained gold fasteners, held by two armored hands at lower right in first-person ready pose, muzzle points toward image center-left. Futuristic engineering with convincing human grips and no resemblance to a recognizable franchise weapon. Clean heroic painted visual style, soft upper-left light. Weapon fully visible except forearms exiting bottom-right frame; large transparent negative space upper half. Transparent background, no scenery, no crosshair, no labels or UI.",
+    "style": "illustration",
+    "status": "generated",
+    "reference": "frontline/docs/art/style-sheet.png",
+    "source": "generated_images/exec-e6822425-16f9-4e3c-8984-7c43f551714a.png",
+    "prompt": "Use case: illustration-story. Asset frontline/public/assets/weapons/rail-rifle-view.webp. Target 1536x1024. Use the attached style sheet only for palette, materials and shape language. Generate one standalone requested asset, not a sheet or multiple panels. Original first-person weapon art concept/cutout: long precision Coalition rail rifle with twin straight magnetic rails, visible cyan energy channel, dark gunmetal and teal casing with restrained gold fasteners, held by two armored hands at lower right in first-person ready pose, muzzle points toward image center-left. Futuristic engineering with convincing human grips and no resemblance to a recognizable franchise weapon. Clean heroic painted visual style, soft upper-left light. Weapon fully visible except forearms exiting bottom-right frame; large transparent negative space upper half. Transparent background, no scenery, no crosshair, no labels or UI.",
+    "generatedDimensions": [
+      1536,
+      1024
+    ],
+    "method": "built-in image_gen"
+  }
+]
