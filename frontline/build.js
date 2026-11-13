@@ -12,3 +12,10 @@ let html = fs.readFileSync(path.join(__dirname, 'index.tpl.html'), 'utf8');
 html = html.replace('/*ASSETS*/', () => 'window.FRONTLINE_ASSETS=' + JSON.stringify(assets) + ';').replace('/*GAME*/', () => game);
 fs.mkdirSync(path.join(__dirname, 'dist'), { recursive: true }); fs.writeFileSync(path.join(__dirname, 'dist/index.html'), html);
 console.log('built frontline/dist/index.html', html.length, 'bytes,', Object.keys(assets).length, 'art files');
+// Frontline Mod is already one page. Copy it next to the bundled shooter so both open from dist/.
+const modSrc = path.join(__dirname, 'frontline-mod/index.html');
+if (fs.existsSync(modSrc)) {
+  const modOut = path.join(__dirname, 'dist/frontline-mod.html');
+  fs.copyFileSync(modSrc, modOut);
+  console.log('built frontline/dist/frontline-mod.html', fs.statSync(modOut).size, 'bytes');
+}

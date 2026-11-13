@@ -35,7 +35,7 @@ Everything on screen is generated in code; there are no image files yet. `src/gf
 
 ## Build and play
 
-`cd frontline && npm install && node build.js`, then open `frontline/dist/index.html` in a desktop browser.
+`cd frontline && npm install && node build.js`, then open `frontline/dist/index.html` in a desktop browser. The same build copies Frontline Mod to `frontline/dist/frontline-mod.html`.
 
 Controls: W A S D move, mouse aim, click fire, R reload, G grenade, Q swap weapon, Shift sprint, 1 to 7 support and building, Z X C squad orders, Enter starts a wave early.
 
@@ -55,3 +55,7 @@ Code is in `frontline/src/` (Claude). Art goes in `frontline/assets/` and `front
 A third mode on the briefing screen: your team (you and three squadmates) against a red team of enemy soldiers run by the game. First to 15 kills wins, both sides respawn at their base, and your health recharges when you are out of fire for four seconds. The red soldiers need a clear line of sight, strafe, keep their distance and fire in bursts.
 
 This is the offline starting point for multiplayer. Each soldier is one entry with a position, facing and health, so a later networked version replaces `trooperThink` (and the squad logic) with players' inputs from a server.
+
+## Frontline Mod
+
+`frontline/frontline-mod/` is a separate first-person mission in one HTML file. Cut three uplinks at a container port and reach the boat. Open that file directly, or run `node build.js` and open `frontline/dist/frontline-mod.html`. Credit and how to play are in `frontline/frontline-mod/README.md`.
