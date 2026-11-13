@@ -31,7 +31,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0b1420;color:#e8edf2;
 .call.wait{opacity:.5;border-color:#ffffff30}.call.wait kbd{background:#8a8f98}
 #keys{left:18px;top:14px;font-size:12px;opacity:.6;line-height:1.6}
 .panel{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:#060b13d9;background-size:cover;background-position:center;z-index:5;overflow:auto}
-.panel.on{display:flex}.card{max-width:640px;margin:20px;padding:26px 30px;border-radius:12px;background:linear-gradient(150deg,#1b2c3c,#0b1725 70%);border:1px solid #d6a45c;box-shadow:0 25px 80px #000c}
+.panel.on{display:flex;align-items:safe center}#pick{background:#060b13b0}.picks{display:flex;flex-direction:column;gap:10px;margin:14px 0}.picks button{display:flex;align-items:center;gap:14px;text-align:left;padding:12px 16px;border-radius:10px;border:1px solid #2f4a60;background:#12222f;color:#e9f2f7;font:inherit;cursor:pointer}.picks button:hover{border-color:#e8be60}.picks button b{font-size:22px;color:#e8be60;width:22px}.picks button i{display:block;font-style:normal;font-size:13px;opacity:.75;margin-top:2px}.card{max-width:640px;margin:20px;padding:26px 30px;border-radius:12px;background:linear-gradient(150deg,#1b2c3c,#0b1725 70%);border:1px solid #d6a45c;box-shadow:0 25px 80px #000c}
 .card small{letter-spacing:.2em;text-transform:uppercase;color:#e8be60;font-size:11px}.card h1{margin:6px 0 8px;font-size:32px;color:#f6e9c8}.card p{line-height:1.5;opacity:.92;margin:0 0 8px}
 .card h4{margin:14px 0 6px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#e8be60;font-weight:600}
 .opts{display:flex;flex-wrap:wrap;gap:8px}.opts label{flex:1;min-width:120px;cursor:pointer}.opts input{position:absolute;opacity:0}
@@ -40,6 +40,25 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0b1420;color:#e8edf2;
 .ctl{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:3px 12px;font-size:13px;margin:6px 0 16px}.ctl b{color:#e8be60;text-align:right;white-space:nowrap}
 button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radius:9px;border:1px solid #e8be60;background:linear-gradient(#e8be60,#b98a2e);color:#1a1205;cursor:pointer}
 #over .card{text-align:center}#over .card h1{font-size:36px}
+
+/* Tactical HUD: thin lines, condensed caps, nothing boxed */
+.hud{font-family:"Barlow Condensed","Oswald","Roboto Condensed","Arial Narrow",system-ui,sans-serif;font-stretch:condensed;letter-spacing:.04em}
+#wave{left:22px;top:18px;transform:none;padding:2px 0 4px 12px;border-radius:0;background:none;border:0;border-left:2px solid #e8be60;font-size:19px;font-weight:700;text-transform:uppercase;white-space:normal;max-width:44vw;line-height:1.25}
+#wave::before{content:'OBJECTIVE';display:block;font-size:10px;letter-spacing:.3em;opacity:.7;font-weight:400}#wave b{color:#e8be60}
+#keys{left:22px;top:auto;bottom:166px;max-width:330px;font-size:10px;opacity:.5;transition:opacity 1.2s;text-transform:uppercase;letter-spacing:.08em}#keys.off{opacity:0}
+#compass{left:50%;top:12px;transform:translateX(-50%);width:440px;height:30px;opacity:.9}
+#map{border-radius:2px;border:1px solid #ffffff40;top:18px;right:22px;background:#06101acc}
+#bars{left:22px;bottom:20px;gap:28px;width:250px}.bar{height:8px;border-radius:0;background:#ffffff1c;border:0;overflow:visible}
+.bar i{background:#46d6d0;-webkit-mask:repeating-linear-gradient(90deg,#000 0 21px,transparent 21px 25px);mask:repeating-linear-gradient(90deg,#000 0 21px,transparent 21px 25px)}#hp i{background:#f2efe6}#hp.low i{background:#e8553a}
+.bar span{left:0;top:-15px;font-size:10px;letter-spacing:.3em;opacity:.75}.bar b{right:0;top:-21px;font-size:20px;font-weight:700}
+#scrap{left:22px;bottom:104px;padding:0;border:0;background:none;border-radius:0;font-size:12px;text-transform:uppercase;letter-spacing:.1em;line-height:1.6}#scrap b{font-size:15px}
+#ammo{right:26px;bottom:22px;text-transform:uppercase}#ammo b{font-size:64px;line-height:.95;font-weight:700;color:#f2efe6}#ammo.low b{color:#e8be60}#ammo small{font-size:11px;letter-spacing:.2em;opacity:.8}
+#ammo .ticks{display:inline-block;height:9px;background:#ffffff26;margin:6px 0 4px;-webkit-mask:repeating-linear-gradient(90deg,#000 0 2px,transparent 2px 5px);mask:repeating-linear-gradient(90deg,#000 0 2px,transparent 2px 5px)}#ammo .ticks i{display:block;height:9px;background:#f2efe6}
+#ban{top:74px;bottom:auto;max-width:70vw}#msg{font-size:13px;letter-spacing:.32em;color:#e8be60;text-transform:uppercase;font-weight:700}#sub{font-size:19px;margin-top:5px;padding:4px 14px;background:#06101ab0;display:inline-block}#sub:empty{display:none}
+#calls{gap:4px;bottom:18px;transform:translateX(-50%) scale(.84);transform-origin:50% 100%}.call{border-radius:2px;background:#06101ab8;border:1px solid #ffffff38;padding:5px 8px}.call kbd{border-radius:2px;background:#f2efe6;font-size:15px}.call b{text-transform:uppercase;letter-spacing:.06em}.call.wait kbd{background:#6a7078}
+#feed{right:26px;top:190px;text-align:right;font-size:13px;letter-spacing:.2em;text-transform:uppercase;line-height:1.7}#feed b{color:#e8be60}#feed div{transition:opacity .6s}
+#wps{inset:0}.wp{position:absolute;left:0;top:0;width:0;height:0;font-size:10px;letter-spacing:.14em;text-align:center;white-space:nowrap;opacity:.9}
+.wp i{position:absolute;left:-6px;top:-6px;width:10px;height:10px;border:1.5px solid currentColor;transform:rotate(45deg)}.wp span{position:absolute;left:-60px;width:120px;top:10px;color:#fff}.wp em{position:absolute;left:-60px;width:120px;top:-21px;font-style:normal}
 </style>
 </head>
 <body class="inmenu">
@@ -47,8 +66,11 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
 <div class="hud" id="hit"></div>
 <div class="hud" id="wave"></div>
 <canvas class="hud" id="map" width="150" height="150"></canvas>
-<div class="hud" id="keys">W A S D move · Shift sprint · mouse aim · click fire<br>R reload · G grenade · Q swap weapon · 1–7 support · Z X C squad</div>
+<div class="hud" id="keys">W A S D move · Shift sprint · Space jump pack · F dive · mouse aim · click fire · right-click aim down sights<br>R reload · G grenade · B melee shove · Q or wheel next weapon · 1–7 support · V Z X C squad · E plant charge / start relay / fly the Goshawk gunship parked beside you (Space up, Shift down)</div>
 <div class="hud" id="cross"></div>
+<canvas class="hud" id="compass" width="880" height="60"></canvas>
+<div class="hud" id="feed"></div>
+<div class="hud" id="wps"></div>
 <div class="hud" id="ban"><div id="msg"></div><div id="sub"></div></div>
 <div class="hud" id="scrap"></div>
 <div class="hud" id="bars"><div class="bar" id="core"><i></i><span>City core</span><b></b></div><div class="bar" id="hp"><i></i><span>You</span><b></b></div></div>
@@ -59,25 +81,31 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
 <p>You drop in beside the city core with your squad. The swarm comes over the hills across the whole horizon. Build defenses, call support from orbit, and range out: burn out hives to thin the swarm and bring back the research caches under the gold beacons.</p>
 <h4>Mission</h4><div class="opts">
 <label><input type="radio" name="m" value="defense" checked><span>Defense<i>hold the city core for five waves</i></span></label>
-<label><input type="radio" name="m" value="assault"><span>Assault<i>push out and destroy three hives</i></span></label>
+<label><input type="radio" name="m" value="assault"><span>Expedition<i>cross the city, blow three hives, reach the shuttle</i></span></label>
 <label><input type="radio" name="m" value="skirmish"><span>Skirmish<i>team fight against enemy soldiers, first to 15</i></span></label></div>
 <h4>Where</h4><div class="opts">
 <label><input type="radio" name="w" value="la" checked><span>Los Angeles<i>Earth · edge of the city</i></span></label>
 <label><input type="radio" name="w" value="kepler"><span>Kepler Ridge<i>Off-world · crystal highlands</i></span></label>
 <label><input type="radio" name="w" value="ceres"><span>Ceres Station<i>Off-world · mining flats</i></span></label></div>
+<h4>Atmosphere</h4><div class="opts">
+<label><input type="radio" name="atmosphere" value="auto" checked><span>Mission mood<i>night or storm for this mission</i></span></label>
+<label><input type="radio" name="atmosphere" value="night"><span>Night<i>moonlight and illuminated streets</i></span></label>
+<label><input type="radio" name="atmosphere" value="storm"><span>Storm<i>rain and wet ground; mining dust on Ceres</i></span></label>
+<label><input type="radio" name="atmosphere" value="dusk"><span>Dusk<i>low sun and long shadows</i></span></label></div>
 <h4>Size of the attack</h4><div class="opts">
 <label><input type="radio" name="d" value="6"><span>Raid<i>about 180 of the swarm</i></span></label>
 <label><input type="radio" name="d" value="9" checked><span>Assault<i>about 270</i></span></label>
 <label><input type="radio" name="d" value="13"><span>Invasion<i>about 390</i></span></label></div>
 <h4>Research you bring (from Earthfall's Lab)</h4><div class="opts">
-<label><input type="checkbox" name="r" value="railgun"><span>Railgun<i>rail rifle, Q to swap</i></span></label>
+<label><input type="checkbox" name="r" value="railgun"><span>Railgun<i>start with the rail rifle</i></span></label>
 <label><input type="checkbox" name="r" value="bombers"><span>Bombers<i>airstrike run, key 6</i></span></label>
 <label><input type="checkbox" name="r" value="exo"><span>Exo Armor<i>150 health</i></span></label>
 <label><input type="checkbox" name="r" value="elite"><span>Elite Training<i>faster reload and sprint</i></span></label>
 <label><input type="checkbox" name="r" value="hardened"><span>Hardened<i>tougher walls, turrets, allies</i></span></label></div>
-<h4>Controls</h4><div class="ctl"><b>W A S D</b><span>move</span><b>Mouse</b><span>aim (arrow keys also work)</span><b>Click</b><span>fire</span><b>R</b><span>reload</span><b>G</b><span>grenade</span><b>Shift</b><span>sprint</span><b>1</b><span>orbital strike (keep clear)</span><b>2 3 4</b><span>turret, wall, mine (cost scrap)</span><b>5 · 7</b><span>supply drop · squad drop</span><b>Z X C</b><span>squad: follow, hold a spot, back to the wall</span><b>Enter</b><span>start the wave early</span></div>
+<h4>Controls</h4><div class="ctl"><b>W A S D</b><span>move</span><b>Mouse</b><span>aim (arrow keys also work)</span><b>Click</b><span>fire</span><b>R</b><span>reload</span><b>G</b><span>grenade</span><b>Shift</b><span>sprint (uses stamina)</span><b>Space</b><span>jump pack: hold to fly a short way</span><b>F</b><span>dive in the direction you are moving</span><b>Q / wheel</b><span>next weapon</span><b>V</b><span>squad fights on its own (default)</span><b>E</b><span>plant a charge on a hive (hold)</span><b>M</b><span>music on or off</span><b>1</b><span>orbital strike (keep clear)</span><b>2 3 4</b><span>turret, wall, mine (cost scrap)</span><b>5 · 7</b><span>supply drop · squad drop</span><b>Z X C</b><span>squad: follow, hold a spot, back to the wall</span><b>Enter</b><span>start the wave early</span></div>
 <button id="start" type="button">Drop in</button></form></div>
 <div class="panel" id="over"></div>
+<div class="panel" id="pick"></div>
 <script>/*ASSETS*/</script>
 <script>/*GAME*/</script>
 </body>
