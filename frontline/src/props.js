@@ -90,8 +90,8 @@ function ribbon(pts, width, H, lift, step) { const pos = [], uv = [], idx = [], 
 // ---------- District layouts
 const LAYOUT = {
   la: { style: 'street', roads: [[[0, 80], [0, -236]], [[-236, 25], [236, 25]], [[-236, -32], [236, -32]], [[-72, 150], [-72, -110]], [[72, 150], [72, -180]], [[-160, 150], [-160, -70]], [[160, 150], [160, -180]], [[-150, -110], [236, -110]], [[-40, -180], [236, -180]], [[-236, 150], [236, 150]]], width: 9, walks: true },
-  kepler: { style: 'track', roads: [[[0, 78], [0, 10], [-18, -40], [-10, -110]], [[-100, 34], [-30, 28], [40, 30], [104, 20]], [[-50, 65], [-50, -65]], [[54, 60], [54, -58]], [[-92, -60], [85, -60]]], width: 6.5 },
-  ceres: { style: 'deck', roads: [[[0, 78], [0, -112]], [[-110, 28], [110, 28]], [[-60, 70], [-60, -70]], [[64, 70], [64, -70]], [[-106, -58], [106, -58]]], width: 7.5, walks: true } };
+  kepler: { style: 'track', roads: [[[0, 78], [0, 10], [-18, -40], [-10, -110], [0, -138], [12, -150]], [[-170, -44], [-150, 4], [-100, 34], [-30, 28], [40, 30], [104, 20], [150, 14], [186, 2]], [[-50, 65], [-72, 92], [-96, 112]], [[-50, 65], [-50, -65]], [[54, 60], [54, -58]], [[-92, -60], [85, -60]]], width: 6.5 },
+  ceres: { style: 'deck', roads: [[[0, 78], [0, -150]], [[-124, 28], [126, 28]], [[-60, 70], [-60, -70]], [[64, 150], [64, -70]], [[-106, -58], [96, -58]], [[-80, -150], [90, -150]], [[64, 150], [100, 172], [126, 172]], [[-124, -80], [-124, 110]]], width: 7.5, walks: true } };
 
 // Human settlements have different silhouettes on each world, while sharing the teal/gold equipment family.
 function settlementBlock(world, w, d, h) {
@@ -189,6 +189,7 @@ export function buildDistrict(group, world, H, TEX, addSolid, blocked, opts) { o
     for (const [x, z] of [[-9, 30], [9, 30], [18, 6], [-20, -8], [4, -30], [-8, -62]]) put('crates', x, z, r() * 3); for (const [x, z, a] of [[-5, 19, 0.1], [6, 17, -0.15], [-14, 22, 0.5], [15, 21, -0.5]]) put('sandbags', x, z, a);
     for (const x of [-2.4, 0.8, 3.6]) put('barrier', x, 12, PI / 2 + (r() - 0.5) * 0.2); for (const [x, z] of [[-16, 14], [16, -14], [-24, -34], [22, -58]]) put('rubble', x, z, r() * 6);
   }
+  for (const e of opts.extra || []) if (put(e[0], e[1], e[2], e[3] || 0, e[4]) && e[0] === 'floodlight') lights.push([e[1], e[2]]);
   if (opts.dusk && lights.length) { const cones = [], pools = []; for (const l of lights) { const gy = H(l[0], l[1]), hh = (l[2] || 5), c = new THREE.ConeGeometry(3.6, hh, 18, 4, true).toNonIndexed(), cp = c.attributes.position, cc = new Float32Array(cp.count * 3); for (let i = 0; i < cp.count; i++) { const v = Math.pow((cp.getY(i) + hh / 2) / hh, 1.6); cc[i * 3] = v; cc[i * 3 + 1] = v; cc[i * 3 + 2] = v; } c.setAttribute('color', new THREE.BufferAttribute(cc, 3)); c.translate(l[0], gy + hh / 2, l[1]); cones.push(c); const d = new THREE.CircleGeometry(4.6, 20).toNonIndexed(); d.rotateX(-PI / 2); d.translate(l[0], gy + 0.22, l[1]); pools.push(d); }
     const cm = new THREE.Mesh(mergeGeometries(cones), new THREE.MeshBasicMaterial({ color: 0xffc078, vertexColors: true, transparent: true, opacity: 0.11, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, fog: false })); group.add(cm);
     const pm2 = new THREE.Mesh(mergeGeometries(pools), new THREE.MeshBasicMaterial({ color: 0xffb060, transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -12 })); group.add(pm2); }
