@@ -2,7 +2,7 @@
 // Hold the city core against the swarm. Built from simple three.js shapes; art from frontline/assets plugs in when present.
 import * as THREE from 'three';
 import { createFlipbooks } from './flipbook.js';
-import { scanBuilding, dressStatic, scanProp } from './glb.js';
+import { scanBuilding, dressStatic, scanProp, ROTOR } from './glb.js';
 import { makeSoldier, poseSoldier, makeBug, poseBug, makeHive, makeTurret, makePod, makeShip, makeHeli, setWeapon, weaponMuzzle } from './models.js';
 import { OUTER, outerH, outerZone, outerAvoid, buildOuter } from './outer.js';
 import { ZONES, buildDistrict } from './props.js';
@@ -248,7 +248,7 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
     if (Math.hypot(player.x - heli.x, player.z - heli.z) < 6 && Math.abs(player.alt - heli.alt) < 3) { player.inHeli = true; firing = false; aiming = false; heli.yaw = player.yaw; player.pitch = -0.15; SFX.build(); banner('Goshawk', 'Space climbs · Shift descends · Mouse steers · Left mouse cannon · G rockets'); } }
   function heliDown() { const y = heli.alt; heli.dead = true; player.inHeli = false; actors.remove(heli.m); boom(heli.x, heli.z, 7, 0, 0xff8030, 0); flip.spawn('explosion', heli.x, H(heli.x, heli.z) + y + 1.5, heli.z, 12, { dur: 0.9 }); player.x = heli.x; player.z = heli.z; player.alt = y; player.vy = 4; player.fuel = 1; banner('Goshawk down', 'Use your jump pack to break the fall.'); }
   // Parked or abandoned: rotor winds down, pad service, and a one-time prompt when you walk up to it.
-  function heliIdle(dt) { const h = heli; if (!h || h.dead) return; const U = h.m.userData, on = player.inHeli; h.spool += ((on ? 1 : 0) - h.spool) * Math.min(1, dt * (on ? 1.2 : 0.5)); U.disc.visible = h.spool > 0.25; U.disc.material.opacity = 0.3 * h.spool;
+  function heliIdle(dt) { const h = heli; if (!h || h.dead) return; const U = h.m.userData, on = player.inHeli; h.spool += ((on ? 1 : 0) - h.spool) * Math.min(1, dt * (on ? 1.2 : 0.5)); ROTOR.value += dt * 30 * h.spool; U.disc.visible = h.spool > 0.25; U.disc.material.opacity = 0.3 * h.spool;
     const fl = floorAt(h.x, h.z, h.alt), landed = h.alt - fl < 0.3; if (!on && !landed) { h.vy -= 14 * dt; h.alt = Math.max(fl, h.alt + h.vy * dt); }
     if (landed && Math.hypot(h.x - h.px, h.z - h.pz) < 14) { h.fuel = Math.min(1, h.fuel + dt / 10); h.hp = Math.min(h.max, h.hp + 14 * dt); h.svc = (h.svc || 0) + dt; if (h.svc > 0.12) { h.svc = 0; if (h.ammo < 300) h.ammo = Math.min(300, h.ammo + 4); } h.rsvc = (h.rsvc || 0) + dt; if (h.rsvc > 2.5) { h.rsvc = 0; if (h.rockets < 8) h.rockets++; } }
     if (!on) { h.m.position.set(h.x, H(h.x, h.z) + h.alt, h.z); h.m.rotation.x *= 0.9; h.m.rotation.z *= 0.9; h.hint -= dt; if (h.hint <= 0 && !player.dead && Math.hypot(player.x - h.x, player.z - h.z) < 6) { h.hint = 20; banner('Goshawk gunship', 'Press E to fly it.'); } } }
