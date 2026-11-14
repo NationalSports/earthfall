@@ -3,6 +3,15 @@
   "private": true,
   "version": "0.2.0",
   "description": "Third-person horde shooter that goes with Earthfall",
-  "scripts": { "build": "node build.js", "test": "node --test test/*.test.mjs", "test:browser": "node test/browser.cjs" },
-  "devDependencies": { "esbuild": "^0.24.0", "three": "^0.180.0" }
+  "scripts": {
+    "build": "node build.js",
+    "test": "node --test test/*.test.mjs",
+    "test:browser": "node test/browser.cjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "three": "^0.180.0",
+    "three.quarks": "^0.16.0",
+    "tweakpane": "^4.0.5"
+  }
 }
