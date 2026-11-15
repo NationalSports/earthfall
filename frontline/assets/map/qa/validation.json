@@ -1,0 +1,420 @@
+{
+  "passed": true,
+  "production_assets": 26,
+  "files": {
+    "map-icon-player.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "bfb4b50d5c3651a6659fe9b93541575e44bd2de0623cbb9fa22cbe6bbadcab2e",
+      "alpha_bbox": [
+        17,
+        15,
+        111,
+        111
+      ],
+      "transparent_pixels": 12442,
+      "phone_white_pixels": 86
+    },
+    "map-icon-squad.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "693c39d99c400f5b5b9bb5c59bf9e2f19c6b72a2efa4e7ba3b96616501601830",
+      "alpha_bbox": [
+        12,
+        12,
+        116,
+        116
+      ],
+      "transparent_pixels": 9922,
+      "phone_white_pixels": 120
+    },
+    "map-icon-survivor.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "836a84c1b3e3f428d7cc061e6de2090147987130bc61269db10da7db1a71e14d",
+      "alpha_bbox": [
+        30,
+        13,
+        98,
+        109
+      ],
+      "transparent_pixels": 12790,
+      "phone_white_pixels": 70
+    },
+    "map-icon-enemy.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "7ee44e31ec4417c5e768589c11301188956e275c5c7a1a5501152af3f3bc25eb",
+      "alpha_bbox": [
+        14,
+        18,
+        114,
+        101
+      ],
+      "transparent_pixels": 11332,
+      "phone_white_pixels": 96
+    },
+    "map-icon-brute.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "c0d52fd0f7cb7cd2d8bd8605417860b66422eb5e4b642966c473e8a5f88974d0",
+      "alpha_bbox": [
+        13,
+        17,
+        115,
+        112
+      ],
+      "transparent_pixels": 10009,
+      "phone_white_pixels": 134
+    },
+    "map-icon-warlord.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "2dcf12a3fc15a60d5d796a443bb9f57f3e2a4a584d8cc62600230cd86d2f7143",
+      "alpha_bbox": [
+        22,
+        14,
+        106,
+        114
+      ],
+      "transparent_pixels": 10956,
+      "phone_white_pixels": 111
+    },
+    "map-icon-nest.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "8f934d6681f63aa7d6fbffb803076427886d1f3b25f2530c6412378bdae2d2b9",
+      "alpha_bbox": [
+        14,
+        16,
+        114,
+        106
+      ],
+      "transparent_pixels": 11523,
+      "phone_white_pixels": 112
+    },
+    "map-icon-outpost.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "f63ce32bade5f5930036a79e49181abdb7dfd67c4a308447e38fbdab766f541a",
+      "alpha_bbox": [
+        21,
+        15,
+        107,
+        112
+      ],
+      "transparent_pixels": 11028,
+      "phone_white_pixels": 103
+    },
+    "map-icon-wreck.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "7d048bc5eac17e06efb359b5264d6725bc5bf180ed596130ec312f16d512a0a7",
+      "alpha_bbox": [
+        16,
+        19,
+        114,
+        114
+      ],
+      "transparent_pixels": 11281,
+      "phone_white_pixels": 96
+    },
+    "map-icon-cache.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "cca1b61fefd1ef339ea87cd5a4af9b4a563a77a2fe799bcb92c56fc26438bd5a",
+      "alpha_bbox": [
+        15,
+        14,
+        113,
+        112
+      ],
+      "transparent_pixels": 10036,
+      "phone_white_pixels": 116
+    },
+    "map-icon-relay.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "78a0b8aa8f36b355a13f5f11298cc419db038750c84e41cefc909c226cadcee3",
+      "alpha_bbox": [
+        13,
+        14,
+        115,
+        108
+      ],
+      "transparent_pixels": 11093,
+      "phone_white_pixels": 66
+    },
+    "map-icon-lz.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "47949bb6eb8848de326f356f13d8b7ad5899a3ff434222343d18ae02fa191099",
+      "alpha_bbox": [
+        12,
+        12,
+        116,
+        116
+      ],
+      "transparent_pixels": 10185,
+      "phone_white_pixels": 104
+    },
+    "map-icon-blackbox.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "61026b5d2c56720baa2a05803fd7b90b4a466fcd9cc292e9faee4c8aa334fa34",
+      "alpha_bbox": [
+        20,
+        22,
+        108,
+        106
+      ],
+      "transparent_pixels": 10042,
+      "phone_white_pixels": 134
+    },
+    "map-icon-objective.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "b98f69793b168d237999b740751afb142811386bdba8295dc07bb75c4348268d",
+      "alpha_bbox": [
+        13,
+        13,
+        115,
+        115
+      ],
+      "transparent_pixels": 11441,
+      "phone_white_pixels": 76
+    },
+    "map-icon-waypoint.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "79bba21cf2749fd7279375b0f96b7c9c96aa6c6ba1a1d72c533fe9e04b33bdcd",
+      "alpha_bbox": [
+        26,
+        14,
+        102,
+        114
+      ],
+      "transparent_pixels": 11742,
+      "phone_white_pixels": 106
+    },
+    "map-icon-strike.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "2d5b946ec55c87279e4b06f479398eb1994be937b17c1ee91f54913ef6fd4b60",
+      "alpha_bbox": [
+        13,
+        13,
+        115,
+        115
+      ],
+      "transparent_pixels": 11669,
+      "phone_white_pixels": 76
+    },
+    "map-icon-unknown.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "8a1eeaed65fb1db4ba4a7633876142082d3ca3cee50ec9e2ece70b308c74ae85",
+      "alpha_bbox": [
+        13,
+        13,
+        115,
+        115
+      ],
+      "transparent_pixels": 11707,
+      "phone_white_pixels": 74
+    },
+    "map-ramp-la.png": {
+      "size": [
+        256,
+        8
+      ],
+      "mode": "RGB",
+      "sha256": "6f7b51271d601c2bcd9f6a12c99e0c5cbed16b59596c9e5c3d97d6fa1ce48283",
+      "low_rgb": [
+        117,
+        108,
+        84
+      ],
+      "high_rgb": [
+        140,
+        124,
+        108
+      ]
+    },
+    "map-ramp-kepler.png": {
+      "size": [
+        256,
+        8
+      ],
+      "mode": "RGB",
+      "sha256": "6708edc91cd6decfa4a305506666836ecea9edc6769c235dfa1afecdc7590133",
+      "low_rgb": [
+        40,
+        34,
+        54
+      ],
+      "high_rgb": [
+        181,
+        169,
+        189
+      ]
+    },
+    "map-ramp-ceres.png": {
+      "size": [
+        256,
+        8
+      ],
+      "mode": "RGB",
+      "sha256": "d07b3d5536765649c2205de7b45f462ae9ce7bf799e02fb4333fd9064f044919",
+      "low_rgb": [
+        39,
+        45,
+        51
+      ],
+      "high_rgb": [
+        185,
+        192,
+        196
+      ]
+    },
+    "map-detail-la.jpg": {
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "sha256": "b49652b15114c6db22823078859eea8db9d8708337c46d9375c5feeef04493af",
+      "max_wrap_delta_rgb": [
+        2.0,
+        2.0
+      ],
+      "channel_std": [
+        2.844,
+        2.844,
+        2.844
+      ]
+    },
+    "map-detail-kepler.jpg": {
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "sha256": "fa59ab008309f27e12c4c29f7fdedb2af0e61b821ec5bcb572e7a4f279b26286",
+      "max_wrap_delta_rgb": [
+        1.0,
+        1.0
+      ],
+      "channel_std": [
+        2.828,
+        2.828,
+        2.828
+      ]
+    },
+    "map-detail-ceres.jpg": {
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "sha256": "86b1ce8dece2fc074765426549fb4eb74f58af682556d703e8028fde503acab1",
+      "max_wrap_delta_rgb": [
+        2.0,
+        2.0
+      ],
+      "channel_std": [
+        2.828,
+        2.828,
+        2.828
+      ]
+    },
+    "map-frame.png": {
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGBA",
+      "sha256": "2e930e95e48b9418139e65fdb6dd560cb43147460cf84793c2944acb13538f83",
+      "center_fully_transparent": true
+    },
+    "map-grain.png": {
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "66f3a3b1c34ecb200cb3193991186b8f66af856d1814b5ba21876ea51bd73306",
+      "alpha_min": 16,
+      "alpha_max": 30,
+      "alpha_mean_percent": 8.06,
+      "exact_periodic_edges": true
+    },
+    "map-panel.jpg": {
+      "size": [
+        600,
+        1600
+      ],
+      "mode": "RGB",
+      "sha256": "db50887a541f2fa2a3105a5deb6706c79c24df6fb49111c2cc2671974881a676"
+    }
+  },
+  "mockup": {
+    "size": [
+      1920,
+      1080
+    ],
+    "path": "map-mockup.jpg",
+    "kind": "layout study using delivered assets"
+  }
+}
