@@ -24,8 +24,8 @@ body.touch #bars{left:50%;bottom:8px;transform:translateX(-50%) scale(.75);trans
 
 // [label, key code, position as right%/bottom% inside the cluster, size %, hold?]
 const PAD = [['Jump', 'Space', 44, 4, 24, true], ['Aim', 'AIM', 4, 44, 24, false], ['Reload', 'KeyR', 52, 32, 21], ['Dive', 'KeyF', 32, 54, 21], ['Run', 'ShiftLeft', 76, 6, 21, 'toggle'], ['Nade', 'KeyG', 14, 72, 21]];
-const SIDE = [['Use', 'KeyE'], ['Swap', 'KeyQ'], ['Squad', 'ORDER'], ['Ready', 'Enter'], ['Melee', 'KeyB']];
-const ORDERS = ['KeyZ', 'KeyX', 'KeyC', 'KeyV'];
+const SIDE = [['Crouch', 'KeyC'], ['Use', 'KeyE'], ['Swap', 'KeyQ'], ['Squad', 'ORDER'], ['Ready', 'Enter'], ['Melee', 'KeyB']];
+const ORDERS = ['KeyZ', 'KeyX', 'KeyH', 'KeyV'];
 
 export function createTouch(cv) {
   const coarse = (window.matchMedia && matchMedia('(pointer: coarse)').matches) || 'ontouchstart' in window; if (!coarse) return TOUCH;
@@ -39,10 +39,10 @@ export function createTouch(cv) {
 
   // move stick: an analogue vector the movement code adds to the keys
   const stick = root.querySelector('.stick'), nub = root.querySelector('.nub'); let sid = null;
-  const moveStick = t => { const r = stick.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, R = r.width / 2; let dx = (t.clientX - cx) / R, dy = (t.clientY - cy) / R; const m = Math.hypot(dx, dy); if (m > 1) { dx /= m; dy /= m; } TOUCH.s = Math.abs(dx) < 0.12 ? 0 : dx; TOUCH.f = Math.abs(dy) < 0.12 ? 0 : -dy; nub.style.transform = 'translate(' + dx * R * 0.6 + 'px,' + dy * R * 0.6 + 'px)'; };
+  const moveStick = t => { const r = stick.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, R = r.width / 2; let dx = (t.clientX - cx) / R, dy = (t.clientY - cy) / R; const m = Math.hypot(dx, dy); if (m > 1) { dx /= m; dy /= m; } TOUCH.s = Math.abs(dx) < 0.12 ? 0 : dx; TOUCH.f = Math.abs(dy) < 0.12 ? 0 : -dy; TOUCH.sprint = m > 1.15 && dy < -0.75; /* push the stick past its rim, forward, to sprint */ nub.style.transform = 'translate(' + dx * R * 0.6 + 'px,' + dy * R * 0.6 + 'px)'; };
   stick.addEventListener('touchstart', e => { stop(e); const t = e.changedTouches[0]; sid = t.identifier; moveStick(t); }, { passive: false });
   stick.addEventListener('touchmove', e => { stop(e); for (const t of e.changedTouches) if (t.identifier === sid) moveStick(t); }, { passive: false });
-  const endStick = e => { for (const t of e.changedTouches) if (t.identifier === sid) { sid = null; TOUCH.f = TOUCH.s = 0; nub.style.transform = ''; } };
+  const endStick = e => { for (const t of e.changedTouches) if (t.identifier === sid) { sid = null; TOUCH.f = TOUCH.s = 0; TOUCH.sprint = false; nub.style.transform = ''; } };
   stick.addEventListener('touchend', endStick); stick.addEventListener('touchcancel', endStick);
 
   // look: any drag on the right side of the screen (and on the fire button, so you can aim while shooting)

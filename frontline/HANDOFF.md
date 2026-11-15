@@ -205,3 +205,8 @@ The Halo-style multiplayer in section 12 is a separate mode: players against pla
 - Source: Quaternius "Universal Animation Library" (CC0). `tools/buildual.mjs <UAL1_Standard.glb> public/assets/models/ual.glb` keeps the skeleton and 15 clips, no mesh (about 200 KB).
 - `src/anim.js` retargets them at load onto the soldier's Mixamo skeleton (world-space turn from the library's T-pose, hips scaled to the soldier's height).
 - In play: idle stance, sprint, dive roll, jump, flinch on hits, rifle-butt swing, and a second death (half of soldiers). Fallen allies and troopers now lie where they fell for a few seconds instead of vanishing.
+
+## Movement and recorded sound
+- Sprint (Shift, or push the touch stick past its rim) widens the view a little. Dive (F) now hops, slides about 7 m, halves damage while in the air and lands with dust. Crouch (C, touch "Crouch") is slower, aims steadier and takes a little less damage. Squad "back to the wall" moved from C to H.
+- Squadmates and troopers dive clear of grenades, orbital strikes, hive charges and charging brutes (`threat()` and `aiDive()` in game.js).
+- Recorded CC0 Kenney sounds (Sci-Fi Sounds, Impact Sounds) live in `public/assets/sfx/*.mp3` and ship as `dist/sfx.js`. They are layered over the synthesized ones: footsteps per world, explosions, slime hits, armour pings, lasers, jump pack, landing, and the Goshawk's engine loop.
