@@ -7,7 +7,7 @@ import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.j
 const gltf = () => new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
 import { clone as cloneSkinned } from 'three/examples/jsm/utils/SkeletonUtils.js';
 import { retarget } from './anim.js';
-const UAL = { crouch: 'Crouch_Idle_Loop', crouchFwd: 'Crouch_Fwd_Loop', idle: 'Idle_Loop', sprint: 'Sprint_Loop', roll: 'Roll', air: 'Jump_Loop', hit: 'Hit_Chest', hitH: 'Hit_Head', die2: 'Death01', punch: 'Punch_Cross' };
+const UAL = { walkU: 'Walk_Loop', jogU: 'Jog_Fwd_Loop', crouch: 'Crouch_Idle_Loop', crouchFwd: 'Crouch_Fwd_Loop', idle: 'Idle_Loop', sprint: 'Sprint_Loop', roll: 'Roll', air: 'Jump_Loop', hit: 'Hit_Chest', hitH: 'Hit_Head', die2: 'Death01', punch: 'Punch_Cross' };
 
 const src = (typeof window !== 'undefined' && window.FRONTLINE_MODELS) || {}, ready = {}, waiting = [];
 if (typeof window !== 'undefined') window.__glbReady = () => Object.keys(ready).join(',');
@@ -76,6 +76,7 @@ export function dress(m, variant) {
   const go = () => { const S = ready.soldier, J = m.userData.J; if (!S || m.userData.body) return;
     m.traverse(o => { if (o.isMesh) { let p = o, gun = false; while (p) { if (p === J.gun) gun = true; p = p.parent; } if (!gun) o.visible = false; } });
     const body = cloneSkinned(S.scene), holder = new THREE.Group(); holder.rotation.y = Math.PI; holder.scale.setScalar(S.scale); holder.add(body); m.add(holder);
+    if (variant === 'civ') { if (!S.civ) { S.civ = S.mat.clone(); S.civ.color = new THREE.Color(1.9, 0.82, 0.24); S.civ.emissive = new THREE.Color(0.22, 0.09, 0.02); } body.traverse(o => { if (o.isMesh) o.material = S.civ; }); }
     if (variant === 'red') { if (!S.red) { S.red = S.mat.clone(); S.red.emissiveMap = glowTexture(S.mat.map, true); S.red.map = redTexture(S.mat.map); } body.traverse(o => { if (o.isMesh) o.material = S.red; }); }
     const bone = {}; body.traverse(o => { if (o.isBone) bone[o.name] = o; }); const U = { holder, body, bone, mixer: new THREE.AnimationMixer(body), act: {}, w: {}, rest: {}, last: null, lt: null, vx: 0, vz: 0, deadT: 0, chest: new THREE.Vector3() };
     for (const k in bone) U.rest[k] = bone[k].quaternion.clone();
@@ -85,7 +86,7 @@ export function dress(m, variant) {
     m.updateWorldMatrix(true, true); const len = (a, b) => bone[B(a)].getWorldPosition(_a).distanceTo(bone[B(b)].getWorldPosition(_b)); U.l1 = len('RightArm', 'RightForeArm'); U.l2 = len('RightForeArm', 'RightHand'); U.mixer.update(0); pickChest(m, U, U.chest); m.userData.body = U; };
   if (ready.soldier) go(); else if (src.soldier) waiting.push(go);
 }
-const CLIPS = { walk: 'Walk_Forward_While_Shooting', run: 'Run_and_Shoot', back: 'Walk_Backward_with_Gun', left: 'Walk_Left_with_Gun', right: 'Walk_Left_with_Gun', dead: 'Dead', idle: 'idle', sprint: 'sprint', roll: 'roll', air: 'air', hit: 'hit', hitH: 'hitH', die2: 'die2', punch: 'punch', crouch: 'crouch', crouchFwd: 'crouchFwd' };
+const CLIPS = { walk: 'Walk_Forward_While_Shooting', run: 'Run_and_Shoot', back: 'Walk_Backward_with_Gun', left: 'Walk_Left_with_Gun', right: 'Walk_Left_with_Gun', dead: 'Dead', idle: 'idle', sprint: 'sprint', roll: 'roll', air: 'air', hit: 'hit', hitH: 'hitH', die2: 'die2', punch: 'punch', crouch: 'crouch', crouchFwd: 'crouchFwd', walkU: 'walkU', jogU: 'jogU' };
 const X = new THREE.Vector3(), _T = new THREE.Vector3(), _pole = new THREE.Vector3(), _mq = new THREE.Quaternion(), _ch = new THREE.Vector3(), _want = {};
 function pickChest(m, U, out) { m.updateWorldMatrix(true, true); return m.worldToLocal(U.bone[B('Spine2')].getWorldPosition(out)); }
 // Called after the code rig has been posed: s is the same state, grips are the two hand targets in the gun's own space.
@@ -101,6 +102,8 @@ export function poseBody(m, s, gripL, gripR) { const U = m.userData.body; if (!U
     if (s.run && A.sprint) { _want.sprint = _want.run; _want.run = 0; }
     // crouched: the crouch walk takes over the legs, the crouch idle when still
     const ck = s.crouch || 0; if (ck > 0 && A.crouch) { for (const k in _want) _want[k] *= 1 - ck; _want.crouch = ck * (1 - mv); _want.crouchFwd = ck * mv; }
+    // survivors carry no rifle: plain walk and jog, and they cower (crouch) while waiting
+    if (s.unarmed && A.walkU) { const cw = s.crouch || 0; for (const k in _want) _want[k] = 0; _want.crouch = cw * (1 - mv); _want.crouchFwd = cw * mv; _want.idle = (1 - cw) * (1 - mv); _want[s.run ? 'jogU' : 'walkU'] = (1 - cw) * mv; }
     if (hang) { for (const k in _want) _want[k] = 0; if (s.dive && A.roll) _want.roll = 1; else if (A.air) _want.air = 1; else _want.idle = 1; }
     if (s.bash > 0 && A.punch) _want.punch = Math.min(1, s.bash * 2); }
   const kk = t === null ? 1 : Math.min(1, dt * 9); let idleW = 0, walkW = 0, leftW = 0, rightW = 0;
@@ -111,7 +114,8 @@ export function poseBody(m, s, gripL, gripR) { const U = m.userData.body; if (!U
   if (A.run) { A.run.setEffectiveWeight(U.w.run); A.run.timeScale = Math.min(1.5, Math.max(0.85, sp / 8.5)); }
   if (A.back) { A.back.setEffectiveWeight(U.w.back); A.back.timeScale = cad; }
   if (A.left) { A.left.setEffectiveWeight(U.w.left + U.w.right); A.left.timeScale = U.w.right > U.w.left ? -cad : cad; }
-  for (const k of ['idle', 'sprint', 'air', 'crouch', 'crouchFwd']) if (A[k]) A[k].setEffectiveWeight(U.w[k]); if (A.sprint) A.sprint.timeScale = Math.min(1.4, Math.max(0.8, sp / 9)); if (A.roll) A.roll.timeScale = 2.4;
+  if (A.walkU) A.walkU.timeScale = Math.min(1.6, Math.max(0.7, sp / 1.5)); if (A.jogU) A.jogU.timeScale = Math.min(1.5, Math.max(0.8, sp / 5));
+  for (const k of ['idle', 'sprint', 'air', 'crouch', 'crouchFwd', 'walkU', 'jogU']) if (A[k]) A[k].setEffectiveWeight(U.w[k]); if (A.sprint) A.sprint.timeScale = Math.min(1.4, Math.max(0.8, sp / 9)); if (A.roll) A.roll.timeScale = 2.4;
   // one-shot moves restart when they come back on: a dive rolls, a shove swings, a fresh hit flinches
   for (const k of ['roll', 'punch']) if (A[k]) { if (_want[k] > 0 && !U.oneT[k]) A[k].reset().play(); U.oneT[k] = _want[k] > 0; A[k].setEffectiveWeight(U.w[k]); }
   const hit = s.hit || 0; if (A.hit && hit > U.hitWas + 0.3 && !s.dead) { U.flinch = Math.random() < 0.3 && A.hitH ? 'hitH' : 'hit'; A[U.flinch].reset().play(); U.flinchT = 0; } U.hitWas = hit;
@@ -119,7 +123,7 @@ export function poseBody(m, s, gripL, gripR) { const U = m.userData.body; if (!U
   for (const k of ['dead', 'die2']) if (A[k]) { A[k].setEffectiveWeight(U.w[k]); if (s.dead && k === U.die) { if (!U.deadT) A[k].reset().play(); U.deadT += dt; if (t === null) A[k].time = A[k].getClip().duration; } }
   if (!s.dead) U.deadT = 0;
   for (const k in U.rest) bn[k].quaternion.copy(U.rest[k]); U.mixer.update(dt);
-  if (s.dead) { m.updateWorldMatrix(true, true); return; }
+  if (s.dead || s.unarmed) { m.updateWorldMatrix(true, true); return; }
   // The weapon rides the chest, so it bobs and sways with the body instead of floating in front of it.
   pickChest(m, U, _ch).sub(U.chest); J.gun.position.x += _ch.x * 0.8; J.gun.position.y += _ch.y; J.gun.position.z += _ch.z * 0.8; m.updateWorldMatrix(true, true);
   m.getWorldQuaternion(_mq); X.set(1, 0, 0).applyQuaternion(_mq);

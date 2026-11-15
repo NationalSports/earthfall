@@ -210,3 +210,10 @@ The Halo-style multiplayer in section 12 is a separate mode: players against pla
 - Sprint (Shift, or push the touch stick past its rim) widens the view a little. Dive (F) now hops, slides about 7 m, halves damage while in the air and lands with dust. Crouch (C, touch "Crouch") is slower, aims steadier and takes a little less damage. Squad "back to the wall" moved from C to H.
 - Squadmates and troopers dive clear of grenades, orbital strikes, hive charges and charging brutes (`threat()` and `aiDive()` in game.js).
 - Recorded CC0 Kenney sounds (Sci-Fi Sounds, Impact Sounds) live in `public/assets/sfx/*.mp3` and ship as `dist/sfx.js`. They are layered over the synthesized ones: footsteps per world, explosions, slime hits, armour pings, lasers, jump pack, landing, and the Goshawk's engine loop.
+
+## Mission types
+- Expedition (`assault`), Rescue (`rescue`), Hunt (`hunt`) and Retrieve (`retrieve`) share the open map: start at the landing zone, patrols, breaches, the relay side objective, hives to burn for scrap, and the shuttle at the end (`PVE` in game.js; `hiveOp()` is true only for Expedition).
+- Rescue: three groups of four survivors under orange flares. Get near a group and it follows you; bugs hunt them. The shuttle waits for six at the landing zone; fewer than six alive fails the mission.
+- Hunt: a Warlord with brute guards. Its last-seen area is marked until you are within 45 m. Killing it calls the shuttle.
+- Retrieve: a crashed dropship with a black box. Hold E to pick it up (no sprint or jump pack while carrying); going down drops it. Picking it up calls the shuttle and a breach.
+- Code: `setupMission`, `stepMission`, `canBoard`, `missionLine` in game.js. Survivors use the soldier with the 'civ' tint, no rifle, and the library's plain walk/jog (`unarmed` in poseBody).

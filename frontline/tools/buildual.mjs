@@ -5,7 +5,7 @@ import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import { prune, resample, meshopt, dedup } from '@gltf-transform/functions';
 import { MeshoptEncoder, MeshoptDecoder } from 'meshoptimizer';
 await MeshoptEncoder.ready; await MeshoptDecoder.ready;
-const KEEP = ['A_TPose', 'Idle_Loop', 'Sprint_Loop', 'Jog_Fwd_Loop', 'Death01', 'Hit_Chest', 'Hit_Head', 'Roll', 'Jump_Start', 'Jump_Loop', 'Jump_Land', 'Punch_Cross', 'Crouch_Idle_Loop', 'Crouch_Fwd_Loop', 'Interact'];
+const KEEP = ['A_TPose', 'Idle_Loop', 'Sprint_Loop', 'Jog_Fwd_Loop', 'Walk_Loop', 'Death01', 'Hit_Chest', 'Hit_Head', 'Roll', 'Jump_Start', 'Jump_Loop', 'Jump_Land', 'Punch_Cross', 'Crouch_Idle_Loop', 'Crouch_Fwd_Loop', 'Interact'];
 const FINGER = /index|middle|pinky|ring|thumb|leaf/;
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({ 'meshopt.encoder': MeshoptEncoder, 'meshopt.decoder': MeshoptDecoder });
 const [inp, out] = process.argv.slice(2), doc = await io.read(inp), root = doc.getRoot();
