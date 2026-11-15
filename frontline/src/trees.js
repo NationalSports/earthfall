@@ -19,7 +19,7 @@ export function plantTrees(group, world, H, clear, ARENA, nearRoad) {
   const zone = world === 'la' ? zoneOf : (x, z) => outerZone(world, x, z);
   // throw darts until each district has its share; roadside trees try spots near a road first
   const darts = ARENA > 300 ? 90000 : 26000; for (let i = 0; i < darts; i++) { const x = (r() * 2 - 1) * (ARENA - 8), z = (r() * 2 - 1) * (ARENA - 8), zn = zone(x, z), list = plan[zn]; if (!list || !list.length) continue; const pick = list[Math.floor(r() * list.length)], [name, n, h0, h1, road] = pick, key = zn + name;
-    if ((want[key] || []).length >= n) continue; if (road && r() < road && !nearRoad(x, z)) continue; if (!clear(x, z, h1 * 0.18 + 1)) continue; (want[key] = want[key] || []).push({ name, x, z, h: h0 + r() * (h1 - h0), yaw: r() * 6.283 }); }
+    if ((want[key] || []).length >= n * (ARENA > 300 && /hills|highlands|grove|spires/.test(zn) ? 3 : 1)) continue; if (road && r() < road && !nearRoad(x, z)) continue; if (!clear(x, z, h1 * 0.18 + 1)) continue; (want[key] = want[key] || []).push({ name, x, z, h: h0 + r() * (h1 - h0), yaw: r() * 6.283 }); }
   const spots = [].concat(...Object.values(want)), byName = {}; for (const s of spots) (byName[s.name] = byName[s.name] || []).push(s);
   const meshes = [], m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), up = new THREE.Vector3(0, 1, 0), p = new THREE.Vector3(), sc = new THREE.Vector3();
   for (const name in byName) onTree(name, T => { const cells = {}; for (const s of byName[name]) { const k = Math.floor(s.x / CELL) + ',' + Math.floor(s.z / CELL); (cells[k] = cells[k] || []).push(s); }
