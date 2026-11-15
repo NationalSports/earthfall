@@ -1,0 +1,42 @@
+EARTHFALL: FRONTLINE / TACTICAL MAP ART
+
+26 production assets, matching the names and dimensions in MAP_ART_BRIEF.md.
+17 icons are white with #05090f outlines and real transparent padding/cutouts.
+The 3 elevation ramps are opaque RGB lookup data, with low ground on the left.
+The grain is RGBA with approximately 6–12% alpha, including thin 4px scanlines.
+The frame has a fully transparent center, with decoration confined to its border.
+
+TINT / COMPOSITION
+Gold #e8be60: player, squad, supplies, objectives.
+Red #ff4a6a: enemies and incoming strikes.
+Purple #b04adf: nests.
+Green #60ff90: extraction.
+Tint white glyph pixels while preserving their dark outlines where supported.
+Do not render the PNGs on opaque backplates before tinting.
+
+Details are deliberately pale neutral tiles: multiply over the elevation ramp.
+Use repeating/wrapped UVs. Periodic-plus-smooth processing removes edge drift;
+a narrow periodic edge strip is reconciled before JPEG export.
+The textures have approximately 2.8/255 channel standard deviation, so their
+microdetail stays behind live symbols and labels.
+The blue-grey grain adds the faint holographic sheen over #05090f.
+The frame belongs in screen space, above terrain, below live interactive labels.
+Panel text and mission information are supplied by code; none is baked into it.
+
+ORIGINAL ART / PROVENANCE
+Icons are original SVG geometry in this directory. The export helper uses sharp
+at 4x resolution, Pillow for silhouette outlines, then Lanczos reduction.
+No external icon libraries, game logos, game screenshots or reference art used.
+Terrain bases were created with the built-in imagegen tool, then resized,
+made periodic and normalized for low-contrast multiplicative blending.
+Exact prompts are retained in imagegen-prompts.json.
+
+REVIEW
+../map-mockup.jpg is a 1920x1080 layout study using these actual assets.
+It lives here instead of frontline/docs/art/ to honor the assets/map-only rule.
+Terrain elevation, building footprints and mission labels in the mockup are
+illustrative layout content, not a game capture or runtime integration.
+../qa/contact-sheet.jpg compares all symbols at native size and at 24px.
+../qa/texture-repeats.jpg shows each tile repeated 2x2 at native resolution.
+../qa/phone-preview.jpg is a phone-width layout study with 24px map symbols.
+../qa/validation.json records decoded-file, alpha, padding and seam checks.
