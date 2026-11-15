@@ -217,3 +217,9 @@ The Halo-style multiplayer in section 12 is a separate mode: players against pla
 - Hunt: a Warlord with brute guards. Its last-seen area is marked until you are within 45 m. Killing it calls the shuttle.
 - Retrieve: a crashed dropship with a black box. Hold E to pick it up (no sprint or jump pack while carrying); going down drops it. Picking it up calls the shuttle and a breach.
 - Code: `setupMission`, `stepMission`, `canBoard`, `missionLine` in game.js. Survivors use the soldier with the 'civ' tint, no rifle, and the library's plain walk/jog (`unarmed` in poseBody).
+
+## Haptics, controller, weapon wheel, fire modes, loadout
+- `src/haptics.js`: `buzz(kind, k)` rumbles a controller (dual-rumble, plus right-trigger rumble where Chrome supports it), vibrates Android phones, and `tick()` gives the iPhone switch haptic on button taps. Strength is "Haptics" in the tuning panel.
+- `src/gamepad.js`: standard-mapping controllers press the same keys/mouse buttons (layout in the file header). A or Start begins the mission on the briefing screen.
+- Hold Q (controller Y, touch: hold Swap) for the weapon wheel; hold R (X, touch: hold Reload) for fire mode: Rifle Auto/Burst/Single, Machine gun Auto/Burst, Plasma Single/Charged (Charged currently fires like Single).
+- Loadout on the briefing screen: primary, secondary, support (saved in localStorage `frontline-loadout`; `SETUP.loadout`). Railgun research still adds the rail rifle.
