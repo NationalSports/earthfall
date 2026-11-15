@@ -405,7 +405,7 @@ import { createRenderer, createComposer, makeTextures, buildSky, scatter, create
   window.addEventListener('mousemove', e => { if (state === 'menu' || state === 'over' || !player) return; if (wheel.open || modes.open) { aimMenu(e.movementX || 0, e.movementY || 0); return; } if (tuner.open && !locked) return; const k = (1 - 0.55 * ads) * TUNE.look; player.yaw -= (e.movementX || 0) * 0.0026 * k; player.pitch = clamp(player.pitch - (e.movementY || 0) * 0.002 * k, -0.7, 0.45); });
   // ---------- Weapon wheel (hold Q, or Y on a controller, or press and hold Swap) and fire-mode selector (hold R / X / Reload).
   // While one is open the mouse or right stick points at a choice; letting go of the key takes it. On touch, tap a choice.
-  const MODES = { 0: ['Auto', 'Burst', 'Single'], 3: ['Auto', 'Burst'], 7: ['Single', 'Charged'] }; let holdQ = null, holdR = null, pull = 0, wasFiring = false;
+  const MODES = { 0: ['Auto', 'Burst', 'Single'], 3: ['Auto', 'Burst'] }; let holdQ = null, holdR = null, pull = 0, wasFiring = false;
   const fireMode = () => MODES[player.w] ? MODES[player.w][(player.fm || {})[player.w] || 0] : 'Auto', pullCap = () => { const m = fireMode(); return m === 'Single' || m === 'Charged' ? 1 : m === 'Burst' ? 3 : 1e9; };
   function loadout() { const L = SETUP.loadout || [0, 1, 2], o = []; for (const i of L) if (i >= 0 && i < WEAPONS.length && o.indexOf(i) < 0) o.push(i); if (!o.length) o.push(0); if (has('railgun') && o.indexOf(6) < 0) o.push(6); return o; }
   const menuCss = document.createElement('style'); menuCss.textContent = '#wheel,#modes{position:fixed;inset:0;z-index:40;display:none;pointer-events:none}#wheel.on,#modes.on{display:block}#wheel.sticky,#modes.sticky{pointer-events:auto;background:#0006}' +

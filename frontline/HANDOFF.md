@@ -221,5 +221,5 @@ The Halo-style multiplayer in section 12 is a separate mode: players against pla
 ## Haptics, controller, weapon wheel, fire modes, loadout
 - `src/haptics.js`: `buzz(kind, k)` rumbles a controller (dual-rumble, plus right-trigger rumble where Chrome supports it), vibrates Android phones, and `tick()` gives the iPhone switch haptic on button taps. Strength is "Haptics" in the tuning panel.
 - `src/gamepad.js`: standard-mapping controllers press the same keys/mouse buttons (layout in the file header). A or Start begins the mission on the briefing screen.
-- Hold Q (controller Y, touch: hold Swap) for the weapon wheel; hold R (X, touch: hold Reload) for fire mode: Rifle Auto/Burst/Single, Machine gun Auto/Burst, Plasma Single/Charged (Charged currently fires like Single).
+- Hold Q (controller Y, touch: hold Swap) for the weapon wheel; hold R (X, touch: hold Reload) for fire mode: Rifle Auto/Burst/Single, Machine gun Auto/Burst.
 - Loadout on the briefing screen: primary, secondary, support (saved in localStorage `frontline-loadout`; `SETUP.loadout`). Railgun research still adds the rail rifle.
