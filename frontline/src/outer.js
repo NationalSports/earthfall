@@ -1,4 +1,4 @@
-import { fbm } from './noise.js';
+import { fbm, wild } from './noise.js';
 // Frontline outer areas for the off-world maps. Kepler Ridge and Ceres Station each get named places beyond the
 // settlement: the land itself is reshaped (lake basin, open pit, craters, a rim that hides the edge of the map) and
 // large landmarks are built in code and merged into one mesh per material.
@@ -44,7 +44,9 @@ export function outerAvoid(world, x, z) {
 
 // The shape of the land. h is the rolling base terrain; this adds the big features.
 export function outerH(world, x, z, h) { const e = Math.max(Math.abs(x), Math.abs(z));
-  const rg = ring(x, z); if (rg) h += rg * (6 + fbm(x, z) * (world === 'ceres' ? 10 : 18) - h * 0.7);
+  const rg = ring(x, z); if (rg) { const w2 = EDGE > 300 ? sm(300, 370, Math.max(Math.abs(x), Math.abs(z))) : 0;
+    if (world === 'ceres') { const t = Math.max(0, wild(x, z, 30) + 6) / 6, terr = (Math.floor(t) + sm(0.72, 1, t - Math.floor(t))) * 6; h += rg * (4 + fbm(x, z) * 6 - h * 0.7) + w2 * terr; } // mesas: terraced steps
+    else h += rg * (5 + fbm(x, z) * 8 - h * 0.7) + w2 * wild(x, z, 42); }
   if (world === 'kepler') { h += 44 * Math.pow(sm(EDGE - 54, EDGE, e), 1.3) * (EDGE > 300 ? 0.85 + 0.55 * fbm(x * 2, z * 2) : 0.8 + 0.2 * Math.sin(x * 0.06 + 1) * Math.cos(z * 0.05));
     let d = Math.hypot(x - LAKE.x, z - LAKE.z); if (d < 80) { const b = 1 - sm(30, 78, d); h = h * (1 - b) + (LAKE.y - 0.9) * b; }
     d = Math.hypot(x - WRECK.x, z - WRECK.z); if (d < 82) { const b = 1 - sm(44, 80, d); h = h * (1 - b) + 1.5 * b; } return h; }
