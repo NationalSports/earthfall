@@ -120,7 +120,7 @@ export const WIND = { value: 0 };
 // alien leaves: the leaf texture is greyed and recoloured
 const TREE_TINT = { 'tree-alien': [1.0, 0.5, 1.5], 'tree-alien2': [0.35, 1.35, 1.25] };
 const TREES = ['tree-oak', 'tree-ash', 'tree-aspen', 'tree-pine', 'tree-bush', 'tree-alien', 'tree-alien2'], treeWait = {};
-const toFloat = g => { const out = new THREE.BufferGeometry(); for (const k of ['position', 'normal', 'uv']) { const a = g.attributes[k]; if (!a) continue; const n = a.itemSize, f = new Float32Array(a.count * n); for (let i = 0; i < a.count; i++) for (let j = 0; j < n; j++) f[i * n + j] = a.getComponent(i, j); out.setAttribute(k, new THREE.BufferAttribute(f, n)); } if (g.index) out.setIndex(Array.from(g.index.array)); return out; };
+const toFloat = g => { const out = new THREE.BufferGeometry(); for (const k of ['position', 'normal', 'uv', 'color']) { const a = g.attributes[k]; if (!a) continue; const n = a.itemSize, f = new Float32Array(a.count * n); for (let i = 0; i < a.count; i++) for (let j = 0; j < n; j++) f[i * n + j] = a.getComponent(i, j); out.setAttribute(k, new THREE.BufferAttribute(f, n)); } if (g.index) out.setIndex(Array.from(g.index.array)); return out; };
 for (const f of TREES) if (src[f]) load(src[f]).then(buf => gltf().parse(buf, '', g => { g.scene.updateMatrixWorld(true); const box = new THREE.Box3().setFromObject(g.scene), h = box.max.y - box.min.y, cx = (box.min.x + box.max.x) / 2, cz = (box.min.z + box.max.z) / 2, parts = [];
   g.scene.traverse(o => { if (!o.isMesh) return; const geo = toFloat(o.geometry); geo.applyMatrix4(o.matrixWorld); geo.translate(-cx, -box.min.y, -cz); geo.scale(1 / h, 1 / h, 1 / h); geo.computeBoundingSphere(); const mt = o.material, leaf = mt.alphaTest > 0 || mt.transparent;
     mt.envMapIntensity = 0.8; if (mt.map) mt.map.anisotropy = 4; if (leaf) { mt.side = THREE.DoubleSide; mt.transparent = false; mt.alphaTest = 0.5; mt.alphaToCoverage = false; }
@@ -131,6 +131,18 @@ for (const f of TREES) if (src[f]) load(src[f]).then(buf => gltf().parse(buf, ''
   ready[f] = { name: f, parts, h }; for (const w of (treeWait[f] || []).splice(0)) w(); }, e => console.warn(f + ' model failed', e))).catch(e => console.warn(f + ' model failed', e));
 // share of the scanned models that have finished decoding (the mission waits for them so nothing shows a stand-in)
 export function modelsReady() { const want = Object.keys(src); if (!want.length) return 1; return want.filter(k => ready[k]).length / want.length; }
+// ---------- The Downtown City MegaKit (Quaternius, CC0): one GLB holding every wall, window, column, cornice and roof
+// module; each becomes plain float geometry so the city can draw thousands of them as instances.
+const kitWait = [];
+if (src['kit-city']) load(src['kit-city']).then(buf => gltf().parse(buf, '', g => { const mods = {}, inv = new THREE.Matrix4(); g.scene.updateMatrixWorld(true);
+  for (const node of g.scene.children) { inv.copy(node.matrixWorld).invert(); const parts = []; node.traverse(o => { if (!o.isMesh) return; const geo = toFloat(o.geometry); geo.applyMatrix4(o.matrixWorld); geo.computeBoundingSphere(); const mt = o.material; if (mt.map) mt.map.anisotropy = 4; if (!geo.attributes.color) mt.vertexColors = false;
+      if (/FakeInterior/.test(mt.name)) { mt.color.setRGB(0.16, 0.13, 0.1); mt.emissive = new THREE.Color(0.9, 0.62, 0.32); mt.emissiveIntensity = /_2|_4/.test(mt.name) ? 0.05 : 0.22; }
+      if (/Glass/.test(mt.name)) { mt.transparent = true; mt.depthWrite = false; mt.metalness = 0.6; mt.roughness = 0.08; mt.envMapIntensity = 1.4; }
+      parts.push({ geometry: geo, material: mt }); });
+    mods[node.name] = parts; }
+  ready['kit-city'] = { name: 'kit-city', mods }; for (const w of kitWait.splice(0)) w(ready['kit-city']); }, e => console.warn('city kit failed', e))).catch(e => console.warn('city kit failed', e));
+export function onKit(cb) { if (ready['kit-city'] && ready['kit-city'].mods) cb(ready['kit-city']); else if (src['kit-city']) kitWait.push(cb); }
+export const hasKit = () => !!src['kit-city'];
 export function onTree(name, cb) { if (ready[name] && ready[name].parts) cb(ready[name]); else if (src[name]) (treeWait[name] = treeWait[name] || []).push(() => cb(ready[name])); }
 // A copy standing on its base at the origin, scaled per axis.
 function standing(S, sx, sy, sz) { const inner = S.scene.clone(), holder = new THREE.Group(); inner.position.set(-(S.box.min.x + S.box.max.x) / 2, -S.box.min.y, -(S.box.min.z + S.box.max.z) / 2); holder.add(inner); holder.scale.set(sx, sy, sz); return holder; }

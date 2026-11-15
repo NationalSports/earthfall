@@ -2,6 +2,7 @@
 // Every prop is modelled once, then stamped into the world and merged into one mesh per material,
 // so a whole district costs about twenty draw calls.
 import * as THREE from 'three';
+import { READY } from './kitcity.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { Kit, rb, bx, sph, cyl, cone, torus } from './models.js';
 import { weather } from './gfx.js';
@@ -121,11 +122,11 @@ function settlementBlock(world, w, d, h) {
   return k;
 }
 // Los Angeles is several places, not one: each district has its own buildings, heights and spacing.
-export const ZONES = { downtown: { name: 'Downtown', sub: 'Dense blocks around the generator', tall: [1, 1], lot: [10, 18], deep: [9, 14], gap: [2.5, 11.5] },
-  financial: { name: 'Financial District', sub: 'Glass towers. Long sight lines, little cover.', pick: ['bld-glass', 'bld-artdeco'], tall: [1.5, 2.3], lot: [14, 21], deep: [12, 17], gap: [4, 11] },
+export const ZONES = { downtown: { kit: [['brick', 'pale', 'arch', 'brick'], 0.8, 0.12], name: 'Downtown', sub: 'Dense blocks around the generator', tall: [1, 1], lot: [10, 18], deep: [9, 14], gap: [2.5, 11.5] },
+  financial: { kit: [['metal', 'pale'], 0.4, 0.15], name: 'Financial District', sub: 'Glass towers. Long sight lines, little cover.', pick: ['bld-glass', 'bld-artdeco'], tall: [1.5, 2.3], lot: [14, 21], deep: [12, 17], gap: [4, 11] },
   westside: { name: 'Westside', sub: 'Low houses and diners under the palms', pick: ['bld-stucco', 'bld-diner'], tall: [0.75, 0.9], lot: [9, 13], deep: [9, 12], gap: [9, 22] },
-  port: { name: 'Port of Los Angeles', sub: 'Warehouses and container stacks', pick: ['bld-garage', 'bld-brick'], tall: [0.9, 1.1], lot: [14, 22], deep: [11, 15], gap: [8, 22] },
-  coast: { name: 'Beachfront', sub: 'The coast road', pick: ['bld-stucco', 'bld-diner', 'bld-artdeco'], tall: [0.8, 1], lot: [10, 15], deep: [9, 12], gap: [6, 16] },
+  port: { kit: [['brick', 'arch'], 0.55, 0], name: 'Port of Los Angeles', sub: 'Warehouses and container stacks', pick: ['bld-garage', 'bld-brick'], tall: [0.9, 1.1], lot: [14, 22], deep: [11, 15], gap: [8, 22] },
+  coast: { kit: [['pale', 'arch'], 0.3, 0.1], name: 'Beachfront', sub: 'The coast road', pick: ['bld-stucco', 'bld-diner', 'bld-artdeco'], tall: [0.8, 1], lot: [10, 15], deep: [9, 12], gap: [6, 16] },
   beach: { name: 'The Beach', sub: 'Open sand. Nowhere to hide.', none: true }, hills: { name: 'The Hills', sub: 'High ground over the whole city', none: true } };
 export function zoneOf(x, z) { if ((-x - z) * 0.7071 > 150) return 'hills'; if (z > 166) return 'beach'; if (z < -118) return 'port'; if (x > 118) return 'financial'; if (x < -118) return 'westside'; if (z > 118) return 'coast'; return 'downtown'; }
 export function buildDistrict(group, world, H, TEX, addSolid, blocked, opts) { opts = opts || {};
@@ -152,8 +153,11 @@ export function buildDistrict(group, world, H, TEX, addSolid, blocked, opts) { o
     for (const segment of segs) for (const sd of [-1, 1]) { const ax = segment[0], az = segment[1], dx = segment[2] - ax, dz = segment[3] - az, len = Math.hypot(dx, dz), ux = dx / len, uz = dz / len, nx = -uz * sd, nz = ux * sd; let t = 8 + r() * 10;
       while (t < len - 8) { const Z = ZONES[world === 'la' && opts.limit ? zoneOf(ax + ux * t + nx * 12, az + uz * t + nz * 12) : 'downtown']; if (Z.none) { t += 20; continue; } const tall = Z.tall[0] + r() * (Z.tall[1] - Z.tall[0]), along2 = Z.lot[0] + r() * (Z.lot[1] - Z.lot[0]), deep = Z.deep[0] + r() * (Z.deep[1] - Z.deep[0]), h = world === 'la' ? (7 + Math.pow(r(), 1.6) * 22) * tall : 4.5 + r() * (world === 'kepler' ? 5 : 3.5), off = half + deep / 2 + 0.8, x = ax + ux * (t + along2 / 2) + nx * off, z = az + uz * (t + along2 / 2) + nz * off, w = Math.abs(ux) > 0.5 ? along2 : deep, d = Math.abs(ux) > 0.5 ? deep : along2;
         if (Math.abs(x) < (opts.limit || 118) && Math.abs(z) < (opts.limit || 118) && free(x, z, w, d)) { let y0 = 1e9; for (const [px, pz] of [[-w / 2, -d / 2], [w / 2, -d / 2], [-w / 2, d / 2], [w / 2, d / 2]]) y0 = Math.min(y0, H(x + px, z + pz)); y0 -= 0.6; blocks.push({ world, x, z, w, d, h });
-          const scan = world === 'la' && opts.building ? opts.building(along2, deep, r, Z.pick, tall) : null;
+          const kz = world === 'la' && opts.kit && Z.kit && r() < Z.kit[1], scan = !kz && world === 'la' && opts.building ? opts.building(along2, deep, r, Z.pick, tall) : null;
           if (world !== 'la') { const kit = settlementBlock(world, w, d, h); for (const [key, g] of Object.entries(kit.bake())) { g.translate(x, y0, z); (bucket[key] = bucket[key] || []).push(g); } }
+          else if (kz) { const rot = Math.atan2(-nx, -nz), base = new THREE.Matrix4().compose(new THREE.Vector3(x, y0 + 0.45, z), new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), rot), new THREE.Vector3(1, 1, 1)), across = Math.abs(ux) > 0.5;
+            const ready = r() < Z.kit[2] ? Object.keys(READY).filter(n => READY[n][0] <= along2 + 3 && READY[n][1] <= deep + 4) : [], res = ready.length ? opts.kit.ready(base, ready[Math.floor(r() * ready.length)]) : opts.kit.building(base, along2, deep, Math.max(2, Math.min(Z.kit[0][0] === 'metal' ? 14 : 10, Math.round(h / 3))), Z.kit[0][Math.floor(r() * Z.kit[0].length)], r);
+            addSolid(x, z, across ? res.w : res.d, across ? res.d : res.w, null, res.h); }
           else if (scan) { scan.obj.position.set(x, y0 + 0.5, z); scan.obj.rotation.y = Math.atan2(-nx, -nz); group.add(scan.obj); const across = Math.abs(ux) > 0.5; addSolid(x, z, across ? scan.w : scan.d, across ? scan.d : scan.w, null, scan.h + 0.3); if (/glass|artdeco|brick|garage/.test(scan.name)) roofKit(x, y0 + 0.5 + scan.h, z, (across ? scan.w : scan.d) * 0.82, (across ? scan.d : scan.w) * 0.82, scan.name, tall); }
           else { const g = new THREE.BoxGeometry(w, h, d).toNonIndexed(), uv = g.attributes.uv, ru = Math.max(1, Math.round(Math.max(w, d) / (painted ? 13 : 8))), rv = Math.max(1, Math.round(h / (painted ? 13 : 8))); for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * ru, uv.getY(i) * rv); g.translate(x, y0 + h / 2, z); gb[Math.floor(r() * fm.length)].push(g);
           const rf = new THREE.BoxGeometry(w + 0.6, 0.5, d + 0.6).toNonIndexed(); rf.translate(x, y0 + h + 0.25, z); roofs.push(rf); const ac = new THREE.BoxGeometry(w * 0.3, 1.2, d * 0.3).toNonIndexed(); ac.translate(x + (r() - 0.5) * w * 0.4, y0 + h + 1.1, z + (r() - 0.5) * d * 0.4); roofs.push(ac); if (r() < 0.5) { const tk = new THREE.CylinderGeometry(1.1, 1.1, 2.2, 10).toNonIndexed(); tk.translate(x + (r() - 0.5) * w * 0.5, y0 + h + 2.2, z + (r() - 0.5) * d * 0.5); roofs.push(tk); }

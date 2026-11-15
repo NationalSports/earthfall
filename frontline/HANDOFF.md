@@ -195,3 +195,8 @@ Steve's reference points, as inspiration for feel and tone. All characters, armo
 - Sweeping alien and off-world vistas for the other-worlds arenas.
 
 The Halo-style multiplayer in section 12 is a separate mode: players against players in arenas.
+
+## LA modular buildings (kit-city)
+- Source: Quaternius "Downtown City MegaKit" (CC0). `tools/buildkit.mjs <glTF dir> <out.glb> <Module,Module,...>` merges the chosen modules, simplifies them and compresses to `public/assets/models/kit-city.glb`.
+- `src/kitcity.js` assembles buildings from 2 m wall bays (shopfront ground floor, window floors, corner columns, cornice, roof tiles, AC units) in four styles: brick, pale, arch, metal. Some lots use the kit's three ready-made buildings.
+- Each district zone in `props.js` has `kit: [styles, share, readyShare]`. Modules are drawn as instances in 120 m cells; cells beyond 230 m (150 m on phones) are hidden.
