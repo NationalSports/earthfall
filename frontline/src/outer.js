@@ -1,3 +1,4 @@
+import { fbm } from './noise.js';
 // Frontline outer areas for the off-world maps. Kepler Ridge and Ceres Station each get named places beyond the
 // settlement: the land itself is reshaped (lake basin, open pit, craters, a rim that hides the edge of the map) and
 // large landmarks are built in code and merged into one mesh per material.
@@ -14,20 +15,24 @@ const CRATERS = [[-150, 165, 30], [-95, 180, 16], [-190, 150, 14], [-60, 150, 14
 
 export const OUTER = {
   kepler: { far: [[168, -40], [40, -150], [-172, -70]],
-    zones: { settlement: ['Kepler Outpost', 'The colony, what is left of it'], spires: ['The Spires', 'Crystal towers taller than the ship that brought you'], grove: ['Spore Grove', 'Something here is still growing'], lake: ['Glass Lake', 'Do not drink it'], wreck: ['The Meridian', 'The colony ship came down hard'], highlands: ['The Highlands', 'Open ridge country'] },
+    zones: { settlement: ['Kepler Outpost', 'The colony, what is left of it'], spires: ['The Spires', 'Crystal towers taller than the ship that brought you'], grove: ['Spore Grove', 'Something here is still growing'], lake: ['Glass Lake', 'Do not drink it'], wreck: ['The Meridian', 'The colony ship came down hard'], highlands: ['The Highlands', 'Open ridge country'], wilds: ['The Wilds', 'Alien scrub, far from the colony'] },
     extra: [['habitat', -14, -146, 0.5], ['mast', -2, -140, 0], ['floodlight', -6, -152, 0.8, { ghost: true }], ['floodlight', 46, -146, -0.9, { ghost: true }], ['floodlight', 2, -200, 2.4, { ghost: true }], ['crates', 6, -150, 0.4], ['crates', 52, -160, 2], ['container', 60, -150, 0.9, { swap: { body: 'rust' } }], ['containerOpen', -22, -166, 1.9, { swap: { body: 'burnt' } }], ['rover', 12, -144, 1.2], ['tank', -24, -152, 0.2],
       ['habitat', 128, 30, 1.5], ['mast', 138, 2, 0], ['floodlight', 134, 18, 1.2, { ghost: true }], ['crates', 126, 14, 0.3], ['rover', 144, 12, 2.6], ['floodlight', 176, -4, -1.2, { ghost: true }],
       ['habitat', -84, 96, 0.9], ['tank', -74, 108, 0.9], ['floodlight', -92, 110, -0.6, { ghost: true }], ['crates', -80, 112, 1], ['mast', -70, 92, 0],
       ['mast', -150, -22, 0], ['habitat', -132, 8, 1.4], ['floodlight', -140, -6, 1.4, { ghost: true }], ['containerOpen', -128, -10, 0.2, { swap: { body: 'carE' } }], ['floodlight', -168, -48, 0.4, { ghost: true }]] },
   ceres: { far: [[160, -30], [-30, -150], [-205, 60]],
-    zones: { station: ['Ceres Station', 'Habitat blocks and deck roads'], pit: ['The Open Pit', 'Eighty years of digging. Watch the edge.'], refinery: ['Refinery', 'Tank farm and flare stacks'], solar: ['Solar Field', 'Rows of panels and one bright tower'], port: ['Landing Field', 'Pads, shuttles and the control tower'], flats: ['Crater Flats', 'Bare regolith between the works'] },
+    zones: { station: ['Ceres Station', 'Habitat blocks and deck roads'], badlands: ['The Badlands', 'Crater fields beyond the station'], pit: ['The Open Pit', 'Eighty years of digging. Watch the edge.'], refinery: ['Refinery', 'Tank farm and flare stacks'], solar: ['Solar Field', 'Rows of panels and one bright tower'], port: ['Landing Field', 'Pads, shuttles and the control tower'], flats: ['Crater Flats', 'Bare regolith between the works'] },
     extra: [['floodlight', 98, -52, 1.6, { ghost: true }], ['floodlight', 98, -8, 1.6, { ghost: true }], ['floodlight', 132, 30, 2.6, { ghost: true }], ['floodlight', 190, 28, -2.6, { ghost: true }], ['floodlight', 132, -92, 0.6, { ghost: true }], ['floodlight', 192, -90, -0.6, { ghost: true }], ['rover', 108, -18, 0.4], ['rover', 112, -44, 2.2], ['container', 106, -6, 1.5, { swap: { body: 'carE' } }], ['crates', 110, -30, 0.5], ['mast', 104, -62, 0],
       ['tank', 100, 150, 0], ['tank', 100, 158, 0], ['tank', 100, 166, 0], ['container', 172, 196, 0.2, { swap: { body: 'carB' } }], ['container', 180, 194, 0.1, { swap: { body: 'carF' } }], ['containerOpen', 176, 188, 1.6, { swap: { body: 'rust' } }], ['crates', 128, 178, 0.4], ['crates', 166, 168, 1.9], ['floodlight', 104, 140, 2.4, { ghost: true }], ['floodlight', 182, 146, -2.4, { ghost: true }], ['floodlight', 126, 198, 0.6, { ghost: true }], ['rover', 138, 176, 1], ['mast', 186, 160, 0],
       ['floodlight', -70, -150, 2, { ghost: true }], ['floodlight', 84, -150, -2, { ghost: true }], ['floodlight', 0, -150, 3.14, { ghost: true }], ['crates', -20, -154, 0.3], ['rover', 14, -152, 1.8], ['container', -60, -152, 1.57, { swap: { body: 'carC' } }],
       ['mast', -124, 20, 0], ['floodlight', -124, -40, 1.57, { ghost: true }], ['floodlight', -124, 80, 1.57, { ghost: true }], ['crates', -122, 34, 0.2], ['rover', -120, 6, 0.2]] } };
 
 // Which named place a point is in.
+// The map edge: 250 for the base map, 500 for open missions. Beyond 250 is the wild ring those missions add.
+export let EDGE = 250; export function setEdge(a) { EDGE = a; }
+const ring = (x, z) => EDGE > 300 ? sm(236, 330, Math.max(Math.abs(x), Math.abs(z))) : 0;
 export function outerZone(world, x, z) {
+  if (EDGE > 300 && Math.max(Math.abs(x), Math.abs(z)) > 250) return world === 'kepler' ? 'wilds' : 'badlands';
   if (world === 'kepler') { if (Math.hypot(x - LAKE.x, z - LAKE.z) < 86) return 'lake'; if (Math.abs(x) < 118 && Math.abs(z) < 118) return 'settlement'; if (x > 118) return 'spires'; if (x < -118 && z < 70) return 'grove'; if (z < -118) return 'wreck'; return 'highlands'; }
   if (Math.hypot(x - PIT.x, z - PIT.z) < PIT.r + 10) return 'pit'; if (Math.abs(x) < 118 && Math.abs(z) < 118) return 'station'; if (z < -125 && Math.abs(x) < 110) return 'refinery'; if (x < -122 && z > -95 && z < 125) return 'solar'; if (Math.hypot(x - PORT.x, z - PORT.z) < 70) return 'port'; return 'flats'; }
 
@@ -39,10 +44,11 @@ export function outerAvoid(world, x, z) {
 
 // The shape of the land. h is the rolling base terrain; this adds the big features.
 export function outerH(world, x, z, h) { const e = Math.max(Math.abs(x), Math.abs(z));
-  if (world === 'kepler') { h += 44 * Math.pow(sm(196, 250, e), 1.3) * (0.8 + 0.2 * Math.sin(x * 0.06 + 1) * Math.cos(z * 0.05));
+  const rg = ring(x, z); if (rg) h += rg * (6 + fbm(x, z) * (world === 'ceres' ? 10 : 18) - h * 0.7);
+  if (world === 'kepler') { h += 44 * Math.pow(sm(EDGE - 54, EDGE, e), 1.3) * (EDGE > 300 ? 0.85 + 0.55 * fbm(x * 2, z * 2) : 0.8 + 0.2 * Math.sin(x * 0.06 + 1) * Math.cos(z * 0.05));
     let d = Math.hypot(x - LAKE.x, z - LAKE.z); if (d < 80) { const b = 1 - sm(30, 78, d); h = h * (1 - b) + (LAKE.y - 0.9) * b; }
     d = Math.hypot(x - WRECK.x, z - WRECK.z); if (d < 82) { const b = 1 - sm(44, 80, d); h = h * (1 - b) + 1.5 * b; } return h; }
-  if (world === 'ceres') { h += 24 * Math.pow(sm(204, 250, e), 1.3) * (0.8 + 0.2 * Math.sin(x * 0.05) * Math.cos(z * 0.07 + 2));
+  if (world === 'ceres') { h += 24 * Math.pow(sm(EDGE - 46, EDGE, e), 1.3) * (EDGE > 300 ? 0.85 + 0.55 * fbm(x * 2, z * 2) : 0.8 + 0.2 * Math.sin(x * 0.05) * Math.cos(z * 0.07 + 2));
     let b = 1 - sm(0, 22, Math.max(Math.abs(x - REF.x) - 84, Math.abs(z - REF.z) - 28, 0)); h *= 1 - b * 0.9; b = 1 - sm(46, 66, Math.hypot(x - PORT.x, z - PORT.z)); h *= 1 - b * 0.9;
     b = 1 - sm(0, 18, Math.max(SOLAR.x0 - x, x - SOLAR.x1, SOLAR.z0 - z, z - SOLAR.z1, 0)); h *= 1 - b * 0.85;
     const d = Math.hypot(x - PIT.x, z - PIT.z); if (d < PIT.r) { const t = d / PIT.r, tt = t * 4, fl = Math.floor(tt), st = (fl + sm(0.68, 1, tt - fl)) / 4; h = h * sm(0.9, 1, t) - PIT.depth * (1 - st); }

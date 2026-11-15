@@ -25,7 +25,7 @@ body.touch #bars{left:50%;bottom:8px;transform:translateX(-50%) scale(.75);trans
 
 // [label, key code, position as right%/bottom% inside the cluster, size %, hold?]
 const PAD = [['Jump', 'Space', 44, 4, 24, true], ['Aim', 'AIM', 4, 44, 24, false], ['Reload', 'KeyR', 52, 32, 21, true], ['Dive', 'KeyF', 32, 54, 21], ['Run', 'ShiftLeft', 76, 6, 21, 'toggle'], ['Nade', 'KeyG', 14, 72, 21]];
-const SIDE = [['Crouch', 'KeyC'], ['Use', 'KeyE'], ['Swap', 'KeyQ', true], ['Squad', 'ORDER'], ['Ready', 'Enter'], ['Melee', 'KeyB']];
+const SIDE = [['Map', 'Tab'], ['Crouch', 'KeyC'], ['Use', 'KeyE'], ['Swap', 'KeyQ', true], ['Squad', 'ORDER'], ['Ready', 'Enter'], ['Melee', 'KeyB']];
 const ORDERS = ['KeyZ', 'KeyX', 'KeyH', 'KeyV'];
 
 export function createTouch(cv) {

@@ -3,12 +3,11 @@
 //   Left stick move · right stick look · RT fire · LT aim · A jump pack · B dive · X reload (hold: fire mode)
 //   Y next weapon (hold: weapon wheel) · LB grenade · RB melee · L3 sprint · R3 crouch
 //   D-pad up use / Goshawk · D-pad left orbital strike · D-pad right supply drop · D-pad down turret
-//   Start: start the wave (or the mission on the briefing) · Back: squad orders
+//   Start: start the wave (or the mission on the briefing) · Back: tactical map
 import { TOUCH } from './touch.js';
 
-const MAP = { 0: 'Space', 1: 'KeyF', 2: 'KeyR', 3: 'KeyQ', 4: 'KeyG', 5: 'KeyB', 10: 'ShiftLeft', 11: 'KeyC', 12: 'KeyE', 13: 'Digit2', 14: 'Digit1', 15: 'Digit5', 9: 'Enter' };
-const ORDERS = ['KeyZ', 'KeyX', 'KeyH', 'KeyV'];
-export function createGamepad(cv) { const was = {}; let order = 3, any = false, sx = false, sy = false;
+const MAP = { 0: 'Space', 1: 'KeyF', 2: 'KeyR', 3: 'KeyQ', 4: 'KeyG', 5: 'KeyB', 10: 'ShiftLeft', 11: 'KeyC', 12: 'KeyE', 13: 'Digit2', 14: 'Digit1', 15: 'Digit5', 9: 'Enter', 8: 'Tab' };
+export function createGamepad(cv) { const was = {}; let any = false, sx = false, sy = false;
   const key = (code, down) => window.dispatchEvent(new KeyboardEvent(down ? 'keydown' : 'keyup', { code, bubbles: true }));
   const mouse = (type, button) => (type === 'mousedown' ? cv : window).dispatchEvent(new MouseEvent(type, { button, bubbles: true }));
   const dz = v => Math.abs(v) < 0.16 ? 0 : (v - Math.sign(v) * 0.16) / 0.84;
@@ -24,5 +23,5 @@ export function createGamepad(cv) { const was = {}; let order = 3, any = false, 
       const rx = dz(g.axes[2] || 0), ry = dz(g.axes[3] || 0); if (rx || ry) window.dispatchEvent(new MouseEvent('mousemove', { movementX: rx * Math.abs(rx) * 1050 * dt, movementY: ry * Math.abs(ry) * 700 * dt, bubbles: true }));
       for (const [i, code] of Object.entries(MAP)) { const e = edge(+i); if (e) key(code, e > 0); }
       const rt = edge(7), lt = edge(6); if (rt) mouse(rt > 0 ? 'mousedown' : 'mouseup', 0); if (lt) mouse(lt > 0 ? 'mousedown' : 'mouseup', 2);
-      if (edge(8) === 1) { order = (order + 1) % ORDERS.length; key(ORDERS[order], true); key(ORDERS[order], false); } } };
+    } };
 }

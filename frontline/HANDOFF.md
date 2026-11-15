@@ -223,3 +223,9 @@ The Halo-style multiplayer in section 12 is a separate mode: players against pla
 - `src/gamepad.js`: standard-mapping controllers press the same keys/mouse buttons (layout in the file header). A or Start begins the mission on the briefing screen.
 - Hold Q (controller Y, touch: hold Swap) for the weapon wheel; hold R (X, touch: hold Reload) for fire mode: Rifle Auto/Burst/Single, Machine gun Auto/Burst.
 - Loadout on the briefing screen: primary, secondary, support (saved in localStorage `frontline-loadout`; `SETUP.loadout`). Railgun research still adds the rail rifle.
+
+## Big map and tactical map
+- Open missions (Expedition, Rescue, Hunt, Retrieve) use a 1 km map (`ARENA` 500, `BIG`); Defense and Skirmish keep 500 m. The city stays in the middle; a wild ring around it (LA "Outskirts", Kepler "Wilds", Ceres "Badlands") uses value-noise hills (`src/noise.js`), and the off-world mountain rims move to the new edge (`setEdge` in outer.js).
+- Mission sites, far hives and the relay scale outward; 8 more patrols roam the ring. Trees beyond 280 m (170 m on phones) are hidden; navmesh cells are 0.8 m on the big map.
+- Points of interest (`setupPOIs`/`stepPOIs`): 3 side nests (two hives each, not needed for Expedition), 4 outposts (walk to the supply crate: ammo, grenade, +40 health, scrap), 3 wrecked convoys (scrap and a research pick), 4 research caches. Each is a "?" on the map until someone gets within 45 m.
+- Tactical map (`src/mapview.js`): Tab, touch "Map", controller Back. Terrain is painted once per mission; layers show you, squad, survivors, enemies seen in the last 8 s, nests, POIs, objectives, strikes and the landing zone. Click sets a waypoint (also on the compass), right-click clears, wheel zooms, drag pans. The side panel lists the objective and side objectives.

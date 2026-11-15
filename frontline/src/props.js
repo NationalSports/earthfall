@@ -122,13 +122,14 @@ function settlementBlock(world, w, d, h) {
   return k;
 }
 // Los Angeles is several places, not one: each district has its own buildings, heights and spacing.
-export const ZONES = { downtown: { kit: [['brick', 'pale', 'arch', 'brick'], 0.8, 0.12], name: 'Downtown', sub: 'Dense blocks around the generator', tall: [1, 1], lot: [10, 18], deep: [9, 14], gap: [2.5, 11.5] },
+export const ZONES = { outskirts: { none: true, name: 'The Outskirts', sub: 'Scrubland and ruins beyond the city' }, downtown: { kit: [['brick', 'pale', 'arch', 'brick'], 0.8, 0.12], name: 'Downtown', sub: 'Dense blocks around the generator', tall: [1, 1], lot: [10, 18], deep: [9, 14], gap: [2.5, 11.5] },
   financial: { kit: [['metal', 'pale'], 0.4, 0.15], name: 'Financial District', sub: 'Glass towers. Long sight lines, little cover.', pick: ['bld-glass', 'bld-artdeco'], tall: [1.5, 2.3], lot: [14, 21], deep: [12, 17], gap: [4, 11] },
   westside: { name: 'Westside', sub: 'Low houses and diners under the palms', pick: ['bld-stucco', 'bld-diner'], tall: [0.75, 0.9], lot: [9, 13], deep: [9, 12], gap: [9, 22] },
   port: { kit: [['brick', 'arch'], 0.55, 0], name: 'Port of Los Angeles', sub: 'Warehouses and container stacks', pick: ['bld-garage', 'bld-brick'], tall: [0.9, 1.1], lot: [14, 22], deep: [11, 15], gap: [8, 22] },
   coast: { kit: [['pale', 'arch'], 0.3, 0.1], name: 'Beachfront', sub: 'The coast road', pick: ['bld-stucco', 'bld-diner', 'bld-artdeco'], tall: [0.8, 1], lot: [10, 15], deep: [9, 12], gap: [6, 16] },
   beach: { name: 'The Beach', sub: 'Open sand. Nowhere to hide.', none: true }, hills: { name: 'The Hills', sub: 'High ground over the whole city', none: true } };
-export function zoneOf(x, z) { if ((-x - z) * 0.7071 > 150) return 'hills'; if (z > 166) return 'beach'; if (z < -118) return 'port'; if (x > 118) return 'financial'; if (x < -118) return 'westside'; if (z > 118) return 'coast'; return 'downtown'; }
+export let OUTSKIRTS = false; export function setOutskirts(v) { OUTSKIRTS = v; }
+export function zoneOf(x, z) { if ((-x - z) * 0.7071 > 150) return 'hills'; if (z > 166) return 'beach'; if (OUTSKIRTS && Math.max(Math.abs(x), Math.abs(z)) > 250) return 'outskirts'; if (z < -118) return 'port'; if (x > 118) return 'financial'; if (x < -118) return 'westside'; if (z > 118) return 'coast'; return 'downtown'; }
 export function buildDistrict(group, world, H, TEX, addSolid, blocked, opts) { opts = opts || {};
   // What sits on a flat roof: plant, a stair head, a water tank on older blocks, and a crown, mast and beacon on the towers. No two roofs alike.
   const roofB = {}, rr = rng(4243), rput = (k, g, x, y, z, ry) => { const n = g.toNonIndexed(); if (ry) n.rotateY(ry); n.translate(x, y, z); (roofB[k] = roofB[k] || []).push(n); };
