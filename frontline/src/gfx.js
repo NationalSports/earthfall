@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { N8AOPass } from 'n8ao';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
@@ -44,11 +45,13 @@ const GradeShader = { uniforms: { tDiffuse: { value: null }, uTint: { value: new
       c = mix(c, vec3(0.9, 0.12, 0.08), uHurt * smoothstep(0.08, 0.6, r));
       gl_FragColor = vec4(max(c, 0.0), 1.0); }` };
 export function createComposer(renderer, scene, camera) {
-  const composer = new EffectComposer(renderer); composer.addPass(new RenderPass(scene, camera));
+  // N8AO replaces the plain render pass: it renders the scene and darkens creases, corners and the ground under things.
+  const composer = new EffectComposer(renderer), ao = new N8AOPass(scene, camera, window.innerWidth, window.innerHeight), C = ao.configuration;
+  C.aoRadius = 2.6; C.distanceFalloff = 1.2; C.intensity = 2.6; C.halfRes = true; C.gammaCorrection = false; C.screenSpaceRadius = false; ao.setQualityMode('Medium'); const plain = new RenderPass(scene, camera); plain.enabled = false; composer.addPass(plain); composer.addPass(ao);
   const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.32, 0.55, 1.35); composer.addPass(bloom);
   const grade = new ShaderPass(GradeShader); composer.addPass(grade); composer.addPass(new OutputPass());
   const sv = new THREE.Vector3(), cd = new THREE.Vector3();
-  return { composer, bloom, grade, resize(w, h) { composer.setSize(w, h); bloom.setSize(w, h); grade.uniforms.uPx.value.set(1 / w, 1 / h); },
+  return { composer, bloom, grade, ao, setAO(k) { const on = k > 0.01; ao.enabled = on; plain.enabled = !on; if (on) C.intensity = 2.6 * k; }, resize(w, h) { composer.setSize(w, h); ao.setSize(w, h); bloom.setSize(w, h); grade.uniforms.uPx.value.set(1 / w, 1 / h); },
     // where the sun sits on screen, and how strongly its shafts should show
     setSun(sunDir) { camera.getWorldDirection(cd); const f = cd.dot(sunDir); sv.copy(camera.position).addScaledVector(sunDir, 400).project(camera); const u = grade.uniforms; u.uSun.value.set(sv.x * 0.5 + 0.5, sv.y * 0.5 + 0.5); const off = Math.max(Math.abs(sv.x), Math.abs(sv.y)); u.uSunVis.value = f > 0.05 ? clamp(1.7 - off, 0, 1) * clamp(f * 3, 0, 1) : 0; } };
 }

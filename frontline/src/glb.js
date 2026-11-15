@@ -2,9 +2,13 @@
 // its legs play the baked run cycle, its spine and arms are steered in code so it holds whatever the game puts in its hands.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
+// The models are meshopt-compressed (see tools/optimize.mjs), so every loader needs the decoder.
+const gltf = () => new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
 import { clone as cloneSkinned } from 'three/examples/jsm/utils/SkeletonUtils.js';
 
 const src = (typeof window !== 'undefined' && window.FRONTLINE_MODELS) || {}, ready = {}, waiting = [];
+if (typeof window !== 'undefined') window.__glbReady = () => Object.keys(ready).join(',');
 const HEIGHT = 1.9; // game soldier height in metres
 function bytes(uri) { const s = atob(uri.slice(uri.indexOf(',') + 1)), a = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return a.buffer; }
 // Enemy troopers wear the same armour in red: the teal plates are re-tinted once into a second texture.
@@ -16,7 +20,7 @@ function glowTexture(tex, red, alien) { const im = tex.image, c = document.creat
   for (let i = 0; i < p.length; i += 4) { const r = p[i], gg = p[i + 1], b = p[i + 2], lit = alien ? (r > 170 && b > 170 && gg < 120) || (gg > 190 && r < 170 && b < 110) : b > 170 && gg > 140 && r < 130; if (lit && alien) { } else if (lit) { p[i] = red ? 255 : r * 0.6; p[i + 1] = red ? 60 : gg; p[i + 2] = red ? 40 : b; } else { p[i] = r * 0.1; p[i + 1] = gg * 0.1; p[i + 2] = b * 0.1; } }
   g.putImageData(d, 0, 0); const t = new THREE.CanvasTexture(c); t.flipY = tex.flipY; t.colorSpace = tex.colorSpace; return t; }
 const load = uri => uri.startsWith('data:') ? Promise.resolve(bytes(uri)) : fetch(uri).then(r => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); });
-if (src.soldier) load(src.soldier).then(buf => new GLTFLoader().parse(buf, '', g => {
+if (src.soldier) load(src.soldier).then(buf => gltf().parse(buf, '', g => {
   const scene = g.scene; let mat = null; scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = false; o.frustumCulled = false; mat = o.material; } });
   mat.side = THREE.FrontSide; mat.envMapIntensity = 1.25; if (mat.map) { mat.map.anisotropy = 4; mat.emissiveMap = glowTexture(mat.map); mat.emissive = new THREE.Color(0xffffff); mat.emissiveIntensity = 1; }
   const box = new THREE.Box3().setFromObject(scene), clips = {}; for (const c of g.animations) { if (c.name !== 'Dead') for (const t of c.tracks) if (/Hips\.position/.test(t.name)) for (let i = 0; i < t.values.length; i += 3) { t.values[i] = t.values[0]; t.values[i + 2] = t.values[2]; } clips[c.name] = c; }
@@ -28,14 +32,14 @@ if (src.soldier) load(src.soldier).then(buf => new GLTFLoader().parse(buf, '', g
 // (bone chains that reach the ground) and walked in code.
 const BUGS = { swarm: { file: 'swarmling', h: 1.0 }, leaper: { file: 'leaper', h: 1.25 }, spitter: { file: 'spitter', h: 1.45 }, brute: { file: 'brute', h: 2.3 }, boss: { file: 'boss', h: 2.7 }, dartwing: { file: 'dartwing', h: 1.1, fly: true }, razorwing: { file: 'razorwing', h: 1.9, fly: true } };
 const bugWait = {};
-for (const f of ['swarmling', 'leaper', 'spitter', 'brute', 'boss', 'dartwing', 'razorwing']) if (src[f]) load(src[f]).then(buf => new GLTFLoader().parse(buf, '', g => { let mat = null; g.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.frustumCulled = false; mat = o.material; } });
+for (const f of ['swarmling', 'leaper', 'spitter', 'brute', 'boss', 'dartwing', 'razorwing']) if (src[f]) load(src[f]).then(buf => gltf().parse(buf, '', g => { let mat = null; g.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.frustumCulled = false; mat = o.material; } });
   mat.side = THREE.FrontSide; mat.envMapIntensity = 1.2; if (mat.map) { mat.emissiveMap = glowTexture(mat.map, false, true); mat.emissive = new THREE.Color(0xffffff); }
   const box = new THREE.Box3().setFromObject(g.scene); ready[f] = { scene: g.scene, hgt: box.max.y - box.min.y, mat, tints: {} }; for (const w of (bugWait[f] || []).splice(0)) w(); }, e => console.warn(f + ' model failed', e))).catch(e => console.warn(f + ' model failed', e));
 const _p = new THREE.Vector3(), _h = new THREE.Vector3(), _Z = new THREE.Vector3(), _hq = new THREE.Quaternion();
 export function dressBug(m, kind) { const def = BUGS[kind]; if (!def || !src[def.file]) return;
   const go = () => { const S = ready[def.file]; if (!S || m.userData.body) return; m.traverse(o => { if (o.isMesh) o.visible = false; });
     const body = cloneSkinned(S.scene), holder = new THREE.Group(), sc = def.h / S.hgt; holder.scale.setScalar(sc); holder.add(body); m.add(holder);
-    if (def.fly) { const flap = { value: 0 }; m.userData.flap = flap; body.traverse(o => { if (o.isMesh) { const mt = o.material.clone(); mt.onBeforeCompile = sh => { sh.uniforms.uFlap = flap; sh.vertexShader = 'uniform float uFlap;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n transformed.y += max(abs(position.x) - 0.12, 0.0) * uFlap;'); }; mt.customProgramCacheKey = () => 'flap'; o.material = mt; } }); }
+    if (def.fly) { const flap = { value: 0 }; m.userData.flap = flap; body.traverse(o => { if (o.isMesh) { const mt = o.material.clone(); if (!o.geometry.boundingBox) o.geometry.computeBoundingBox(); const fw = { value: Math.max(Math.abs(o.geometry.boundingBox.min.x), Math.abs(o.geometry.boundingBox.max.x)) * 0.1 }; mt.onBeforeCompile = sh => { sh.uniforms.uFlap = flap; sh.uniforms.uFlapW = fw; sh.vertexShader = 'uniform float uFlap; uniform float uFlapW;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n transformed.y += max(abs(position.x) - uFlapW, 0.0) * uFlap;'); }; mt.customProgramCacheKey = () => 'flap'; o.material = mt; } }); }
     if (def.tint) { const mt = S.tints[kind] || (S.tints[kind] = Object.assign(S.mat.clone(), { color: new THREE.Color(def.tint) })); body.traverse(o => { if (o.isMesh) o.material = mt; }); }
     m.updateWorldMatrix(true, true); const kids = b => b.children.filter(c => c.isBone), limbs = [], floor = holder.getWorldPosition(new THREE.Vector3()).y, top = S.hgt * sc * m.scale.y;
     body.traverse(b => { if (!b.isBone || kids(b).length < 3) return; b.getWorldPosition(_h); for (const c of kids(b)) { let tip = c, n = 1; while (kids(tip).length === 1) { tip = kids(tip)[0]; n++; } if (kids(tip).length || n < 3) continue; tip.getWorldPosition(_p); m.worldToLocal(_p); const hub = m.worldToLocal(_h.clone());
@@ -108,8 +112,26 @@ export function poseBody(m, s, gripL, gripR) { const U = m.userData.body; if (!U
 
 // ---------- Scanned set pieces with no skeleton: buildings, hive, turret, drop pod, shuttle, generator.
 const STATIC = ['goshawk', 'prop-sedan', 'prop-sedan-burned', 'prop-van', 'prop-bus', 'prop-barrier', 'prop-dumpster', 'prop-rubble', 'prop-streetlight', 'prop-signal', 'prop-shelter', 'prop-wall', 'prop-palm', 'hive', 'turret', 'pod', 'shuttle', 'generator', 'bld-artdeco', 'bld-brick', 'bld-diner', 'bld-garage', 'bld-glass', 'bld-stucco'], statWait = {};
-for (const f of STATIC) if (src[f]) load(src[f]).then(buf => new GLTFLoader().parse(buf, '', g => { g.scene.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; const mt = o.material; mt.side = THREE.FrontSide; mt.envMapIntensity = 1.1; if (mt.map) { mt.map.anisotropy = 8; mt.emissiveMap = mt.map; mt.emissive = new THREE.Color(0xffffff); mt.emissiveIntensity = f === 'hive' ? 0.3 : 0.14; } } });
+for (const f of STATIC) if (src[f]) load(src[f]).then(buf => gltf().parse(buf, '', g => { g.scene.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; const mt = o.material; mt.side = THREE.FrontSide; mt.envMapIntensity = 1.1; if (mt.map) { mt.map.anisotropy = 8; mt.emissiveMap = mt.map; mt.emissive = new THREE.Color(0xffffff); mt.emissiveIntensity = f === 'hive' ? 0.3 : 0.14; } } });
   const box = new THREE.Box3().setFromObject(g.scene); ready[f] = { name: f, scene: g.scene, box, size: box.getSize(new THREE.Vector3()) }; for (const w of (statWait[f] || []).splice(0)) w(); }, e => console.warn(f + ' model failed', e))).catch(e => console.warn(f + ' model failed', e));
+// ---------- Trees generated with EZ-Tree (tools/treegen): flattened to plain float geometry one unit tall with the base
+// at the origin, so they can be drawn as instances. Leaves sway with a shared wind clock.
+export const WIND = { value: 0 };
+// alien leaves: the leaf texture is greyed and recoloured
+const TREE_TINT = { 'tree-alien': [1.0, 0.5, 1.5], 'tree-alien2': [0.35, 1.35, 1.25] };
+const TREES = ['tree-oak', 'tree-ash', 'tree-aspen', 'tree-pine', 'tree-bush', 'tree-alien', 'tree-alien2'], treeWait = {};
+const toFloat = g => { const out = new THREE.BufferGeometry(); for (const k of ['position', 'normal', 'uv']) { const a = g.attributes[k]; if (!a) continue; const n = a.itemSize, f = new Float32Array(a.count * n); for (let i = 0; i < a.count; i++) for (let j = 0; j < n; j++) f[i * n + j] = a.getComponent(i, j); out.setAttribute(k, new THREE.BufferAttribute(f, n)); } if (g.index) out.setIndex(Array.from(g.index.array)); return out; };
+for (const f of TREES) if (src[f]) load(src[f]).then(buf => gltf().parse(buf, '', g => { g.scene.updateMatrixWorld(true); const box = new THREE.Box3().setFromObject(g.scene), h = box.max.y - box.min.y, cx = (box.min.x + box.max.x) / 2, cz = (box.min.z + box.max.z) / 2, parts = [];
+  g.scene.traverse(o => { if (!o.isMesh) return; const geo = toFloat(o.geometry); geo.applyMatrix4(o.matrixWorld); geo.translate(-cx, -box.min.y, -cz); geo.scale(1 / h, 1 / h, 1 / h); geo.computeBoundingSphere(); const mt = o.material, leaf = mt.alphaTest > 0 || mt.transparent;
+    mt.envMapIntensity = 0.8; if (mt.map) mt.map.anisotropy = 4; if (leaf) { mt.side = THREE.DoubleSide; mt.transparent = false; mt.alphaTest = 0.5; mt.alphaToCoverage = false; }
+    // wind: leaves flutter and the whole crown leans a little, more the higher up the tree
+    const tint = leaf && TREE_TINT[f]; if (tint) { mt.color.setRGB(1, 1, 1); mt.emissive = new THREE.Color(tint[0] * 0.12, tint[1] * 0.12, tint[2] * 0.12); }
+    mt.onBeforeCompile = sh => { if (tint) sh.fragmentShader = sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n diffuseColor.rgb = vec3(dot(diffuseColor.rgb, vec3(0.45, 0.45, 0.25))) * vec3(' + tint.map(v => v.toFixed(3)).join(',') + ');'); sh.uniforms.uWind = WIND; sh.vertexShader = 'uniform float uWind;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n #ifdef USE_INSTANCING\n float ph = instanceMatrix[3].x * 0.37 + instanceMatrix[3].z * 0.23;\n #else\n float ph = 0.0;\n #endif\n float hh = max(position.y - 0.25, 0.0); transformed.x += sin(uWind * 1.3 + ph) * 0.018 * hh * hh' + (leaf ? ' + sin(uWind * 7.0 + ph + position.x * 40.0 + position.z * 31.0) * 0.004' : '') + '; transformed.z += cos(uWind * 1.1 + ph * 1.7) * 0.012 * hh * hh;'); }; mt.customProgramCacheKey = () => 'tree' + (leaf ? 'L' : 'B') + (tint ? f : '');
+    parts.push({ geometry: geo, material: mt, leaf }); });
+  ready[f] = { name: f, parts, h }; for (const w of (treeWait[f] || []).splice(0)) w(); }, e => console.warn(f + ' model failed', e))).catch(e => console.warn(f + ' model failed', e));
+// share of the scanned models that have finished decoding (the mission waits for them so nothing shows a stand-in)
+export function modelsReady() { const want = Object.keys(src); if (!want.length) return 1; return want.filter(k => ready[k]).length / want.length; }
+export function onTree(name, cb) { if (ready[name] && ready[name].parts) cb(ready[name]); else if (src[name]) (treeWait[name] = treeWait[name] || []).push(() => cb(ready[name])); }
 // A copy standing on its base at the origin, scaled per axis.
 function standing(S, sx, sy, sz) { const inner = S.scene.clone(), holder = new THREE.Group(); inner.position.set(-(S.box.min.x + S.box.max.x) / 2, -S.box.min.y, -(S.box.min.z + S.box.max.z) / 2); holder.add(inner); holder.scale.set(sx, sy, sz); return holder; }
 // Swap a code-built set piece for its scan. parent lets the scan ride a moving joint (the turret's head).
