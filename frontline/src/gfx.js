@@ -138,7 +138,7 @@ export function buildSky(renderer, scene, group, world, grade, atmosphere) { con
   envScene.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); });
   scene.fog = new THREE.FogExp2(K.fog, K.fogD);
   group.add(new THREE.HemisphereLight(K.hemi[0], K.hemi[1], K.hemi[2]));
-  const sun = new THREE.DirectionalLight(K.sun, K.sunI); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.05; Object.assign(sun.shadow.camera, { left: -62, right: 62, top: 62, bottom: -62, near: 1, far: 320 }); sun.shadow.camera.updateProjectionMatrix(); group.add(sun, sun.target);
+  const sun = new THREE.DirectionalLight(K.sun, K.sunI); sun.castShadow = true; const phone = !!(window.matchMedia && matchMedia('(pointer: coarse)').matches), SH = phone ? 62 : 85; /* desktop: a bigger, sharper shadow map reaches further */ sun.shadow.mapSize.set(phone ? 2048 : 4096, phone ? 2048 : 4096); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.05; Object.assign(sun.shadow.camera, { left: -SH, right: SH, top: SH, bottom: -SH, near: 1, far: 360 }); sun.shadow.camera.updateProjectionMatrix(); group.add(sun, sun.target);
   renderer.toneMappingExposure = K.exp; if (grade) grade.uniforms.uTint.value.set(K.tint[0], K.tint[1], K.tint[2]);
   // The shadow box follows the action so shadows stay sharp near you.
   return { sunDir, K, dispose() { envTarget.dispose(); }, hideDome() { skyObj.visible = false; if (clouds) clouds.visible = false; }, tick(t) { if (clouds) clouds.material.uniforms.uTime.value = t; }, follow(x, y, z) { if (clouds) clouds.position.set(x, 0, z); sun.target.position.set(x, y, z); sun.position.set(x + sunDir.x * 150, y + sunDir.y * 150, z + sunDir.z * 150); } }; }

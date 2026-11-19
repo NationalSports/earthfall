@@ -48,7 +48,7 @@ export function createWeather(group, H, profile, world) {
 export function wetSurface(material, wetness, time) {
   if (!wetness) return material;
   const previous = material.onBeforeCompile;
-  material.customProgramCacheKey = () => 'wet-surface-' + wetness;
+  const previousKey = material.customProgramCacheKey.bind(material); material.customProgramCacheKey = () => previousKey() + 'wet-surface-' + wetness;
   material.onBeforeCompile = shader => {
     previous.call(material, shader); shader.uniforms.uWetTime = time;
     shader.vertexShader = shader.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vWetPosition; varying float vWetSlope;')

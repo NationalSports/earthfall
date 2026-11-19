@@ -244,3 +244,17 @@ The Halo-style multiplayer in section 12 is a separate mode: players against pla
 ## Phase 2 (later): Unreal
 - Once missions, weapons and enemies feel right in the browser, rebuild in Unreal Engine for desktop (download/Steam instead of a link). The browser game is the prototype: design, maps, mission rules, balance numbers and GLB models carry over; code is rewritten in C++/Blueprints and built on a Windows PC with a good GPU.
 - Character motion then: Unreal's Motion Matching, or NVIDIA MotionBricks (github.com/NVlabs/motionbricks; needs an NVIDIA GPU and TensorRT; SOMA skeleton; its sample motions are evaluation-only, models under the NVIDIA Open Model Agreement).
+
+## Realistic ground, sky reflections and water
+- Photo-scanned ground (Poly Haven, CC0): `src/terrainpbr.js`. Four texture sets per world (city lots, open ground, second ground / LA beach sand, rock on steep slopes), packed by `tools/buildpbr.py` from Poly Haven's 1k JPGs into `assets/pbr/` (colour with occlusion baked in; normal X/Y + roughness), shipped as `dist/art-pbr.js`. The shader blends them per pixel from a per-vertex `splat` attribute plus noise, mixes two scales so the repeat never shows (far ground uses the large scale only), and maps rock onto cliff faces from the side so it doesn't stretch.
+  - LA: dirty concrete, grass ground, gravelly sand, cliff side. Kepler: dirty concrete, burned ground, cracked red ground, dark rock. Ceres: dirty concrete, dry ground, gravelly sand, cliff side.
+- LA (dusk and storm) uses the Poly Haven "Industrial Sunset 02" sky photo for reflections, spun so its sun matches the game's (`photoEnvironment`). Night and the other worlds keep the generated sky.
+- Fog takes the average horizon colour of the sky photo, so distant hills melt into the sky instead of a flat band.
+- LA's sea is a 7 km plane with travelling-wave normals (`waterMaterial`) that reflects the sky.
+- Desktop shadows: 4096 map covering ±85 m (phones keep 2048, ±62 m).
+- Briefing "Graphics": Smooth (phones draw at 1.25×) or Sharp (screen resolution up to 2.25×), saved in localStorage `frontline-gfx`.
+- The textures decode a moment after the mission starts; until then the ground is grey under the loading curtain.
+
+## Flight changes
+- Kestrel: fast flight now holds altitude. Space climbs, Shift or C sinks, and the mouse only steers and aims the cannon (aiming down no longer dives the jet). It keeps at least 14 m over the ground and roofs up to 3 s ahead (`roofAt`), so it no longer flies into buildings.
+- Goshawk: rotors spin up in about half a second and you can lift as soon as they pass a third of full speed. The touch stick now flies it (it used to only read the keyboard). C also descends.
