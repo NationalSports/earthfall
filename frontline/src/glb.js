@@ -165,6 +165,12 @@ if (src['kit-city']) load(src['kit-city']).then(buf => gltf().parse(buf, '', g =
   ready['kit-city'] = { name: 'kit-city', mods }; for (const w of kitWait.splice(0)) w(ready['kit-city']); }, e => console.warn('city kit failed', e))).catch(e => console.warn('city kit failed', e));
 export function onKit(cb) { if (ready['kit-city'] && ready['kit-city'].mods) cb(ready['kit-city']); else if (src['kit-city']) kitWait.push(cb); }
 export const hasKit = () => !!src['kit-city'];
+// The Strider (AnyMachine's Stilt walker, MIT): a rigid-part rig animated by its nodes, so it is cloned plainly per use.
+const striderWait = [];
+if (src.strider) load(src.strider).then(buf => gltf().parse(buf, '', g => { g.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; if (o.material.map) o.material.map.anisotropy = 4; } });
+  const box = new THREE.Box3().setFromObject(g.scene); ready.strider = { name: 'strider', scene: g.scene, make: () => cloneSkinned(g.scene), clips: g.animations, h: box.max.y - box.min.y, y0: box.min.y }; for (const w of striderWait.splice(0)) w(ready.strider); }, e => { console.warn('strider failed', e); ready.strider = { name: 'strider' }; }));
+export function onStrider(cb) { if (ready.strider && ready.strider.scene) cb(ready.strider); else if (src.strider) striderWait.push(cb); }
+export const hasStrider = () => !!src.strider;
 export function onTree(name, cb) { if (ready[name] && ready[name].parts) cb(ready[name]); else if (src[name]) (treeWait[name] = treeWait[name] || []).push(() => cb(ready[name])); }
 // A copy standing on its base at the origin, scaled per axis.
 function standing(S, sx, sy, sz) { const inner = S.scene.clone(), holder = new THREE.Group(); inner.position.set(-(S.box.min.x + S.box.max.x) / 2, -S.box.min.y, -(S.box.min.z + S.box.max.z) / 2); holder.add(inner); holder.scale.set(sx, sy, sz); return holder; }
