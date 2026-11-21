@@ -158,10 +158,22 @@ export function modelsReady() { const want = Object.keys(src); if (!want.length)
 // ---------- The Downtown City MegaKit (Quaternius, CC0): one GLB holding every wall, window, column, cornice and roof
 // module; each becomes plain float geometry so the city can draw thousands of them as instances.
 const kitWait = [];
+// Weathering on the kit's walls: soot and rain streaks running down from ledges and window sills, and grime near the pavement.
+// Worked out from world position, so no two walls carry the same pattern and nothing extra is downloaded.
+function weather(mt) { const prev = mt.onBeforeCompile; mt.onBeforeCompile = (sh, r) => { if (prev) prev.call(mt, sh, r);
+  sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vGW;').replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\n{ vec4 gw = vec4(transformed, 1.0);\n#ifdef USE_INSTANCING\ngw = instanceMatrix * gw;\n#endif\nvGW = (modelMatrix * gw).xyz; }');
+  sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vGW;\nfloat gH(vec2 p) { vec3 q = fract(vec3(p.xyx) * 0.1031); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y) * q.z); }\nfloat gN(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(gH(i), gH(i + vec2(1, 0)), f.x), mix(gH(i + vec2(0, 1)), gH(i + 1.0), f.x), f.y); }')
+    .replace('#include <color_fragment>', `#include <color_fragment>
+      { float u = vGW.x + vGW.z; float streak = gN(vec2(u * 2.3, vGW.y * 0.12)) * gN(vec2(u * 7.1, vGW.y * 0.35 + 3.0));
+        float under = 1.0 - smoothstep(0.0, 0.9, fract(vGW.y / 3.0));          // just below each floor line (sills, ledges)
+        float grime = 0.32 * smoothstep(0.35, 0.85, streak) + 0.18 * under * gN(vec2(u * 3.0, floor(vGW.y / 3.0))) + 0.12 * gN(vec2(u * 0.4, vGW.y * 0.4));
+        diffuseColor.rgb *= 1.0 - grime * 0.55; }`); };
+  mt.customProgramCacheKey = () => 'kit-weathered-' + mt.name; }
 if (src['kit-city']) load(src['kit-city']).then(buf => gltf().parse(buf, '', g => { const mods = {}, inv = new THREE.Matrix4(); g.scene.updateMatrixWorld(true);
   for (const node of g.scene.children) { inv.copy(node.matrixWorld).invert(); const parts = []; node.traverse(o => { if (!o.isMesh) return; const geo = toFloat(o.geometry); geo.applyMatrix4(o.matrixWorld); geo.computeBoundingSphere(); const mt = o.material; if (mt.map) mt.map.anisotropy = 4; if (!geo.attributes.color) mt.vertexColors = false;
-      if (/FakeInterior/.test(mt.name)) { mt.color.setRGB(0.16, 0.13, 0.1); mt.emissive = new THREE.Color(0.9, 0.62, 0.32); mt.emissiveIntensity = /_2|_4/.test(mt.name) ? 0.05 : 0.22; }
+      if (/FakeInterior/.test(mt.name)) return; /* the kit's flat window backdrops: the interior-mapped rooms on the building core (kitcity.js) show through instead */
       if (/Glass/.test(mt.name)) { mt.transparent = true; mt.depthWrite = false; mt.metalness = 0.6; mt.roughness = 0.08; mt.envMapIntensity = 1.4; }
+      else if (/Brick|Concrete|Trim|Ornament/.test(mt.name) && !mt.userData.grime) { mt.userData.grime = true; weather(mt); }
       parts.push({ geometry: geo, material: mt }); });
     mods[node.name] = parts; }
   ready['kit-city'] = { name: 'kit-city', mods }; for (const w of kitWait.splice(0)) w(ready['kit-city']); }, e => console.warn('city kit failed', e))).catch(e => console.warn('city kit failed', e));
