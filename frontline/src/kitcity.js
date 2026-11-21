@@ -24,7 +24,7 @@ for (const k in LODCOL) { const m = new THREE.MeshStandardMaterial({ color: LODC
 const CELL = 80, ROT = [0, Math.PI / 2, Math.PI, -Math.PI / 2];
 
 export function createKitCity() {
-  const list = [], lods = []; // [module name, Matrix4]; lods: [style, Matrix4] for the plain blocks drawn at a distance; a dark inner block per building stops you seeing through shop windows
+  const list = [], lods = [], signs = []; // signs: [Matrix4, 'wide' | 'tall', w, h] for neon on the street fronts (signs.js) // [module name, Matrix4]; lods: [style, Matrix4] for the plain blocks drawn at a distance; a dark inner block per building stops you seeing through shop windows
   const CORE = new THREE.BoxGeometry(1, 1, 1), coreMat = new THREE.MeshStandardMaterial({ color: 0x2a2420, roughness: 0.95, emissive: 0x3a2412, emissiveIntensity: 0.25 });
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), up = new THREE.Vector3(0, 1, 0), one = new THREE.Vector3(1, 1, 1), p = new THREE.Vector3();
   const put = (base, name, x, y, z, rot) => { if (!name) return; q.setFromAxisAngle(up, rot || 0); const m = new THREE.Matrix4().compose(p.set(x, y, z), q, one); list.push([name, new THREE.Matrix4().multiplyMatrices(base, m)]); };
@@ -50,10 +50,14 @@ export function createKitCity() {
       for (let x = -w / 2 + 2; x < w / 2; x += 4) for (let z = -d / 2 + 2; z < d / 2; z += 4) put(base, 'Roof_4x4', x, H - 0.02, z, 0);
       const ac = 1 + Math.floor(r() * 3); for (let i = 0; i < ac; i++) put(base, 'Prop_ACUnit', (r() - 0.5) * (w - 4), H, (r() - 0.5) * (d - 4), ROT[Math.floor(r() * 4)]);
       if (r() < 0.6) { put(base, 'Prop_Bollard', -1.6, 0, d / 2 + 1.2, 0); put(base, 'Prop_Bollard', 1.6, 0, d / 2 + 1.2, 0); }
+      // neon: a wide sign over most shopfronts and a tall blade sign on some corners (hashed from the position, so the city layout is unchanged)
+      const e = base.elements, hs = k => { const v = Math.sin(e[12] * 12.9898 + e[14] * 78.233 + k * 37.719) * 43758.5453; return v - Math.floor(v); }, L = (x, y, z, rot) => new THREE.Matrix4().multiplyMatrices(base, new THREE.Matrix4().compose(p.set(x, y, z), q.setFromAxisAngle(up, rot), one));
+      if (hs(1) < 0.8) { const sw = Math.min(w - 2.4, 3 + Math.round(hs(2) * 4)), sx = (hs(3) - 0.5) * Math.max(0, w - sw - 2.4); signs.push([L(sx, 3.45, d / 2 + 0.2, 0), 'wide', sw, sw / 4]); }
+      if (floors >= 3 && hs(4) < 0.5) { const sd = hs(5) < 0.5 ? -1 : 1, sh = Math.min(6, floors * 3 - 4); signs.push([L(sd * (w / 2 - 0.9), 3.2 + sh / 2, d / 2 + 0.75, Math.PI / 2), 'tall', sh / 4, sh]); }
       return { w, d, h: H + 1 }; },
     ready(base, name) { const R = READY[name]; put(base, name, -R[3], 0, -R[4], 0); lods.push(['pale', new THREE.Matrix4().multiplyMatrices(base, new THREE.Matrix4().compose(p.set(0, R[2] / 2, 0), q.identity(), new THREE.Vector3(R[0], R[2], R[1])))]); return { w: R[0], d: R[1], h: R[2] }; },
     prop(base, name) { put(base, name, 0, 0, 0, 0); },
-    get count() { return list.length; },
+    get count() { return list.length; }, signs,
     // turn the list into instanced meshes, once the kit has loaded
     // far cells hide; every module is still in the solids, so nothing changes for play
     // near cells draw every module; further out a plain block per building stands in; beyond `far` nothing

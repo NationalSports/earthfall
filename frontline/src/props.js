@@ -2,6 +2,7 @@
 // Every prop is modelled once, then stamped into the world and merged into one mesh per material,
 // so a whole district costs about twenty draw calls.
 import * as THREE from 'three';
+import { GLOW } from './signs.js';
 import { READY } from './kitcity.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { Kit, rb, bx, sph, cyl, cone, torus } from './models.js';
@@ -140,6 +141,8 @@ export const ZONES = { outskirts: { none: true, name: 'The Outskirts', sub: 'Scr
   beach: { name: 'The Beach', sub: 'Open sand. Nowhere to hide.', none: true }, hills: { name: 'The Hills', sub: 'High ground over the whole city', none: true } };
 export let OUTSKIRTS = false; export function setOutskirts(v) { OUTSKIRTS = v; }
 export function zoneOf(x, z) { if ((-x - z) * 0.7071 > 150) return 'hills'; if (z > 166) return 'beach'; if (OUTSKIRTS && Math.max(Math.abs(x), Math.abs(z)) > 330) return 'outskirts'; if (OUTSKIRTS && Math.max(Math.abs(x), Math.abs(z)) > 250) return x > 250 ? 'industrial' : z < -250 ? 'suburbs' : 'outskirts'; if (z < -118) return 'port'; if (x > 118) return 'financial'; if (x < -118) return 'westside'; if (z > 118) return 'coast'; return 'downtown'; }
+// A round alpha falloff, so pools of lamplight fade out instead of ending in a hard edge.
+let _disc = null; function softDisc() { if (_disc) return _disc; const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d'), gr = g.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, '#fff'); gr.addColorStop(0.35, '#b8b8b8'); gr.addColorStop(1, '#000'); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return (_disc = new THREE.CanvasTexture(c)); }
 export function buildDistrict(group, world, H, TEX, addSolid, blocked, opts) { opts = opts || {};
   // What sits on a flat roof: plant, a stair head, a water tank on older blocks, and a crown, mast and beacon on the towers. No two roofs alike.
   const roofB = {}, rr = rng(4243), rput = (k, g, x, y, z, ry) => { const n = g.toNonIndexed(); if (ry) n.rotateY(ry); n.translate(x, y, z); (roofB[k] = roofB[k] || []).push(n); };
@@ -215,10 +218,15 @@ export function buildDistrict(group, world, H, TEX, addSolid, blocked, opts) { o
   }
   for (const e of opts.extra || []) if (put(e[0], e[1], e[2], e[3] || 0, e[4]) && e[0] === 'floodlight') lights.push([e[1], e[2]]);
   if (opts.dusk && lights.length) { const cones = [], pools = []; for (const l of lights) { const gy = H(l[0], l[1]), hh = (l[2] || 5), c = new THREE.ConeGeometry(3.6, hh, 18, 4, true).toNonIndexed(), cp = c.attributes.position, cc = new Float32Array(cp.count * 3); for (let i = 0; i < cp.count; i++) { const v = Math.pow((cp.getY(i) + hh / 2) / hh, 1.6); cc[i * 3] = v; cc[i * 3 + 1] = v; cc[i * 3 + 2] = v; } c.setAttribute('color', new THREE.BufferAttribute(cc, 3)); c.translate(l[0], gy + hh / 2, l[1]); cones.push(c); const d = new THREE.CircleGeometry(4.6, 20).toNonIndexed(); d.rotateX(-PI / 2); d.translate(l[0], gy + 0.22, l[1]); pools.push(d); }
-    const cm = new THREE.Mesh(mergeGeometries(cones), new THREE.MeshBasicMaterial({ color: 0xffc078, vertexColors: true, transparent: true, opacity: 0.11, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, fog: false })); group.add(cm);
-    const pm2 = new THREE.Mesh(mergeGeometries(pools), new THREE.MeshBasicMaterial({ color: 0xffb060, transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -12 })); group.add(pm2); }
-  for (const k in roofB) { const m = new THREE.Mesh(mergeGeometries(roofB[k]), P[k] || P.steel); m.castShadow = !/^lamp/.test(k); m.receiveShadow = true; group.add(m); }
-  for (const k in bucket) { const m = new THREE.Mesh(mergeGeometries(bucket[k]), P[k]); m.castShadow = !/^lamp|sign|poster|glass/.test(k); m.receiveShadow = true; group.add(m); }
+    const coneMat = new THREE.MeshBasicMaterial({ color: 0xffc078, vertexColors: true, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, fog: false });
+    // soft light shafts: brightest through the middle of the cone, fading to nothing at its edges and toward the ground
+    coneMat.onBeforeCompile = sh => { sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vSoftN; varying vec3 vSoftV;').replace('#include <project_vertex>', '#include <project_vertex>\nvSoftN = normalize(normalMatrix * normal); vSoftV = -mvPosition.xyz;');
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vSoftN; varying vec3 vSoftV;').replace('#include <color_fragment>', '#include <color_fragment>\nfloat edge = abs(dot(normalize(vSoftN), normalize(vSoftV))); diffuseColor.a *= pow(edge, 2.2);'); };
+    coneMat.customProgramCacheKey = () => 'soft-cone';
+    const cm = new THREE.Mesh(mergeGeometries(cones), coneMat); cm.layers.enable(GLOW); group.add(cm);
+    const pm2 = new THREE.Mesh(mergeGeometries(pools), new THREE.MeshBasicMaterial({ color: 0xffb060, transparent: true, opacity: 0.32, alphaMap: softDisc(), blending: THREE.AdditiveBlending, depthWrite: false, fog: false, polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -12 })); group.add(pm2); }
+  for (const k in roofB) { const m = new THREE.Mesh(mergeGeometries(roofB[k]), P[k] || P.steel); m.castShadow = !/^lamp/.test(k); m.receiveShadow = true; if (/^lamp/.test(k)) m.layers.enable(GLOW); group.add(m); }
+  for (const k in bucket) { const m = new THREE.Mesh(mergeGeometries(bucket[k]), P[k]); m.castShadow = !/^lamp|sign|poster|glass/.test(k); m.receiveShadow = true; if (/^lamp/.test(k)) m.layers.enable(GLOW); group.add(m); }
   // ---------- Painted and worn road surface: crossings at every junction, cracks and tyre marks along the avenues. Flat quads laid on the ground, one mesh per kind.
   if (L.style === 'street') { const dr = rng(977), batch = () => ({ pos: [], uv: [], idx: [] }), quad = (B, cx, cz, a, w, l, lift) => { const s = Math.sin(a), c = Math.cos(a), n = B.pos.length / 3; for (const [u, v] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) { const x = cx + c * u * w / 2 + s * v * l / 2, z = cz - s * u * w / 2 + c * v * l / 2; B.pos.push(x, H(x, z) + lift, z); B.uv.push((u + 1) / 2, (v + 1) / 2); } B.idx.push(n, n + 2, n + 1, n, n + 3, n + 2); },
       mesh = (B, mat) => { if (!B.idx.length) return; const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(B.pos, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(B.uv, 2)); g.setIndex(B.idx); g.computeVertexNormals(); const m = new THREE.Mesh(g, mat); m.receiveShadow = true; m.renderOrder = 1; group.add(m); },

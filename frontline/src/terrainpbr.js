@@ -33,7 +33,7 @@ export function terrainMaterial(world, { coarse, anisotropy, tint }) {
   U.uPD.value = c.d; U.uPN.value = c.n;
   if (!c.ready) c.ready = buildArrays(world, coarse ? 512 : 1024, anisotropy).then(([d, n]) => { c.d = d; c.n = n; }).catch(e => console.warn('ground textures', e));
   c.ready.then(() => { U.uPD.value = c.d; U.uPN.value = c.n; });
-  const mat = new THREE.MeshStandardMaterial({ color: tint, vertexColors: true, roughness: 1, metalness: 0 });
+  const mat = new THREE.MeshStandardMaterial({ color: tint, vertexColors: true, roughness: 1, metalness: 0, envMapIntensity: 0.55 });
   mat.customProgramCacheKey = () => 'pbr-ground-' + (coarse ? 1 : 2);
   mat.onBeforeCompile = sh => {
     Object.assign(sh.uniforms, U);
