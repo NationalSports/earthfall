@@ -258,3 +258,14 @@ The Halo-style multiplayer in section 12 is a separate mode: players against pla
 ## Flight changes
 - Kestrel: fast flight now holds altitude. Space climbs, Shift or C sinks, and the mouse only steers and aims the cannon (aiming down no longer dives the jet). It keeps at least 14 m over the ground and roofs up to 3 s ahead (`roofAt`), so it no longer flies into buildings.
 - Goshawk: rotors spin up in about half a second and you can lift as soon as they pass a third of full speed. The touch stick now flies it (it used to only read the keyboard). C also descends.
+
+## Photo-scanned rocks and plants; Blender-built Kestrel
+- Rocks and plants from Poly Haven (CC0), one variant per file, built by `tools/buildnature.mjs` from Poly Haven's 1k glTF downloads into `public/assets/models/nat-*.glb`:
+  - Rocks: `nat-rock-a` (Rock 07), `nat-rock-b` (Rock 09), `nat-rock-c` (Namaqualand Boulder 04), `nat-cliff` (Rock Face 01), `nat-moon-a/b` (Moon Rock 02/03, Ceres).
+  - Plants: `nat-shrub-a/b` (Shrub 02 a/c), `nat-scrub-a/b` (Wild Rooibos Bush a/b), `nat-weed` (Weed Plant 02).
+  - They load through the tree loader in glb.js (rocks don't sway; scrub leaves are brightened because the scan is very dark) and are planted per district by `NATURE` in trees.js. Rocks over 1.6 m are solid (`trees.blocks`).
+  - With them loaded, `scatter()` skips its old low-poly rocks and LA bush blobs. The thin grass blades remain.
+- Kestrel model: built from code in Blender by `tools/blender/kestrel.py`, packed by `tools/packglb.mjs` into `public/assets/models/kestrel.glb` (about 7,500 triangles, 75 KB).
+  - To rebuild: `pip install bpy`, then `python3 tools/blender/kestrel.py /tmp/k.glb && node tools/packglb.mjs /tmp/k.glb public/assets/models/kestrel.glb`.
+  - It's centred so the nose is at -6.6 m and the nozzle at +6.7 m in game space, with wheels on the ground. `makeJet` swaps it in with `dressStatic`; the engine glow disc now sits on the outer group so it stays visible.
+- Blender in the workspace can't read meshopt-compressed GLBs; decompress them first (see `/tmp`-style plain export with gltf-transform) if you need to render one for checking.
