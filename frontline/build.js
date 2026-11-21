@@ -6,7 +6,7 @@ const game = require('esbuild').buildSync({ entryPoints: [path.join(__dirname, '
 const assets = {}, mime = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp' };
 // The five Earth-region kits (about 20 MB) stay out of the page until the territory map can send you to those regions.
 const REGION_KIT = /^(ground-(cobble|paver|redearth|sand|snow)|facade-(desert|tropic|europe|north|asia)-)/;
-const walk = dir => { if (!fs.existsSync(dir)) return; for (const f of fs.readdirSync(dir)) { const full = path.join(dir, f), ext = path.extname(f).toLowerCase(); if (fs.statSync(full).isDirectory()) walk(full); else if (mime[ext] && !/\/(ui|weapons|props)\//.test(full.replace(/\\/g, '/')) && !REGION_KIT.test(f)) assets[path.basename(f, ext)] = 'data:' + mime[ext] + ';base64,' + fs.readFileSync(full).toString('base64'); } };
+const walk = dir => { if (!fs.existsSync(dir)) return; for (const f of fs.readdirSync(dir)) { const full = path.join(dir, f), ext = path.extname(f).toLowerCase(); if (fs.statSync(full).isDirectory()) walk(full); else if (mime[ext] && !/\/round-\d+\//.test(full) && !/\/(ui|weapons|props)\//.test(full.replace(/\\/g, '/')) && !/\/assets\/(map|pbr)\//.test(full.replace(/\\/g, '/')) && !REGION_KIT.test(f)) assets[path.basename(f, ext)] = 'data:' + mime[ext] + ';base64,' + fs.readFileSync(full).toString('base64'); } };
 walk(path.join(__dirname, 'public/assets')); walk(path.join(__dirname, 'assets')); if (process.env.FRONTLINE_ART) walk(process.env.FRONTLINE_ART);
 // Round 4 art (frontline/assets/r4, resized copies of chat's kit) ships in a second file, dist/art-r4.js, to keep the page itself small.
 const r4 = {}; { const dir = path.join(__dirname, 'assets/r4'); if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir)) { const ext = path.extname(f).toLowerCase(), n = path.basename(f, ext); if (mime[ext]) { r4[n] = 'data:' + mime[ext] + ';base64,' + fs.readFileSync(path.join(dir, f)).toString('base64'); delete assets[n]; } } }
@@ -21,9 +21,18 @@ const modelJs = 'window.FRONTLINE_MODELS=' + JSON.stringify(models) + ';';
 html = html.replace('/*ASSETS*/', () => 'window.FRONTLINE_ASSETS=' + JSON.stringify(assets) + ';' + 'window.FRONTLINE_MODELS={};</script><script src="art-r4.js">' + Object.keys(models).map(n => '</script><script src="model-' + n + '.js">').join('')).replace('/*GAME*/', () => game);
 // Rapier physics (about 4 MB with its WebAssembly) ships beside the page as dist/physics.js and sets window.RAPIER.
 const physics = require('esbuild').buildSync({ entryPoints: [path.join(__dirname, 'src/physics-entry.js')], bundle: true, format: 'iife', minify: true, write: false, target: 'es2020', legalComments: 'none' }).outputFiles[0].text;
-html = html.replace('<script src="art-r4.js">', '<script src="physics.js"></script><script src="art-r4.js">');
+html = html.replace('<script src="art-r4.js">', '<script src="physics.js"></script><script src="sfx.js"></script><script src="art-map.js"></script><script src="art-pbr.js"></script><script src="art-r4.js">');
 fs.mkdirSync(OUT, { recursive: true }); fs.writeFileSync(path.join(OUT, 'index.html'), html);
 fs.writeFileSync(path.join(OUT, 'physics.js'), physics);
+// Tactical map art (frontline/assets/map, from chat's PR #47) rides beside the page as dist/art-map.js; its qa/ and source/ folders and the mockup stay out.
+{ const dir = path.join(__dirname, 'assets/map'), out = {}; if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir)) { const ext = path.extname(f).toLowerCase(), n = path.basename(f, ext); if (mime[ext] && n !== 'map-mockup') out[n] = 'data:' + mime[ext] + ';base64,' + fs.readFileSync(path.join(dir, f)).toString('base64'); }
+  fs.writeFileSync(path.join(OUT, 'art-map.js'), 'Object.assign(window.FRONTLINE_ASSETS,' + JSON.stringify(out) + ');'); }
+// Photo-scanned ground textures and sky photos (Poly Haven, CC0; packed by tools/buildpbr.py) ride beside the page as dist/art-pbr.js.
+{ const dir = path.join(__dirname, 'assets/pbr'), out = {}, pm = { ...mime, '.hdr': 'image/vnd.radiance' }; if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir).sort()) { const ext = path.extname(f).toLowerCase(); if (pm[ext]) out['pbr-' + path.basename(f, ext)] = 'data:' + pm[ext] + ';base64,' + fs.readFileSync(path.join(dir, f)).toString('base64'); }
+  fs.writeFileSync(path.join(OUT, 'art-pbr.js'), 'Object.assign(window.FRONTLINE_ASSETS,' + JSON.stringify(out) + ');'); }
 fs.writeFileSync(path.join(OUT, 'art-r4.js'), 'Object.assign(window.FRONTLINE_ASSETS,' + JSON.stringify(r4) + ');');
+// Recorded sounds (CC0 Kenney packs, cut to short mono MP3s) ride beside the page as dist/sfx.js.
+{ const dir = path.join(__dirname, 'public/assets/sfx'), sfx = {}; if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir).sort()) if (f.endsWith('.mp3')) sfx[f.slice(0, -4)] = fs.readFileSync(path.join(dir, f)).toString('base64');
+  fs.writeFileSync(path.join(OUT, 'sfx.js'), 'window.FRONTLINE_SFX=' + JSON.stringify(sfx) + ';'); }
 for (const n in models) fs.writeFileSync(path.join(OUT, 'model-' + n + '.js'), 'window.FRONTLINE_MODELS[' + JSON.stringify(n) + ']=' + JSON.stringify(models[n]) + ';');
 console.log('built ' + path.relative(path.dirname(__dirname), OUT) + '/index.html', html.length, 'bytes,', Object.keys(assets).length, 'art files');

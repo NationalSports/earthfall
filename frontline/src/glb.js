@@ -6,6 +6,8 @@ import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.j
 // The models are meshopt-compressed (see tools/optimize.mjs), so every loader needs the decoder.
 const gltf = () => new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
 import { clone as cloneSkinned } from 'three/examples/jsm/utils/SkeletonUtils.js';
+import { retarget } from './anim.js';
+const UAL = { walkU: 'Walk_Loop', jogU: 'Jog_Fwd_Loop', crouch: 'Crouch_Idle_Loop', crouchFwd: 'Crouch_Fwd_Loop', idle: 'Idle_Loop', sprint: 'Sprint_Loop', roll: 'Roll', air: 'Jump_Loop', hit: 'Hit_Chest', hitH: 'Hit_Head', die2: 'Death01', punch: 'Punch_Cross' };
 
 const src = (typeof window !== 'undefined' && window.FRONTLINE_MODELS) || {}, ready = {}, waiting = [];
 if (typeof window !== 'undefined') window.__glbReady = () => Object.keys(ready).join(',');
@@ -24,8 +26,12 @@ if (src.soldier) load(src.soldier).then(buf => gltf().parse(buf, '', g => {
   const scene = g.scene; let mat = null; scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = false; o.frustumCulled = false; mat = o.material; } });
   mat.side = THREE.FrontSide; mat.envMapIntensity = 1.25; if (mat.map) { mat.map.anisotropy = 4; mat.emissiveMap = glowTexture(mat.map); mat.emissive = new THREE.Color(0xffffff); mat.emissiveIntensity = 1; }
   const box = new THREE.Box3().setFromObject(scene), clips = {}; for (const c of g.animations) { if (c.name !== 'Dead') for (const t of c.tracks) if (/Hips\.position/.test(t.name)) for (let i = 0; i < t.values.length; i += 3) { t.values[i] = t.values[0]; t.values[i + 2] = t.values[2]; } clips[c.name] = c; }
-  ready.soldier = { scene, clips, scale: HEIGHT / (box.max.y - box.min.y), mat, red: null };
-  for (const w of waiting.splice(0)) w();
+  const done = () => { if (src.ual) ready.ual = ready.ual || { name: 'ual' }; ready.soldier = { scene, clips, scale: HEIGHT / (box.max.y - box.min.y), mat, red: null }; for (const w of waiting.splice(0)) w(); };
+  // extra moves (idle, sprint, roll, jump, hit, punch, a second death) come from the animation library when it is shipped
+  if (!src.ual) return done();
+  load(src.ual).then(ub => gltf().parse(ub, '', U => { try { const got = retarget(U.scene, U.animations, cloneSkinned(scene), UAL, 'mixamorig');
+      for (const [k, c] of Object.entries(got)) { if (k !== 'die2') for (const t of c.tracks) if (/Hips\.position/.test(t.name)) for (let i = 0; i < t.values.length; i += 3) { t.values[i] = t.values[0]; t.values[i + 2] = t.values[2]; } clips[k] = c; }
+      } catch (e) { console.warn('animation library failed', e); } done(); }, e => { console.warn('animation library failed', e); done(); })).catch(e => { console.warn('animation library failed', e); done(); });
 }, e => console.warn('soldier model failed to load', e))).catch(e => console.warn('soldier model failed to load', e));
 
 // ---------- The swarm. Each scan carries an automatic skeleton with no animation, so its legs are found by shape
@@ -70,15 +76,17 @@ export function dress(m, variant) {
   const go = () => { const S = ready.soldier, J = m.userData.J; if (!S || m.userData.body) return;
     m.traverse(o => { if (o.isMesh) { let p = o, gun = false; while (p) { if (p === J.gun) gun = true; p = p.parent; } if (!gun) o.visible = false; } });
     const body = cloneSkinned(S.scene), holder = new THREE.Group(); holder.rotation.y = Math.PI; holder.scale.setScalar(S.scale); holder.add(body); m.add(holder);
+    if (variant === 'civ') { if (!S.civ) { S.civ = S.mat.clone(); S.civ.color = new THREE.Color(1.9, 0.82, 0.24); S.civ.emissive = new THREE.Color(0.22, 0.09, 0.02); } body.traverse(o => { if (o.isMesh) o.material = S.civ; }); }
     if (variant === 'red') { if (!S.red) { S.red = S.mat.clone(); S.red.emissiveMap = glowTexture(S.mat.map, true); S.red.map = redTexture(S.mat.map); } body.traverse(o => { if (o.isMesh) o.material = S.red; }); }
     const bone = {}; body.traverse(o => { if (o.isBone) bone[o.name] = o; }); const U = { holder, body, bone, mixer: new THREE.AnimationMixer(body), act: {}, w: {}, rest: {}, last: null, lt: null, vx: 0, vz: 0, deadT: 0, chest: new THREE.Vector3() };
     for (const k in bone) U.rest[k] = bone[k].quaternion.clone();
     for (const [k, n] of Object.entries(CLIPS)) if (S.clips[n]) { const a = U.mixer.clipAction(S.clips[n]); a.setEffectiveWeight(0); a.play(); U.act[k] = a; U.w[k] = 0; }
-    if (U.act.dead) { U.act.dead.setLoop(THREE.LoopOnce, 1); U.act.dead.clampWhenFinished = true; }
+    for (const k of ['dead', 'die2', 'roll', 'hit', 'hitH', 'punch']) if (U.act[k]) { U.act[k].setLoop(THREE.LoopOnce, 1); U.act[k].clampWhenFinished = true; }
+    U.die = U.act.die2 && Math.random() < 0.5 ? 'die2' : 'dead'; U.hitWas = 0; U.oneT = {};
     m.updateWorldMatrix(true, true); const len = (a, b) => bone[B(a)].getWorldPosition(_a).distanceTo(bone[B(b)].getWorldPosition(_b)); U.l1 = len('RightArm', 'RightForeArm'); U.l2 = len('RightForeArm', 'RightHand'); U.mixer.update(0); pickChest(m, U, U.chest); m.userData.body = U; };
   if (ready.soldier) go(); else if (src.soldier) waiting.push(go);
 }
-const CLIPS = { walk: 'Walk_Forward_While_Shooting', run: 'Run_and_Shoot', back: 'Walk_Backward_with_Gun', left: 'Walk_Left_with_Gun', right: 'Walk_Left_with_Gun', dead: 'Dead' };
+const CLIPS = { walk: 'Walk_Forward_While_Shooting', run: 'Run_and_Shoot', back: 'Walk_Backward_with_Gun', left: 'Walk_Left_with_Gun', right: 'Walk_Left_with_Gun', dead: 'Dead', idle: 'idle', sprint: 'sprint', roll: 'roll', air: 'air', hit: 'hit', hitH: 'hitH', die2: 'die2', punch: 'punch', crouch: 'crouch', crouchFwd: 'crouchFwd', walkU: 'walkU', jogU: 'jogU' };
 const X = new THREE.Vector3(), _T = new THREE.Vector3(), _pole = new THREE.Vector3(), _mq = new THREE.Quaternion(), _ch = new THREE.Vector3(), _want = {};
 function pickChest(m, U, out) { m.updateWorldMatrix(true, true); return m.worldToLocal(U.bone[B('Spine2')].getWorldPosition(out)); }
 // Called after the code rig has been posed: s is the same state, grips are the two hand targets in the gun's own space.
@@ -88,9 +96,16 @@ export function poseBody(m, s, gripL, gripR) { const U = m.userData.body; if (!U
   if (dt > 0 && U.last) { const k = Math.min(1, dt * 12); U.vx += ((m.position.x - U.last.x) / dt - U.vx) * k; U.vz += ((m.position.z - U.last.z) / dt - U.vz) * k; } (U.last || (U.last = new THREE.Vector3())).copy(m.position);
   const yaw = m.rotation.y, fwd = -(U.vx * Math.sin(yaw) + U.vz * Math.cos(yaw)), side = U.vx * Math.cos(yaw) - U.vz * Math.sin(yaw), sp = Math.hypot(fwd, side), mv = Math.min(1, sp / 2.2);
   for (const k in A) _want[k] = 0;
-  if (s.dead) { _want.dead = 1; m.rotation.x = 0; U.holder.position.y = -0.3; }
+  if (s.dead) { _want[A[U.die] ? U.die : 'dead'] = 1; m.rotation.x = 0; U.holder.position.y = U.die === 'die2' ? 0 : -0.3; }
   else { U.holder.position.y = 0; const f = Math.max(0, fwd) / (sp || 1), b = Math.max(0, -fwd) / (sp || 1), l = Math.max(0, -side) / (sp || 1), r = Math.max(0, side) / (sp || 1), n = f + b + l + r || 1, fast = Math.min(1, Math.max(0, (sp - 7) / 2));
-    _want.idle = 1 - mv; _want.run = mv * f / n * fast; _want.walk = mv * f / n * (1 - fast); _want.back = mv * b / n; _want.left = mv * l / n; _want.right = mv * r / n; if (hang) { for (const k in _want) _want[k] = 0; _want.idle = 1; } }
+    _want.idle = 1 - mv; _want.run = mv * f / n * fast; _want.walk = mv * f / n * (1 - fast); _want.back = mv * b / n; _want.left = mv * l / n; _want.right = mv * r / n;
+    if (s.run && A.sprint) { _want.sprint = _want.run; _want.run = 0; }
+    // crouched: the crouch walk takes over the legs, the crouch idle when still
+    const ck = s.crouch || 0; if (ck > 0 && A.crouch) { for (const k in _want) _want[k] *= 1 - ck; _want.crouch = ck * (1 - mv); _want.crouchFwd = ck * mv; }
+    // survivors carry no rifle: plain walk and jog, and they cower (crouch) while waiting
+    if (s.unarmed && A.walkU) { const cw = s.crouch || 0; for (const k in _want) _want[k] = 0; _want.crouch = cw * (1 - mv); _want.crouchFwd = cw * mv; _want.idle = (1 - cw) * (1 - mv); _want[s.run ? 'jogU' : 'walkU'] = (1 - cw) * mv; }
+    if (hang) { for (const k in _want) _want[k] = 0; if (s.dive && A.roll) _want.roll = 1; else if (A.air) _want.air = 1; else _want.idle = 1; }
+    if (s.bash > 0 && A.punch) _want.punch = Math.min(1, s.bash * 2); }
   const kk = t === null ? 1 : Math.min(1, dt * 9); let idleW = 0, walkW = 0, leftW = 0, rightW = 0;
   for (const k in A) { U.w[k] += (_want[k] - U.w[k]) * kk; }
   // Clips that share one animation (idle and walk, left and right) share one action: its weight is the sum, its speed set by whichever leads.
@@ -99,19 +114,26 @@ export function poseBody(m, s, gripL, gripR) { const U = m.userData.body; if (!U
   if (A.run) { A.run.setEffectiveWeight(U.w.run); A.run.timeScale = Math.min(1.5, Math.max(0.85, sp / 8.5)); }
   if (A.back) { A.back.setEffectiveWeight(U.w.back); A.back.timeScale = cad; }
   if (A.left) { A.left.setEffectiveWeight(U.w.left + U.w.right); A.left.timeScale = U.w.right > U.w.left ? -cad : cad; }
-  if (A.dead) { A.dead.setEffectiveWeight(U.w.dead); if (s.dead) { if (!U.deadT) A.dead.reset().play(); U.deadT += dt; if (t === null) A.dead.time = A.dead.getClip().duration; } else U.deadT = 0; }
+  if (A.walkU) A.walkU.timeScale = Math.min(1.6, Math.max(0.7, sp / 1.5)); if (A.jogU) A.jogU.timeScale = Math.min(1.5, Math.max(0.8, sp / 5));
+  for (const k of ['idle', 'sprint', 'air', 'crouch', 'crouchFwd', 'walkU', 'jogU']) if (A[k]) A[k].setEffectiveWeight(U.w[k]); if (A.sprint) A.sprint.timeScale = Math.min(1.4, Math.max(0.8, sp / 9)); if (A.roll) A.roll.timeScale = 2.4;
+  // one-shot moves restart when they come back on: a dive rolls, a shove swings, a fresh hit flinches
+  for (const k of ['roll', 'punch']) if (A[k]) { if (_want[k] > 0 && !U.oneT[k]) A[k].reset().play(); U.oneT[k] = _want[k] > 0; A[k].setEffectiveWeight(U.w[k]); }
+  const hit = s.hit || 0; if (A.hit && hit > U.hitWas + 0.3 && !s.dead) { U.flinch = Math.random() < 0.3 && A.hitH ? 'hitH' : 'hit'; A[U.flinch].reset().play(); U.flinchT = 0; } U.hitWas = hit;
+  if (U.flinch) { U.flinchT += dt; const fw = Math.max(0, 0.8 - U.flinchT * 1.6); A[U.flinch].setEffectiveWeight(fw); if (fw <= 0) U.flinch = null; }
+  for (const k of ['dead', 'die2']) if (A[k]) { A[k].setEffectiveWeight(U.w[k]); if (s.dead && k === U.die) { if (!U.deadT) A[k].reset().play(); U.deadT += dt; if (t === null) A[k].time = A[k].getClip().duration; } }
+  if (!s.dead) U.deadT = 0;
   for (const k in U.rest) bn[k].quaternion.copy(U.rest[k]); U.mixer.update(dt);
-  if (s.dead) { m.updateWorldMatrix(true, true); return; }
+  if (s.dead || s.unarmed) { m.updateWorldMatrix(true, true); return; }
   // The weapon rides the chest, so it bobs and sways with the body instead of floating in front of it.
   pickChest(m, U, _ch).sub(U.chest); J.gun.position.x += _ch.x * 0.8; J.gun.position.y += _ch.y; J.gun.position.z += _ch.z * 0.8; m.updateWorldMatrix(true, true);
   m.getWorldQuaternion(_mq); X.set(1, 0, 0).applyQuaternion(_mq);
   const lean = (s.pitch || 0) * 0.45 - (s.kick || 0) * 0.03 + 0.06 + Math.sin((t || 0) * 1.9) * 0.012; turn(bn[B('Spine1')], _q.setFromAxisAngle(X, lean)); turn(bn[B('Head')], _q.setFromAxisAngle(X, (s.pitch || 0) * 0.3));
-  if (hang) { for (const sd of ['Left', 'Right']) { turn(bn[B(sd + 'UpLeg')], _q.setFromAxisAngle(X, sd === 'Left' ? -0.5 : -0.15)); turn(bn[B(sd + 'Leg')], _q.setFromAxisAngle(X, sd === 'Left' ? 0.9 : 0.5)); } }
+  if (hang && !A.roll && !A.air) { for (const sd of ['Left', 'Right']) { turn(bn[B(sd + 'UpLeg')], _q.setFromAxisAngle(X, sd === 'Left' ? -0.5 : -0.15)); turn(bn[B(sd + 'Leg')], _q.setFromAxisAngle(X, sd === 'Left' ? 0.9 : 0.5)); } }
   for (const sd of ['Left', 'Right']) { const R = sd === 'Right'; J.gun.localToWorld(_T.copy(R ? gripR : gripL)); _pole.set(R ? 0.6 : -0.6, -1, 0.35).applyQuaternion(_mq); reach(bn[B(sd + 'Arm')], bn[B(sd + 'ForeArm')], bn[B(sd + 'Hand')], _T, _pole, U.l1, U.l2); }
 }
 
 // ---------- Scanned set pieces with no skeleton: buildings, hive, turret, drop pod, shuttle, generator.
-const STATIC = ['goshawk', 'prop-sedan', 'prop-sedan-burned', 'prop-van', 'prop-bus', 'prop-barrier', 'prop-dumpster', 'prop-rubble', 'prop-streetlight', 'prop-signal', 'prop-shelter', 'prop-wall', 'prop-palm', 'hive', 'turret', 'pod', 'shuttle', 'generator', 'bld-artdeco', 'bld-brick', 'bld-diner', 'bld-garage', 'bld-glass', 'bld-stucco'], statWait = {};
+const STATIC = ['goshawk', 'kestrel', 'prop-sedan', 'prop-sedan-burned', 'prop-van', 'prop-bus', 'prop-barrier', 'prop-dumpster', 'prop-rubble', 'prop-streetlight', 'prop-signal', 'prop-shelter', 'prop-wall', 'prop-palm', 'hive', 'turret', 'pod', 'shuttle', 'generator', 'bld-artdeco', 'bld-brick', 'bld-diner', 'bld-garage', 'bld-glass', 'bld-stucco'], statWait = {};
 for (const f of STATIC) if (src[f]) load(src[f]).then(buf => gltf().parse(buf, '', g => { g.scene.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; const mt = o.material; mt.side = THREE.FrontSide; mt.envMapIntensity = 1.1; if (mt.map) { mt.map.anisotropy = 8; mt.emissiveMap = mt.map; mt.emissive = new THREE.Color(0xffffff); mt.emissiveIntensity = f === 'hive' ? 0.3 : 0.14; } } });
   const box = new THREE.Box3().setFromObject(g.scene); ready[f] = { name: f, scene: g.scene, box, size: box.getSize(new THREE.Vector3()) }; for (const w of (statWait[f] || []).splice(0)) w(); }, e => console.warn(f + ' model failed', e))).catch(e => console.warn(f + ' model failed', e));
 // ---------- Trees generated with EZ-Tree (tools/treegen): flattened to plain float geometry one unit tall with the base
@@ -119,18 +141,50 @@ for (const f of STATIC) if (src[f]) load(src[f]).then(buf => gltf().parse(buf, '
 export const WIND = { value: 0 };
 // alien leaves: the leaf texture is greyed and recoloured
 const TREE_TINT = { 'tree-alien': [1.0, 0.5, 1.5], 'tree-alien2': [0.35, 1.35, 1.25] };
-const TREES = ['tree-oak', 'tree-ash', 'tree-aspen', 'tree-pine', 'tree-bush', 'tree-alien', 'tree-alien2'], treeWait = {};
-const toFloat = g => { const out = new THREE.BufferGeometry(); for (const k of ['position', 'normal', 'uv']) { const a = g.attributes[k]; if (!a) continue; const n = a.itemSize, f = new Float32Array(a.count * n); for (let i = 0; i < a.count; i++) for (let j = 0; j < n; j++) f[i * n + j] = a.getComponent(i, j); out.setAttribute(k, new THREE.BufferAttribute(f, n)); } if (g.index) out.setIndex(Array.from(g.index.array)); return out; };
+// nat-*: photo-scanned rocks and plants from Poly Haven (CC0), built by tools/buildnature.mjs; drawn the same way as trees.
+const TREES = ['tree-oak', 'tree-ash', 'tree-aspen', 'tree-pine', 'tree-bush', 'tree-alien', 'tree-alien2', 'nat-rock-a', 'nat-rock-b', 'nat-rock-c', 'nat-cliff', 'nat-moon-a', 'nat-moon-b', 'nat-shrub-a', 'nat-shrub-b', 'nat-scrub-a', 'nat-scrub-b', 'nat-weed'], treeWait = {};
+export const hasNature = () => !!src['nat-rock-a'];
+const toFloat = g => { const out = new THREE.BufferGeometry(); for (const k of ['position', 'normal', 'uv', 'color']) { const a = g.attributes[k]; if (!a) continue; const n = a.itemSize, f = new Float32Array(a.count * n); for (let i = 0; i < a.count; i++) for (let j = 0; j < n; j++) f[i * n + j] = a.getComponent(i, j); out.setAttribute(k, new THREE.BufferAttribute(f, n)); } if (g.index) out.setIndex(Array.from(g.index.array)); return out; };
 for (const f of TREES) if (src[f]) load(src[f]).then(buf => gltf().parse(buf, '', g => { g.scene.updateMatrixWorld(true); const box = new THREE.Box3().setFromObject(g.scene), h = box.max.y - box.min.y, cx = (box.min.x + box.max.x) / 2, cz = (box.min.z + box.max.z) / 2, parts = [];
   g.scene.traverse(o => { if (!o.isMesh) return; const geo = toFloat(o.geometry); geo.applyMatrix4(o.matrixWorld); geo.translate(-cx, -box.min.y, -cz); geo.scale(1 / h, 1 / h, 1 / h); geo.computeBoundingSphere(); const mt = o.material, leaf = mt.alphaTest > 0 || mt.transparent;
-    mt.envMapIntensity = 0.8; if (mt.map) mt.map.anisotropy = 4; if (leaf) { mt.side = THREE.DoubleSide; mt.transparent = false; mt.alphaTest = 0.5; mt.alphaToCoverage = false; }
+    mt.envMapIntensity = 0.8; if (mt.map) mt.map.anisotropy = 4; const still = /^nat-(rock|cliff|moon)/.test(f); /* rocks don't sway in the wind */ if (/^nat-/.test(f)) { mt.metalness = 0; mt.metalnessMap = null; mt.roughness = 1; mt.envMapIntensity = 0.5; if (still) mt.color.multiplyScalar(1.15); if (/^nat-scrub/.test(f)) mt.color.multiplyScalar(2.2); /* rooibos leaves scan very dark */ } if (leaf) { mt.side = THREE.DoubleSide; mt.transparent = false; mt.alphaTest = 0.5; mt.alphaToCoverage = false; }
     // wind: leaves flutter and the whole crown leans a little, more the higher up the tree
     const tint = leaf && TREE_TINT[f]; if (tint) { mt.color.setRGB(1, 1, 1); mt.emissive = new THREE.Color(tint[0] * 0.12, tint[1] * 0.12, tint[2] * 0.12); }
-    mt.onBeforeCompile = sh => { if (tint) sh.fragmentShader = sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n diffuseColor.rgb = vec3(dot(diffuseColor.rgb, vec3(0.45, 0.45, 0.25))) * vec3(' + tint.map(v => v.toFixed(3)).join(',') + ');'); sh.uniforms.uWind = WIND; sh.vertexShader = 'uniform float uWind;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n #ifdef USE_INSTANCING\n float ph = instanceMatrix[3].x * 0.37 + instanceMatrix[3].z * 0.23;\n #else\n float ph = 0.0;\n #endif\n float hh = max(position.y - 0.25, 0.0); transformed.x += sin(uWind * 1.3 + ph) * 0.018 * hh * hh' + (leaf ? ' + sin(uWind * 7.0 + ph + position.x * 40.0 + position.z * 31.0) * 0.004' : '') + '; transformed.z += cos(uWind * 1.1 + ph * 1.7) * 0.012 * hh * hh;'); }; mt.customProgramCacheKey = () => 'tree' + (leaf ? 'L' : 'B') + (tint ? f : '');
+    if (!still) mt.onBeforeCompile = sh => { if (tint) sh.fragmentShader = sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n diffuseColor.rgb = vec3(dot(diffuseColor.rgb, vec3(0.45, 0.45, 0.25))) * vec3(' + tint.map(v => v.toFixed(3)).join(',') + ');'); sh.uniforms.uWind = WIND; sh.vertexShader = 'uniform float uWind;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n #ifdef USE_INSTANCING\n float ph = instanceMatrix[3].x * 0.37 + instanceMatrix[3].z * 0.23;\n #else\n float ph = 0.0;\n #endif\n float hh = max(position.y - 0.25, 0.0); transformed.x += sin(uWind * 1.3 + ph) * 0.018 * hh * hh' + (leaf ? ' + sin(uWind * 7.0 + ph + position.x * 40.0 + position.z * 31.0) * 0.004' : '') + '; transformed.z += cos(uWind * 1.1 + ph * 1.7) * 0.012 * hh * hh;'); }; if (!still) mt.customProgramCacheKey = () => 'tree' + (leaf ? 'L' : 'B') + (tint ? f : '');
     parts.push({ geometry: geo, material: mt, leaf }); });
   ready[f] = { name: f, parts, h }; for (const w of (treeWait[f] || []).splice(0)) w(); }, e => console.warn(f + ' model failed', e))).catch(e => console.warn(f + ' model failed', e));
 // share of the scanned models that have finished decoding (the mission waits for them so nothing shows a stand-in)
 export function modelsReady() { const want = Object.keys(src); if (!want.length) return 1; return want.filter(k => ready[k]).length / want.length; }
+// ---------- The Downtown City MegaKit (Quaternius, CC0): one GLB holding every wall, window, column, cornice and roof
+// module; each becomes plain float geometry so the city can draw thousands of them as instances.
+const kitWait = [];
+// Weathering on the kit's walls: soot and rain streaks running down from ledges and window sills, and grime near the pavement.
+// Worked out from world position, so no two walls carry the same pattern and nothing extra is downloaded.
+function weather(mt) { const prev = mt.onBeforeCompile; mt.onBeforeCompile = (sh, r) => { if (prev) prev.call(mt, sh, r);
+  sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vGW;').replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\n{ vec4 gw = vec4(transformed, 1.0);\n#ifdef USE_INSTANCING\ngw = instanceMatrix * gw;\n#endif\nvGW = (modelMatrix * gw).xyz; }');
+  sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vGW;\nfloat gH(vec2 p) { vec3 q = fract(vec3(p.xyx) * 0.1031); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y) * q.z); }\nfloat gN(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(gH(i), gH(i + vec2(1, 0)), f.x), mix(gH(i + vec2(0, 1)), gH(i + 1.0), f.x), f.y); }')
+    .replace('#include <color_fragment>', `#include <color_fragment>
+      { float u = vGW.x + vGW.z; float streak = gN(vec2(u * 2.3, vGW.y * 0.12)) * gN(vec2(u * 7.1, vGW.y * 0.35 + 3.0));
+        float under = 1.0 - smoothstep(0.0, 0.9, fract(vGW.y / 3.0));          // just below each floor line (sills, ledges)
+        float grime = 0.32 * smoothstep(0.35, 0.85, streak) + 0.18 * under * gN(vec2(u * 3.0, floor(vGW.y / 3.0))) + 0.12 * gN(vec2(u * 0.4, vGW.y * 0.4));
+        diffuseColor.rgb *= 1.0 - grime * 0.55; }`); };
+  mt.customProgramCacheKey = () => 'kit-weathered-' + mt.name; }
+if (src['kit-city']) load(src['kit-city']).then(buf => gltf().parse(buf, '', g => { const mods = {}, inv = new THREE.Matrix4(); g.scene.updateMatrixWorld(true);
+  for (const node of g.scene.children) { inv.copy(node.matrixWorld).invert(); const parts = []; node.traverse(o => { if (!o.isMesh) return; const geo = toFloat(o.geometry); geo.applyMatrix4(o.matrixWorld); geo.computeBoundingSphere(); const mt = o.material; if (mt.map) mt.map.anisotropy = 4; if (!geo.attributes.color) mt.vertexColors = false;
+      if (/FakeInterior/.test(mt.name)) return; /* the kit's flat window backdrops: the interior-mapped rooms on the building core (kitcity.js) show through instead */
+      if (/Glass/.test(mt.name)) { mt.transparent = true; mt.depthWrite = false; mt.metalness = 0.6; mt.roughness = 0.08; mt.envMapIntensity = 1.4; }
+      else if (/Brick|Concrete|Trim|Ornament/.test(mt.name) && !mt.userData.grime) { mt.userData.grime = true; weather(mt); }
+      parts.push({ geometry: geo, material: mt }); });
+    mods[node.name] = parts; }
+  ready['kit-city'] = { name: 'kit-city', mods }; for (const w of kitWait.splice(0)) w(ready['kit-city']); }, e => console.warn('city kit failed', e))).catch(e => console.warn('city kit failed', e));
+export function onKit(cb) { if (ready['kit-city'] && ready['kit-city'].mods) cb(ready['kit-city']); else if (src['kit-city']) kitWait.push(cb); }
+export const hasKit = () => !!src['kit-city'];
+// The Strider (AnyMachine's Stilt walker, MIT): a rigid-part rig animated by its nodes, so it is cloned plainly per use.
+const striderWait = [];
+if (src.strider) load(src.strider).then(buf => gltf().parse(buf, '', g => { g.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; if (o.material.map) o.material.map.anisotropy = 4; } });
+  const box = new THREE.Box3().setFromObject(g.scene); ready.strider = { name: 'strider', scene: g.scene, make: () => cloneSkinned(g.scene), clips: g.animations, h: box.max.y - box.min.y, y0: box.min.y }; for (const w of striderWait.splice(0)) w(ready.strider); }, e => { console.warn('strider failed', e); ready.strider = { name: 'strider' }; }));
+export function onStrider(cb) { if (ready.strider && ready.strider.scene) cb(ready.strider); else if (src.strider) striderWait.push(cb); }
+export const hasStrider = () => !!src.strider;
 export function onTree(name, cb) { if (ready[name] && ready[name].parts) cb(ready[name]); else if (src[name]) (treeWait[name] = treeWait[name] || []).push(() => cb(ready[name])); }
 // A copy standing on its base at the origin, scaled per axis.
 function standing(S, sx, sy, sz) { const inner = S.scene.clone(), holder = new THREE.Group(); inner.position.set(-(S.box.min.x + S.box.max.x) / 2, -S.box.min.y, -(S.box.min.z + S.box.max.z) / 2); holder.add(inner); holder.scale.set(sx, sy, sz); return holder; }

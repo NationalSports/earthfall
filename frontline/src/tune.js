@@ -3,7 +3,7 @@
 import { Pane } from 'tweakpane';
 
 export const DEFAULTS = { moveSpeed: 1, look: 1, fov: 62, dmgDealt: 1, dmgTaken: 1, enemySpeed: 1, waveSize: 1, flyers: 1, farHives: true,
-  heliThrust: 1, heliSpeed: 1, heliTurn: 1, heliClimb: 1, brightness: 1, effects: 1, ao: 1 };
+  heliThrust: 1, heliSpeed: 1, heliTurn: 1, heliClimb: 1, brightness: 1, effects: 1, ao: 1, haptics: 1 };
 export const TUNE = Object.assign({}, DEFAULTS);
 const KEY = 'frontline-tune-v1';
 
@@ -14,7 +14,7 @@ export function createTuner(onChange) {
   document.body.appendChild(host);
   const pane = new Pane({ container: host, title: 'Tuning  (P to close)' }), changed = () => { save(); if (onChange) onChange(); };
   const f = (title, rows) => { const fo = pane.addFolder({ title }); for (const [k, label, min, max, step] of rows) fo.addBinding(TUNE, k, typeof DEFAULTS[k] === 'boolean' ? { label } : { label, min, max, step }); return fo; };
-  f('You', [['moveSpeed', 'Move speed', 0.6, 1.8, 0.05], ['look', 'Mouse sensitivity', 0.3, 2.5, 0.05], ['fov', 'Field of view', 50, 90, 1], ['dmgDealt', 'Damage you deal', 0.3, 3, 0.05], ['dmgTaken', 'Damage you take', 0.2, 2, 0.05]]);
+  f('You', [['moveSpeed', 'Move speed', 0.6, 1.8, 0.05], ['look', 'Mouse sensitivity', 0.3, 2.5, 0.05], ['fov', 'Field of view', 50, 90, 1], ['dmgDealt', 'Damage you deal', 0.3, 3, 0.05], ['dmgTaken', 'Damage you take', 0.2, 2, 0.05], ['haptics', 'Haptics (rumble, 0 = off)', 0, 1.5, 0.05]]);
   f('Enemies', [['enemySpeed', 'Speed (new enemies)', 0.5, 1.8, 0.05], ['waveSize', 'Wave size (next mission)', 0.3, 2.5, 0.05], ['flyers', 'Flyers (next wave)', 0, 3, 0.1], ['farHives', 'Far hives in Expedition (next mission)']]);
   f('Goshawk', [['heliThrust', 'Acceleration', 0.4, 2.5, 0.05], ['heliSpeed', 'Top speed', 0.5, 2, 0.05], ['heliTurn', 'Turn rate', 0.4, 2.5, 0.05], ['heliClimb', 'Climb rate', 0.4, 2.5, 0.05]]);
   f('Look', [['brightness', 'Brightness', 0.5, 1.8, 0.02], ['effects', 'Particle effects', 0, 2, 0.05], ['ao', 'Contact shadows (0 = off)', 0, 2, 0.05]]);

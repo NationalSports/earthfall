@@ -10,20 +10,29 @@ const CELL = 60;
 // What grows where, per world and district: [model, count, min height, max height, weight towards roadsides].
 const PLAN = {
   la: { downtown: [['tree-ash', 14, 7, 10, 0.8], ['tree-aspen', 8, 7, 9, 0.8]], financial: [['tree-aspen', 12, 7, 10, 0.9]], westside: [['tree-ash', 34, 8, 12, 0.6], ['tree-oak', 18, 8, 12, 0.3], ['tree-bush', 30, 1.6, 2.6, 0.2]],
-    coast: [['tree-bush', 16, 1.4, 2.4, 0.3], ['tree-aspen', 8, 7, 9, 0.6]], hills: [['tree-pine', 70, 9, 15, 0], ['tree-oak', 40, 8, 13, 0], ['tree-bush', 50, 1.5, 3, 0]], port: [], beach: [] },
-  kepler: { settlement: [['tree-alien', 18, 9, 14, 0.2], ['tree-alien2', 12, 8, 12, 0.2]], highlands: [['tree-alien', 46, 10, 18, 0], ['tree-alien2', 30, 9, 15, 0]], lake: [['tree-alien2', 26, 8, 13, 0]], spires: [['tree-alien2', 12, 7, 11, 0]], grove: [], wreck: [['tree-alien', 10, 8, 12, 0]] },
+    coast: [['tree-bush', 16, 1.4, 2.4, 0.3], ['tree-aspen', 8, 7, 9, 0.6]], hills: [['tree-pine', 70, 9, 15, 0], ['tree-oak', 40, 8, 13, 0], ['tree-bush', 50, 1.5, 3, 0]], port: [], beach: [], outskirts: [['tree-oak', 260, 8, 13, 0], ['tree-pine', 200, 9, 15, 0], ['tree-bush', 300, 1.5, 3, 0], ['tree-ash', 120, 8, 12, 0]] },
+  kepler: { settlement: [['tree-alien', 18, 9, 14, 0.2], ['tree-alien2', 12, 8, 12, 0.2]], highlands: [['tree-alien', 46, 10, 18, 0], ['tree-alien2', 30, 9, 15, 0]], lake: [['tree-alien2', 26, 8, 13, 0]], spires: [['tree-alien2', 12, 7, 11, 0]], grove: [], wreck: [['tree-alien', 10, 8, 12, 0]], wilds: [['tree-alien', 300, 10, 18, 0], ['tree-alien2', 220, 9, 15, 0]] },
   ceres: {} };
+// Photo-scanned rocks and plants (Poly Haven) for every district: [model, count, min height, max height, 0]. Heights are metres.
+const ROCKS = [['nat-rock-a', 1.4], ['nat-rock-b', 1.2], ['nat-rock-c', 1.2]], NATURE = {
+  la: { hills: [...ROCKS.map(([n, k]) => [n, 30 * k, 0.5, 2.6, 0]), ['nat-cliff', 8, 3, 7, 0], ['nat-shrub-a', 60, 0.9, 1.7, 0], ['nat-shrub-b', 50, 0.9, 1.5, 0], ['nat-scrub-a', 60, 0.5, 1.1, 0], ['nat-scrub-b', 50, 0.5, 1, 0], ['nat-weed', 120, 0.12, 0.25, 0]],
+    outskirts: [...ROCKS.map(([n, k]) => [n, 90 * k, 0.5, 3, 0]), ['nat-cliff', 22, 3, 8, 0], ['nat-shrub-a', 160, 0.9, 1.8, 0], ['nat-shrub-b', 130, 0.9, 1.6, 0], ['nat-scrub-a', 180, 0.5, 1.2, 0], ['nat-scrub-b', 150, 0.5, 1, 0], ['nat-weed', 320, 0.12, 0.25, 0]],
+    westside: [['nat-shrub-a', 20, 0.8, 1.4, 0.4], ['nat-scrub-b', 20, 0.5, 0.9, 0.3]], coast: [['nat-scrub-a', 24, 0.5, 1, 0], ['nat-rock-b', 14, 0.5, 1.6, 0]] },
+  kepler: { highlands: ROCKS.map(([n, k]) => [n, 40 * k, 0.6, 3, 0]), wilds: [...ROCKS.map(([n, k]) => [n, 110 * k, 0.6, 3.4, 0]), ['nat-cliff', 24, 3, 8, 0]], spires: [['nat-rock-c', 20, 1, 3, 0]] },
+  ceres: { '*': [['nat-moon-a', 260, 0.4, 2.4, 0], ['nat-moon-b', 260, 0.3, 1.6, 0], ['nat-rock-c', 60, 1, 3.2, 0], ['nat-cliff', 18, 3, 7, 0]] } };
 
-export function plantTrees(group, world, H, clear, ARENA, nearRoad) {
-  const plan = PLAN[world]; if (!plan) return null; const r = rng(world.length * 4099 + 17), want = {};
+export function plantTrees(group, world, H, clear, ARENA, nearRoad, opts) {
+  const base = PLAN[world]; if (!base) return null; const r = rng(world.length * 4099 + 17), want = {}, plan = {};
+  for (const k in base) plan[k] = base[k].slice(); if (opts && opts.nature) for (const k in NATURE[world] || {}) (plan[k] = plan[k] || []).push(...NATURE[world][k]);
   const zone = world === 'la' ? zoneOf : (x, z) => outerZone(world, x, z);
   // throw darts until each district has its share; roadside trees try spots near a road first
-  for (let i = 0; i < 26000; i++) { const x = (r() * 2 - 1) * (ARENA - 8), z = (r() * 2 - 1) * (ARENA - 8), zn = zone(x, z), list = plan[zn]; if (!list || !list.length) continue; const pick = list[Math.floor(r() * list.length)], [name, n, h0, h1, road] = pick, key = zn + name;
-    if ((want[key] || []).length >= n) continue; if (road && r() < road && !nearRoad(x, z)) continue; if (!clear(x, z, h1 * 0.18 + 1)) continue; (want[key] = want[key] || []).push({ name, x, z, h: h0 + r() * (h1 - h0), yaw: r() * 6.283 }); }
+  const darts = ARENA > 300 ? 90000 : 26000; for (let i = 0; i < darts; i++) { const x = (r() * 2 - 1) * (ARENA - 8), z = (r() * 2 - 1) * (ARENA - 8), zn = zone(x, z), list = plan[zn] || plan['*']; if (!list || !list.length) continue; const pick = list[Math.floor(r() * list.length)], [name, n, h0, h1, road] = pick, key = zn + name, rock = /^nat-(rock|cliff|moon)/.test(name);
+    if ((want[key] || []).length >= n * (ARENA > 300 && /hills|highlands|grove|spires/.test(zn) ? 3 : 1)) continue; if (road && r() < road && !nearRoad(x, z)) continue; if (!clear(x, z, rock || /^nat/.test(name) ? h1 * 0.4 + 0.4 : h1 * 0.18 + 1)) continue; (want[key] = want[key] || []).push({ name, x, z, h: h0 + r() * (h1 - h0), yaw: r() * 6.283, rock, tilt: rock ? (r() - 0.5) * 0.5 : 0 }); }
   const spots = [].concat(...Object.values(want)), byName = {}; for (const s of spots) (byName[s.name] = byName[s.name] || []).push(s);
-  const meshes = [], m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), up = new THREE.Vector3(0, 1, 0), p = new THREE.Vector3(), sc = new THREE.Vector3();
+  const meshes = [], eu = new THREE.Euler(), m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), up = new THREE.Vector3(0, 1, 0), p = new THREE.Vector3(), sc = new THREE.Vector3();
   for (const name in byName) onTree(name, T => { const cells = {}; for (const s of byName[name]) { const k = Math.floor(s.x / CELL) + ',' + Math.floor(s.z / CELL); (cells[k] = cells[k] || []).push(s); }
-    for (const k in cells) { const list = cells[k]; for (const part of T.parts) { const im = new THREE.InstancedMesh(part.geometry, part.material, list.length); list.forEach((s, i) => { q.setFromAxisAngle(up, s.yaw); const w = s.h * (0.9 + (s.yaw % 1) * 0.25); m4.compose(p.set(s.x, H(s.x, s.z) - 0.15, s.z), q, sc.set(w, s.h, w)); im.setMatrixAt(i, m4); });
+    for (const k in cells) { const list = cells[k]; for (const part of T.parts) { const im = new THREE.InstancedMesh(part.geometry, part.material, list.length); list.forEach((s, i) => { q.setFromEuler(eu.set(s.tilt, s.yaw, s.tilt * 0.6)); const w = s.h * (0.9 + (s.yaw % 1) * 0.25); m4.compose(p.set(s.x, H(s.x, s.z) - (s.rock ? s.h * 0.22 : 0.15), s.z), q, sc.set(w, s.h, w)); im.setMatrixAt(i, m4); });
         im.castShadow = true; im.receiveShadow = true; im.computeBoundingSphere(); group.add(im); meshes.push(im); } } });
-  return { count: spots.length, meshes };
+  // Big rocks block movement and bullets like walls do (the caller turns these into solids before the nav grid is built).
+  return { count: spots.length, meshes, blocks: spots.filter(s => s.rock && s.h > 1.6).map(s => ({ x: s.x, z: s.z, w: s.h * (s.name === 'nat-cliff' ? 0.9 : 0.75), h: s.h })) };
 }

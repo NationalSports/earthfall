@@ -45,22 +45,32 @@ export function createWeather(group, H, profile, world) {
 }
 
 // Wetness is a material response: darkened pores, low-roughness puddles and moving rain normals.
+// Shared by every wet surface: the mirrored lights texture and its projection (reflect.js fills these in each frame).
+export const WET_REFL = { uRefl: { value: null }, uReflMat: { value: new THREE.Matrix4() }, uReflOn: { value: 0 } };
 export function wetSurface(material, wetness, time) {
   if (!wetness) return material;
   const previous = material.onBeforeCompile;
-  material.customProgramCacheKey = () => 'wet-surface-' + wetness;
+  const previousKey = material.customProgramCacheKey.bind(material); material.customProgramCacheKey = () => previousKey() + 'wet-surface-' + wetness;
   material.onBeforeCompile = shader => {
-    previous.call(material, shader); shader.uniforms.uWetTime = time;
-    shader.vertexShader = shader.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vWetPosition; varying float vWetSlope;')
-      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvWetPosition = (modelMatrix * vec4(position, 1.0)).xyz; vWetSlope = abs(normalize(mat3(modelMatrix) * normal).y);');
+    previous.call(material, shader); shader.uniforms.uWetTime = time; Object.assign(shader.uniforms, WET_REFL);
+    shader.vertexShader = shader.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vWetPosition; varying float vWetSlope; varying vec4 vReflUv; uniform mat4 uReflMat;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvWetPosition = (modelMatrix * vec4(position, 1.0)).xyz; vReflUv = uReflMat * vec4(vWetPosition, 1.0); vWetSlope = abs(normalize(mat3(modelMatrix) * normal).y);');
     shader.fragmentShader = shader.fragmentShader.replace('#include <common>', `#include <common>
-      varying vec3 vWetPosition; varying float vWetSlope; uniform float uWetTime; float wetPool = 0.0;
+      varying vec3 vWetPosition; varying float vWetSlope; uniform float uWetTime; float wetPool = 0.0; varying vec4 vReflUv; uniform sampler2D uRefl; uniform float uReflOn;
       float wetHash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
       float wetNoise(vec2 p) { vec2 i = floor(p), f = smoothstep(0.0, 1.0, fract(p)); return mix(mix(wetHash(i), wetHash(i + vec2(1, 0)), f.x), mix(wetHash(i + vec2(0, 1)), wetHash(i + 1.0), f.x), f.y); }`)
       .replace('#include <color_fragment>', `#include <color_fragment>
         wetPool = smoothstep(0.48, 0.67, wetNoise(vWetPosition.xz * 0.22)) * smoothstep(0.93, 0.995, vWetSlope) * ${wetness.toFixed(3)};
-        diffuseColor.rgb *= mix(1.0, 0.58, wetPool + ${wetness.toFixed(3)} * 0.15);`)
-      .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = mix(roughnessFactor, 0.075, wetPool);')
+        diffuseColor.rgb *= mix(1.0, 0.5, min(1.0, wetPool + ${wetness.toFixed(3)} * 0.4)); /* wet ground is much darker than dry */`)
+      .replace('#include <metalnessmap_fragment>', 'roughnessFactor = mix(roughnessFactor, 0.075, wetPool);\n#include <metalnessmap_fragment>')
+      .replace('#include <opaque_fragment>', `if (uReflOn > 0.0) {
+          // the city's lights mirrored in the wet ground, smeared along the view like streaks on asphalt; strongest in puddles
+          vec2 ruv = vReflUv.xy / vReflUv.w + normal.xy * 0.025; float sp = 0.004 + 0.028 * roughnessFactor;
+          vec3 rc = texture2D(uRefl, ruv).rgb * 0.24 + (texture2D(uRefl, ruv + vec2(0.0, sp)).rgb + texture2D(uRefl, ruv - vec2(0.0, sp)).rgb) * 0.19
+            + (texture2D(uRefl, ruv + vec2(0.0, sp * 2.3)).rgb + texture2D(uRefl, ruv - vec2(0.0, sp * 2.3)).rgb) * 0.11 + (texture2D(uRefl, ruv + vec2(0.0, sp * 3.8)).rgb + texture2D(uRefl, ruv - vec2(0.0, sp * 3.8)).rgb) * 0.08;
+          outgoingLight += rc * uReflOn * (0.3 * ${wetness.toFixed(3)} + 0.95 * wetPool);
+        }
+        #include <opaque_fragment>`)
       .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
         vec2 cell = floor(vWetPosition.xz * 1.5), local = fract(vWetPosition.xz * 1.5) - vec2(wetHash(cell), wetHash(cell + 7.0));
         float distanceToRing = length(local), phase = fract(uWetTime * 0.8 + wetHash(cell + 13.0));

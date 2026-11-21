@@ -1,4 +1,4 @@
-// Frontline sound: everything is synthesized in the browser, no audio files.
+// Frontline sound: synthesized in the browser, with recorded CC0 Kenney sounds (footsteps, blasts, impacts, lasers, engines) layered on top.
 // Layered weapon shots, explosions with debris, swarm voices, footsteps, a jump pack, wind, and music that follows the fight.
 export function createAudio() {
   let ac = null, master, comp, wet, dry, musicBus, sfxBus, noiseBuf = null, lx = 0, lz = 0, lyaw = 0, muted = false, musicOn = true;
@@ -17,30 +17,36 @@ export function createAudio() {
     const g = a.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(o.g, t + (o.a || 0.002)); g.gain.exponentialRampToValueAtTime(0.0001, t + o.d); s.connect(f); f.connect(g); g.connect(out); s.start(t, Math.random() * 1.5); s.stop(t + o.d + 0.05); }
   function tone(out, o) { const a = ac, t = a.currentTime + (o.at || 0), os = a.createOscillator(), g = a.createGain(); os.type = o.type || 'sine'; os.frequency.setValueAtTime(o.f, t); if (o.f1) os.frequency.exponentialRampToValueAtTime(Math.max(20, o.f1), t + o.d);
     g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(o.g, t + (o.a || 0.003)); g.gain.exponentialRampToValueAtTime(0.0001, t + o.d); if (o.lp) { const f = a.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = o.lp; os.connect(f); f.connect(g); } else os.connect(g); g.connect(out); os.start(t); os.stop(t + o.d + 0.05); }
+  // ---- recorded sounds: decoded once, picked at random from their variants, pitched a little each time
+  const BUF = {}; let decoding = false, surface = 'la';
+  function decodeAll() { if (decoding || !ac || !window.FRONTLINE_SFX) return; decoding = true; for (const [n, b64] of Object.entries(window.FRONTLINE_SFX)) { try { const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+      ac.decodeAudioData(u.buffer, buf => { BUF[n] = buf; }, () => {}); } catch (e) { /* skip a bad file */ } } }
+  function rec(out, name, o = {}) { const v = []; for (let i = 0; i < 6; i++) if (BUF[name + i]) v.push(BUF[name + i]); if (!v.length) return false; const s = ac.createBufferSource(), g = ac.createGain(); s.buffer = v[Math.floor(Math.random() * v.length)];
+    s.playbackRate.value = (o.rate || 1) * rnd(0.93, 1.07); g.gain.value = o.g == null ? 1 : o.g; s.connect(g); g.connect(out); s.start(ac.currentTime + (o.at || 0)); return true; }
   const play = fn => (pos, k) => { if (muted || !ctx() || ac.state !== 'running') return; const out = place(pos); if (k != null) out.gain.value *= k; fn(out); };
   // ---- weapons: a sharp crack, a body, a low thump and the room's tail
   const gun = (crack, body, thump, len) => out => { const p = rnd(0.94, 1.06); noise(out, { type: 'highpass', f: 3800 * p, d: 0.035, g: 0.5 * crack }); noise(out, { type: 'bandpass', f: 1300 * p, q: 0.9, d: 0.09 * len, g: 0.55 * body }); tone(out, { f: 170 * p, f1: 55, d: 0.09 * len, g: 0.5 * thump }); noise(out, { f: 700, f1: 200, d: 0.28 * len, g: 0.12 * body, a: 0.02 }); };
   const S = { shot: play(gun(1, 1, 0.8, 1)), mg: play(gun(0.9, 1.1, 1, 0.9)), shotgun: play(out => { gun(0.8, 1.6, 1.8, 2.2)(out); noise(out, { f: 2400, f1: 300, d: 0.3, g: 0.35 }); }), marksman: play(out => { gun(1.6, 1.2, 1.3, 2.6)(out); tone(out, { f: 2200, f1: 500, d: 0.07, g: 0.12, type: 'triangle' }); }),
     turret: play(gun(0.7, 0.9, 1.1, 0.8)), flame: play(out => { noise(out, { type: 'bandpass', f: rnd(500, 900), q: 0.5, d: 0.16, g: 0.16, a: 0.03 }); noise(out, { f: 220, d: 0.16, g: 0.14, a: 0.04 }); }),
     rocket: play(out => { noise(out, { type: 'bandpass', f: 500, f1: 2600, q: 1.2, d: 0.55, g: 0.5, a: 0.02 }); tone(out, { f: 120, f1: 50, d: 0.3, g: 0.6 }); noise(out, { type: 'highpass', f: 3000, d: 0.06, g: 0.4 }); }),
-    plasma: play(out => { tone(out, { f: 1400, f1: 240, d: 0.2, g: 0.22, type: 'sawtooth', lp: 3200 }); tone(out, { f: 700, f1: 120, d: 0.22, g: 0.22, type: 'square', lp: 1800 }); noise(out, { type: 'highpass', f: 5000, d: 0.05, g: 0.2 }); }),
-    rail: play(out => { tone(out, { f: 300, f1: 2400, d: 0.07, g: 0.2, type: 'sawtooth' }); tone(out, { f: 2400, f1: 90, d: 0.5, g: 0.35, type: 'sawtooth', lp: 5000, at: 0.06 }); noise(out, { type: 'highpass', f: 2500, d: 0.3, g: 0.45, at: 0.06 }); tone(out, { f: 90, f1: 30, d: 0.6, g: 0.7, at: 0.06 }); }),
+    plasma: play(out => { rec(out, 'laser', { g: 0.45, rate: 1.3 }); tone(out, { f: 1400, f1: 240, d: 0.2, g: 0.22, type: 'sawtooth', lp: 3200 }); tone(out, { f: 700, f1: 120, d: 0.22, g: 0.22, type: 'square', lp: 1800 }); noise(out, { type: 'highpass', f: 5000, d: 0.05, g: 0.2 }); }),
+    rail: play(out => { rec(out, 'laser', { g: 0.7, rate: 0.75 }); tone(out, { f: 300, f1: 2400, d: 0.07, g: 0.2, type: 'sawtooth' }); tone(out, { f: 2400, f1: 90, d: 0.5, g: 0.35, type: 'sawtooth', lp: 5000, at: 0.06 }); noise(out, { type: 'highpass', f: 2500, d: 0.3, g: 0.45, at: 0.06 }); tone(out, { f: 90, f1: 30, d: 0.6, g: 0.7, at: 0.06 }); }),
     reload: play(out => { noise(out, { type: 'bandpass', f: 2600, q: 3, d: 0.04, g: 0.25 }); noise(out, { type: 'bandpass', f: 1600, q: 3, d: 0.05, g: 0.3, at: 0.22 }); tone(out, { f: 900, f1: 500, d: 0.04, g: 0.1, at: 0.24, type: 'square' }); }),
     empty: play(out => noise(out, { type: 'bandpass', f: 3000, q: 4, d: 0.03, g: 0.2 })),
     // ---- explosions: sub thump, roar, and bits of debris raining down
-    boom: play(out => { tone(out, { f: 140, f1: 28, d: 0.9, g: 1.0 }); noise(out, { f: 900, f1: 80, d: 1.1, g: 0.9 }); noise(out, { type: 'highpass', f: 2500, d: 0.12, g: 0.6 }); for (let i = 0; i < 9; i++) noise(out, { type: 'bandpass', f: rnd(1200, 4200), q: 6, d: 0.03, g: rnd(0.05, 0.16), at: rnd(0.15, 1.1) }); }),
-    thud: play(out => { tone(out, { f: 90, f1: 40, d: 0.25, g: 0.6 }); noise(out, { f: 500, f1: 100, d: 0.22, g: 0.3 }); }),
+    boom: play(out => { rec(out, 'boom', { g: 0.9, rate: rnd(0.7, 0.9) }); rec(out, 'lowboom', { g: 0.8 }); tone(out, { f: 140, f1: 28, d: 0.9, g: 1.0 }); noise(out, { f: 900, f1: 80, d: 1.1, g: 0.9 }); noise(out, { type: 'highpass', f: 2500, d: 0.12, g: 0.6 }); for (let i = 0; i < 9; i++) noise(out, { type: 'bandpass', f: rnd(1200, 4200), q: 6, d: 0.03, g: rnd(0.05, 0.16), at: rnd(0.15, 1.1) }); }),
+    thud: play(out => { rec(out, 'clang', { g: 0.45, rate: 0.8 }); tone(out, { f: 90, f1: 40, d: 0.25, g: 0.6 }); noise(out, { f: 500, f1: 100, d: 0.22, g: 0.3 }); }),
     // ---- the swarm
     screech: play(out => { const f = rnd(700, 1300); tone(out, { f, f1: f * rnd(1.6, 2.4), d: 0.22, g: 0.1, type: 'sawtooth', lp: 3600 }); tone(out, { f: f * 1.51, f1: f * 0.8, d: 0.28, g: 0.07, type: 'square', lp: 3000, at: 0.03 }); noise(out, { type: 'bandpass', f: 3200, q: 2.5, d: 0.2, g: 0.09 }); }),
     chitter: play(out => { for (let i = 0; i < 5; i++) noise(out, { type: 'bandpass', f: rnd(2400, 4800), q: 8, d: 0.018, g: 0.12, at: i * rnd(0.03, 0.05) }); }),
-    squelch: play(out => { noise(out, { f: 1400, f1: 180, d: 0.22, g: 0.4, q: 2 }); tone(out, { f: 240, f1: 70, d: 0.18, g: 0.25, type: 'triangle' }); }),
+    squelch: play(out => { rec(out, 'slime', { g: 0.55, rate: rnd(1.1, 1.5) }); rec(out, 'punch', { g: 0.35 }); noise(out, { f: 1400, f1: 180, d: 0.22, g: 0.4, q: 2 }); tone(out, { f: 240, f1: 70, d: 0.18, g: 0.25, type: 'triangle' }); }),
     roar: play(out => { tone(out, { f: 95, f1: 60, d: 1.3, g: 0.6, type: 'sawtooth', lp: 500 }); tone(out, { f: 143, f1: 82, d: 1.2, g: 0.4, type: 'sawtooth', lp: 700 }); noise(out, { type: 'bandpass', f: 420, q: 1.2, d: 1.2, g: 0.4, a: 0.1 }); }),
     spit: play(out => { noise(out, { type: 'bandpass', f: 900, f1: 2600, q: 2, d: 0.2, g: 0.25 }); tone(out, { f: 300, f1: 900, d: 0.15, g: 0.12, type: 'triangle' }); }),
     // ---- you
-    step: play(out => { noise(out, { f: rnd(260, 420), d: 0.07, g: 0.16 }); tone(out, { f: 80, f1: 50, d: 0.06, g: 0.14 }); }),
-    hit: play(out => { tone(out, { f: 220, f1: 70, d: 0.16, g: 0.35, type: 'square', lp: 900 }); noise(out, { f: 900, d: 0.1, g: 0.25 }); }),
-    dive: play(out => noise(out, { type: 'bandpass', f: 500, f1: 1400, q: 0.8, d: 0.25, g: 0.2, a: 0.04 })), land: play(out => { tone(out, { f: 110, f1: 45, d: 0.2, g: 0.5 }); noise(out, { f: 600, f1: 150, d: 0.2, g: 0.3 }); }),
-    jet: play(out => { noise(out, { type: 'bandpass', f: rnd(700, 1100), q: 0.6, d: 0.2, g: 0.2, a: 0.03 }); noise(out, { f: 180, d: 0.2, g: 0.2, a: 0.03 }); }),
+    step: play(out => { if (rec(out, 'step-' + surface, { g: 0.7 })) return; noise(out, { f: rnd(260, 420), d: 0.07, g: 0.16 }); tone(out, { f: 80, f1: 50, d: 0.06, g: 0.14 }); }),
+    hit: play(out => { rec(out, 'plate', { g: 0.35 }); tone(out, { f: 220, f1: 70, d: 0.16, g: 0.35, type: 'square', lp: 900 }); noise(out, { f: 900, d: 0.1, g: 0.25 }); }),
+    dive: play(out => { noise(out, { type: 'bandpass', f: 500, f1: 1400, q: 0.8, d: 0.25, g: 0.2, a: 0.04 }); rec(out, 'soft', { g: 0.6, at: 0.42, rate: 0.9 }); }), land: play(out => { rec(out, 'soft', { g: 0.8 }); tone(out, { f: 110, f1: 45, d: 0.2, g: 0.5 }); noise(out, { f: 600, f1: 150, d: 0.2, g: 0.3 }); }),
+    jet: play(out => { rec(out, 'thrust', { g: 0.3, rate: rnd(1.1, 1.3) }); noise(out, { type: 'bandpass', f: rnd(700, 1100), q: 0.6, d: 0.2, g: 0.2, a: 0.03 }); noise(out, { f: 180, d: 0.2, g: 0.2, a: 0.03 }); }),
     // ---- interface
     call: play(out => { tone(out, { f: 660, d: 0.09, g: 0.14, type: 'triangle' }); tone(out, { f: 990, d: 0.14, g: 0.14, type: 'triangle', at: 0.09 }); }), build: play(out => { tone(out, { f: 320, f1: 640, d: 0.12, g: 0.16, type: 'triangle' }); noise(out, { type: 'bandpass', f: 2000, q: 3, d: 0.04, g: 0.15, at: 0.1 }); }),
     deny: play(out => tone(out, { f: 170, f1: 110, d: 0.16, g: 0.16, type: 'square', lp: 800 })), pick: play(out => { for (let i = 0; i < 3; i++) tone(out, { f: [523, 659, 784][i], d: 0.22, g: 0.12, type: 'triangle', at: i * 0.07 }); }),
@@ -57,6 +63,11 @@ export function createAudio() {
     if (intensity > 0.55 && i % 2 === 1) { const s = ac.createBufferSource(), fl = ac.createBiquadFilter(), gg = ac.createGain(); s.buffer = noiseBuf; fl.type = 'highpass'; fl.frequency.value = 6500; gg.gain.setValueAtTime(0.05 * intensity, t); gg.gain.exponentialRampToValueAtTime(0.0001, t + 0.05); s.connect(fl); fl.connect(gg); gg.connect(g); s.start(t, Math.random()); s.stop(t + 0.07); }
     if (intensity > 0.75 && i % 8 === 4) { const s = ac.createBufferSource(), fl = ac.createBiquadFilter(), gg = ac.createGain(); s.buffer = noiseBuf; fl.type = 'bandpass'; fl.frequency.value = 1800; gg.gain.setValueAtTime(0.16, t); gg.gain.exponentialRampToValueAtTime(0.0001, t + 0.16); s.connect(fl); fl.connect(gg); gg.connect(g); s.start(t, Math.random()); s.stop(t + 0.2); } }
   function startMusic() { if (timer || !ctx()) return; nextT = ac.currentTime + 0.1; timer = setInterval(() => { if (!ac || ac.state !== 'running' || !musicOn || muted) { nextT = ac ? ac.currentTime + 0.1 : 0; return; } while (nextT < ac.currentTime + 0.25) { musicStep(nextT, stepI++); nextT += 60 / BPM / 4; } }, 60); }
-  return Object.assign(S, { unlock() { const a = ctx(); if (a && a.state === 'suspended') a.resume(); startWind(); startMusic(); }, listen(x, z, yaw) { lx = x; lz = z; lyaw = yaw; }, setIntensity(v) { target = clamp(v, 0, 1); },
+  // a bullet striking armour or metal: a short ping
+  S.ping = play(out => { rec(out, 'ping', { g: 0.4, rate: rnd(1, 1.3) }); });
+  // the Goshawk's engine: one recorded loop, louder and higher as the rotors spool up
+  let eng = null; S.engine = (spool, pos) => { if (!ac || ac.state !== 'running' || !BUF.engine0) return; if (!eng) { if (spool < 0.02) return; const s = ac.createBufferSource(), g = ac.createGain(), out = place(null); s.buffer = BUF.engine0; s.loop = true; s.loopStart = 0.1; s.loopEnd = BUF.engine0.duration - 0.1; s.connect(g); g.connect(out); g.gain.value = 0; s.start(); eng = { s, g, out }; }
+    const d = pos ? Math.hypot(pos.x - lx, pos.z - lz) : 0, v = muted ? 0 : spool * 0.55 / (1 + Math.pow(d / 30, 2)); eng.g.gain.setTargetAtTime(v, ac.currentTime, 0.1); eng.s.playbackRate.setTargetAtTime(0.6 + spool * 0.6, ac.currentTime, 0.2); };
+  return Object.assign(S, { surface(w) { surface = w; }, unlock() { const a = ctx(); if (a && a.state === 'suspended') a.resume(); decodeAll(); startWind(); startMusic(); }, listen(x, z, yaw) { lx = x; lz = z; lyaw = yaw; }, setIntensity(v) { target = clamp(v, 0, 1); },
     toggleMusic() { musicOn = !musicOn; return musicOn; }, toggleMute() { muted = !muted; if (master) master.gain.value = muted ? 0 : 0.8; return muted; }, weapon(name, pos, k) { (S[name] || S.shot)(pos, k); } });
 }
