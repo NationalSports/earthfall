@@ -195,3 +195,77 @@ Steve's reference points, as inspiration for feel and tone. All characters, armo
 - Sweeping alien and off-world vistas for the other-worlds arenas.
 
 The Halo-style multiplayer in section 12 is a separate mode: players against players in arenas.
+
+## LA modular buildings (kit-city)
+- Source: Quaternius "Downtown City MegaKit" (CC0). `tools/buildkit.mjs <glTF dir> <out.glb> <Module,Module,...>` merges the chosen modules, simplifies them and compresses to `public/assets/models/kit-city.glb`.
+- `src/kitcity.js` assembles buildings from 2 m wall bays (shopfront ground floor, window floors, corner columns, cornice, roof tiles, AC units) in four styles: brick, pale, arch, metal. Some lots use the kit's three ready-made buildings.
+- Each district zone in `props.js` has `kit: [styles, share, readyShare]`. Modules are drawn as instances in 120 m cells; cells beyond 230 m (150 m on phones) are hidden.
+
+## Extra soldier moves (Universal Animation Library)
+- Source: Quaternius "Universal Animation Library" (CC0). `tools/buildual.mjs <UAL1_Standard.glb> public/assets/models/ual.glb` keeps the skeleton and 15 clips, no mesh (about 200 KB).
+- `src/anim.js` retargets them at load onto the soldier's Mixamo skeleton (world-space turn from the library's T-pose, hips scaled to the soldier's height).
+- In play: idle stance, sprint, dive roll, jump, flinch on hits, rifle-butt swing, and a second death (half of soldiers). Fallen allies and troopers now lie where they fell for a few seconds instead of vanishing.
+
+## Movement and recorded sound
+- Sprint (Shift, or push the touch stick past its rim) widens the view a little. Dive (F) now hops, slides about 7 m, halves damage while in the air and lands with dust. Crouch (C, touch "Crouch") is slower, aims steadier and takes a little less damage. Squad "back to the wall" moved from C to H.
+- Squadmates and troopers dive clear of grenades, orbital strikes, hive charges and charging brutes (`threat()` and `aiDive()` in game.js).
+- Recorded CC0 Kenney sounds (Sci-Fi Sounds, Impact Sounds) live in `public/assets/sfx/*.mp3` and ship as `dist/sfx.js`. They are layered over the synthesized ones: footsteps per world, explosions, slime hits, armour pings, lasers, jump pack, landing, and the Goshawk's engine loop.
+
+## Mission types
+- Expedition (`assault`), Rescue (`rescue`), Hunt (`hunt`) and Retrieve (`retrieve`) share the open map: start at the landing zone, patrols, breaches, the relay side objective, hives to burn for scrap, and the shuttle at the end (`PVE` in game.js; `hiveOp()` is true only for Expedition).
+- Rescue: three groups of four survivors under orange flares. Get near a group and it follows you; bugs hunt them. The shuttle waits for six at the landing zone; fewer than six alive fails the mission.
+- Hunt: a Warlord with brute guards. Its last-seen area is marked until you are within 45 m. Killing it calls the shuttle.
+- Retrieve: a crashed dropship with a black box. Hold E to pick it up (no sprint or jump pack while carrying); going down drops it. Picking it up calls the shuttle and a breach.
+- Code: `setupMission`, `stepMission`, `canBoard`, `missionLine` in game.js. Survivors use the soldier with the 'civ' tint, no rifle, and the library's plain walk/jog (`unarmed` in poseBody).
+
+## Haptics, controller, weapon wheel, fire modes, loadout
+- `src/haptics.js`: `buzz(kind, k)` rumbles a controller (dual-rumble, plus right-trigger rumble where Chrome supports it), vibrates Android phones, and `tick()` gives the iPhone switch haptic on button taps. Strength is "Haptics" in the tuning panel.
+- `src/gamepad.js`: standard-mapping controllers press the same keys/mouse buttons (layout in the file header). A or Start begins the mission on the briefing screen.
+- Hold Q (controller Y, touch: hold Swap) for the weapon wheel; hold R (X, touch: hold Reload) for fire mode: Rifle Auto/Burst/Single, Machine gun Auto/Burst.
+- Loadout on the briefing screen: primary, secondary, support (saved in localStorage `frontline-loadout`; `SETUP.loadout`). Railgun research still adds the rail rifle.
+
+## Big map and tactical map
+- Open missions (Expedition, Rescue, Hunt, Retrieve) use a 1 km map (`ARENA` 500, `BIG`); Defense and Skirmish keep 500 m. The city stays in the middle; a wild ring around it (LA "Outskirts", Kepler "Wilds", Ceres "Badlands") uses value-noise hills (`src/noise.js`), and the off-world mountain rims move to the new edge (`setEdge` in outer.js).
+- Mission sites, far hives and the relay scale outward; 8 more patrols roam the ring. Trees beyond 280 m (170 m on phones) are hidden; navmesh cells are 0.8 m on the big map.
+- Points of interest (`setupPOIs`/`stepPOIs`): 3 side nests (two hives each, not needed for Expedition), 4 outposts (walk to the supply crate: ammo, grenade, +40 health, scrap), 3 wrecked convoys (scrap and a research pick), 4 research caches. Each is a "?" on the map until someone gets within 45 m.
+- Tactical map (`src/mapview.js`): Tab, touch "Map", controller Back. Terrain is painted once per mission; layers show you, squad, survivors, enemies seen in the last 8 s, nests, POIs, objectives, strikes and the landing zone. Click sets a waypoint (also on the compass), right-click clears, wheel zooms, drag pans. The side panel lists the objective and side objectives.
+- The city now grows into the ring too: extra roads (`RING` in props.js) with an Industrial East and North Suburbs in LA (kit buildings), and sparse colony blocks along new tracks on Kepler and Ceres. Kit buildings switch to a plain block with shader-drawn windows beyond 130 m (80 m on phones) and vanish past 420 m (260 m); grass, rocks and bushes on the big map are split into 70 m cells and drawn within 110 m.
+- Art for the tactical map is briefed in `frontline/docs/MAP_ART_BRIEF.md`.
+- Open country: on the big map the city ends at about 330 m. Beyond it the ground is ridges and valleys (`ridge`/`wild` in noise.js; Ceres gets terraced mesas), and six installations sit on levelled pads (`src/installations.js` plans them and `flatten()` levels the ground; `buildSites()` in game.js builds them). Hold E at the console: a radar station reveals every point of interest and shows the swarm on the map for a minute; a fuel depot is rigged and blows after 10 s; an artillery battery fires four shells at your waypoint or the nearest nest (shells crack hives) and reloads after 90 s.
+- Tactical map art from chat's PR #47 (`frontline/assets/map/`) is wired in: elevation ramps colour the terrain, aerial detail tiles are multiplied over it (one tile = 140 m, anchored to the ground), the grain and bezel sit on top, the panel uses `map-panel.jpg`, and the white icons are tinted per use. It ships as `dist/art-map.js`; the PR's `qa/`, `source/` and mockup files are not bundled.
+
+## Air combat
+- Kestrel VTOL jet (open missions): parked on a pad beside the landing zone. E boards and lands or ejects. Space lifts, Shift sinks, W/S throttle (it hovers below 18 m/s), mouse steers, left mouse fires the cannon, G drops bombs (a yellow ring shows where they land). It climbs gently to about 30 m after take-off to clear rooftops. Hitting a building or the ground fast destroys it; it comes back on the pad after 90 s. Code: `makeJet`, `jetStep`, `jetFire`, `jetBomb`, `jetDown`, `respawnCraft` in game.js.
+- Gunship call-in on key 8: arrives in about 3 s, circles the marked spot at 32 m for 30 s, fires its cannon at bugs and homing rockets at brutes, hives and the Strider (`callGunship`, `stepGunships`).
+- Goshawk (the helicopter): a squadmate climbs in as door gunner when you board and fires on bugs near the aircraft (`boardGunner`, `doorGun`, `dropGunner`). Rockets lock onto the biggest target near the crosshair ("LOCK" on the HUD) and steer to it. A lost Goshawk comes back after 90 s.
+- Strider: a 26 m walker that patrols the open country on the big map (`spawnStrider`, `stepStrider`, `striderHit`, `striderDown`). 520 health; bullets do a quarter damage; rockets, bombs, artillery and the gunship hurt it properly. It lobs acid volleys within 95 m and stomps anything under it. Killing it gives 120 scrap and an upgrade choice. It is a side objective on the tactical map.
+- Strider model: the "Stilt" walker from AnyMachine (github.com/apekshik/anymachine, MIT licence), compressed by `tools/buildstrider.mjs` into `public/assets/models/strider.glb` (5.5 MB) and shipped as `dist/model-strider.js`. It is a skinned model, so copies must use `SkeletonUtils.clone` (`S.make()` in glb.js); a plain `.clone()` leaves it following invisible bones.
+
+## Phase 2 (later): Unreal
+- Once missions, weapons and enemies feel right in the browser, rebuild in Unreal Engine for desktop (download/Steam instead of a link). The browser game is the prototype: design, maps, mission rules, balance numbers and GLB models carry over; code is rewritten in C++/Blueprints and built on a Windows PC with a good GPU.
+- Character motion then: Unreal's Motion Matching, or NVIDIA MotionBricks (github.com/NVlabs/motionbricks; needs an NVIDIA GPU and TensorRT; SOMA skeleton; its sample motions are evaluation-only, models under the NVIDIA Open Model Agreement).
+
+## Realistic ground, sky reflections and water
+- Photo-scanned ground (Poly Haven, CC0): `src/terrainpbr.js`. Four texture sets per world (city lots, open ground, second ground / LA beach sand, rock on steep slopes), packed by `tools/buildpbr.py` from Poly Haven's 1k JPGs into `assets/pbr/` (colour with occlusion baked in; normal X/Y + roughness), shipped as `dist/art-pbr.js`. The shader blends them per pixel from a per-vertex `splat` attribute plus noise, mixes two scales so the repeat never shows (far ground uses the large scale only), and maps rock onto cliff faces from the side so it doesn't stretch.
+  - LA: dirty concrete, grass ground, gravelly sand, cliff side. Kepler: dirty concrete, burned ground, cracked red ground, dark rock. Ceres: dirty concrete, dry ground, gravelly sand, cliff side.
+- LA (dusk and storm) uses the Poly Haven "Industrial Sunset 02" sky photo for reflections, spun so its sun matches the game's (`photoEnvironment`). Night and the other worlds keep the generated sky.
+- Fog takes the average horizon colour of the sky photo, so distant hills melt into the sky instead of a flat band.
+- LA's sea is a 7 km plane with travelling-wave normals (`waterMaterial`) that reflects the sky.
+- Desktop shadows: 4096 map covering ±85 m (phones keep 2048, ±62 m).
+- Briefing "Graphics": Smooth (phones draw at 1.25×) or Sharp (screen resolution up to 2.25×), saved in localStorage `frontline-gfx`.
+- The textures decode a moment after the mission starts; until then the ground is grey under the loading curtain.
+
+## Flight changes
+- Kestrel: fast flight now holds altitude. Space climbs, Shift or C sinks, and the mouse only steers and aims the cannon (aiming down no longer dives the jet). It keeps at least 14 m over the ground and roofs up to 3 s ahead (`roofAt`), so it no longer flies into buildings.
+- Goshawk: rotors spin up in about half a second and you can lift as soon as they pass a third of full speed. The touch stick now flies it (it used to only read the keyboard). C also descends.
+
+## Photo-scanned rocks and plants; Blender-built Kestrel
+- Rocks and plants from Poly Haven (CC0), one variant per file, built by `tools/buildnature.mjs` from Poly Haven's 1k glTF downloads into `public/assets/models/nat-*.glb`:
+  - Rocks: `nat-rock-a` (Rock 07), `nat-rock-b` (Rock 09), `nat-rock-c` (Namaqualand Boulder 04), `nat-cliff` (Rock Face 01), `nat-moon-a/b` (Moon Rock 02/03, Ceres).
+  - Plants: `nat-shrub-a/b` (Shrub 02 a/c), `nat-scrub-a/b` (Wild Rooibos Bush a/b), `nat-weed` (Weed Plant 02).
+  - They load through the tree loader in glb.js (rocks don't sway; scrub leaves are brightened because the scan is very dark) and are planted per district by `NATURE` in trees.js. Rocks over 1.6 m are solid (`trees.blocks`).
+  - With them loaded, `scatter()` skips its old low-poly rocks and LA bush blobs. The thin grass blades remain.
+- Kestrel model: built from code in Blender by `tools/blender/kestrel.py`, packed by `tools/packglb.mjs` into `public/assets/models/kestrel.glb` (about 7,500 triangles, 75 KB).
+  - To rebuild: `pip install bpy`, then `python3 tools/blender/kestrel.py /tmp/k.glb && node tools/packglb.mjs /tmp/k.glb public/assets/models/kestrel.glb`.
+  - It's centred so the nose is at -6.6 m and the nozzle at +6.7 m in game space, with wheels on the ground. `makeJet` swaps it in with `dressStatic`; the engine glow disc now sits on the outer group so it stays visible.
+- Blender in the workspace can't read meshopt-compressed GLBs; decompress them first (see `/tmp`-style plain export with gltf-transform) if you need to render one for checking.

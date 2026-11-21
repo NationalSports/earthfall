@@ -1,3 +1,4 @@
+import { tick } from './haptics.js';
 // Frontline touch controls for phones and tablets: a move stick on the left, drag anywhere on the right to look,
 // and a cluster of buttons that press the same keys as the keyboard, so the game logic is shared.
 export const TOUCH = { on: false, f: 0, s: 0 };
@@ -23,9 +24,9 @@ body.touch #calls{bottom:auto;top:66px;left:0;right:0;transform:none;justify-con
 body.touch #bars{left:50%;bottom:8px;transform:translateX(-50%) scale(.75);transform-origin:50% 100%;width:220px}`;
 
 // [label, key code, position as right%/bottom% inside the cluster, size %, hold?]
-const PAD = [['Jump', 'Space', 44, 4, 24, true], ['Aim', 'AIM', 4, 44, 24, false], ['Reload', 'KeyR', 52, 32, 21], ['Dive', 'KeyF', 32, 54, 21], ['Run', 'ShiftLeft', 76, 6, 21, 'toggle'], ['Nade', 'KeyG', 14, 72, 21]];
-const SIDE = [['Use', 'KeyE'], ['Swap', 'KeyQ'], ['Squad', 'ORDER'], ['Ready', 'Enter'], ['Melee', 'KeyB']];
-const ORDERS = ['KeyZ', 'KeyX', 'KeyC', 'KeyV'];
+const PAD = [['Jump', 'Space', 44, 4, 24, true], ['Aim', 'AIM', 4, 44, 24, false], ['Reload', 'KeyR', 52, 32, 21, true], ['Dive', 'KeyF', 32, 54, 21], ['Run', 'ShiftLeft', 76, 6, 21, 'toggle'], ['Nade', 'KeyG', 14, 72, 21]];
+const SIDE = [['Map', 'Tab'], ['Crouch', 'KeyC'], ['Use', 'KeyE'], ['Swap', 'KeyQ', true], ['Squad', 'ORDER'], ['Ready', 'Enter'], ['Melee', 'KeyB']];
+const ORDERS = ['KeyZ', 'KeyX', 'KeyH', 'KeyV'];
 
 export function createTouch(cv) {
   const coarse = (window.matchMedia && matchMedia('(pointer: coarse)').matches) || 'ontouchstart' in window; if (!coarse) return TOUCH;
@@ -39,10 +40,10 @@ export function createTouch(cv) {
 
   // move stick: an analogue vector the movement code adds to the keys
   const stick = root.querySelector('.stick'), nub = root.querySelector('.nub'); let sid = null;
-  const moveStick = t => { const r = stick.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, R = r.width / 2; let dx = (t.clientX - cx) / R, dy = (t.clientY - cy) / R; const m = Math.hypot(dx, dy); if (m > 1) { dx /= m; dy /= m; } TOUCH.s = Math.abs(dx) < 0.12 ? 0 : dx; TOUCH.f = Math.abs(dy) < 0.12 ? 0 : -dy; nub.style.transform = 'translate(' + dx * R * 0.6 + 'px,' + dy * R * 0.6 + 'px)'; };
+  const moveStick = t => { const r = stick.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, R = r.width / 2; let dx = (t.clientX - cx) / R, dy = (t.clientY - cy) / R; const m = Math.hypot(dx, dy); if (m > 1) { dx /= m; dy /= m; } TOUCH.s = Math.abs(dx) < 0.12 ? 0 : dx; TOUCH.f = Math.abs(dy) < 0.12 ? 0 : -dy; TOUCH.sprint = m > 1.15 && dy < -0.75; /* push the stick past its rim, forward, to sprint */ nub.style.transform = 'translate(' + dx * R * 0.6 + 'px,' + dy * R * 0.6 + 'px)'; };
   stick.addEventListener('touchstart', e => { stop(e); const t = e.changedTouches[0]; sid = t.identifier; moveStick(t); }, { passive: false });
   stick.addEventListener('touchmove', e => { stop(e); for (const t of e.changedTouches) if (t.identifier === sid) moveStick(t); }, { passive: false });
-  const endStick = e => { for (const t of e.changedTouches) if (t.identifier === sid) { sid = null; TOUCH.f = TOUCH.s = 0; nub.style.transform = ''; } };
+  const endStick = e => { for (const t of e.changedTouches) if (t.identifier === sid) { sid = null; TOUCH.f = TOUCH.s = 0; TOUCH.sprint = false; nub.style.transform = ''; } };
   stick.addEventListener('touchend', endStick); stick.addEventListener('touchcancel', endStick);
 
   // look: any drag on the right side of the screen (and on the fire button, so you can aim while shooting)
@@ -56,18 +57,18 @@ export function createTouch(cv) {
 
   const pad = root.querySelector('.btns'), side = root.querySelector('.top'); let aimOn = false, runOn = false, order = 0;
   const fire = document.createElement('button'); fire.className = 'fire'; fire.textContent = 'Fire'; pad.appendChild(fire);
-  fire.addEventListener('touchstart', e => { stop(e); fire.classList.add('on'); mouse('mousedown', 0); for (const t of e.changedTouches) lookStart(t); }, { passive: false });
+  fire.addEventListener('touchstart', e => { stop(e); tick(); fire.classList.add('on'); mouse('mousedown', 0); for (const t of e.changedTouches) lookStart(t); }, { passive: false });
   fire.addEventListener('touchmove', e => { stop(e); for (const t of e.changedTouches) lookMove(t); }, { passive: false });
   const fireEnd = e => { fire.classList.remove('on'); mouse('mouseup', 0); for (const t of e.changedTouches) lookEnd(t); }; fire.addEventListener('touchend', fireEnd); fire.addEventListener('touchcancel', fireEnd);
   const make = (parent, label, code, hold, place) => { const b = document.createElement('button'); b.textContent = label; if (place) { b.style.right = place[0] + '%'; b.style.bottom = place[1] + '%'; b.style.width = b.style.height = place[2] + '%'; } parent.appendChild(b);
-    b.addEventListener('touchstart', e => { stop(e);
+    b.addEventListener('touchstart', e => { stop(e); tick();
       if (code === 'AIM') { aimOn = !aimOn; b.classList.toggle('on', aimOn); mouse(aimOn ? 'mousedown' : 'mouseup', 2); return; }
       if (code === 'ORDER') { order = (order + 1) % ORDERS.length; key(ORDERS[order], true); key(ORDERS[order], false); b.textContent = ['Follow', 'Hold', 'Defend', 'Auto'][order]; return; }
       if (hold === 'toggle') { runOn = !runOn; b.classList.toggle('on', runOn); key(code, runOn); return; }
       b.classList.add('on'); key(code, true); if (!hold) { key(code, false); setTimeout(() => b.classList.remove('on'), 120); } }, { passive: false });
     if (hold === true) { const up = e => { b.classList.remove('on'); key(code, false); }; b.addEventListener('touchend', up); b.addEventListener('touchcancel', up); } return b; };
   for (const p of PAD) make(pad, p[0], p[1], p[5], [p[2], p[3], p[4]]);
-  for (const p of SIDE) make(side, p[0], p[1], false);
+  for (const p of SIDE) make(side, p[0], p[1], p[2] || false);
   // the call-in bar becomes buttons: tap one to call it on the spot you are aiming at
   const calls = document.getElementById('calls'); if (calls) calls.addEventListener('touchstart', e => { const c = e.target.closest('.call'); if (!c) return; stop(e); const i = [].indexOf.call(calls.children, c); if (i >= 0 && i < 9) { key('Digit' + (i + 1), true); key('Digit' + (i + 1), false); } }, { passive: false });
   // stop the page itself from scrolling or zooming under a thumb
