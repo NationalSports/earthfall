@@ -24,6 +24,19 @@ if (src.soldier) load(src.soldier).then(buf => gltf().parse(buf, '', g => {
   const scene = g.scene; let mat = null; scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = false; o.frustumCulled = false; mat = o.material; } });
   mat.side = THREE.FrontSide; mat.envMapIntensity = 1.25; if (mat.map) { mat.map.anisotropy = 4; mat.emissiveMap = glowTexture(mat.map); mat.emissive = new THREE.Color(0xffffff); mat.emissiveIntensity = 1; }
   const box = new THREE.Box3().setFromObject(scene), clips = {}; for (const c of g.animations) { if (c.name !== 'Dead') for (const t of c.tracks) if (/Hips\.position/.test(t.name)) for (let i = 0; i < t.values.length; i += 3) { t.values[i] = t.values[0]; t.values[i + 2] = t.values[2]; } clips[c.name] = c; }
+  // Reflect the hips and swap leg tracks, keeping the upper-body weapon pose right-handed.
+  if (!clips.Walk_Right_with_Gun && clips.Walk_Left_with_Gun) {
+    const right = clips.Walk_Left_with_Gun.clone();
+    right.name = 'Walk_Right_with_Gun';
+    for (const track of right.tracks) {
+      if (!/(Hips|UpLeg|Leg|Foot|ToeBase)\./.test(track.name)) continue;
+      track.name = track.name.replace(/Left|Right/, side => side === 'Left' ? 'Right' : 'Left');
+      if (track.name.endsWith('.quaternion')) {
+        for (let i=0;i<track.values.length;i+=4) { track.values[i+1]*=-1; track.values[i+2]*=-1; }
+      }
+    }
+    clips[right.name] = right;
+  }
   ready.soldier = { scene, clips, scale: HEIGHT / (box.max.y - box.min.y), mat, red: null };
   for (const w of waiting.splice(0)) w();
 }, e => console.warn('soldier model failed to load', e))).catch(e => console.warn('soldier model failed to load', e));
@@ -78,7 +91,7 @@ export function dress(m, variant) {
     m.updateWorldMatrix(true, true); const len = (a, b) => bone[B(a)].getWorldPosition(_a).distanceTo(bone[B(b)].getWorldPosition(_b)); U.l1 = len('RightArm', 'RightForeArm'); U.l2 = len('RightForeArm', 'RightHand'); U.mixer.update(0); pickChest(m, U, U.chest); m.userData.body = U; };
   if (ready.soldier) go(); else if (src.soldier) waiting.push(go);
 }
-const CLIPS = { walk: 'Walk_Forward_While_Shooting', run: 'Run_and_Shoot', back: 'Walk_Backward_with_Gun', left: 'Walk_Left_with_Gun', right: 'Walk_Left_with_Gun', dead: 'Dead' };
+const CLIPS = { walk: 'Walk_Forward_While_Shooting', run: 'Run_and_Shoot', back: 'Walk_Backward_with_Gun', left: 'Walk_Left_with_Gun', right: 'Walk_Right_with_Gun', dead: 'Dead' };
 const X = new THREE.Vector3(), _T = new THREE.Vector3(), _pole = new THREE.Vector3(), _mq = new THREE.Quaternion(), _ch = new THREE.Vector3(), _want = {};
 function pickChest(m, U, out) { m.updateWorldMatrix(true, true); return m.worldToLocal(U.bone[B('Spine2')].getWorldPosition(out)); }
 // Called after the code rig has been posed: s is the same state, grips are the two hand targets in the gun's own space.
@@ -93,12 +106,13 @@ export function poseBody(m, s, gripL, gripR) { const U = m.userData.body; if (!U
     _want.idle = 1 - mv; _want.run = mv * f / n * fast; _want.walk = mv * f / n * (1 - fast); _want.back = mv * b / n; _want.left = mv * l / n; _want.right = mv * r / n; if (hang) { for (const k in _want) _want[k] = 0; _want.idle = 1; } }
   const kk = t === null ? 1 : Math.min(1, dt * 9); let idleW = 0, walkW = 0, leftW = 0, rightW = 0;
   for (const k in A) { U.w[k] += (_want[k] - U.w[k]) * kk; }
-  // Clips that share one animation (idle and walk, left and right) share one action: its weight is the sum, its speed set by whichever leads.
+  // Blend the two footwork cycles across changes of direction.
   const cad = Math.min(1.5, Math.max(0.75, sp / 5));
   if (A.walk) { A.walk.setEffectiveWeight(U.w.walk); A.walk.timeScale = cad * 1.25; }
   if (A.run) { A.run.setEffectiveWeight(U.w.run); A.run.timeScale = Math.min(1.5, Math.max(0.85, sp / 8.5)); }
   if (A.back) { A.back.setEffectiveWeight(U.w.back); A.back.timeScale = cad; }
-  if (A.left) { A.left.setEffectiveWeight(U.w.left + U.w.right); A.left.timeScale = U.w.right > U.w.left ? -cad : cad; }
+  if (A.left) { A.left.setEffectiveWeight(U.w.left); A.left.timeScale = cad; }
+  if (A.right) { A.right.setEffectiveWeight(U.w.right); A.right.timeScale = cad; }
   if (A.dead) { A.dead.setEffectiveWeight(U.w.dead); if (s.dead) { if (!U.deadT) A.dead.reset().play(); U.deadT += dt; if (t === null) A.dead.time = A.dead.getClip().duration; } else U.deadT = 0; }
   for (const k in U.rest) bn[k].quaternion.copy(U.rest[k]); U.mixer.update(dt);
   if (s.dead) { m.updateWorldMatrix(true, true); return; }

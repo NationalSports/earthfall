@@ -59,6 +59,15 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
 #feed{right:26px;top:190px;text-align:right;font-size:13px;letter-spacing:.2em;text-transform:uppercase;line-height:1.7}#feed b{color:#e8be60}#feed div{transition:opacity .6s}
 #wps{inset:0}.wp{position:absolute;left:0;top:0;width:0;height:0;font-size:10px;letter-spacing:.14em;text-align:center;white-space:nowrap;opacity:.9}
 .wp i{position:absolute;left:-6px;top:-6px;width:10px;height:10px;border:1.5px solid currentColor;transform:rotate(45deg)}.wp span{position:absolute;left:-60px;width:120px;top:10px;color:#fff}.wp em{position:absolute;left:-60px;width:120px;top:-21px;font-style:normal}
+#intro.on{display:block;overflow:auto}#setup{width:min(1120px,94%);margin:clamp(16px,4vh,54px) auto;color:#e9f1ec;padding:0 0 22px}
+.bridge-head{display:flex;gap:16px;align-items:center;padding:20px 0}.crest{border:2px solid #f7c277;padding:8px 6px;font:900 italic 24px system-ui;color:#f7c277}
+#setup small,#setup legend,.field,.chart-foot{font:600 11px/1.4 monospace;letter-spacing:.12em;text-transform:uppercase;color:#a3c5b9}
+#setup h1{font:650 clamp(32px,4vw,54px)/1.1 system-ui;letter-spacing:-.055em;margin:1px 0}#setup h2{margin:0 0 12px;font-size:20px}
+.console-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(310px,1fr);gap:16px;align-items:start}.chart,.manifest{background:#09191bec;border:1px solid #607c745e}.chart-head,.chart-foot{padding:16px 20px}.chart-head h2{font-size:30px!important}.chart-foot{display:flex;justify-content:space-between}.chart-foot span:first-child{color:#ffcd89}
+#sector{width:100%;height:auto;display:block;cursor:crosshair}.manifest{padding:20px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:block}#setup select{display:block;width:100%;padding:8px 4px;background:#142929;color:#f1f2e8;border:1px solid #5b7971;font:500 14px system-ui;margin:5px 0}
+#setup p{font-size:13px;color:#bbcec8;margin:4px 0 14px}.manifest h2:not(:first-child){border-top:1px solid #44605b;padding-top:14px;margin-top:12px}#setup fieldset{border:0;padding:0;margin:10px 0;display:flex;flex-wrap:wrap;gap:7px}#setup fieldset label{font-size:12px;background:#203332;padding:4px 7px}#setup input{accent-color:#ffca76}#setup input:focus-visible,#setup select:focus-visible,#start:focus-visible{outline:2px solid #ffca76}
+#setup #start{width:100%;margin:10px 0 0;padding:12px;background:#f8c67b;color:#152123;border:none;font:bold 16px system-ui;border-radius:2px;cursor:pointer}
+@media(max-width:740px){.console-grid{grid-template-columns:1fr}.chart-head,.chart-foot{padding:7px 14px}.chart-head h2{font-size:20px!important}.chart{width:min(100%,520px);margin:auto}.bridge-head{padding:7px 0 14px}}
 </style>
 </head>
 <body class="inmenu">
@@ -76,34 +85,13 @@ button{font:inherit;font-size:16px;font-weight:700;padding:11px 26px;border-radi
 <div class="hud" id="bars"><div class="bar" id="core"><i></i><span>City core</span><b></b></div><div class="bar" id="hp"><i></i><span>You</span><b></b></div></div>
 <div class="hud" id="ammo"></div>
 <div class="hud" id="calls"></div>
-<div class="panel on" id="intro"><form class="card" id="setup" onsubmit="return false">
-<small>Earthfall · Frontline</small><h1>Hold the line</h1>
-<p>You drop in beside the city core with your squad. The swarm comes over the hills across the whole horizon. Build defenses, call support from orbit, and range out: burn out hives to thin the swarm and bring back the research caches under the gold beacons.</p>
-<h4>Mission</h4><div class="opts">
-<label><input type="radio" name="m" value="defense" checked><span>Defense<i>hold the city core for five waves</i></span></label>
-<label><input type="radio" name="m" value="assault"><span>Expedition<i>cross the city, blow three hives, reach the shuttle</i></span></label>
-<label><input type="radio" name="m" value="skirmish"><span>Skirmish<i>team fight against enemy soldiers, first to 15</i></span></label></div>
-<h4>Where</h4><div class="opts">
-<label><input type="radio" name="w" value="la" checked><span>Los Angeles<i>Earth · edge of the city</i></span></label>
-<label><input type="radio" name="w" value="kepler"><span>Kepler Ridge<i>Off-world · crystal highlands</i></span></label>
-<label><input type="radio" name="w" value="ceres"><span>Ceres Station<i>Off-world · mining flats</i></span></label></div>
-<h4>Atmosphere</h4><div class="opts">
-<label><input type="radio" name="atmosphere" value="auto" checked><span>Mission mood<i>night or storm for this mission</i></span></label>
-<label><input type="radio" name="atmosphere" value="night"><span>Night<i>moonlight and illuminated streets</i></span></label>
-<label><input type="radio" name="atmosphere" value="storm"><span>Storm<i>rain and wet ground; mining dust on Ceres</i></span></label>
-<label><input type="radio" name="atmosphere" value="dusk"><span>Dusk<i>low sun and long shadows</i></span></label></div>
-<h4>Size of the attack</h4><div class="opts">
-<label><input type="radio" name="d" value="6"><span>Raid<i>about 180 of the swarm</i></span></label>
-<label><input type="radio" name="d" value="9" checked><span>Assault<i>about 270</i></span></label>
-<label><input type="radio" name="d" value="13"><span>Invasion<i>about 390</i></span></label></div>
-<h4>Research you bring (from Earthfall's Lab)</h4><div class="opts">
-<label><input type="checkbox" name="r" value="railgun"><span>Railgun<i>start with the rail rifle</i></span></label>
-<label><input type="checkbox" name="r" value="bombers"><span>Bombers<i>airstrike run, key 6</i></span></label>
-<label><input type="checkbox" name="r" value="exo"><span>Exo Armor<i>150 health</i></span></label>
-<label><input type="checkbox" name="r" value="elite"><span>Elite Training<i>faster reload and sprint</i></span></label>
-<label><input type="checkbox" name="r" value="hardened"><span>Hardened<i>tougher walls, turrets, allies</i></span></label></div>
-<h4>Controls</h4><div class="ctl"><b>W A S D</b><span>move</span><b>Mouse</b><span>aim (arrow keys also work)</span><b>Click</b><span>fire</span><b>R</b><span>reload</span><b>G</b><span>grenade</span><b>Shift</b><span>sprint (uses stamina)</span><b>Space</b><span>jump pack: hold to fly a short way</span><b>F</b><span>dive in the direction you are moving</span><b>Q / wheel</b><span>next weapon</span><b>V</b><span>squad fights on its own (default)</span><b>E</b><span>plant a charge on a hive (hold)</span><b>M</b><span>music on or off</span><b>1</b><span>orbital strike (keep clear)</span><b>2 3 4</b><span>turret, wall, mine (cost scrap)</span><b>5 · 7</b><span>supply drop · squad drop</span><b>Z X C</b><span>squad: follow, hold a spot, back to the wall</span><b>Enter</b><span>start the wave early</span></div>
-<button id="start" type="button">Drop in</button></form></div>
+<div class="panel on" id="intro"><form id="setup" onsubmit="return false">
+<header class="bridge-head"><div class="crest" aria-hidden="true">EF</div><div><small>Earth Defense Coalition</small><h1>Mission command</h1></div></header>
+<div class="console-grid"><section class="chart"><div class="chart-head"><small>Orbital survey</small><h2 id="sector-name">Los Angeles</h2></div>
+<canvas id="sector" width="720" height="504" aria-label="Sector map. Choose a numbered insertion point or use the landing zone selector."></canvas>
+<div class="chart-foot"><span>Numbered rings · Drop zones</span><span>↑ North</span></div></section>
+<section class="manifest"><h2>Deployment orders</h2><div class="fields"><label class="field">Theater<select name="w" id="w"><option value="la">Los Angeles</option><option value="kepler">Kepler Ridge</option><option value="ceres">Ceres Station</option></select></label><label class="field">Operation<select name="m" id="m"><option value="defense">Defense</option><option value="assault">Expedition</option><option value="skirmish">Skirmish</option></select></label></div><p id="mission-note"></p><label class="field">Landing zone<select name="lz" id="lz"></select></label><p id="lz-note"></p><div class="fields"><label class="field">Conditions<select name="atmosphere" id="atmosphere"><option value="auto">Auto</option><option value="night">Night</option><option value="storm">Storm</option><option value="dusk">Dusk</option></select></label><label class="field">Enemy strength<select name="d" id="d"><option value="6">Raid</option><option value="9">Assault</option><option value="13">Invasion</option></select></label></div>
+<h2>Your loadout</h2><div class="fields"><label class="field">Primary weapon<select name="primary" id="primary"><option value="0">Service rifle</option><option value="1">Shotgun</option><option value="2">Marksman rifle</option><option value="6">Rail rifle · research</option></select></label><label class="field">Prepaid support<select id="reserve" name="reserve"><option value="turret">Turret pod</option><option value="squad">Squad pod</option></select></label></div><p>First call for this pod costs no scrap.</p><fieldset><legend>Research modules</legend><label><input name="r" type="checkbox" value="exo">Exo armor</label><label><input name="r" type="checkbox" value="bombers">Air support</label><label><input name="r" type="checkbox" value="railgun">Rail rifle</label><label><input name="r" type="checkbox" value="elite">Elite training</label><label><input name="r" type="checkbox" value="hardened">Fortifications</label></fieldset><button id="start" type="button">Launch drop pod</button></section></div></form></div>
 <div class="panel" id="over"></div>
 <div class="panel" id="pick"></div>
 <script>/*ASSETS*/</script>

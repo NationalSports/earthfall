@@ -147,7 +147,7 @@ function poseRig(m, s) { const J = m.userData.J, mv = s.move || 0, w = s.walk ||
   J.torso.rotation.set(pitch * 0.35 - 0.08 * mv - 0.1 * run * mv - kick * 0.03 - hit * 0.15, -sw * 0.14 * mv + 0.22 + blend * 0.12, hit * direction * 0.12);
   J.head.rotation.set(pitch * 0.3 + hit * 0.1, -0.2 + Math.sin(t * 0.7) * 0.03, -hit * direction * 0.08);
   const lower = s.relaxed ? 1 : 0;
-  J.gun.position.set(GUN_AT[0] - blend * 0.035, GUN_AT[1] - lower * 0.08 - blend * 0.09 + Math.sin(w * 2) * 0.012 * mv, GUN_AT[2] + kick * 0.07 + blend * 0.06);
+  J.gun.position.set(GUN_AT[0] - blend * 0.035, GUN_AT[1] - run * 0.12 - lower * 0.08 - blend * 0.09 + Math.sin(w * 2) * 0.012 * mv, GUN_AT[2] + run * 0.08 + kick * 0.07 + blend * 0.06);
   J.gun.rotation.set(pitch * 0.65 + kick * 0.06 - lower * 0.45 - blend * 0.65, -0.22 + lower * 0.35 + blend * 0.28, -blend * 0.18);
   if (s.aimTarget && !reloading && !lower) {
     m.updateWorldMatrix(true, true);
