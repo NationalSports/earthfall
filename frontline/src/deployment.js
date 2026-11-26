@@ -190,6 +190,7 @@ export function mountPlanner(form, layouts, setup, terrainHeight) {
     mode: fields.m.value,
     zone: pick.value,
     primary: Number(gun.value),
+    reserve: fields.reserve.value,
     attackers: Number(fields.d.value),
     atmosphere: fields.atmosphere.value,
     research: [...form.querySelectorAll('[name=r]:checked')].map((x) => x.value),
